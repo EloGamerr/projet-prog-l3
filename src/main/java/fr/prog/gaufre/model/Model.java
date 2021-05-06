@@ -1,6 +1,5 @@
 package fr.prog.gaufre.model;
 
 public interface Model {
-    void play(int l, int c);
-
+    public boolean play(int l, int c); //return l
 }
