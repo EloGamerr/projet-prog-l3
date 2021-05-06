@@ -7,6 +7,7 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+@SuppressWarnings("serial")
 public class GameWindow extends JComponent implements PropertyChangeListener{
 	TimonModel model;
     ViewNiveau vn;
@@ -44,7 +45,7 @@ public class GameWindow extends JComponent implements PropertyChangeListener{
 	}
 	
 	public int longueur_case() {
-		return vn.longueur_case();
+		return vn.hauteur_case();
 	}
 	
 	public int largeur_case(){
