@@ -1,21 +1,16 @@
 package fr.prog.gaufre.model;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-
 public abstract class TimonModel implements Model {
 	public short[][] grille;
 	int x;
 	int y;
 	boolean fini = false;
-	private PropertyChangeSupport support;
 	
 	public TimonModel(int x, int y) {
 		grille = new short[x][y];
 		this.x = x;
 		this.y = x;
 		create_grid();
-		this.support = new PropertyChangeSupport(this);
 	}
 	
 	public void affiche() {
@@ -48,10 +43,6 @@ public abstract class TimonModel implements Model {
 		}
 		return true;
 	}
-	
-	public void addPropertyChangeListener(PropertyChangeListener pcl) {
-        this.support.addPropertyChangeListener(pcl);
-    }
 		
 	public short[][] get_grid() {
 		return grille;

@@ -4,18 +4,15 @@ import fr.prog.gaufre.model.TimonModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 @SuppressWarnings("serial")
-public class GameWindow extends JComponent implements PropertyChangeListener{
+public class GameWindow extends JComponent {
 	TimonModel model;
     ViewNiveau vn;
     int largeur,hauteur;
     Graphics2D drawable;
     
     public GameWindow(TimonModel model) {
-    	model.addPropertyChangeListener(this);
     	vn = new ViewNiveau(this);
     	this.model = model;
 	}
@@ -34,11 +31,6 @@ public class GameWindow extends JComponent implements PropertyChangeListener{
     	vn.dessiner_niveau();
 
     }
-
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		this.repaint();
-	}
 	
 	public int hauteur() {
 		return hauteur;
