@@ -19,6 +19,10 @@ public class GameWindow extends JComponent implements PropertyChangeListener{
     	vn = new ViewNiveau(this);
     	this.model = model;
 	}
+    
+    public void acutalize() {
+    	repaint();
+    }
 
     @Override
     protected void paintComponent(Graphics graphics) {

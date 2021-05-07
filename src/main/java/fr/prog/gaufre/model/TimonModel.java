@@ -14,6 +14,7 @@ public abstract class TimonModel implements Model {
 		grille = new short[x][y];
 		this.x = x;
 		this.y = x;
+		create_grid();
 		this.support = new PropertyChangeSupport(this);
 	}
 	
@@ -24,6 +25,18 @@ public abstract class TimonModel implements Model {
 			}
 			System.out.println();
 		}
+	}
+	
+	private void create_grid() {
+		for(int i = 0; i < x ; i++) {
+			for(int j = 0; j < y; j++) {
+				grille[i][j] = 0;
+			}
+		}
+	}
+	
+	public void reset() {
+		create_grid();
 	}
 
 	@Override
@@ -40,4 +53,15 @@ public abstract class TimonModel implements Model {
         this.support.addPropertyChangeListener(pcl);
     }
 		
+	public short[][] get_grid() {
+		return grille;
+	}
+	
+	public int get_x() {
+		return x;
+	}
+	
+	public int get_y() {
+		return y;
+	}
 }

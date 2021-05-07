@@ -15,5 +15,6 @@ public class Controller {
 	
 	public void click(int l, int c) {
 		this.model.play(l, c);
+		this.window.acutalize();
 	}
 }
