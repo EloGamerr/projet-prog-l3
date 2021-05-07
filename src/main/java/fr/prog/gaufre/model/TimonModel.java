@@ -8,11 +8,9 @@ public abstract class TimonModel implements Model {
 	private short playing_player;
 
 	public TimonModel(int x, int y) {
-		grille = new short[x][y];
 		this.x = x;
 		this.y = x;
-		this.playing_player = 1;
-		create_grid();
+		this.newGame();
 	}
 	
 	public void affiche() {
@@ -78,5 +76,21 @@ public abstract class TimonModel implements Model {
 	
 	public int get_y() {
 		return y;
+	}
+
+	public boolean newGame() {
+		grille = new short[x][y];
+		this.playing_player = 1;
+		create_grid();
+
+		return true;
+	}
+
+	public boolean rollback() {
+		return true;
+	}
+
+	public boolean save() {
+		return true;
 	}
 }

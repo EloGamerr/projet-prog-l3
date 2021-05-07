@@ -20,13 +20,19 @@ public class Controller {
 
 	public void newGame() {
 		System.out.println("New game");
+		if(this.model.newGame())
+			this.window.acutalize();
 	}
 
 	public void rollback() {
 		System.out.println("Rollback");
+		if(this.model.rollback())
+			this.window.acutalize();
 	}
 
 	public void save() {
 		System.out.println("Save");
+		if(this.model.save())
+			this.window.acutalize();
 	}
 }

@@ -7,4 +7,8 @@ public interface Model {
     
     int get_x();
     int get_y();
+
+    boolean newGame();
+    boolean rollback();
+    boolean save();
 }
