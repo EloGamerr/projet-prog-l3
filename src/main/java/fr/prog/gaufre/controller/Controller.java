@@ -17,4 +17,16 @@ public class Controller {
 		if(this.model.play(l, c))
 			this.window.acutalize();
 	}
+
+	public void newGame() {
+		System.out.println("New game");
+	}
+
+	public void rollback() {
+		System.out.println("Rollback");
+	}
+
+	public void save() {
+		System.out.println("Save");
+	}
 }

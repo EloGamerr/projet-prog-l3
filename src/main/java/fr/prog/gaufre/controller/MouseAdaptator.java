@@ -5,11 +5,11 @@ import java.awt.event.MouseEvent;
 
 import fr.prog.gaufre.view.GameWindow;
 
-public class AdaptateurSouris extends MouseAdapter {
+public class MouseAdaptator extends MouseAdapter {
 	GameWindow g;
 	Controller controller;
 	
-	public AdaptateurSouris(Controller controller, GameWindow g) {
+	public MouseAdaptator(Controller controller, GameWindow g) {
 		this.controller = controller;
 		this.g = g;
 	}

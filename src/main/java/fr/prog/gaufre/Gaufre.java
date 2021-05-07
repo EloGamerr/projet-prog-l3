@@ -1,14 +1,15 @@
 package fr.prog.gaufre;
 
 
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 
-import fr.prog.gaufre.controller.AdaptateurSouris;
 import fr.prog.gaufre.controller.Controller;
+import fr.prog.gaufre.controller.MouseAdaptator;
 import fr.prog.gaufre.model.TimonModel;
+import fr.prog.gaufre.view.BottomInterface;
 import fr.prog.gaufre.view.GameWindow;
+
+import java.awt.*;
 
 public class Gaufre implements Runnable {
 	int lg, lr;
@@ -25,9 +26,11 @@ public class Gaufre implements Runnable {
 		GameWindow gameWindow = new GameWindow(model);
 		Controller controller = new Controller(model, gameWindow);
 
-		gameWindow.addMouseListener(new AdaptateurSouris(controller, gameWindow));
+		gameWindow.addMouseListener(new MouseAdaptator(controller, gameWindow));
 
 		jFrame.add(gameWindow);
+
+		jFrame.add(new BottomInterface(controller), BorderLayout.SOUTH);
 
 		jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		jFrame.setSize(500, 500);

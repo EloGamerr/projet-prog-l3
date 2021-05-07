@@ -40,6 +40,7 @@ public abstract class TimonModel implements Model {
 	public boolean play(int c, int l) {
 		if(fini) return false;
 		if(grille[c][l] == 1) return false;
+		if(c < 0 || c >= x || y < 0 || l >= y) return false;
 
 		for(int i = c; i < x; i++) for(int j = l; j < y; j++) {
 			grille[i][j] = 1;
