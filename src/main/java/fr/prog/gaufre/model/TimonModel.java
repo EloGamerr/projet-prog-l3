@@ -5,11 +5,13 @@ public abstract class TimonModel implements Model {
 	int x;
 	int y;
 	boolean fini = false;
-	
+	private short playing_player;
+
 	public TimonModel(int x, int y) {
 		grille = new short[x][y];
 		this.x = x;
 		this.y = x;
+		this.playing_player = 1;
 		create_grid();
 	}
 	
@@ -44,9 +46,12 @@ public abstract class TimonModel implements Model {
 		}
 
 		if(check_end()) {
-			System.out.println("Le joueur qui vient de cliquer a gagné");
+			System.out.println("Le joueur " + this.playing_player + " a gagné");
 			fini = true;
+			return true;
 		}
+
+		this.playing_player = (short) (this.playing_player % 2 + 1); // If playing_player == 1 then playing_player = 2 else playing_player = 1
 
 		return true;
 	}
