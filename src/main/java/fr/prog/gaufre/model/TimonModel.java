@@ -1,11 +1,15 @@
 package fr.prog.gaufre.model;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
+
 public abstract class TimonModel implements Model {
 	public short[][] grille;
 	int x;
 	int y;
 	boolean fini = false;
 	private short playing_player;
+	private Queue<Play> last_plays;
 
 	public TimonModel(int x, int y) {
 		this.x = x;
@@ -21,18 +25,6 @@ public abstract class TimonModel implements Model {
 			System.out.println();
 		}
 	}
-	
-	private void create_grid() {
-		for(int i = 0; i < x ; i++) {
-			for(int j = 0; j < y; j++) {
-				grille[i][j] = 0;
-			}
-		}
-	}
-	
-	public void reset() {
-		create_grid();
-	}
 
 	@Override
 	public boolean play(int c, int l) {
@@ -40,9 +32,16 @@ public abstract class TimonModel implements Model {
 		if(grille[c][l] == 1) return false;
 		if(c < 0 || c >= x || y < 0 || l >= y) return false;
 
+		Play play = new Play();
+
 		for(int i = c; i < x; i++) for(int j = l; j < y; j++) {
+			if(grille[i][j] == 0)
+				play.addCouple(i, j);
+
 			grille[i][j] = 1;
 		}
+
+		this.last_plays.add(play);
 
 		if(check_end()) {
 			System.out.println("Le joueur " + this.playing_player + " a gagné");
@@ -79,14 +78,16 @@ public abstract class TimonModel implements Model {
 	}
 
 	public boolean newGame() {
-		grille = new short[x][y];
+		this.last_plays = new ArrayDeque();
+		this.grille = new short[x][y];
 		this.playing_player = 1;
-		create_grid();
 
 		return true;
 	}
 
 	public boolean rollback() {
+		if(this.fini) return false;
+
 		return true;
 	}
 
