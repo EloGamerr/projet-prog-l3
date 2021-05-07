@@ -35,15 +35,33 @@ public abstract class TimonModel implements Model {
 	}
 
 	@Override
-	public boolean play(int l, int c) {
-		if(grille[l-1][c-1] == 1) return false;
-		if(l == x && c == y) fini = true;
-		for(int i2 = 0; i2 < l; i2++) for(int j2 = 0; j2 < c; j2++) {
-			grille[i2][j2] = 1;
+	public boolean play(int c, int l) {
+		if(fini) return false;
+		if(grille[c][l] == 1) return false;
+
+		for(int i = c; i < x; i++) for(int j = l; j < y; j++) {
+			grille[i][j] = 1;
+		}
+
+		if(check_end()) {
+			System.out.println("Le joueur qui vient de cliquer a gagné");
+			fini = true;
+		}
+
+		return true;
+	}
+
+	private boolean check_end() {
+		for(int i = 0; i < x; i++) for(int j = 0; j < y; j++) {
+			if(i == 0 && j == 0) continue;
+
+			if(grille[i][j] == 0) {
+				return false;
+			}
 		}
 		return true;
 	}
-		
+
 	public short[][] get_grid() {
 		return grille;
 	}

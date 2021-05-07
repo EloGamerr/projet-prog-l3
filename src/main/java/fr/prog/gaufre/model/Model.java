@@ -1,7 +1,7 @@
 package fr.prog.gaufre.model;
 
 public interface Model {
-    boolean play(int l, int c); //return l
+    boolean play(int c, int l); //return true if view need update
     void reset();
     short[][] get_grid();
     

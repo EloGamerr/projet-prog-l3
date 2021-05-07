@@ -19,7 +19,7 @@ public class AdaptateurSouris extends MouseAdapter {
 		
 		int c = e.getX() / g.longueur_case();
 		int l = e.getY() / g.largeur_case();
-		System.out.println(String.format("Clik on point %d,%d", c,l));
-		controller.click(l, c);
+		System.out.println(String.format("Click on point %d,%d", c,l));
+		controller.click(c, l);
  	}
 }
