@@ -1,7 +1,6 @@
 package fr.prog.gaufre.model;
 
-import java.util.ArrayDeque;
-import java.util.Queue;
+import java.util.Stack;
 
 public abstract class TimonModel implements Model {
 	public short[][] grille;
@@ -9,7 +8,7 @@ public abstract class TimonModel implements Model {
 	int y;
 	boolean fini = false;
 	private short playing_player;
-	private Queue<Play> last_plays;
+	private Stack<Play> last_plays;
 
 	public TimonModel(int x, int y) {
 		this.x = x;
@@ -78,7 +77,7 @@ public abstract class TimonModel implements Model {
 	}
 
 	public boolean newGame() {
-		this.last_plays = new ArrayDeque();
+		this.last_plays = new Stack<Play>();
 		this.grille = new short[x][y];
 		this.playing_player = 1;
 
@@ -86,8 +85,12 @@ public abstract class TimonModel implements Model {
 	}
 
 	public boolean rollback() {
-		if(this.fini) return false;
-
+		if(this.fini || last_plays.isEmpty()) return false;
+		Play last_play = last_plays.pop();
+		for(Couple<Integer,Integer> cp : last_play.getCouples()) {
+			this.grille[cp.getFirst()][cp.getSecond()] = 0;
+		}
+		
 		return true;
 	}
 

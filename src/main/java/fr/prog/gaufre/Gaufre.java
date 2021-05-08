@@ -35,6 +35,5 @@ public class Gaufre implements Runnable {
 		jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		jFrame.setSize(500, 500);
 		jFrame.setVisible(true);
-		//jFrame.getContentPane().setBackground(Color.ORANGE);
 	}
 }

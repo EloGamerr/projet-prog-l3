@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Play {
-    List<Couple<Integer, Integer>> couples;
+    private List<Couple<Integer, Integer>> couples;
 
     public Play() {
         this.couples = new ArrayList<>();
