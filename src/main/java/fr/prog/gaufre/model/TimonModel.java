@@ -139,6 +139,7 @@ public abstract class TimonModel implements Model {
 		if(result != JFileChooser.APPROVE_OPTION) {
 			return false;
 		}
+		this.newGame();
 		File selectedfile = filechooser.getSelectedFile();
 		try {
 			Scanner reader = new Scanner(selectedfile);
