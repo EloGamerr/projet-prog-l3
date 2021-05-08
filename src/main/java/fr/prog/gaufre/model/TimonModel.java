@@ -1,13 +1,18 @@
 package fr.prog.gaufre.model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
 import java.util.Date;
 import java.util.Queue;
+import java.util.Scanner;
 import java.util.Stack;
+
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 
 public abstract class TimonModel implements Model {
 	public short[][] grille;
@@ -122,11 +127,47 @@ public abstract class TimonModel implements Model {
 		}
 		catch(IOException e) {
 			System.err.println("Failed to create the file...");
+			return false;
 		}
 		return true;
 	}
 	
 	public boolean load() {
+		JFileChooser filechooser = new JFileChooser();
+		filechooser.setCurrentDirectory(new File(System.getProperty("user.dir") + "/saves"));
+		int result = filechooser.showOpenDialog(new JFrame());
+		if(result != JFileChooser.APPROVE_OPTION) {
+			return false;
+		}
+		File selectedfile = filechooser.getSelectedFile();
+		try {
+			Scanner reader = new Scanner(selectedfile);
+			String current_line;
+			while (reader.hasNextLine()) {
+				current_line = reader.nextLine();
+				int c_saved = 0,l_saved = 0;
+				int counter = 0;
+				if(current_line != "\n") {
+					for(String split_character : current_line.split(" ")) {
+						if(counter == 0) {
+							c_saved = Integer.parseInt(split_character);
+						}
+						else {
+							l_saved = Integer.parseInt(split_character);
+						}
+						counter++;
+					}
+					System.out.println(String.format("Play %d %d", c_saved,l_saved));
+					this.play(c_saved, l_saved);
+				}
+			}
+			reader.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+			
 		return true;
 	}
 }

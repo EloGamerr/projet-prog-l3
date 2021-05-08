@@ -38,6 +38,8 @@ public class Controller {
 	
 	public void load() {
 		System.out.println("Load");
-		this.model.load();
+		if(this.model.load()) {
+			this.window.acutalize();
+		}
 	}
 }
