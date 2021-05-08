@@ -10,4 +10,5 @@ public interface Model {
     boolean newGame();
     boolean rollback();
     boolean save();
+    boolean load();
 }

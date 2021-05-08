@@ -33,7 +33,7 @@ public class Gaufre implements Runnable {
 		jFrame.add(new BottomInterface(controller), BorderLayout.SOUTH);
 
 		jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		jFrame.setSize(500, 500);
+		jFrame.setSize(800, 800);
 		jFrame.setVisible(true);
 	}
 }

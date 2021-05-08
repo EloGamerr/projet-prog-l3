@@ -1,5 +1,12 @@
 package fr.prog.gaufre.model;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayDeque;
+import java.util.Date;
+import java.util.Queue;
 import java.util.Stack;
 
 public abstract class TimonModel implements Model {
@@ -8,6 +15,7 @@ public abstract class TimonModel implements Model {
 	int y;
 	boolean fini = false;
 	private short playing_player;
+	private Queue<Couple<Integer, Integer>> players_actions;
 	private Stack<Play> last_plays;
 
 	public TimonModel(int x, int y) {
@@ -39,7 +47,12 @@ public abstract class TimonModel implements Model {
 
 			grille[i][j] = 1;
 		}
-
+		try {
+			this.players_actions.add(new Couple<Integer,Integer>(c,l));
+		}catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e);
+		}
 		this.last_plays.add(play);
 
 		if(check_end()) {
@@ -78,6 +91,7 @@ public abstract class TimonModel implements Model {
 
 	public boolean newGame() {
 		this.last_plays = new Stack<Play>();
+		this.players_actions = new ArrayDeque<Couple<Integer, Integer>>();
 		this.grille = new short[x][y];
 		this.playing_player = 1;
 
@@ -87,6 +101,7 @@ public abstract class TimonModel implements Model {
 	public boolean rollback() {
 		if(this.fini || last_plays.isEmpty()) return false;
 		Play last_play = last_plays.pop();
+		players_actions.poll();
 		for(Couple<Integer,Integer> cp : last_play.getCouples()) {
 			this.grille[cp.getFirst()][cp.getSecond()] = 0;
 		}
@@ -95,6 +110,23 @@ public abstract class TimonModel implements Model {
 	}
 
 	public boolean save() {
+		String file_name = new SimpleDateFormat("dd_MM_yyyy_HH_mm_ss_SSS").format(new Date());
+		try {
+			File f = new File("saves/" + file_name + ".save");
+			f.createNewFile();
+			FileWriter fw = new FileWriter(f);
+			for(Couple<Integer,Integer> cp : players_actions) {
+				fw.write(String.format("%d %d\n", cp.getFirst(),cp.getSecond()));
+			}
+			fw.close();
+		}
+		catch(IOException e) {
+			System.err.println("Failed to create the file...");
+		}
+		return true;
+	}
+	
+	public boolean load() {
 		return true;
 	}
 }

@@ -1,6 +1,7 @@
 package fr.prog.gaufre.view;
 
 import fr.prog.gaufre.controller.Controller;
+import fr.prog.gaufre.controller.LoadAdaptator;
 import fr.prog.gaufre.controller.NewGameAdaptator;
 import fr.prog.gaufre.controller.RollbackAdaptator;
 import fr.prog.gaufre.controller.SaveAdaptator;
@@ -20,5 +21,9 @@ public class BottomInterface extends JPanel {
         JButton saveButton = new JButton("Sauvegarder la partie");
         saveButton.addMouseListener(new SaveAdaptator(controller));
         this.add(saveButton);
+        
+        JButton loadButton = new JButton("Charger une partie");
+        loadButton.addMouseListener(new LoadAdaptator(controller));
+        this.add(loadButton);
     }
 }

@@ -35,4 +35,9 @@ public class Controller {
 		if(this.model.save())
 			this.window.acutalize();
 	}
+	
+	public void load() {
+		System.out.println("Load");
+		this.model.load();
+	}
 }
