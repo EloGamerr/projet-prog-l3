@@ -1,8 +1,9 @@
-package fr.prog.gaufre.controller;
+package fr.prog.gaufre.controller.adaptators;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import fr.prog.gaufre.controller.Controller;
 import fr.prog.gaufre.view.GameWindow;
 
 public class MouseAdaptator extends MouseAdapter {

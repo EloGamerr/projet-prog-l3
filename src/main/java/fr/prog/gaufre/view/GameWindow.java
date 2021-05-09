@@ -1,23 +1,23 @@
 package fr.prog.gaufre.view;
 
-import fr.prog.gaufre.model.TimonModel;
+import fr.prog.gaufre.model.Model;
 
 import javax.swing.*;
 import java.awt.*;
 
 @SuppressWarnings("serial")
 public class GameWindow extends JComponent {
-	TimonModel model;
+	Model model;
     ViewNiveau vn;
     int largeur,hauteur;
     Graphics2D drawable;
     
-    public GameWindow(TimonModel model) {
+    public GameWindow(Model model) {
     	vn = new ViewNiveau(this);
     	this.model = model;
 	}
     
-    public void acutalize() {
+    public void actualize() {
     	repaint();
     }
 

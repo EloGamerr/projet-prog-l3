@@ -1,10 +1,12 @@
 package fr.prog.gaufre.view;
 
 import fr.prog.gaufre.controller.Controller;
-import fr.prog.gaufre.controller.LoadAdaptator;
-import fr.prog.gaufre.controller.NewGameAdaptator;
-import fr.prog.gaufre.controller.RollbackAdaptator;
-import fr.prog.gaufre.controller.SaveAdaptator;
+import fr.prog.gaufre.controller.adaptators.IaAdaptator;
+import fr.prog.gaufre.controller.adaptators.LoadAdaptator;
+import fr.prog.gaufre.controller.adaptators.NewGameAdaptator;
+import fr.prog.gaufre.controller.adaptators.RollbackAdaptator;
+import fr.prog.gaufre.controller.adaptators.SaveAdaptator;
+
 
 import javax.swing.*;
 
@@ -25,5 +27,15 @@ public class BottomInterface extends JPanel {
         JButton loadButton = new JButton("Charger une partie");
         loadButton.addMouseListener(new LoadAdaptator(controller));
         this.add(loadButton);
+        
+        JButton IAButton1 = new JButton("Joueur 1");
+        IAButton1.addMouseListener(new IaAdaptator(controller,1,IAButton1));
+        this.add(IAButton1);
+        
+        JButton IAButton2 = new JButton("Joueur 2");
+        IAButton2.addMouseListener(new IaAdaptator(controller,2,IAButton2));
+        this.add(IAButton2);
+        
+        
     }
 }
