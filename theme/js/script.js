@@ -1,8 +1,27 @@
 const $ = el => document.querySelector(el);
 const $$ = el => document.querySelectorAll(el);
 
+let defaultWindowWidth = 0;
+let defaultWindowHeight = 0;
+
+const themes = {
+    clair: 'light',
+    sombre: 'dark'
+};
+
 window.onload = () => {
+    const w = $('#window');
+
+    if(w) {
+        const rect = w.getBoundingClientRect();
+        defaultWindowWidth = rect.width;
+        defaultWindowHeight = rect.height;
+    }
+
+    setupResponsiveWindow();
     setupSlides();
+    setupOS();
+    setupTheme();
     createTable();
 };
 
@@ -22,14 +41,14 @@ const createTable = () => {
                 ((i==2 || i==8) && j==5) ||
                 ((j==2 || j==8) && i==5)
             ) {
-                td.classList.add('black-cell');
+                td.classList.add('black_tower-cell');
             }
 
             else if(
                 (i==5 && j > 2 && j < 8) ||
                 (j==5 && i > 2 && i < 8)
             ) {
-                td.classList.add('white-cell');
+                td.classList.add('white_tower-cell');
 
                 if(j == 5 && i == 5) {
                     td.classList.add('king-cell');
@@ -68,11 +87,11 @@ const createTable = () => {
 
 
 const setupSlides = () => {
-    const wrapper = $('#wrapper');
+    const wrapper = $('#window');
     const select = $('#slide-select');
     const articles = wrapper.querySelectorAll('article');
 
-    // créer une option dans le select pour chaque <article> dans #wrapper
+    // créer une option dans le select pour chaque <article> dans #window
     articles.forEach((article, i) => {
         if(i > 0)
             article.classList.add('hidden');
@@ -89,7 +108,7 @@ const setupSlides = () => {
         const option = select.querySelector('option:checked');
         const name = option.innerText.replace(/ /g, '-');
         const id = '#page-' + name;
-        const active = $('#wrapper article.active');
+        const active = $('#window article.active');
         active.classList.remove('active');
         active.classList.add('hidden');
         $(id).classList.add('active');
@@ -102,5 +121,66 @@ const setupSlides = () => {
         }
 
     });
+};
 
+const setupOS = () => {
+    const select = $('#os-select');
+    const w = $('#window');
+
+    if(!select || !w) return;
+
+    select.addEventListener('change', () => {
+        const option = select.querySelector('option:checked');
+        const os = option.innerText.replace(/ /g, '-').toLowerCase();
+        w.setAttribute('data-os', os);
+    });
+};
+
+const setupResponsiveWindow = () => {
+    const windowWidth = document.documentElement.clientWidth;
+    const windowHeight = document.documentElement.clientHeight;
+
+    const wd = $('#window');
+    const s = $('#options-container');
+
+    if(!wd || !s) return;
+
+    const sRect = s.getBoundingClientRect();
+
+    const m = sRect.height + 2 * sRect.top;
+    let r = 1;
+
+    if(defaultWindowHeight > m) {
+        const h = windowHeight - 2 * m;
+        r = h / defaultWindowHeight;
+    }
+
+    if(defaultWindowWidth > windowWidth) {
+        const w = windowWidth - windowWidth/20;
+        const rtmp = w / defaultWindowWidth;
+
+        if(rtmp < r)
+            r = rtmp;
+    }
+
+    if(r != 1) {
+        wd.style.transform = `translate(-50%, -50%) scale(${r})`;
+    }
+};
+
+const setupTheme = () => {
+    const select = $('#theme-select');
+    const w = $('#window');
+
+    if(!select || !w) return;
+
+    select.addEventListener('change', () => {
+        const option = select.querySelector('option:checked');
+        const os = option.innerText.replace(/ /g, '-').toLowerCase();
+        w.setAttribute('data-theme', themes[os]);
+    });
+};
+
+window.onresize = () => {
+    setupResponsiveWindow();
 };

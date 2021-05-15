@@ -1,0 +1,262 @@
+/// COMPONENTS
+
+@mixin flex-center($display: flex, $direction: column, $wrap: wrap) {
+    display: $display;
+    flex-flow: $direction $wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+// xy: 0=none, 1=x, 2=y, 3=both
+@mixin position-center($scale: 1, $rotation: 0, $top: 50%, $left: 50%, $xy: 3) {
+    $x: -50%;
+    $y: -50%;
+
+    @if      $xy == 0 { $x: 0; $y: 0; }
+    @else if $xy == 1 { $y: 0; }
+    @else if $xy == 2 { $x: 0; }
+
+    position: absolute;
+    top: $top;
+    left: $left;
+    transform: translate($x, $y) scale($scale) rotate($rotation);
+}
+
+@mixin basicButton($t) {
+    $color: #111;
+    $background: #eee;
+    $borderColor: #aaa;
+    $hoverLightness: derivedBrightness($t);
+
+    @if (lightness($t) < 60) {
+        $color: #ccc;
+        $background: #444;
+        $borderColor: #666;
+    }
+    
+    cursor: pointer;
+    background: $background;
+    border: 1px solid $borderColor;
+    color: $color;
+    border-radius: 4px;
+    outline: none;
+
+    &:hover {
+        filter: brightness($hoverLightness);
+    }
+}
+
+@mixin coloredButton($bg, $width: 200px) {
+    width: $width;
+    background: $bg;
+    border-color: $bg;
+    color: getDarkLightColor($bg);
+    padding: 10px 15px;
+    border: none;
+
+    $brightness: 80%;
+
+    @if (lightness($bg) < 60) {
+        $brightness: 120%;
+    }
+
+    &:hover {
+        background: $bg;
+        border-color: $bg;
+        filter: brightness($brightness);
+    }
+}
+
+@mixin blockButton($t) {
+    $background: derivedColor($t);
+    $borderColor: derivedColor($background);
+
+    display: block;
+    margin: 30px auto;
+    padding: 10px 0;
+    width: 40%;
+    background: $background;
+    border-color: $borderColor;
+    font-family: 'Farro';
+    font-weight: bold;
+    color: getDarkLightColor($t);
+}
+
+@mixin gameButton($p, $s) {
+    @include coloredButton($s);
+
+    &:hover {
+        background: $s;
+    }
+    
+    &.red-btn-hover {
+        &:hover {
+            background: $p;
+            filter: brightness(100%);
+        }
+    }
+
+    &.green-btn-hover {
+        &:hover {
+            background: $greenButtonBackground;
+            filter: brightness(100%);
+        }
+    }
+}
+
+@mixin title {
+    text-align: center;
+    font-size: 4em;
+    text-transform: uppercase;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+@mixin pTitleDesc($t) {
+    $color: #444;
+    
+    @if (lightness($t) < 60) {
+        $color: #888;
+    }
+
+    font-size: .8em;
+    color: $color;
+}
+
+@mixin gameBoardBorderCell($td: 0) {
+    @if $td == 0 {
+        width: $table_borderSize;
+    } @else {
+        height: $table_borderSize;
+    }
+
+    border: none;
+    background: $table_borderColor;
+    transform: scale(1);
+    text-align: center;
+}
+
+@mixin gameBoard($t) {
+    @include position-center(1, 0, 50%);
+    border-collapse: collapse;
+
+    @if (lightness($t) < 60) {
+        filter: brightness(80%);
+    }
+    
+    tr {
+        &:first-child,
+        &:last-child {
+            td {
+                @include gameBoardBorderCell(false);
+            }
+        }
+
+        td {
+            width: $table_cellSize;
+            height: $table_cellSize;
+            background: $table_cellColor;
+            position: relative;
+            box-sizing: border-box;
+            border: $table_cellBorder;
+            transform: scale(.95);
+
+            &:first-child,
+            &:last-child {
+                @include gameBoardBorderCell;
+            }
+
+            &::after {
+                content: '';
+                @include position-center;
+                width: $table_cellImgSize;
+                height: $table_cellImgSize;
+                z-index: 1;
+                background: center/contain no-repeat;
+            }
+
+            $names: black_tower, white_tower, king, door;
+
+            @each $name in $names {
+                &.#{$name}-cell {
+                    &::after {
+                        background-image: url(getImg('#{$name}.png'));
+                    }
+                }
+            }
+        }
+    }
+}
+
+@mixin helpButton {
+    background: $helpButton_bg;
+    color: $helpButton_color;
+    text-align: center;
+    border: $helpButton_border;
+    border-radius: $helpButton_borderRadius;
+    width: $helpButton_size;
+    height: $helpButton_size;
+    transform: rotate(45deg);
+    position: absolute;
+    top: 55px;
+    left: 15px;
+    z-index: 200;
+
+    &::after {
+        content: '?';
+        @include position-center(1, -45deg);
+    }
+}
+
+@mixin selectStyle($t) {
+    $background: darken($t, 10%);
+    $borderColor: darken($background, 10%);
+    $brightness: 90%;
+    
+    @if (lightness($t) < 60) {
+        $background: lighten($t, 10%);
+        $borderColor: lighten($background, 20%);
+        $brightness: 120%;
+    }
+    
+    $color: getDarkLightColor($background);
+
+
+    position: relative;
+    width: 150px;
+
+    &::after {
+        content: '';
+        @include position-center(1, 0, 50%, 90%);
+        clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+        width: .8em;
+        height: .5em;
+        background-color: $borderColor;
+    }
+
+
+    select {
+        appearance: none;
+        width: 100%;
+        background: $background;
+        border: 1px solid $borderColor;
+        color: $color;
+        font-size: 1em;
+        border-radius: 4px;
+        box-sizing: border-box;
+        padding: 5px;
+        cursor: pointer;
+
+        &:hover {
+            filter: brightness($brightness);
+        }
+
+        option {
+            font-size: .8em;
+        }
+
+        &::-ms-expand {
+            display: none;
+        }
+    }
+}

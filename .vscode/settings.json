@@ -5,7 +5,12 @@
         {
             "format": "expanded",
             "extensionName": ".css",
-            "savePath": "/theme/css"
+            "savePath": "/theme/css/computed"
         }
+    ],
+    "liveSassCompile.settings.excludeList": [
+        "**/node_modules/**",
+        ".vscode/**",
+        "theme/css/computed/**"
     ]
 }

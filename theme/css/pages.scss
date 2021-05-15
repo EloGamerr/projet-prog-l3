@@ -1,0 +1,238 @@
+@import './components';
+@import './variables';
+
+@mixin page-accueil($p, $s, $t) {
+    #home-btn-wrapper {
+        height: 445px;
+        @include flex-center;
+
+        button {
+            margin: 20px auto;
+        }
+    }
+}
+
+@mixin page-charger-partie($p, $s, $t) {
+    .flex-container {
+        @include flex-center;
+        width: 100%;
+    }
+
+    $ulBackground: derivedColor($t);
+    $ulBorderColor: derivedColor($ulBackground);
+    $liBackground: derivedColor($ulBackground, 7%);
+    $liBrightnessPerc: derivedBrightness($t);
+
+    ul {
+        display: block;
+        width: 300px;
+        height: 350px;
+        background: $ulBackground;
+        border: 1px solid $ulBorderColor;
+        border-radius: 4px;
+        padding: 0 4px;
+
+        li {
+            list-style-type: none;
+            cursor: pointer;
+            text-align: left;
+            font-family: 'Heebo';
+            border: 1px solid $ulBorderColor;
+            border-radius: 4px;
+            padding: 2px;
+            margin: 4px auto;
+            font-size: .9em;
+            background: $liBackground;
+
+            &:hover {
+                filter: brightness($liBrightnessPerc);
+            }
+        }
+    }
+
+    .bottom-pannel {
+        padding-bottom: 20px;
+    }
+}
+
+@mixin page-parametres-de-jeu($p, $s, $t) {
+    div.center {
+        margin-top: 150px;
+
+        & > div {
+            margin: 10px 0;
+
+            &.two-columns {
+                @include flex-center(flex, row, nowrap);
+                position: relative;
+        
+                & > div {
+                    width: $gameParam_column_width;
+                    float: left;
+                    text-align: center;
+
+                    .select {
+                        margin: 0 auto;
+                    }
+                }
+        
+                &.vs {
+                    &::after {
+                        content: 'vs';
+                        color: $gameParam_vs_color;
+                        @include position-center;
+                    }
+                }
+            }
+        }
+    }
+
+    .bottom-pannel {
+        padding: 0 20px 10px 20px;
+
+        .green-btn {
+            float: right;
+        }
+
+        .grey-btn {
+            float: left;
+        }
+    }
+}
+
+@mixin page-raccourcis($p, $s, $t) {
+    .container {
+        height: 80%;
+        box-sizing: border-box;
+        @include flex-center;
+
+        $tdBorderColor: darken($t, 30%);
+        $color: darken(getDarkLightColor($t), 30%);
+
+        @if (lightness($t) < 60) {
+            $tdBorderColor: lighten($t, 10%);
+        }
+
+        table {
+            width: 80%;
+            max-width: 100%;
+            border-collapse: collapse;
+
+            tr {
+                th {
+                    padding-bottom: 30px;
+                    text-transform: uppercase;
+                }
+
+                td {
+
+                    text-align: center;
+                    border-bottom: 1px solid $tdBorderColor;
+                    padding: 10px 0;
+                    font-size: .8em;
+                    color: $color;
+
+                    &:first-child {
+                        min-width: 100px;
+                        width: 30%;
+                        text-align: left;
+                        font-size: 1em;
+                        color: $color;
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+    }
+
+    .bottom-pannel {
+        padding-bottom: 20px;
+        text-align: center;
+    }
+}
+
+@mixin page-en-jeu($p, $s, $t) {
+    table { @include gameBoard($t); }
+
+    #chat {
+        @include flex-center;
+        @include position-center(1, 0, 58%, 10px, 2);
+        max-width: 25%;
+        width: 25%;
+        height: 80%;
+        
+        #game-chat-history {
+            width: 100%;
+            height: calc(100% - 35px);
+            position: relative;
+
+            ul {
+                display: block;
+                font-size: .7em;
+                margin: 0;
+                padding: 0;
+                color: #bd744c;
+                margin-top: auto;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+
+                li {
+                    list-style-type: none;
+
+                    span.span-chat-attacker {
+                        color: #cc4550;
+                    }
+                    span.span-chat-defender {
+                        color: #579ebd;
+                    }
+                    span.span-chat-time {
+                        color: getDarkLightColor($t);
+                    }
+                    span.span-chat-tchat {
+                        color: getDarkLightColor($t);
+                    }
+                }
+            }
+        }
+    }
+    
+
+    #game-textarea {
+        width: 100%;
+
+        form {
+            display: block;
+            
+            #usermsg {
+                font-size: .7em;
+                width: 100%;
+                border: none;
+                background: derivedColor($t);
+                height: 30px;
+                color: #d5d5d7;
+                margin-top: 5px;
+                outline: none;
+                display: block;
+                border: 1px solid transparent;
+                transition: border-color .2s;
+
+                &:hover {
+                    border-color: derivedColor($t, 20%);
+                }
+
+                &:focus {
+                    border-color: $p;
+                }
+            }
+        }
+    }
+
+    #pannel-buttons {
+        @include flex-center(flex, column);
+        @include position-center(1, 0, 50%, 79%, 2);
+        justify-content: space-between;
+        height: 80%;
+    }
+}

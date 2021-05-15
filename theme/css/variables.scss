@@ -1,0 +1,101 @@
+@function getImg($src) {
+    @return '../../img/' + $src;
+}
+
+@function getDarkLightColor($color) {
+    @if (lightness($color) > 60) {
+        @return #444;
+    } @else {
+        @return #ddd;
+    }
+}
+
+@function derivedBrightness($color) {
+    @if (lightness($color) < 60) {
+        @return 120%;
+    }
+
+    @return 90%;
+}
+
+@function derivedColor($color, $perc: 10%) {
+    @if (lightness($color) < 60) {
+        @return lighten($color, $perc);
+    }
+
+    @return darken($color, $perc);
+}
+
+/*
+#EEE,       #DEDBD2,    #A49A80,    #676D75,    #60666C, // white & grey
+#3F3F3F,    #333,       #1A1D21,                         // black
+#92702f,    #cca75c,    #DEB887,    #937341,    #FBBC04, // yellow & gold
+#f11,       #dc291e,    #EA4639,    #C55,       #dd2e44, // red
+#007FFF,    #7AA9F6,    #7289da,    #55C,       #3c00b0, // blue
+#34A854,    #77b255,    #396,       #19bd9b,    #cfc     // green
+*/
+
+/// VARIABLES
+
+// - global
+$mainFont: 'Farro';
+
+$primaryDarkColor: #dd2e44;
+$secondaryDarkColor: #3F3F3F;
+$tertiaryDarkColor: #1A1D21;
+
+$primaryLightColor: #cca75c;
+$secondaryLightColor: #A49A80;
+$tertiaryLightColor: #DEDBD2;
+
+
+$mainDarkFontColor: getDarkLightColor($primaryDarkColor);
+$secondaryDarkFontColor: getDarkLightColor($secondaryDarkColor);
+$tertiaryDarkFontColor: getDarkLightColor($tertiaryDarkColor);
+
+$mainLightFontColor: getDarkLightColor($primaryLightColor);
+$secondaryLightFontColor: getDarkLightColor($secondaryLightColor);
+$tertiaryLightFontColor: getDarkLightColor($tertiaryLightColor);
+
+$h1Size: 5em;
+$greenButtonBackground: #77b255;
+
+// - window
+$windowWidth: 1280px;
+$windowHeight: 720px;
+$window_windowsBorderRadius: 0;
+$window_linuxBorderRadius: 4px;
+$window_iosBorderRadius: 4px;
+
+// - titlebar
+// ~ window
+$titlebar_windows_height: 40px;
+$titlebar_windows_background: #fff;
+$titlebar_windows_color: #000;
+// ~ linux
+$titlebar_linux_height: 25px;
+$titlebar_linux_background: #2f2f2f;
+$titlebar_linux_color: #aaa;
+// ~ mac os
+$titlebar_ios_height: 25px;
+$titlebar_ios_background: linear-gradient(#e6e3e6, #cfccce);
+$titlebar_ios_color: #333;
+
+// - game board
+$table_cellSize: 60px;
+$table_cellColor: #fcf1d9;
+$table_cellBorder: 3px solid #666;
+$table_cellImgSize: 70%;
+$table_borderSize: 20px;
+$table_borderColor: #bfa074;
+
+// - help button
+$helpButton_bg: #3b88c3;
+$helpButton_color: #fff;
+$helpButton_size: 20px;
+$helpButton_border: none;
+$helpButton_borderRadius: 0;
+
+// - game params
+$gameParam_column_width: 30%;
+$gameParam_vs_color: #555;

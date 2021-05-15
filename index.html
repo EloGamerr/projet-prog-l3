@@ -5,121 +5,156 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link rel="stylesheet" href="theme/css/style.css">
+        <link rel="stylesheet" href="theme/css/computed/style.css">
 
         <title>IHM</title>
     </head>
 
     <body>
-        <div id="wrapper">
+        <div id="window" data-os="mac-os" data-theme="dark">
             <div id="titlebar">
-                <div class="titlebar-btn close-window">x</div>
-                <div class="titlebar-btn">□</div>
-                <div class="titlebar-btn">―</div>
+                <div id="titlebar-title">Tablut</div>
+                <div id="close-btn" class="titlebar-btn"></div>
+                <div id="fullscreen-btn" class="titlebar-btn"></div>
+                <div id="reduce-btn" class="titlebar-btn"></div>
             </div>
 
-            <button id="get-help"></button>
+            <div id="wrapper">
+                <button id="get-help"></button>
 
-            <!-- -------------------- PAGES -------------------- -->
+                <!-- -------------------- PAGES -------------------- -->
 
-            <!-- ACCUEIL -->
-            <article id="page-accueil">
-                <h1 id="game-title">Tablut</h1>
+                <!-- ACCUEIL -->
+                <article id="page-accueil">
+                    <h1 id="game-title">Tablut</h1>
 
-                <div id="home-btn-wrapper">
-                    <button id="new-game" class="large-btn">Nouvelle partie</button>
-                    <button id="load-game" class="large-btn">Charger partie</button>
-                    <button id="new-game" class="large-btn">Quitter</button>
-                </div>
-            </article>
-
-            <!-- CHARGER -->
-            <article id="page-charger-partie">
-                <h1>Charger une partie</h1>
-                <p class="center">Choisissez une sauvegarde à restaurer</p>
-                <div class="flex-container">
-                    <ul id="saves-area">
-                        <li class="save-item">Partie 1 : xxxx xxx x x xxx</li>
-                        <li class="save-item">Partie 2 : xxxx xxx x x xxx</li>
-                        <li class="save-item">Partie 3 : xxxx xxx x x xxx</li>
-                        <li class="save-item">Partie 4 : xxxx xxx x x xxx</li>
-                        <li class="save-item">Partie 5 : xxxx xxx x x xxx</li>
-                        <li class="save-item">Partie 6 : xxxx xxx x x xxx</li>
-                        <li class="save-item">Partie 7 : xxxx xxx x x xxx</li>
-                        <li class="save-item">Partie 8 : xxxx xxx x x xxx</li>
-                    </ul>
-                </div>
-                <div class="bottom-pannel center">
-                    <button class="grey-btn">Retour</button>
-                </div>
-            </article>
-
-            <!-- PARAMETRES -->
-            <article id="page-parametres-de-jeu">
-                <h1>Paramètres</h1>
-                <p class="center">Choisissez les paramètres de partie qui vous conviennent puis cliquez sur confirmer</p>
-                <br>
-                <div class="center">
-                    <h2>Type de partie</h2>
-                    <div class="two-columns vs">
-                        <div id="set-player-1">
-                            <label class="block-label">Attaquant</label>
-                            <select>
-                                <option>Humain</option>
-                                <option>Ordinateur facile</option>
-                                <option>Ordinateur moyen</option>
-                                <option>Ordinateur difficile</option>
-                            </select>
-                        </div>
-                        <div id="set-player-2">
-                            <label class="block-label">Défenseur</label>
-                            <select>
-                                <option>Humain</option>
-                                <option>Ordinateur facile</option>
-                                <option>Ordinateur moyen</option>
-                                <option>Ordinateur difficile</option>
-                            </select>
-                        </div>
+                    <div id="home-btn-wrapper">
+                        <button id="new-game" class="large-btn">Nouvelle partie</button>
+                        <button id="load-game" class="large-btn">Charger partie</button>
+                        <button id="new-game" class="large-btn">Quitter</button>
                     </div>
-                    
-                    <!-- ------ -->
+                </article>
+
+                <!-- CHARGER -->
+                <article id="page-charger-partie">
+                    <h1>Charger une partie</h1>
+                    <p class="center">Choisissez une sauvegarde à restaurer</p>
+                    <div class="flex-container">
+                        <ul id="saves-area">
+                            <li class="save-item">Partie 1 : xxxx xxx x x xxx</li>
+                            <li class="save-item">Partie 2 : xxxx xxx x x xxx</li>
+                            <li class="save-item">Partie 3 : xxxx xxx x x xxx</li>
+                            <li class="save-item">Partie 4 : xxxx xxx x x xxx</li>
+                            <li class="save-item">Partie 5 : xxxx xxx x x xxx</li>
+                            <li class="save-item">Partie 6 : xxxx xxx x x xxx</li>
+                            <li class="save-item">Partie 7 : xxxx xxx x x xxx</li>
+                            <li class="save-item">Partie 8 : xxxx xxx x x xxx</li>
+                        </ul>
+                    </div>
                     <div class="bottom-pannel center">
                         <button class="grey-btn">Retour</button>
-                        <button class="green-btn">Lancer</button>
                     </div>
-                </div>
-            </article>
-            
-            <!-- INGAME -->
-            <article id="page-en-jeu">
-                <div id="game-chat-history">
-                    <ul>
-                        <li><span class="span-chat-attacker">L'attaquant</span> a bougé une pièce de 4A en 4B</li>
-                        <li><span class="span-chat-defender">Le défenseur</span> a bougé le roi de 6E en 6F</li>
-                        <li><span>Le Roi</span> s'est échappé !</li>
-                        <li><span>Le Roi</span> s'est fait capturer !</li>
-                    </ul>
-                </div>
-            </article>
+                </article>
 
-            <!-- RACCOURCIS -->
-            <article id="page-raccourcis">
-                <div class="center">
-                    <p><i>CTRL+Z</i> : Annuler le dernier coup</p> 
-                    <p><i>CTRL+Y</i> : Refaire le dernier coup</p> 
-                    <p><i>CTRL+S</i> : Sauvegarder l'état actuelle de la partie</p> 
-                    <p><i>CTRL+N</i> : Nouvelle partie</p>
-                    <p><i>Espace</i> : Mettre en pause le jeu (fonctionne uniquement dans le type : Ordinateur contre Ordinateur)</p>
-                </div>
-                <div class="bottom-pannel">
-                    <button class="red-btn">Retour</button>
-                </div>
-            </article>
+                <!-- PARAMETRES -->
+                <article id="page-parametres-de-jeu">
+                    <h1>Paramètres</h1>
+                    <p class="center">Choisissez les paramètres de partie qui vous conviennent puis cliquez sur confirmer</p>
+                    <div class="center">
+                        <h2>Type de partie</h2>
+                        <div class="two-columns vs">
+                            <div id="set-player-1">
+                                <label class="block-label">Attaquant</label>
+                                <div class="select">
+                                    <select>
+                                        <option>Humain</option>
+                                        <option>Ordinateur facile</option>
+                                        <option>Ordinateur moyen</option>
+                                        <option>Ordinateur difficile</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div id="set-player-2">
+                                <label class="block-label">Défenseur</label>
+                                <div class="select">
+                                    <select>
+                                    <option>Humain</option>
+                                        <option>Ordinateur facile</option>
+                                        <option>Ordinateur moyen</option>
+                                        <option>Ordinateur difficile</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- ------ -->
+                        <div class="bottom-pannel center">
+                            <button class="grey-btn">Retour</button>
+                            <button class="green-btn">Lancer</button>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- INGAME -->
+                <article id="page-en-jeu">
+                    <div id="chat">
+                        <div id="game-chat-history">
+                            <ul>
+                                <li><span class="span-chat-time">[01:20] </span><span class="span-chat-attacker">L'attaquant </span><span class="span-chat-info">a bougé une pièce de 4A en 4B </span></li>
+                                <li><span class="span-chat-time">[02:19] </span><span class="span-chat-defender">Le défenseur </span><span class="span-chat-info">a bougé le roi de 6E en 6F</span></li>
+                                <li><span class="span-chat-time">[03:24] </span><span class="span-chat-defender">Le défenseur :</span><span class="span-chat-tchat"> J'ai déjà gagné</span></li>
+                                <li><span class="span-chat-time">[03:30] </span><span class="span-chat-attacker">L'attaquant' :</span><span class="span-chat-tchat"> Bonsoir, non.</span></li>
+                                <li><span class="span-chat-time">[04:41] </span><span class="span-chat-info">Le Roi s'est échappé !</span></li>
+                                <li><span class="span-chat-time">[04:43] </span><span class="span-chat-info">Le Roi s'est fait capturer !</span></li>
+                            </ul>
+                        </div> 
+                    
+                        <div id="game-textarea">
+                            <form name="message" action="">
+                                <input name="usermsg" type="text" id="usermsg"/>
+                            </form>
+                        
+                        </div>
+                    </div>
 
+                    <div id="pannel-buttons">
+                        <button id="save-btn" class="game-btn green-btn-hover">Sauvegarder</button>
+                        <button id="pause-btn" class="game-btn">Pause</button>
+                        <button id="quit-btn" class="game-btn red-btn-hover">Quitter la partie</button>
+                    </div>
+                </article>
+
+                <!-- RACCOURCIS -->
+                <article id="page-raccourcis">
+                    <div class="container">
+                        <table>
+                            <tr><th>Touche Raccourcis</th><th>Description</th></tr>
+                            <tr><td>CTRL+Z :</td><td>Annuler le dernier coup</td></tr>
+                            <tr><td>CTRL+Y :</td><td>Refaire le dernier coup</td></tr>
+                            <tr><td>CTRL+S :</td><td>Sauvegarder l'état actuelle de la partie</td></tr>
+                            <tr><td>CTRL+N :</td><td>Nouvelle partie</td></tr>
+                            <tr><td>Espace :</td><td>Mettre en pause le jeu (fonctionne uniquement dans le type : Ordinateur contre Ordinateur)</td></tr>
+                        </table>
+                    </div>
+                    <div class="bottom-pannel">
+                        <button class="red-btn">Retour</button>
+                    </div>
+                </article>
+            </div>
         </div>
 
-
-        <select id="slide-select"></select>
+        <section id="options-container">
+            <select id="slide-select"></select>
+            <select id="os-select">
+                <option selected>Mac OS</option>
+                <option>Linux</option>
+                <option>Windows</option>
+            </select>
+            <select id="theme-select">
+                <option selected>sombre</option>
+                <option>clair</option>
+            </select>
+        </section>
 
 
         <script src="theme/js/script.js"></script>

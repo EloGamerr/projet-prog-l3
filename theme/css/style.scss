@@ -1,403 +1,308 @@
-@import url('https://fonts.googleapis.com/css?family=Farro|Heebo');
+@import url('https://fonts.googleapis.com/css?family=Farro|Heebo|Open+Sans:400');
+
+@import './variables';
+@import './components';
+@import './pages';
+
+* {
+    box-sizing: border-box;
+}
 
 html, body {
     margin: 0;
-    font-family: 'Farro';
-    background: #1a1a1a;
+    font-family: $mainFont;
+    background: #555;
     height: 100vh;
+    overflow: hidden;
 }
 
-// NE PAS TOUCHER !!!!!!!!!!!! - DEBUT
-#wrapper {
-    width: 1280px;
-    height: 720px;
-    background: #ddd;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(1);
+#window {
+    border: 1px solid #444;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    @include position-center;
 
-    #titlebar {
-        background: #fff;
-        width: 100%;
-        height: 40px;
+    #wrapper {
+        width: $windowWidth;
+        height: $windowHeight;
 
-        .titlebar-btn {
-            float: right;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            
-            &:hover {
-                background: #eee;
-            }
-
-            &.close-window:hover {
-                background: #d41324;
-                color: #eee;
-            }
-        }
-    }
-
-    // NE PAS TOUCHER !!!!!!!!!!!! - FIN
-
-
-    #game-title {
-        text-align: center;
-        font-size: 5em;
-        text-transform: uppercase;
-    }
-
-    #page-accueil {
-        #home-btn-wrapper {
-            height: 445px;
-            display: flex;
-            flex-flow: column;
-            justify-content: center;
-            align-items: center;
-
-            button {
-                margin: 20px auto;
-            }
-        }
-    }
-
-
-    #page-charger-partie {
-        .flex-container {
-            display: flex;
-            flex-flow: column wrap;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-        }
-
-        ul {
-            display: block;
-            width: 300px;
-            height: 350px;
-            background: #fff;
-            border: 1px solid #aaa;
-            border-radius: 4px;
-            padding: 0 2px;
-
-            li {
-                list-style-type: none;
-                text-align: left;
-                font-family: 'Heebo';
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                padding: 2px;
-                margin: 2px auto;
-                cursor: pointer;
-                font-size: .9em;
-                background: #eaeaea;
-
-                &:hover {
-                    background: #d0d0d7;
-                    border-color: #7b7b87;
-                }
-            }
-        }
-
-        .bottom-pannel {
-            bottom: 10px;
-        }
-    }
-
-    #page-parametres-de-jeu {
-        .center > div {
-            margin: 10px 0;
-        }
-
-        .bottom-pannel {
-            .green-btn {
-                float: right;
-                margin: 0 20px 10px 0;
-            }
-
-            .grey-btn {
-                float: left;
-                margin: 0 0 0 20px;
-            }
-        }
-
-        .two-columns {
-            display: flex;
-            flex-flow: row nowrap;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-
-            & > div {
-                width: 30%;
-                float: left;
-            }
-
-            &.vs {
-                &::after {
-                    content: 'vs';
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                }
-            }
-        }
-    }
-
-    #page-raccourcis {
-        /* .quit_param {
-            cursor: pointer;
-            background: #fff;
-            border: 1px solid #aaa;
-            border-radius: 4px;
-            outline: none;
-            bottom: 5px;
-
-            &:hover {
-                background: #d0d0d7;
-                border-color: #7b7b87;
-            }
-        } */
-
-        .center {
-            position: absolute;
-            top: 40%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .bottom-pannel {
-            bottom: 10px;
-            text-align: center;
-        }
-    }
-
-    h1 {
-        text-align: center;
-        font-size: 4em;
-        text-transform: uppercase;
-        padding-bottom: 0;
-        margin-bottom: 0;
-    }
-
-    button {
-        cursor: pointer;
-        background: #fff;
-        border: 1px solid #aaa;
-        border-radius: 4px;
-        outline: none;
-
-        &:hover {
-            background: #d0d0d7;
-            border-color: #7b7b87;
-        }
-    }
-
-    .large-btn {
-        display: block;
-        margin: 30px auto;
-        padding: 10px 0;
-        width: 40%;
-    }
-
-    .green-btn,
-    .grey-btn {
-        width: 200px;
-        background: #77b255;
-        color: #fff;
-        padding: 10px 15px;
-        border: none;
-
-        &.grey-btn {
-            background: #aaa;
-        }
-
-        &:hover {
-            background: #649647;
-
-            &.grey-btn {
-                background: #888;
-            }
-        }
-    }
-    
-
-    .red-btn {
-        width: 300px;
-        background: #dd2e44;
-        color: #fff;
-        padding: 10px 15px;
-        border: none;
-
-        &:hover {
-            background: #ca293f;
-        }
-    }
-
-    #page-en-jeu {
-        #game-chat-history {
-            position: absolute;
-            top: 52%;
-            left: 10px;
-            width: 330px;
-            height: 400px;
-            transform: translateY(-50%);
-
-            ul {
-                font-size: .7em;
-                margin: 0;
-                padding: 0;
-                color: #bd744c;
-
-                li {
-                    list-style-type: none;
-
-                    span.span-chat-attacker {
-                        color: #cc4550;
-                    }
-
-                    span.span-chat-defender {
-                        color: #579ebd;
-                    }
-                }
-            }
-        }
-    }
-
-    #get-help {
-        background: #3b88c3;
-        color: #fff;
-        text-align: center;
-        border: none;
-        border-radius: 0;
-        width: 20px;
-        height: 20px;
-        transform: rotate(45deg);
-        position: absolute;
-        top: 55px;
-        left: 15px;
-
-        &::after {
-            content: '?';
-            position: absolute;
-            transform: translate(-50%, -50%) rotate(-45deg);
-            left: 50%;
-            top: 50%;
-        }
-    }
-
-    .hidden {
-        display: none;
-    }
-    
-    .center {
-        text-align: center;
-    }
-    
-    .bottom-pannel {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-    }
-
-    .block-label {
-        display: block;
-        padding-bottom: 10px;
-        color: #555;
-    }
-}
-
-
-#slide-select {
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 5px;
-}
-
-
-$cellSize: 60px;
-$cellImgSize: 70%;
-
-table {
-    position: absolute;
-    top: 52%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-collapse: collapse;
-    
-    tr {
-        &:first-child,
-        &:last-child {
-            td {
-                height: 20px;
-                border: none;
-                background: #bfa074;
-                transform: scale(1);
-                text-align: center;
-            }
-        }
-
-        td {
-            width: $cellSize;
-            height: $cellSize;
-            background: #fcf1d9;
+        article {
+            height: 100%;
             position: relative;
             box-sizing: border-box;
-            border: 3px solid #666;
-            transform: scale(.95);
+            overflow: hidden;
+    
+            & > h1 {
+                margin-top: 0;
+                padding-top: 50px;
+            }
+        }
 
-            &:first-child,
-            &:last-child {
-                width: 20px;
-                background: #bfa074;
-                border: none;
-                transform: scale(1);
-                text-align: center;
+        h1 { @include title; }
+
+        .green-btn { @include coloredButton($greenButtonBackground); }
+
+        #get-help { @include helpButton; }
+
+        #game-title {
+            font-size: $h1Size;
+            margin-bottom: 40px;
+        }
+
+
+
+        .hidden     { display: none; }
+        .center     { text-align: center; }
+        .justify    { text-align: justify; }
+        
+        .bottom-pannel {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .block-label {
+            display: block;
+            padding-bottom: 10px;
+            color: #555;
+        }
+    }
+
+    #titlebar {
+        overflow: hidden;
+        font-family: 'Open Sans';
+        width: 100%;
+        position: relative;
+        color: $titlebar_windows_color;
+
+        #titlebar-title {
+            @include position-center(1, 0, 50%, 40px, 2);
+            user-select: none;
+
+            &::before {
+                content: '';
+                width: calc(#{$titlebar_windows_height} / 2);
+                height: calc(#{$titlebar_windows_height} / 2);
+                background: rgba(0, 0, 0, 0.1);
+                @include position-center(1, 0, 50%, -40%);
             }
 
             &::after {
-                content: '';
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                width: $cellImgSize;
-                height: $cellImgSize;
-                z-index: 1;
-                background: center/contain no-repeat;
+                content: 'user@pc:~/';
+                display: none;
+                @include position-center(1, 0, 50%, -92%);
             }
+        }
 
-            &.black-cell {
-                &::after {
-                    background-image: url('../img/black_tower.png');
+        .titlebar-btn {
+            cursor: pointer;
+            position: relative;
+
+            &::after {
+                @include position-center;
+            }
+        }
+    }
+
+    &[data-os="windows"] {
+        border-radius: $window_windowsBorderRadius;
+
+        #titlebar {
+            background: $titlebar_windows_background;
+            height: $titlebar_windows_height;
+            color: $titlebar_windows_color;
+
+            .titlebar-btn {
+                float: right;
+                width: $titlebar_windows_height;
+                height: $titlebar_windows_height;
+
+                &:hover {
+                    background: #eee;
                 }
-            }
 
-            &.white-cell {
-                &::after {
-                    background-image: url('../img/white_tower.png');
+                &#close-btn {
+                    &:hover {
+                        background: #d41324;
+                        color: #eee;
+                    }
+
+                    &::after {
+                        content: 'x';
+                    }
                 }
-            }
 
-            &.king-cell {
-                &::after {
-                    background-image: url('../img/king.png');
+                &#fullscreen-btn {
+                    &::after {
+                        content: '□';
+                    }
                 }
-            }
 
-            &.door-cell {
-                &::after {
-                    background-image: url('../img/door.png');
+                &#reduce-btn {
+                    &::after {
+                        content: '―';
+                    }
                 }
             }
         }
+    }
+
+    &[data-os="linux"] {
+        border-radius: $window_linuxBorderRadius;
+
+        #titlebar {
+            height: $titlebar_linux_height;
+            background: $titlebar_linux_background;
+            color: $titlebar_linux_color;
+            font-size: .7em;
+
+            #titlebar-title {
+                left: 50%;
+
+                &::before {
+                    display: none;
+                }
+
+                &::after {
+                    display: block;
+                }
+            }
+
+            .titlebar-btn {
+                float: right;
+                width: calc(#{$titlebar_linux_height} / 2);
+                height: calc(#{$titlebar_linux_height} / 2);
+                background: rgba(200, 200, 200, 0.1);
+                border-radius: 100%;
+                margin: calc(#{$titlebar_linux_height} / 4);
+
+                &:hover {
+                    background: rgba(200, 200, 200, 0.3);
+                }
+            }
+        }
+    }
+
+    &[data-os="mac-os"] {
+        border-radius: $window_iosBorderRadius;
+        border-color: #666;
+        
+        #titlebar {
+            height: $titlebar_ios_height;
+            background: $titlebar_ios_background;
+            color: $titlebar_ios_color;
+            font-size: .7em;
+            padding-left: 5px;
+
+            &::after {
+                content: '';
+                @include position-center(1, 0, 100%);
+                width: 100%;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            }
+
+            #titlebar-title {
+                left: 50%;
+
+                &::before {
+                    display: none;
+                }
+
+                &::after {
+                    display: block;
+                }
+            }
+
+            .titlebar-btn {
+                float: left;
+                width: calc(#{$titlebar_ios_height} / 1.7);
+                height: calc(#{$titlebar_ios_height} / 1.7);
+                border-radius: 100%;
+                margin: calc(#{$titlebar_ios_height} / 5);
+                border: 1px solid rgba(0, 0, 0, 0.2);
+
+                &#close-btn {
+                    background: #ff554f;
+                }
+
+                &#fullscreen-btn {
+                    background: #ffb92a;
+                }
+
+                &#reduce-btn {
+                    background: #25c93a;
+                }
+
+                &:hover {
+                    filter: brightness(90%);
+                }
+            }
+        }
+    }
+
+    &[data-theme="dark"] {
+        $p: $primaryDarkColor;
+        $s: $secondaryDarkColor;
+        $t: $tertiaryDarkColor;
+
+        h1 + p      { @include pTitleDesc($t); }
+        button      { @include basicButton($t); }
+        .select     { @include selectStyle($t); }
+        .large-btn  { @include blockButton($t); }
+        .grey-btn   { @include coloredButton($s); }
+        .red-btn    { @include coloredButton($p); }
+        .game-btn   { @include gameButton($p, $s); }
+
+        #wrapper {
+            background: $t;
+            color: $tertiaryDarkFontColor;
+
+            #page-accueil           { @include page-accueil($p, $s, $t); }
+            #page-charger-partie    { @include page-charger-partie($p, $s, $t); }
+            #page-parametres-de-jeu { @include page-parametres-de-jeu($p, $s, $t); }
+            #page-en-jeu            { @include page-en-jeu($p, $s, $t); }
+            #page-raccourcis        { @include page-raccourcis($p, $s, $t); }
+        }
+    }
+
+    &[data-theme="light"] {
+        $p: $primaryLightColor;
+        $s: $secondaryLightColor;
+        $t: $tertiaryLightColor;
+
+        h1 + p      { @include pTitleDesc($t); }
+        button      { @include basicButton($t); }
+        .select     { @include selectStyle($t); }
+        .large-btn  { @include blockButton($t); }
+        .grey-btn   { @include coloredButton($s); }
+        .red-btn    { @include coloredButton($p); }
+        .game-btn   { @include gameButton($p, $s); }
+
+        #wrapper {
+            background: $t;
+            color: $tertiaryLightFontColor;
+
+            #page-accueil           { @include page-accueil($p, $s, $t); }
+            #page-charger-partie    { @include page-charger-partie($p, $s, $t); }
+            #page-parametres-de-jeu { @include page-parametres-de-jeu($p, $s, $t); }
+            #page-en-jeu            { @include page-en-jeu($p, $s, $t); }
+            #page-raccourcis        { @include page-raccourcis($p, $s, $t); }
+        }
+    }
+}
+
+#options-container {
+    @include position-center(1, 0, 10px, 50%, 1);
+    @include flex-center(flex, row, nowrap);
+
+    select {
+        margin: 0 10px;
+        padding: 5px 0;
+        width: 150px;
+        text-align: center;
+        cursor: pointer;
+        z-index: 999;
     }
 }
