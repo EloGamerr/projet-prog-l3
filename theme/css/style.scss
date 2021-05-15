@@ -295,7 +295,8 @@ html, body {
 
 #options-container {
     @include position-center(1, 0, 10px, 50%, 1);
-    @include flex-center(flex, row, nowrap);
+    @include flex-center(flex, row);
+    row-gap: 10px;
 
     select {
         margin: 0 10px;
