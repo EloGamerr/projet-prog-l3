@@ -352,7 +352,7 @@ html, body {
 
 #window[data-theme="dark"] .select {
   position: relative;
-  width: 150px;
+  width: 200px;
 }
 
 #window[data-theme="dark"] .select::after {
@@ -882,7 +882,7 @@ html, body {
 
 #window[data-theme="light"] .select {
   position: relative;
-  width: 150px;
+  width: 200px;
 }
 
 #window[data-theme="light"] .select::after {
