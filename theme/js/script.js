@@ -23,6 +23,22 @@ window.onload = () => {
     setupOS();
     setupTheme();
     createTable();
+
+    const pauseBtn = $('#pause-btn');
+
+    if(pauseBtn) {
+        pauseBtn.addEventListener('click', () => {
+            if(pauseBtn.innerText.toLowerCase() == 'pause') {
+                pauseBtn.innerText = 'Reprendre';
+            }
+
+            else {
+                pauseBtn.innerText = 'Pause';
+            }
+        });
+    }
+
+
 };
 
 const createTable = () => {
@@ -103,8 +119,7 @@ const setupSlides = () => {
         select.appendChild(option);
     });
 
-    // change de page
-    select.addEventListener('change', () => {
+    const changeSlide = () => {
         const option = select.querySelector('option:checked');
         const name = option.innerText.replace(/ /g, '-');
         const id = '#page-' + name;
@@ -120,7 +135,10 @@ const setupSlides = () => {
             $('#get-help').style.display = 'block';
         }
 
-    });
+    };
+
+    // change de page
+    select.addEventListener('change', changeSlide);
 };
 
 const setupOS = () => {
@@ -129,11 +147,30 @@ const setupOS = () => {
 
     if(!select || !w) return;
 
-    select.addEventListener('change', () => {
+    const changeOS = () => {
         const option = select.querySelector('option:checked');
         const os = option.innerText.replace(/ /g, '-').toLowerCase();
         w.setAttribute('data-os', os);
-    });
+    };
+
+    select.addEventListener('change', changeOS);
+    changeOS();
+};
+
+const setupTheme = () => {
+    const select = $('#theme-select');
+    const w = $('#window');
+
+    if(!select || !w) return;
+
+    const changeTheme = () => {
+        const option = select.querySelector('option:checked');
+        const os = option.innerText.replace(/ /g, '-').toLowerCase();
+        w.setAttribute('data-theme', themes[os]);
+    };
+
+    select.addEventListener('change', changeTheme);
+    changeTheme();
 };
 
 const setupResponsiveWindow = () => {
@@ -166,19 +203,6 @@ const setupResponsiveWindow = () => {
     if(r != 1) {
         wd.style.transform = `translate(-50%, -50%) scale(${r})`;
     }
-};
-
-const setupTheme = () => {
-    const select = $('#theme-select');
-    const w = $('#window');
-
-    if(!select || !w) return;
-
-    select.addEventListener('change', () => {
-        const option = select.querySelector('option:checked');
-        const os = option.innerText.replace(/ /g, '-').toLowerCase();
-        w.setAttribute('data-theme', themes[os]);
-    });
 };
 
 window.onresize = () => {

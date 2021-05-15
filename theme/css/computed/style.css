@@ -519,7 +519,7 @@ html, body {
 
 #window[data-theme="dark"] #wrapper #page-charger-partie ul {
   display: block;
-  width: 300px;
+  width: 350px;
   height: 350px;
   background: #30363e;
   border: 1px solid #474f5a;
@@ -534,7 +534,7 @@ html, body {
   font-family: 'Heebo';
   border: 1px solid #474f5a;
   border-radius: 4px;
-  padding: 2px;
+  padding: 6px;
   margin: 4px auto;
   font-size: .9em;
   background: #404851;
@@ -543,6 +543,20 @@ html, body {
 #window[data-theme="dark"] #wrapper #page-charger-partie ul li:hover {
   -webkit-filter: brightness(120%);
           filter: brightness(120%);
+}
+
+#window[data-theme="dark"] #wrapper #page-charger-partie ul li span {
+  display: inline-block;
+}
+
+#window[data-theme="dark"] #wrapper #page-charger-partie ul li span:first-child {
+  font-weight: bold;
+}
+
+#window[data-theme="dark"] #wrapper #page-charger-partie ul li span:nth-child(2) {
+  -webkit-filter: brightness(90%);
+          filter: brightness(90%);
+  font-size: .8em;
 }
 
 #window[data-theme="dark"] #wrapper #page-charger-partie .bottom-pannel {
@@ -748,12 +762,12 @@ html, body {
 }
 
 #window[data-theme="dark"] #wrapper #page-en-jeu #game-textarea form #usermsg {
-  font-size: .7em;
+  font-size: .9em;
   width: 100%;
   border: none;
   background: #30363e;
   height: 30px;
-  color: #d5d5d7;
+  color: #ddd;
   margin-top: 5px;
   outline: none;
   display: block;
@@ -1035,7 +1049,7 @@ html, body {
 
 #window[data-theme="light"] #wrapper #page-charger-partie ul {
   display: block;
-  width: 300px;
+  width: 350px;
   height: 350px;
   background: #c8c3b5;
   border: 1px solid #b3ac97;
@@ -1050,7 +1064,7 @@ html, body {
   font-family: 'Heebo';
   border: 1px solid #b3ac97;
   border-radius: 4px;
-  padding: 2px;
+  padding: 6px;
   margin: 4px auto;
   font-size: .9em;
   background: #b9b3a0;
@@ -1059,6 +1073,20 @@ html, body {
 #window[data-theme="light"] #wrapper #page-charger-partie ul li:hover {
   -webkit-filter: brightness(90%);
           filter: brightness(90%);
+}
+
+#window[data-theme="light"] #wrapper #page-charger-partie ul li span {
+  display: inline-block;
+}
+
+#window[data-theme="light"] #wrapper #page-charger-partie ul li span:first-child {
+  font-weight: bold;
+}
+
+#window[data-theme="light"] #wrapper #page-charger-partie ul li span:nth-child(2) {
+  -webkit-filter: brightness(90%);
+          filter: brightness(90%);
+  font-size: .8em;
 }
 
 #window[data-theme="light"] #wrapper #page-charger-partie .bottom-pannel {
@@ -1262,12 +1290,12 @@ html, body {
 }
 
 #window[data-theme="light"] #wrapper #page-en-jeu #game-textarea form #usermsg {
-  font-size: .7em;
+  font-size: .9em;
   width: 100%;
   border: none;
   background: #c8c3b5;
   height: 30px;
-  color: #d5d5d7;
+  color: #444;
   margin-top: 5px;
   outline: none;
   display: block;

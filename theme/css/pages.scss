@@ -25,7 +25,7 @@
 
     ul {
         display: block;
-        width: 300px;
+        width: 350px;
         height: 350px;
         background: $ulBackground;
         border: 1px solid $ulBorderColor;
@@ -39,13 +39,26 @@
             font-family: 'Heebo';
             border: 1px solid $ulBorderColor;
             border-radius: 4px;
-            padding: 2px;
+            padding: 6px;
             margin: 4px auto;
             font-size: .9em;
             background: $liBackground;
 
             &:hover {
                 filter: brightness($liBrightnessPerc);
+            }
+
+            span {
+                display: inline-block;
+
+                &:first-child {
+                    font-weight: bold;
+                }
+
+                &:nth-child(2) {
+                    filter: brightness(90%);
+                    font-size: .8em;
+                }
             }
         }
     }
@@ -206,12 +219,12 @@
             display: block;
             
             #usermsg {
-                font-size: .7em;
+                font-size: .9em;
                 width: 100%;
                 border: none;
                 background: derivedColor($t);
                 height: 30px;
-                color: #d5d5d7;
+                color: getDarkLightColor($t);
                 margin-top: 5px;
                 outline: none;
                 display: block;
