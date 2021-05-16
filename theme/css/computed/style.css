@@ -608,18 +608,6 @@ html, body {
           transform: translate(-50%, -50%) scale(1) rotate(0);
 }
 
-#window[data-theme="dark"] #wrapper #page-parametres-de-jeu .bottom-pannel {
-  padding: 0 20px 10px 20px;
-}
-
-#window[data-theme="dark"] #wrapper #page-parametres-de-jeu .bottom-pannel .green-btn {
-  float: right;
-}
-
-#window[data-theme="dark"] #wrapper #page-parametres-de-jeu .bottom-pannel .grey-btn {
-  float: left;
-}
-
 #window[data-theme="dark"] #wrapper #page-en-jeu table {
   position: absolute;
   top: 50%;
@@ -1138,18 +1126,6 @@ html, body {
           transform: translate(-50%, -50%) scale(1) rotate(0);
 }
 
-#window[data-theme="light"] #wrapper #page-parametres-de-jeu .bottom-pannel {
-  padding: 0 20px 10px 20px;
-}
-
-#window[data-theme="light"] #wrapper #page-parametres-de-jeu .bottom-pannel .green-btn {
-  float: right;
-}
-
-#window[data-theme="light"] #wrapper #page-parametres-de-jeu .bottom-pannel .grey-btn {
-  float: left;
-}
-
 #window[data-theme="light"] #wrapper #page-en-jeu table {
   position: absolute;
   top: 50%;
@@ -1387,6 +1363,18 @@ html, body {
 #window[data-theme="light"] #wrapper #page-raccourcis .bottom-pannel {
   padding-bottom: 20px;
   text-align: center;
+}
+
+#window .bottom-pannel.cancel-confirm {
+  padding: 0 20px 10px 20px;
+}
+
+#window .bottom-pannel.cancel-confirm .green-btn {
+  float: right;
+}
+
+#window .bottom-pannel.cancel-confirm .grey-btn {
+  float: left;
 }
 
 #options-container {

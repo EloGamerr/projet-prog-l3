@@ -291,6 +291,20 @@ html, body {
             #page-raccourcis        { @include page-raccourcis($p, $s, $t); }
         }
     }
+
+    .bottom-pannel {
+        &.cancel-confirm {
+            padding: 0 20px 10px 20px;
+
+            .green-btn {
+                float: right;
+            }
+
+            .grey-btn {
+                float: left;
+            }
+        }
+    }
 }
 
 #options-container {

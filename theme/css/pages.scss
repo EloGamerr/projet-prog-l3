@@ -99,18 +99,6 @@
             }
         }
     }
-
-    .bottom-pannel {
-        padding: 0 20px 10px 20px;
-
-        .green-btn {
-            float: right;
-        }
-
-        .grey-btn {
-            float: left;
-        }
-    }
 }
 
 @mixin page-raccourcis($p, $s, $t) {
