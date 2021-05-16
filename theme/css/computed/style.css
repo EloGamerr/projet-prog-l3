@@ -350,6 +350,17 @@ html, body {
           filter: brightness(120%);
 }
 
+#window[data-theme="dark"] button:disabled {
+  -webkit-filter: grayscale(50) brightness(70%);
+          filter: grayscale(50) brightness(70%);
+  cursor: default;
+}
+
+#window[data-theme="dark"] button:disabled:hover {
+  -webkit-filter: grayscale(50) brightness(70%);
+          filter: grayscale(50) brightness(70%);
+}
+
 #window[data-theme="dark"] .select {
   position: relative;
   width: 200px;
@@ -615,8 +626,8 @@ html, body {
   -webkit-transform: translate(-50%, -50%) scale(1) rotate(0);
           transform: translate(-50%, -50%) scale(1) rotate(0);
   border-collapse: collapse;
-  -webkit-filter: brightness(80%);
-          filter: brightness(80%);
+  -webkit-filter: brightness(70%);
+          filter: brightness(70%);
 }
 
 #window[data-theme="dark"] #wrapper #page-en-jeu table tr:first-child td, #window[data-theme="dark"] #wrapper #page-en-jeu table tr:last-child td {
@@ -626,6 +637,10 @@ html, body {
   -webkit-transform: scale(1);
           transform: scale(1);
   text-align: center;
+}
+
+#window[data-theme="dark"] #wrapper #page-en-jeu table tr:first-child td:hover, #window[data-theme="dark"] #wrapper #page-en-jeu table tr:last-child td:hover {
+  background: #bfa074 !important;
 }
 
 #window[data-theme="dark"] #wrapper #page-en-jeu table tr td {
@@ -649,6 +664,23 @@ html, body {
   text-align: center;
 }
 
+#window[data-theme="dark"] #wrapper #page-en-jeu table tr td:first-child:hover, #window[data-theme="dark"] #wrapper #page-en-jeu table tr td:last-child:hover {
+  background: #bfa074 !important;
+}
+
+#window[data-theme="dark"] #wrapper #page-en-jeu table tr td.possible-movement::before {
+  content: '';
+  width: 30%;
+  height: 30%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  border-radius: 100%;
+  background: #97c6f5;
+}
+
 #window[data-theme="dark"] #wrapper #page-en-jeu table tr td::after {
   content: '';
   position: absolute;
@@ -666,12 +698,24 @@ html, body {
   background-image: url("../../img/black_tower.svg");
 }
 
+#window[data-theme="dark"] #wrapper #page-en-jeu table tr td.black_tower-cell:hover {
+  background: #dfd0b1;
+}
+
 #window[data-theme="dark"] #wrapper #page-en-jeu table tr td.white_tower-cell::after {
   background-image: url("../../img/white_tower.svg");
 }
 
+#window[data-theme="dark"] #wrapper #page-en-jeu table tr td.white_tower-cell:hover {
+  background: #dfd0b1;
+}
+
 #window[data-theme="dark"] #wrapper #page-en-jeu table tr td.king-cell::after {
   background-image: url("../../img/king.svg");
+}
+
+#window[data-theme="dark"] #wrapper #page-en-jeu table tr td.king-cell:hover {
+  background: #dfd0b1;
 }
 
 #window[data-theme="dark"] #wrapper #page-en-jeu table tr td.door-cell::after {
@@ -725,20 +769,24 @@ html, body {
   list-style-type: none;
 }
 
-#window[data-theme="dark"] #wrapper #page-en-jeu #chat #game-chat-history ul li span.span-chat-attacker {
+#window[data-theme="dark"] #wrapper #page-en-jeu #chat #game-chat-history ul li span.chat-attacker {
   color: #cc4550;
 }
 
-#window[data-theme="dark"] #wrapper #page-en-jeu #chat #game-chat-history ul li span.span-chat-defender {
+#window[data-theme="dark"] #wrapper #page-en-jeu #chat #game-chat-history ul li span.chat-defender {
   color: #579ebd;
 }
 
-#window[data-theme="dark"] #wrapper #page-en-jeu #chat #game-chat-history ul li span.span-chat-time {
+#window[data-theme="dark"] #wrapper #page-en-jeu #chat #game-chat-history ul li span.chat-time {
   color: #ddd;
 }
 
-#window[data-theme="dark"] #wrapper #page-en-jeu #chat #game-chat-history ul li span.span-chat-tchat {
+#window[data-theme="dark"] #wrapper #page-en-jeu #chat #game-chat-history ul li span.chat-tchat {
   color: #ddd;
+}
+
+#window[data-theme="dark"] #wrapper #page-en-jeu #chat #game-chat-history ul li span.system-message {
+  color: #ddd01a;
 }
 
 #window[data-theme="dark"] #wrapper #page-en-jeu #game-textarea {
@@ -794,7 +842,35 @@ html, body {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
-  height: 80%;
+  height: 45%;
+}
+
+#window[data-theme="dark"] #wrapper #page-en-jeu #pannel-buttons #show-shortcut {
+  width: 100%;
+  height: 50px;
+  font-size: .8em;
+  color: #5d6877;
+  margin-top: 20px;
+  text-align: center;
+}
+
+#window[data-theme="dark"] #wrapper #page-en-jeu #big-round-message {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  text-align: center;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+#window[data-theme="dark"] #wrapper #page-en-jeu #ingame-show-shortcuts {
+  position: absolute;
+  bottom: 16px;
+  right: 69px;
 }
 
 #window[data-theme="dark"] #wrapper #page-raccourcis .container {
@@ -866,6 +942,17 @@ html, body {
 #window[data-theme="light"] button:hover {
   -webkit-filter: brightness(90%);
           filter: brightness(90%);
+}
+
+#window[data-theme="light"] button:disabled {
+  -webkit-filter: grayscale(50) brightness(70%);
+          filter: grayscale(50) brightness(70%);
+  cursor: default;
+}
+
+#window[data-theme="light"] button:disabled:hover {
+  -webkit-filter: grayscale(50) brightness(70%);
+          filter: grayscale(50) brightness(70%);
 }
 
 #window[data-theme="light"] .select {
@@ -946,16 +1033,16 @@ html, body {
 
 #window[data-theme="light"] .red-btn {
   width: 200px;
-  background: #cca75c;
-  border-color: #cca75c;
+  background: #dd2e44;
+  border-color: #dd2e44;
   color: #ddd;
   padding: 10px 15px;
   border: none;
 }
 
 #window[data-theme="light"] .red-btn:hover {
-  background: #cca75c;
-  border-color: #cca75c;
+  background: #dd2e44;
+  border-color: #dd2e44;
   -webkit-filter: brightness(120%);
           filter: brightness(120%);
 }
@@ -981,7 +1068,7 @@ html, body {
 }
 
 #window[data-theme="light"] .game-btn.red-btn-hover:hover {
-  background: #cca75c;
+  background: #dd2e44;
   -webkit-filter: brightness(100%);
           filter: brightness(100%);
 }
@@ -1144,6 +1231,10 @@ html, body {
   text-align: center;
 }
 
+#window[data-theme="light"] #wrapper #page-en-jeu table tr:first-child td:hover, #window[data-theme="light"] #wrapper #page-en-jeu table tr:last-child td:hover {
+  background: #bfa074 !important;
+}
+
 #window[data-theme="light"] #wrapper #page-en-jeu table tr td {
   width: 60px;
   height: 60px;
@@ -1165,6 +1256,23 @@ html, body {
   text-align: center;
 }
 
+#window[data-theme="light"] #wrapper #page-en-jeu table tr td:first-child:hover, #window[data-theme="light"] #wrapper #page-en-jeu table tr td:last-child:hover {
+  background: #bfa074 !important;
+}
+
+#window[data-theme="light"] #wrapper #page-en-jeu table tr td.possible-movement::before {
+  content: '';
+  width: 30%;
+  height: 30%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  border-radius: 100%;
+  background: #97c6f5;
+}
+
 #window[data-theme="light"] #wrapper #page-en-jeu table tr td::after {
   content: '';
   position: absolute;
@@ -1182,12 +1290,24 @@ html, body {
   background-image: url("../../img/black_tower.svg");
 }
 
+#window[data-theme="light"] #wrapper #page-en-jeu table tr td.black_tower-cell:hover {
+  background: #dfd0b1;
+}
+
 #window[data-theme="light"] #wrapper #page-en-jeu table tr td.white_tower-cell::after {
   background-image: url("../../img/white_tower.svg");
 }
 
+#window[data-theme="light"] #wrapper #page-en-jeu table tr td.white_tower-cell:hover {
+  background: #dfd0b1;
+}
+
 #window[data-theme="light"] #wrapper #page-en-jeu table tr td.king-cell::after {
   background-image: url("../../img/king.svg");
+}
+
+#window[data-theme="light"] #wrapper #page-en-jeu table tr td.king-cell:hover {
+  background: #dfd0b1;
 }
 
 #window[data-theme="light"] #wrapper #page-en-jeu table tr td.door-cell::after {
@@ -1241,20 +1361,24 @@ html, body {
   list-style-type: none;
 }
 
-#window[data-theme="light"] #wrapper #page-en-jeu #chat #game-chat-history ul li span.span-chat-attacker {
+#window[data-theme="light"] #wrapper #page-en-jeu #chat #game-chat-history ul li span.chat-attacker {
   color: #cc4550;
 }
 
-#window[data-theme="light"] #wrapper #page-en-jeu #chat #game-chat-history ul li span.span-chat-defender {
+#window[data-theme="light"] #wrapper #page-en-jeu #chat #game-chat-history ul li span.chat-defender {
   color: #579ebd;
 }
 
-#window[data-theme="light"] #wrapper #page-en-jeu #chat #game-chat-history ul li span.span-chat-time {
+#window[data-theme="light"] #wrapper #page-en-jeu #chat #game-chat-history ul li span.chat-time {
   color: #444;
 }
 
-#window[data-theme="light"] #wrapper #page-en-jeu #chat #game-chat-history ul li span.span-chat-tchat {
+#window[data-theme="light"] #wrapper #page-en-jeu #chat #game-chat-history ul li span.chat-tchat {
   color: #444;
+}
+
+#window[data-theme="light"] #wrapper #page-en-jeu #chat #game-chat-history ul li span.system-message {
+  color: #ddd01a;
 }
 
 #window[data-theme="light"] #wrapper #page-en-jeu #game-textarea {
@@ -1285,7 +1409,7 @@ html, body {
 }
 
 #window[data-theme="light"] #wrapper #page-en-jeu #game-textarea form #usermsg:focus {
-  border-color: #cca75c;
+  border-color: #dd2e44;
 }
 
 #window[data-theme="light"] #wrapper #page-en-jeu #pannel-buttons {
@@ -1310,7 +1434,35 @@ html, body {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
-  height: 80%;
+  height: 45%;
+}
+
+#window[data-theme="light"] #wrapper #page-en-jeu #pannel-buttons #show-shortcut {
+  width: 100%;
+  height: 50px;
+  font-size: .8em;
+  color: #9d947a;
+  margin-top: 20px;
+  text-align: center;
+}
+
+#window[data-theme="light"] #wrapper #page-en-jeu #big-round-message {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  text-align: center;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+#window[data-theme="light"] #wrapper #page-en-jeu #ingame-show-shortcuts {
+  position: absolute;
+  bottom: 16px;
+  right: 69px;
 }
 
 #window[data-theme="light"] #wrapper #page-raccourcis .container {

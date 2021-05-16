@@ -182,17 +182,22 @@
                 li {
                     list-style-type: none;
 
-                    span.span-chat-attacker {
-                        color: #cc4550;
-                    }
-                    span.span-chat-defender {
-                        color: #579ebd;
-                    }
-                    span.span-chat-time {
-                        color: getDarkLightColor($t);
-                    }
-                    span.span-chat-tchat {
-                        color: getDarkLightColor($t);
+                    span {
+                        &.chat-attacker {
+                            color: #cc4550;
+                        }
+                        &.chat-defender {
+                            color: #579ebd;
+                        }
+                        &.chat-time {
+                            color: getDarkLightColor($t);
+                        }
+                        &.chat-tchat {
+                            color: getDarkLightColor($t);
+                        }
+                        &.system-message {
+                            color: #ddd01a;
+                        }
                     }
                 }
             }
@@ -234,6 +239,30 @@
         @include flex-center(flex, column);
         @include position-center(1, 0, 50%, 79%, 2);
         justify-content: space-between;
-        height: 80%;
+        height: 45%;
+
+        #show-shortcut {
+            width: 100%;
+            height: 50px;
+            font-size: .8em;
+            color: derivedColor($t, 30%);
+            margin-top: 20px;
+            text-align: center;
+        }
+    }
+
+    #big-round-message {
+        position: absolute;
+        bottom: 15px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        user-select: none;
+    }
+
+    #ingame-show-shortcuts {
+        position: absolute;
+        bottom: 16px;
+        right: 69px;
     }
 }

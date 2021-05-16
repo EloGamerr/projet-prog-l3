@@ -21,15 +21,14 @@
 
             <div id="wrapper">
                 <!-- -------------------- PAGES -------------------- -->
-                
                 <!-- ACCUEIL -->
                 <article id="page-accueil">
                     <h1 id="game-title">Tablut</h1>
-                    
-                    <button id="get-help" to="raccourcis"></button>
+
                     <div id="home-btn-wrapper">
                         <button id="new-game" class="large-btn" to="parametres-de-jeu">Nouvelle partie</button>
                         <button id="load-game" class="large-btn" to="charger-partie">Charger partie</button>
+                        <button id="show-shortcuts" class="large-btn" to="raccourcis">Raccourcis</button>
                         <button id="new-game" class="large-btn" to="exit">Quitter</button>
                     </div>
                 </article>
@@ -38,7 +37,6 @@
                 <article id="page-charger-partie">
                     <h1>Charger une partie</h1>
                     <p class="center">Choisissez une sauvegarde à restaurer</p>
-                    <button id="get-help" to="raccourcis"></button>
                     <div class="flex-container">
                         <ul id="saves-area">
                             <li class="save-item"><span>Partie 1 :</span> <span>(02/01/21 12:50)</span> humain vs humain</li>
@@ -61,7 +59,6 @@
                 <article id="page-parametres-de-jeu">
                     <h1>Paramètres</h1>
                     <p class="center">Choisissez les paramètres de partie qui vous conviennent puis cliquez sur confirmer</p>
-                    <button id="get-help" to="raccourcis"></button>
                     <div class="center">
                         <h2>Type de partie</h2>
                         <div class="two-columns vs">
@@ -80,7 +77,7 @@
                                 <label class="block-label">Défenseur</label>
                                 <div class="select">
                                     <select>
-                                    <option>Humain</option>
+                                        <option>Humain</option>
                                         <option>Ordinateur facile</option>
                                         <option>Ordinateur moyen</option>
                                         <option>Ordinateur difficile</option>
@@ -88,7 +85,6 @@
                                 </div>
                             </div>
                         </div>
-                        
                         <!-- ------ -->
                         <div class="bottom-pannel center cancel-confirm">
                             <button class="grey-btn" to="accueil">Retour</button>
@@ -96,34 +92,41 @@
                         </div>
                     </div>
                 </article>
-                
+
                 <!-- INGAME -->
                 <article id="page-en-jeu">
-                    <button id="get-help" to="raccourcis"></button>
+                    <button id="ingame-show-shortcuts" class="grey-btn" to="raccourcis">Raccourcis</button>
                     <div id="chat">
                         <div id="game-chat-history">
                             <ul>
-                                <li><span class="span-chat-time">[01:20] </span><span class="span-chat-attacker">L'attaquant </span><span class="span-chat-info">a bougé une pièce de 4A en 4B </span></li>
-                                <li><span class="span-chat-time">[02:19] </span><span class="span-chat-defender">Le défenseur </span><span class="span-chat-info">a bougé le roi de 6E en 6F</span></li>
-                                <li><span class="span-chat-time">[03:24] </span><span class="span-chat-defender">Le défenseur :</span><span class="span-chat-tchat"> J'ai déjà gagné</span></li>
-                                <li><span class="span-chat-time">[03:30] </span><span class="span-chat-attacker">L'attaquant' :</span><span class="span-chat-tchat"> Bonsoir, non.</span></li>
-                                <li><span class="span-chat-time">[04:41] </span><span class="span-chat-info">Le Roi s'est échappé !</span></li>
-                                <li><span class="span-chat-time">[04:43] </span><span class="span-chat-info">Le Roi s'est fait capturer !</span></li>
+                                <li><span class="chat-time">[Système] </span><span class="system-message">Le défenseur commence</span></li>
+                                <li><span class="chat-time">[01:20] </span><span class="chat-attacker">L'attaquant </span><span class="chat-info">a bougé une pièce de 4A en 4B </span></li>
+                                <li><span class="chat-time">[02:19] </span><span class="chat-defender">Le défenseur </span><span class="chat-info">a bougé le roi de 6E en 6F</span></li>
+                                <li><span class="chat-time">[03:24] </span><span class="chat-defender">Le défenseur :</span><span class="chat-tchat"> glhf</span></li>
+                                <li><span class="chat-time">[03:30] </span><span class="chat-attacker">L'attaquant' :</span><span class="chat-tchat"> Thanks, you too</span></li>
+                                <li><span class="chat-time">[04:41] </span><span class="chat-info">Le Roi s'est échappé !</span></li>
+                                <li><span class="chat-time">[04:43] </span><span class="chat-info">Le Roi s'est fait capturer !</span></li>
                             </ul>
-                        </div> 
-                    
+                        </div>
+
                         <div id="game-textarea">
                             <form name="message" action="">
-                                <input name="usermsg" type="text" id="usermsg"/>
+                                <input name="usermsg" type="text" id="usermsg" />
                             </form>
-                        
+
                         </div>
                     </div>
 
+                    <div id="big-round-message">Au tour du défenseur</div>
+
                     <div id="pannel-buttons">
-                        <button id="save-btn" class="game-btn green-btn-hover">Sauvegarder</button>
-                        <button id="pause-btn" class="game-btn">Pause</button>
+                        <button id="save-btn" class="game-btn green-btn-hover" alt="raccourci : ctrl+S">Sauvegarder</button>
+                        <button id="pause-btn" class="game-btn" alt="raccourci : Espace">Pause</button>
+                        <button id="cancel-move-btn" class="game-btn" alt="raccourci : ctrl+Z" disabled>Annuler dernier coup</button>
+                        <button id="redo-move-btn" class="game-btn" alt="raccourci : ctrl+Y" disabled>Refaire dernier coup</button>
+                        <button id="restart-btn" class="game-btn" alt="raccourci : ctrl+N">Recommencer partie</button>
                         <button id="quit-btn" class="game-btn red-btn-hover" to="accueil">Quitter la partie</button>
+                        <div id="show-shortcut"></div>
                     </div>
                 </article>
 
@@ -131,16 +134,16 @@
                 <article id="page-raccourcis">
                     <div class="container">
                         <table>
-                            <tr><th>Touche Raccourcis</th><th>Description</th></tr>
-                            <tr><td>CTRL+Z</td><td>Annuler le dernier coup</td></tr>
-                            <tr><td>CTRL+Y</td><td>Refaire le dernier coup</td></tr>
-                            <tr><td>CTRL+S</td><td>Sauvegarder l'état actuelle de la partie</td></tr>
-                            <tr><td>CTRL+N</td><td>Nouvelle partie</td></tr>
-                            <tr><td>Espace</td><td>Mettre en pause le jeu (fonctionne uniquement dans le type : Ordinateur contre Ordinateur)</td></tr>
+                            <tr><th>Touches Raccourcis</th><th>Description</th></tr>
+                            <tr><td>CTRL+S</td><td>Sauvegarder</td></tr>
+                            <tr><td>Espace</td><td>Pause (fonctionne uniquement dans le type : Ordinateur contre Ordinateur)</td></tr>
+                            <tr><td>CTRL+Z</td><td>Annuler dernier coup</td></tr>
+                            <tr><td>CTRL+Y</td><td>Refaire dernier coup</td></tr>
+                            <tr><td>CTRL+N</td><td>Recommencer partie</td></tr>
                         </table>
                     </div>
                     <div class="bottom-pannel center cancel-confirm">
-                        <button class="grey-btn" to="accueil">Retour</button>
+                        <button class="grey-btn">Fermer</button>
                     </div>
                 </article>
             </div>

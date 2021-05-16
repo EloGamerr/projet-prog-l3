@@ -11,6 +11,7 @@ let needToDraw = false;
 let circleRadius, _y, _x;
 let inACircle = null;
 let mouseX, mouseY;
+let gridSize
 let pagesToDraw = {};
 
 
@@ -34,6 +35,7 @@ window.onload = () => {
     createTable();
     setupAutomaton();
     setupSlides();
+    setupDemo();
     
     const pauseBtn = $('#pause-btn');
 
@@ -49,18 +51,32 @@ window.onload = () => {
         });
     }
 
+    const showButtonShortcut = $('#show-shortcut');
 
+    if(showButtonShortcut) {
+        $$('#pannel-buttons button').forEach(button => {
+            button.addEventListener('mouseover', () => {
+                showButtonShortcut.innerText = button.getAttribute('alt');
+            });
+
+            button.addEventListener('mouseleave', () => {
+                showButtonShortcut.innerText = '';
+            });
+        });
+    }
 };
 
 const createTable = () => {
     const table = document.createElement('table');
-    const gridSize = 9;
+    gridSize = 9;
 
     for(let i=0; i < gridSize +2; i++) {
         const row = document.createElement('tr');
 
         for(let j=0; j < gridSize +2; j++) {
             const td = document.createElement('td');
+            td.dataset.x = j;
+            td.dataset.y = i;
 
             if(
                 ((i==1 || i==9) && j > 3 && j < 7) ||
@@ -90,6 +106,7 @@ const createTable = () => {
                 td.classList.add('door-cell');
             }
 
+
             if(i == 0 && j > 0 && j < 10) {
                 td.innerText = String.fromCharCode(64+j);
             }
@@ -98,9 +115,14 @@ const createTable = () => {
                 td.innerText = i;
             }
 
+            else {
+                td.classList.add('clickable');
+            }
+
             if(i==1 && (j == 0 || j == 10)) {
                 td.style.borderTop = '3px solid #bfa074';
             }
+
 
             row.appendChild(td);
         }
@@ -139,12 +161,6 @@ const setupSlides = () => {
         active.classList.add('hidden');
         $(id).classList.add('active');
         $(id).classList.remove('hidden');
-
-        if(['raccourcis', 'relation-des-pages'].includes(name)) {
-            $('#get-help').style.display = 'none';
-        } else {
-            $('#get-help').style.display = 'block';
-        }
 
         if(name === 'relation-des-pages') {
             needToDraw = true;
@@ -219,13 +235,96 @@ const setupResponsiveWindow = () => {
 
     if(r != 1) {
         wd.style.transform = `translate(-50%, -50%) scale(${r})`;
-
-        /* const rr = wd.getBoundingClientRect();
-        canvas.width = rr.width;
-        canvas.height = rr.height; */
     }
 };
 
+
+/* DEMO JEU */
+
+const setupDemo = () => {
+    const board = $('#page-en-jeu table');
+
+    if(!board) return;
+
+    const acceptingClass = ['white_tower-cell', 'black_tower-cell'];
+
+    const hasPiece = (x, y) => {
+        const p = board.querySelector(`td[data-x="${x}"][data-y="${y}"]`);
+        if(!p) return false;
+
+        if(p.classList.contains(acceptingClass[0]) || p.classList.contains(acceptingClass[1])  || p.classList.contains('door-cell')) {
+            return true;
+        }
+
+        const [_x, _y] = [parseInt(p.dataset.x), parseInt(p.dataset.y)];
+        return _x < 1 || 9 < _x || _y < 1 || 9 < _y;
+    };
+
+    const _leaveCell = function() {
+        this.removeEventListener('mouseleave', _leaveCell);
+        $$('.possible-movement').forEach(cell => {
+            cell.classList.remove('possible-movement');
+        });
+    };
+
+    document.addEventListener('mouseover', function(e) {
+        if(!e.target) return;
+        const element = e.target;
+        if(!element.classList.contains('clickable')) return;
+
+        // focus this cell
+        if(element.classList.contains(acceptingClass[0]) || element.classList.contains(acceptingClass[1])) {
+            const [x, y] = [parseInt(element.dataset.x), parseInt(element.dataset.y)];
+
+            element.addEventListener('mouseleave', _leaveCell);
+
+            let openDirs = [
+                { x: -1, y: 0, check: true }, // gauche
+                { x: 1, y: 0, check: true },  // droite
+                { x: 0, y: -1, check: true }, // haut
+                { x: 0, y: 1, check: true }   // bas
+            ];
+
+            for(let i = 1; i < gridSize-1; i++) {
+                openDirs.forEach((dir, j) => {
+                    if(dir.check) {
+                        const vx = x + i * dir.x;
+                        const vy = y + i * dir.y;
+
+                        if(hasPiece(vx, vy)) {
+                            // une pièce rencontrée à cette distance dans cette direction :
+                            // on arrête la recherche dans cette direction
+                            openDirs[j].check = false;
+                        }
+
+                        else {
+                            // pas de pièce : on dit qu'on peut se déplacer ici
+                            const cell = board.querySelector(`td[data-x="${vx}"][data-y="${vy}"]`);
+                            if(cell) {
+                                cell.classList.add('possible-movement');
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    });
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* CANVAS */
 const setupAutomaton = () => {
     const searchItems = ['button', 'li'];
     const expectedAttribute = 'to';
@@ -345,7 +444,7 @@ const drawPage = name => {
     ctx.lineWidth = 1;
     ctx.textAlign = 'center';
 
-    ctx.globalAlpha = 1 / ((inACircle === null || (name === inACircle))? 1 : 5);
+    ctx.globalAlpha = 1 / ((inACircle === null || (name === inACircle))? 1 : 6);
 
     // circle
     circle(x, y, circleRadius);
@@ -367,7 +466,7 @@ const drawTransitions = name => {
         const { h, x0, y0, x1, y1, x2, y2, rotation } = t;
         
         ctx.strokeStyle = `hsl(${h}, 50%, 50%)`;
-        ctx.globalAlpha = 0.7 / ((inACircle === null || (name === inACircle))? 1 : 5);
+        ctx.globalAlpha = 0.7 / ((inACircle === null)? 1 : (name === inACircle)? 0.7 : 6);
         ctx.lineWidth = 1;
         
         ctx.beginPath();

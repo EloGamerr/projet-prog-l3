@@ -44,6 +44,15 @@
     &:hover {
         filter: brightness($hoverLightness);
     }
+
+    &:disabled {
+        filter: grayscale(50) brightness(70%);
+        cursor: default;
+
+        &:hover {
+            filter: grayscale(50) brightness(70%);
+        }
+    }
 }
 
 @mixin coloredButton($bg, $width: 200px) {
@@ -134,6 +143,10 @@
     background: $table_borderColor;
     transform: scale(1);
     text-align: center;
+
+    &:hover {
+        background: $table_borderColor !important;
+    }
 }
 
 @mixin gameBoard($t) {
@@ -141,7 +154,7 @@
     border-collapse: collapse;
 
     @if (lightness($t) < 60) {
-        filter: brightness(80%);
+        filter: brightness(70%);
     }
     
     tr {
@@ -166,6 +179,20 @@
                 @include gameBoardBorderCell;
             }
 
+            &.possible-movement {
+                &::before {
+                    content: '';
+                    width: 30%;
+                    height: 30%;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    border-radius: 100%;
+                    background: $table_cellPossibleMovementColor;
+                }
+            }
+
             &::after {
                 content: '';
                 @include position-center;
@@ -181,6 +208,12 @@
                 &.#{$name}-cell {
                     &::after {
                         background-image: url(getImg('#{$name}.svg'));
+                    }
+
+                    @if $name != 'door' {
+                        &:hover {
+                            background: $table_cellHoverBackground;
+                        }
                     }
                 }
             }
