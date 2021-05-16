@@ -675,19 +675,19 @@ html, body {
 }
 
 #window[data-theme="dark"] #wrapper #page-en-jeu table tr td.black_tower-cell::after {
-  background-image: url("../../img/black_tower.png");
+  background-image: url("../../img/black_tower.svg");
 }
 
 #window[data-theme="dark"] #wrapper #page-en-jeu table tr td.white_tower-cell::after {
-  background-image: url("../../img/white_tower.png");
+  background-image: url("../../img/white_tower.svg");
 }
 
 #window[data-theme="dark"] #wrapper #page-en-jeu table tr td.king-cell::after {
-  background-image: url("../../img/king.png");
+  background-image: url("../../img/king.svg");
 }
 
 #window[data-theme="dark"] #wrapper #page-en-jeu table tr td.door-cell::after {
-  background-image: url("../../img/door.png");
+  background-image: url("../../img/door.svg");
 }
 
 #window[data-theme="dark"] #wrapper #page-en-jeu #chat {
@@ -1203,19 +1203,19 @@ html, body {
 }
 
 #window[data-theme="light"] #wrapper #page-en-jeu table tr td.black_tower-cell::after {
-  background-image: url("../../img/black_tower.png");
+  background-image: url("../../img/black_tower.svg");
 }
 
 #window[data-theme="light"] #wrapper #page-en-jeu table tr td.white_tower-cell::after {
-  background-image: url("../../img/white_tower.png");
+  background-image: url("../../img/white_tower.svg");
 }
 
 #window[data-theme="light"] #wrapper #page-en-jeu table tr td.king-cell::after {
-  background-image: url("../../img/king.png");
+  background-image: url("../../img/king.svg");
 }
 
 #window[data-theme="light"] #wrapper #page-en-jeu table tr td.door-cell::after {
-  background-image: url("../../img/door.png");
+  background-image: url("../../img/door.svg");
 }
 
 #window[data-theme="light"] #wrapper #page-en-jeu #chat {

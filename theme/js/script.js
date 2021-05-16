@@ -3,6 +3,16 @@ const $$ = el => document.querySelectorAll(el);
 
 let defaultWindowWidth = 0;
 let defaultWindowHeight = 0;
+const canvas = document.createElement('canvas');
+let ctx;
+let buttonsTo = [];
+let pages = [];
+let needToDraw = false;
+let circleRadius, _y, _x;
+let inACircle = null;
+let mouseX, mouseY;
+let pagesToDraw = {};
+
 
 const themes = {
     clair: 'light',
@@ -19,11 +29,12 @@ window.onload = () => {
     }
 
     setupResponsiveWindow();
-    setupSlides();
     setupOS();
     setupTheme();
     createTable();
-
+    setupAutomaton();
+    setupSlides();
+    
     const pauseBtn = $('#pause-btn');
 
     if(pauseBtn) {
@@ -129,12 +140,18 @@ const setupSlides = () => {
         $(id).classList.add('active');
         $(id).classList.remove('hidden');
 
-        if(name == 'raccourcis') {
+        if(['raccourcis', 'relation-des-pages'].includes(name)) {
             $('#get-help').style.display = 'none';
         } else {
             $('#get-help').style.display = 'block';
         }
 
+        if(name === 'relation-des-pages') {
+            needToDraw = true;
+            draw();
+        }
+        else
+            needToDraw = false;
     };
 
     // change de page
@@ -202,6 +219,213 @@ const setupResponsiveWindow = () => {
 
     if(r != 1) {
         wd.style.transform = `translate(-50%, -50%) scale(${r})`;
+
+        /* const rr = wd.getBoundingClientRect();
+        canvas.width = rr.width;
+        canvas.height = rr.height; */
+    }
+};
+
+const setupAutomaton = () => {
+    const searchItems = ['button', 'li'];
+    const expectedAttribute = 'to';
+
+    buttonsTo = Array.from($$(searchItems.join(', '))).filter(item => item.hasAttribute(expectedAttribute)).map((item, i) => ({
+        from: item.closest('article').id.replace(/^page\-/, ''),
+        to: item.getAttribute(expectedAttribute)
+    })).filter((v, i, a) => a.findIndex(t => t.from === v.from && t.to === v.to) === i);
+
+    pages = Array.from($$('article[id^="page-"]')).map(article => article.id.replace(/^page\-/, ''));
+    
+    const page = document.createElement('article');
+    page.id = `page-relation-des-pages`;
+
+    ctx = canvas.getContext('2d');
+    const size = $('#wrapper').getBoundingClientRect();
+
+    canvas.width = size.width;
+    canvas.height = size.height;
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.background = '#ddd';
+    
+    page.appendChild(canvas);
+    $('#wrapper').appendChild(page);
+
+    circleRadius = Math.min(canvas.width, canvas.height) / pages.length / 3;
+    const margin = 5 * circleRadius / pages.length;
+    _y = canvas.height / 2;
+    _x = canvas.width / 2 - (circleRadius + margin) * (pages.length - 1);
+    const allX = [_x];
+
+    for(let i=1; i < pages.length; i++)
+        allX.push(allX[i-1] + 2 * (circleRadius + margin));
+
+    let jAlt = 0;
+
+    pages.forEach((name, ii) => {
+        const splittedName = name.split('-');
+        let fontSize = circleRadius;
+        ctx.font = `${fontSize}px serif`;
+
+        while(fontSize > 6 && (Math.max(...splittedName.map(t => ctx.measureText(t).width)) >= 1.4*circleRadius || fontSize*splittedName.length >= circleRadius))
+            ctx.font = `${--fontSize}px serif`;
+        
+        const x = allX[ii], y = _y;
+        const nameY = y - ((splittedName.length == 1) ? 0 : (splittedName.length+fontSize)/2.5);
+
+        // transitions
+        pagesToDraw[name] = {
+            splittedName, fontSize, nameY, x, y,
+            transitions: []
+        };
+
+        const idx = pages.indexOf(name);
+        const h = (360 / pages.length * idx) % 360;
+        const transitions = buttonsTo.filter(i => i.from === name);
+
+        transitions.forEach(t => {
+            const i = pages.indexOf(t.to);
+
+            if(i === -1)
+                return;
+
+            let x0, y0, x1, y1, x2, y2, sens = 0;
+
+            x0 = x;
+            x1 = x + (allX[i] - x) / 2;
+            x2 = allX[i];
+            y0 = y1 = y2 = y;
+
+            // left -> right
+            if(idx == i-1) {
+                x0 += circleRadius + 2;
+                x2 -= circleRadius + 2;
+                sens = 1;
+            }
+            // left <- right
+            else if(idx == i+1) {
+                x0 -= circleRadius + 2;
+                x2 += circleRadius + 2;
+                sens = -1;
+            }
+
+            else {
+                const k = (jAlt++%2 == 0)? 1 : -1;
+                y0 = y2 = y - k * circleRadius;
+                y1 = y0 + -k * (i+1) * 60;
+            }
+
+            const _  = jAlt%2==0? 0 : 1;
+
+            const rotation = (sens != 0)?
+                sens * 90 * Math.PI / 180 :
+                Math.PI * _ + ((_==0?-1:1) * (i - idx > 0 ? -1 : 1) * 30 * Math.PI/180);
+
+            pagesToDraw[name].transitions.push({ h, x0, y0, x1, y1, x2, y2, rotation });
+        });
+    });
+
+    canvas.onmousemove = canvasMouseMove;
+};
+
+
+const circle = (x, y, r) => {
+    ctx.beginPath();
+        ctx.arc(x, y, r, 0, 2*Math.PI);
+        ctx.stroke();
+    ctx.closePath();
+};
+
+const drawPage = name => {
+    const { x, y, fontSize, nameY, splittedName } = pagesToDraw[name];
+
+    ctx.strokeStyle = '#000';
+    ctx.fillStyle = '#000';
+    ctx.lineWidth = 1;
+    ctx.textAlign = 'center';
+
+    ctx.globalAlpha = 1 / ((inACircle === null || (name === inACircle))? 1 : 5);
+
+    // circle
+    circle(x, y, circleRadius);
+
+    // name
+    ctx.font = `${fontSize}px serif`;
+    splittedName.forEach((t, i) => {
+        ctx.beginPath();
+            ctx.fillText(t, x, nameY + i*fontSize);
+            ctx.fill();
+        ctx.closePath();
+    });
+
+    ctx.globalAlpha = 1;
+};
+
+const drawTransitions = name => {
+    pagesToDraw[name].transitions.forEach(t => {    
+        const { h, x0, y0, x1, y1, x2, y2, rotation } = t;
+        
+        ctx.strokeStyle = `hsl(${h}, 50%, 50%)`;
+        ctx.globalAlpha = 0.7 / ((inACircle === null || (name === inACircle))? 1 : 5);
+        ctx.lineWidth = 1;
+        
+        ctx.beginPath();
+            ctx.moveTo(x0, y0);
+            ctx.quadraticCurveTo(x1, y1, x2, y2);
+            ctx.stroke();
+        ctx.closePath();
+        
+        ctx.save();
+            ctx.translate(x2, y2);
+            ctx.rotate(rotation);
+            ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(-5, 5);
+                ctx.lineTo(0, 0);
+                ctx.lineTo(5, 5);
+                ctx.stroke();
+            ctx.closePath();
+        ctx.restore();
+
+        ctx.globalAlpha = 1;
+    });
+};
+
+const draw = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    pages.forEach((p) => drawPage(p));
+    pages.forEach((p) => drawTransitions(p));
+
+    if(needToDraw)
+        requestAnimationFrame(draw);
+};
+
+const mouseInCircle = (a, b) => {
+    return Math.hypot(a.x - b.x, a.y - b.y) <= circleRadius;
+};
+
+const canvasMouseMove = e => {
+    mouseX = e.clientX - canvas.getBoundingClientRect().x;
+    mouseY = e.clientY - canvas.getBoundingClientRect().y;
+
+    const k = Object.keys(pagesToDraw);
+    let b = false;
+    
+    for(let i=0; i < k.length; i++) {
+        const page = k[i];
+        if(mouseInCircle({ x: mouseX, y: mouseY }, { x: pagesToDraw[page].x, y: pagesToDraw[page].y })) {
+            if(inACircle === null) {
+                inACircle = page;
+            }
+            b = true;
+            return;
+        }
+    }
+
+    if(!b && inACircle !== null) {
+        inACircle = null;
     }
 };
 

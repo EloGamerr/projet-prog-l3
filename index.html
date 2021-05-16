@@ -20,18 +20,17 @@
             </div>
 
             <div id="wrapper">
-                <button id="get-help"></button>
-
                 <!-- -------------------- PAGES -------------------- -->
-
+                
                 <!-- ACCUEIL -->
                 <article id="page-accueil">
                     <h1 id="game-title">Tablut</h1>
-
+                    
+                    <button id="get-help" to="raccourcis"></button>
                     <div id="home-btn-wrapper">
-                        <button id="new-game" class="large-btn">Nouvelle partie</button>
-                        <button id="load-game" class="large-btn">Charger partie</button>
-                        <button id="new-game" class="large-btn">Quitter</button>
+                        <button id="new-game" class="large-btn" to="parametres-de-jeu">Nouvelle partie</button>
+                        <button id="load-game" class="large-btn" to="charger-partie">Charger partie</button>
+                        <button id="new-game" class="large-btn" to="exit">Quitter</button>
                     </div>
                 </article>
 
@@ -39,20 +38,21 @@
                 <article id="page-charger-partie">
                     <h1>Charger une partie</h1>
                     <p class="center">Choisissez une sauvegarde à restaurer</p>
+                    <button id="get-help" to="raccourcis"></button>
                     <div class="flex-container">
                         <ul id="saves-area">
-                            <li class="save-item"><span>Partie 1 :</span> <span>(02/01/21 12:50)</span> humain vs humain</li>
-                            <li class="save-item"><span>Partie 2 :</span> <span>(12/11/20 18:20)</span> humain vs IA facile</li>
-                            <li class="save-item"><span>Partie 3 :</span> <span>(07/10/20 17:10)</span> humain vs humain</li>
-                            <li class="save-item"><span>Partie 4 :</span> <span>(23/05/18 07:26)</span> humain vs IA moyenne</li>
-                            <li class="save-item"><span>Partie 5 :</span> <span>(15/02/17 15:43)</span> humain vs IA moyenne</li>
-                            <li class="save-item"><span>Partie 6 :</span> <span>(04/09/10 14:07)</span> humain vs IA difficile</li>
-                            <li class="save-item"><span>Partie 7 :</span> <span>(10/04/08 13:49)</span> humain vs humain</li>
-                            <li class="save-item"><span>Partie 8 :</span> <span>(16/06/03 02:31)</span> humain vs humain</li>
+                            <li class="save-item" to="parametres-de-jeu"><span>Partie 1 :</span> <span>(02/01/21 12:50)</span> humain vs humain</li>
+                            <li class="save-item" to="parametres-de-jeu"><span>Partie 2 :</span> <span>(12/11/20 18:20)</span> humain vs IA facile</li>
+                            <li class="save-item" to="parametres-de-jeu"><span>Partie 3 :</span> <span>(07/10/20 17:10)</span> humain vs humain</li>
+                            <li class="save-item" to="parametres-de-jeu"><span>Partie 4 :</span> <span>(23/05/18 07:26)</span> humain vs IA moyenne</li>
+                            <li class="save-item" to="parametres-de-jeu"><span>Partie 5 :</span> <span>(15/02/17 15:43)</span> humain vs IA moyenne</li>
+                            <li class="save-item" to="parametres-de-jeu"><span>Partie 6 :</span> <span>(04/09/10 14:07)</span> humain vs IA difficile</li>
+                            <li class="save-item" to="parametres-de-jeu"><span>Partie 7 :</span> <span>(10/04/08 13:49)</span> humain vs humain</li>
+                            <li class="save-item" to="parametres-de-jeu"><span>Partie 8 :</span> <span>(16/06/03 02:31)</span> humain vs humain</li>
                         </ul>
                     </div>
                     <div class="bottom-pannel center">
-                        <button class="grey-btn">Retour</button>
+                        <button class="grey-btn" to="accueil">Retour</button>
                     </div>
                 </article>
 
@@ -60,6 +60,7 @@
                 <article id="page-parametres-de-jeu">
                     <h1>Paramètres</h1>
                     <p class="center">Choisissez les paramètres de partie qui vous conviennent puis cliquez sur confirmer</p>
+                    <button id="get-help" to="raccourcis"></button>
                     <div class="center">
                         <h2>Type de partie</h2>
                         <div class="two-columns vs">
@@ -89,14 +90,15 @@
                         
                         <!-- ------ -->
                         <div class="bottom-pannel center">
-                            <button class="grey-btn">Retour</button>
-                            <button class="green-btn">Lancer</button>
+                            <button class="grey-btn" to="accueil">Retour</button>
+                            <button class="green-btn" to="en-jeu">Lancer</button>
                         </div>
                     </div>
                 </article>
                 
                 <!-- INGAME -->
                 <article id="page-en-jeu">
+                    <button id="get-help" to="raccourcis"></button>
                     <div id="chat">
                         <div id="game-chat-history">
                             <ul>
@@ -120,7 +122,7 @@
                     <div id="pannel-buttons">
                         <button id="save-btn" class="game-btn green-btn-hover">Sauvegarder</button>
                         <button id="pause-btn" class="game-btn">Pause</button>
-                        <button id="quit-btn" class="game-btn red-btn-hover">Quitter la partie</button>
+                        <button id="quit-btn" class="game-btn red-btn-hover" to="accueil">Quitter la partie</button>
                     </div>
                 </article>
 
@@ -129,15 +131,15 @@
                     <div class="container">
                         <table>
                             <tr><th>Touche Raccourcis</th><th>Description</th></tr>
-                            <tr><td>CTRL+Z :</td><td>Annuler le dernier coup</td></tr>
-                            <tr><td>CTRL+Y :</td><td>Refaire le dernier coup</td></tr>
-                            <tr><td>CTRL+S :</td><td>Sauvegarder l'état actuelle de la partie</td></tr>
-                            <tr><td>CTRL+N :</td><td>Nouvelle partie</td></tr>
-                            <tr><td>Espace :</td><td>Mettre en pause le jeu (fonctionne uniquement dans le type : Ordinateur contre Ordinateur)</td></tr>
+                            <tr><td>CTRL+Z</td><td>Annuler le dernier coup</td></tr>
+                            <tr><td>CTRL+Y</td><td>Refaire le dernier coup</td></tr>
+                            <tr><td>CTRL+S</td><td>Sauvegarder l'état actuelle de la partie</td></tr>
+                            <tr><td>CTRL+N</td><td>Nouvelle partie</td></tr>
+                            <tr><td>Espace</td><td>Mettre en pause le jeu (fonctionne uniquement dans le type : Ordinateur contre Ordinateur)</td></tr>
                         </table>
                     </div>
                     <div class="bottom-pannel">
-                        <button class="red-btn">Retour</button>
+                        <button class="grey-btn" to="accueil">Retour</button>
                     </div>
                 </article>
             </div>

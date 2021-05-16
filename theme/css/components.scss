@@ -180,7 +180,7 @@
             @each $name in $names {
                 &.#{$name}-cell {
                     &::after {
-                        background-image: url(getImg('#{$name}.png'));
+                        background-image: url(getImg('#{$name}.svg'));
                     }
                 }
             }
