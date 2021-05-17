@@ -9,11 +9,11 @@ import java.awt.*;
 
 public class ChatWindow extends JPanel {
 
-    WestWindow parent;
+    private final WestWindow parent;
 
-    private Style defaultStyle;
-    JTextChat jTextArea;
-    JScrollPane scrollPane;
+    private final Style defaultStyle;
+    private final JTextChat jTextArea;
+    private final JScrollPane scrollPane;
 
     public ChatWindow(WestWindow parent) {
         this.parent = parent;

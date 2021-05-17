@@ -3,8 +3,8 @@ package fr.prog.tablut.view.center;
 import fr.prog.tablut.model.Model;
 
 public class GridView {
-	private GridWindow gridWindow;
-	private Model model;
+	private final GridWindow gridWindow;
+	private final Model model;
 	private int cellWidth, cellHeight;
 
 	public GridView(GridWindow gridWindow, Model model) {

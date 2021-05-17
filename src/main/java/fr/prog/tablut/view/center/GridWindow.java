@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GridWindow extends JPanel {
-	private GridView gridView;
+	private final GridView gridView;
 	private int width, height;
 	private Graphics2D drawable;
     
@@ -27,11 +27,11 @@ public class GridWindow extends JPanel {
     }
 	
 	public int height() {
-		return width;
+		return height;
 	}
 	
 	public int width() {
-		return height;
+		return width;
 	}
 	
 	public int cellHeight() {

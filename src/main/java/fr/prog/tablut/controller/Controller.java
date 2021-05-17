@@ -5,8 +5,8 @@ import fr.prog.tablut.view.center.GridWindow;
 
 public class Controller {
 
-	private Model model;
-	private GridWindow gridWindow;
+	private final Model model;
+	private final GridWindow gridWindow;
 	
 	public Controller(Model model, GridWindow gridWindow) {
 		this.model = model;

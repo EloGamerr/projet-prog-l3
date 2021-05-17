@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class WestWindow extends JPanel {
-    GlobalWindow parent;
+    private final GlobalWindow parent;
 
     public WestWindow(GlobalWindow parent) {
         this.parent = parent;

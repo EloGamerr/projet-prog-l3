@@ -13,11 +13,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GlobalWindow extends JPanel {
-    private GridWindow gridWindow;
-    NorthWindow northWindow;
-    EastWindow eastWindow;
-    WestWindow westWindow;
-    SouthWindow southWindow;
+    private final GridWindow gridWindow;
+    private final NorthWindow northWindow;
+    private final EastWindow eastWindow;
+    private final WestWindow westWindow;
+    private final SouthWindow southWindow;
 
     public GlobalWindow() {
         this.setLayout(new BorderLayout());

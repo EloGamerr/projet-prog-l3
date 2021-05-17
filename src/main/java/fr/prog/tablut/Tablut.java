@@ -9,7 +9,6 @@ public class Tablut implements Runnable {
         SwingUtilities.invokeLater(new Tablut());
     }
 
-
     public void run() {
         JFrame jFrame = new JFrame("Tablut");
 
