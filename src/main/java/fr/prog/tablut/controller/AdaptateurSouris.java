@@ -3,7 +3,7 @@ package fr.prog.tablut.controller;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import fr.prog.tablut.view.GridWindow;
+import fr.prog.tablut.view.center.GridWindow;
 
 public class AdaptateurSouris extends MouseAdapter {
 	private GridWindow gridWindow;

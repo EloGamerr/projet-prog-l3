@@ -1,7 +1,7 @@
 package fr.prog.tablut.controller;
 
 import fr.prog.tablut.model.Model;
-import fr.prog.tablut.view.GridWindow;
+import fr.prog.tablut.view.center.GridWindow;
 
 public class Controller {
 

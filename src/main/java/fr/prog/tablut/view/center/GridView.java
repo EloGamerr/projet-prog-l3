@@ -1,4 +1,4 @@
-package fr.prog.tablut.view;
+package fr.prog.tablut.view.center;
 
 import fr.prog.tablut.model.Model;
 
