@@ -1,18 +1,14 @@
 package fr.prog.tablut.view.west;
 
-import fr.prog.tablut.view.GlobalWindow;
-
 import javax.swing.*;
 import java.awt.*;
 
 public class WestWindow extends JPanel {
-    private final GlobalWindow parent;
 
-    public WestWindow(GlobalWindow parent) {
-        this.parent = parent;
-        this.setBackground(new Color(0, 0, 0));
+    public WestWindow() {
+        this.setBackground(new Color(26, 29, 33));
 
-        ChatWindow chatWindow = new ChatWindow(this);
+        ChatWindow chatWindow = new ChatWindow();
         this.add(chatWindow);
     }
 

@@ -26,7 +26,7 @@ public class GlobalWindow extends JPanel {
         this.add(northWindow, BorderLayout.NORTH);
         eastWindow = new EastWindow();
         this.add(eastWindow, BorderLayout.EAST);
-        westWindow = new WestWindow(this);
+        westWindow = new WestWindow();
         this.add(westWindow, BorderLayout.WEST);
         southWindow = new SouthWindow();
         this.add(southWindow, BorderLayout.SOUTH);
