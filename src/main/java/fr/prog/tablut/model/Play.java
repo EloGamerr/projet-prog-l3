@@ -1,21 +1,20 @@
 package fr.prog.tablut.model;
 
-
-import Structures.Sequence;
-import Structures.SequenceList;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Play {
-	Sequence<Movement> movements;
+	List<Movement> movements;
 
 	Play() {
-		movements = new SequenceList<Movement>();
+		movements = new ArrayList<>();
 	}
 
 	public void move(int dL, int dC, int vL, int vC) {
-		movements.addTail(new Movement(dL, dC, vL, vC));
+		movements.add(new Movement(dL, dC, vL, vC));
 	}
 
-	public Sequence<Movement> movements() {
+	public List<Movement> movements() {
 		return movements;
 	}
 }
