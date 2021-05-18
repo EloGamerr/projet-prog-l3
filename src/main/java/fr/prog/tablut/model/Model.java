@@ -10,4 +10,7 @@ public class Model {
 	public int colAmount() {
 		return 9;
 	}
+	
+
+	
 }

@@ -12,13 +12,11 @@ public class ChatWindow extends JPanel {
 
     public ChatWindow() {
         jTextChat = new JTextChat();
-
         jTextChat.setEditable(false);
         jTextChat.setFont(new Font("Calibri", Font.PLAIN, 12));
         jTextChat.setBackground(new Color(26, 29, 33));
 
         this.setLayout(new BorderLayout());
-
         JLabel jLabel = new JLabel("Derniers coups");
         this.add(jLabel, BorderLayout.NORTH);
 

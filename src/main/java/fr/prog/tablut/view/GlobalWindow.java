@@ -12,6 +12,7 @@ import fr.prog.tablut.view.west.WestWindow;
 import javax.swing.*;
 import java.awt.*;
 
+@SuppressWarnings("serial")
 public class GlobalWindow extends JPanel {
     private final GridWindow gridWindow;
     private final NorthWindow northWindow;
