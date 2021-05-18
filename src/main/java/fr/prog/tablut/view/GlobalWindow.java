@@ -3,15 +3,16 @@ package fr.prog.tablut.view;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import javax.swing.JPanel;
 
 import fr.prog.tablut.view.game.GameWindow;
 import fr.prog.tablut.view.home.HomeWindow;
+import fr.prog.tablut.view.load.LoadWindow;
 
 @SuppressWarnings("serial")
 public class GlobalWindow extends Window {
     private final GameWindow gameWindow;
     private final HomeWindow homeWindow;
+    private final LoadWindow loadWindow;
     public Window currentWindow;
 
     public GlobalWindow() {
@@ -23,6 +24,11 @@ public class GlobalWindow extends Window {
         homeWindow = new HomeWindow(this);
         homeWindow.setVisible(true);
         this.add(homeWindow);
+        
+        loadWindow = new LoadWindow(this);
+        loadWindow.setVisible(false);
+        this.add(loadWindow);
+        
         
         currentWindow = homeWindow;
     }
@@ -42,10 +48,23 @@ public class GlobalWindow extends Window {
 	public void changeWindow(String dest) {
 		// TODO Auto-generated method stub
 		currentWindow.setVisible(false);
-		if(dest == "GameWindow") {
-			gameWindow.setVisible(true);
+		switch (dest) {
+		case "GameWindow": {
 			currentWindow = gameWindow;
+			break;
+		}
+		case "LoadWindow": {
+			currentWindow = loadWindow;
+			break;
+		}
+		case "HomeWindow": {
+			currentWindow = homeWindow;
+			break;
+		}
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + dest);
 		}
 		
+		currentWindow.setVisible(true);
 	}
 }

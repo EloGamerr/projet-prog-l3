@@ -5,17 +5,19 @@ import java.awt.event.ActionListener;
 
 import fr.prog.tablut.view.GlobalWindow;
 
-public class ButtonNewGameAdaptator implements ActionListener{
+public class ButtonNavAdaptator implements ActionListener{
 	private final GlobalWindow globalWindow;
+	private final String dest;
 	
-	public ButtonNewGameAdaptator(GlobalWindow globalWindow) {
+	public ButtonNavAdaptator(GlobalWindow globalWindow, String dest) {
 		// TODO Auto-generated constructor stub
 		this.globalWindow = globalWindow;
+		this.dest = dest;
 	}
 	
 	 @Override
-	    public void actionPerformed(ActionEvent e) {
-	        globalWindow.changeWindow("GameWindow");
-	    }
+    public void actionPerformed(ActionEvent e) {
+        globalWindow.changeWindow(dest);
+    }
 	
 }
