@@ -1,44 +1,30 @@
 package fr.prog.tablut.view;
 
-import fr.prog.tablut.controller.AdaptateurSouris;
-import fr.prog.tablut.controller.Controller;
-import fr.prog.tablut.model.Model;
-import fr.prog.tablut.view.center.GridWindow;
-import fr.prog.tablut.view.east.EastWindow;
-import fr.prog.tablut.view.north.NorthWindow;
-import fr.prog.tablut.view.south.SouthWindow;
-import fr.prog.tablut.view.west.WestWindow;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+
+import fr.prog.tablut.view.game.GameWindow;
+import fr.prog.tablut.view.home.HomeWindow;
 
 @SuppressWarnings("serial")
-public class GlobalWindow extends JPanel {
-    private final GridWindow gridWindow;
-    private final NorthWindow northWindow;
-    private final EastWindow eastWindow;
-    private final WestWindow westWindow;
-    private final SouthWindow southWindow;
+public class GlobalWindow extends Window {
+    private final GameWindow gameWindow;
+    private final HomeWindow homeWindow;
+    public Window currentWindow;
 
     public GlobalWindow() {
-        this.setLayout(new BorderLayout());
-
-        northWindow = new NorthWindow();
-        this.add(northWindow, BorderLayout.NORTH);
-        eastWindow = new EastWindow();
-        this.add(eastWindow, BorderLayout.EAST);
-        westWindow = new WestWindow();
-        this.add(westWindow, BorderLayout.WEST);
-        southWindow = new SouthWindow();
-        this.add(southWindow, BorderLayout.SOUTH);
-
-        Model model = new Model();
-        gridWindow = new GridWindow(model);
-        Controller controller = new Controller(model, gridWindow);
-
-        gridWindow.addMouseListener(new AdaptateurSouris(controller, gridWindow));
-
-        this.add(gridWindow, BorderLayout.CENTER);
+    	//this.setBackground(new Color(85, 85, 85));
+    	gameWindow = new GameWindow();
+    	gameWindow.setVisible(false);
+        this.add(gameWindow);
+        
+        homeWindow = new HomeWindow(this);
+        homeWindow.setVisible(true);
+        this.add(homeWindow);
+        
+        currentWindow = homeWindow;
     }
 
     @Override
@@ -49,25 +35,17 @@ public class GlobalWindow extends JPanel {
         int height = getSize().height;
 
         drawable.clearRect(0, 0, width, height);
+        
+        super.paintComponent(graphics);
     }
 
-    public GridWindow getGridWindow() {
-        return gridWindow;
-    }
-
-    public NorthWindow getNorthWindow() {
-        return northWindow;
-    }
-
-    public EastWindow getEastWindow() {
-        return eastWindow;
-    }
-
-    public WestWindow getWestWindow() {
-        return westWindow;
-    }
-
-    public SouthWindow getSouthWindow() {
-        return southWindow;
-    }
+	public void changeWindow(String dest) {
+		// TODO Auto-generated method stub
+		currentWindow.setVisible(false);
+		if(dest == "GameWindow") {
+			gameWindow.setVisible(true);
+			currentWindow = gameWindow;
+		}
+		
+	}
 }

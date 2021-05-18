@@ -1,6 +1,7 @@
-package fr.prog.tablut.view.west;
+package fr.prog.tablut.view.game;
 
 import javax.swing.*;
+
 import java.awt.*;
 
 public class WestWindow extends JPanel {

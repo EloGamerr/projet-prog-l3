@@ -1,4 +1,4 @@
-package fr.prog.tablut.view.west;
+package fr.prog.tablut.view.game;
 
 import fr.prog.tablut.view.util.JTextChat;
 

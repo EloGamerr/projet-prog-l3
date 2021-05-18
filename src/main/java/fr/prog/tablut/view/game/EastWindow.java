@@ -1,4 +1,4 @@
-package fr.prog.tablut.view.east;
+package fr.prog.tablut.view.game;
 
 import javax.swing.*;
 import java.awt.*;
