@@ -32,11 +32,14 @@ public class LoadWindow extends Window{
 		c.gridy = 1;
 		
 		this.add(title,c);
-		
-		c.gridx = 0;
+
 		c.gridy = 2;
 		
 		this.add(subtitle,c);
+		
+		c.gridy = 3;
+		
+		this.add(new NavButton(globalWindow),c);
 	}
 	
 	@Override

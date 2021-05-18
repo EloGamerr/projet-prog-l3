@@ -1,17 +1,15 @@
 package fr.prog.tablut.view.home;
 
-import java.awt.Font;
-
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import fr.prog.tablut.view.generic.GenericLabel;
 
 @SuppressWarnings("serial")
 public class Title extends JPanel{
-	private final JLabel label;
+	private final GenericLabel label;
 	
 	public Title() {
-		this.label = new JLabel("TABULT");
-		this.label.setFont(new Font("Farro", Font.PLAIN, 70));
+		this.label = new GenericLabel("TABULT", 70);
 		this.add(label);
 	}
 }

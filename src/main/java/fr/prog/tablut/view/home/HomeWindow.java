@@ -10,7 +10,6 @@ import java.awt.Insets;
 import fr.prog.tablut.view.GlobalWindow;
 import fr.prog.tablut.view.Window;
 
-@SuppressWarnings("serial")
 public class HomeWindow extends Window{
 	private final Button_choice button_choice;
 	private final Title title;
