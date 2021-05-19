@@ -6,7 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-
+import fr.prog.tablut.model.WindowName;
 import fr.prog.tablut.view.GlobalWindow;
 import fr.prog.tablut.view.Window;
 
@@ -47,8 +47,8 @@ public class HomeWindow extends Window{
     }
 
 	@Override
-	public String name() {
+	public WindowName name() {
 		// TODO Auto-generated method stub
-		return "HomeWindow";
+		return WindowName.HomeWindow;
 	}
 }

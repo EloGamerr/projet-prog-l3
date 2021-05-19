@@ -6,11 +6,11 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import fr.prog.tablut.model.WindowName;
 import fr.prog.tablut.view.GlobalWindow;
 import fr.prog.tablut.view.Window;
 import fr.prog.tablut.view.generic.GenericLabel;
 
-@SuppressWarnings("serial")
 public class LoadWindow extends Window{
 	private final GenericLabel title;
 	private final GenericLabel subtitle;
@@ -39,6 +39,10 @@ public class LoadWindow extends Window{
 		
 		c.gridy = 3;
 		
+		this.add(new ButtonTogglePannel(),c);
+		
+		c.gridy = 4;
+		
 		this.add(new NavButton(globalWindow),c);
 	}
 	
@@ -55,8 +59,8 @@ public class LoadWindow extends Window{
     }
 
 	@Override
-	public String name() {
+	public WindowName name() {
 		// TODO Auto-generated method stub
-		return "LoadWindow";
+		return WindowName.LoadWindow;
 	}
 }

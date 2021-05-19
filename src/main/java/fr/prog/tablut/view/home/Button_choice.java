@@ -7,6 +7,7 @@ import java.awt.Insets;
 import javax.swing.JPanel;
 
 import fr.prog.tablut.controller.adaptators.ButtonNavAdaptator;
+import fr.prog.tablut.model.WindowName;
 import fr.prog.tablut.view.GlobalWindow;
 import fr.prog.tablut.view.generic.GenericButton;
 
@@ -19,14 +20,14 @@ public class Button_choice extends JPanel{
 	public Button_choice(GlobalWindow globalWindow) {
 		this.setLayout(new GridBagLayout());
 		//this.button_new_game = new JButton("Nouvelle partie");
-		this.button_new_game = new GenericButton("Nouvelle partie", new ButtonNavAdaptator(globalWindow, "LoadWindow"), new Dimension(200,30));
-		this.button_load_game = new GenericButton("Charger partie", new Dimension(200,30));
+		this.button_new_game = new GenericButton("Nouvelle partie", new Dimension(200,30));
+		this.button_load_game = new GenericButton("Charger partie", new ButtonNavAdaptator(globalWindow, WindowName.LoadWindow), new Dimension(200,30));
 		this.button_shortcut = new GenericButton("Raccourcis", new Dimension(200,30));
 		this.button_quit = new GenericButton("Quitter", new Dimension(200,30));
 		
 		GridBagConstraints c = new GridBagConstraints();
 		
-		c.insets = new Insets(10,10,10,10);	
+		c.insets = new Insets(10,10,10,10);
 		
 		c.gridx = 0;
 		c.gridy = 1;

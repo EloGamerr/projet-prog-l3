@@ -3,6 +3,7 @@ package fr.prog.tablut.view.game;
 import fr.prog.tablut.controller.AdaptateurSouris;
 import fr.prog.tablut.controller.Controller;
 import fr.prog.tablut.model.Model;
+import fr.prog.tablut.model.WindowName;
 import fr.prog.tablut.view.Window;
 
 import javax.swing.*;
@@ -38,6 +39,18 @@ public class GameWindow extends Window{
         this.add(gridWindow, BorderLayout.CENTER);
     }
 
+    @Override
+    protected void paintComponent(Graphics graphics) {
+        Graphics2D drawable = (Graphics2D) graphics;
+
+        int width = getSize().width;
+        int height = getSize().height;
+
+        drawable.clearRect(0, 0, width, height);
+        
+        super.paintComponent(graphics);
+    }
+    
     public GridWindow getGridWindow() {
         return gridWindow;
     }
@@ -58,8 +71,8 @@ public class GameWindow extends Window{
         return southWindow;
     }
 
-	public String name() {
+	public WindowName name() {
 		// TODO Auto-generated method stub
-		return "GameWindow";
+		return WindowName.GameWindow;
 	}
 }

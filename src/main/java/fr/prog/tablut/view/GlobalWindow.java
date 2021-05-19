@@ -3,7 +3,9 @@ package fr.prog.tablut.view;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import javax.swing.JFrame;
 
+import fr.prog.tablut.model.WindowName;
 import fr.prog.tablut.view.game.GameWindow;
 import fr.prog.tablut.view.home.HomeWindow;
 import fr.prog.tablut.view.load.LoadWindow;
@@ -14,20 +16,19 @@ public class GlobalWindow extends Window {
     private final HomeWindow homeWindow;
     private final LoadWindow loadWindow;
     public Window currentWindow;
+    JFrame jFrame;
 
-    public GlobalWindow() {
+    public GlobalWindow(JFrame jFrame) {
+        this.jFrame = jFrame;
     	//this.setBackground(new Color(85, 85, 85));
     	gameWindow = new GameWindow();
     	gameWindow.setVisible(false);
-        this.add(gameWindow);
         
         homeWindow = new HomeWindow(this);
-        homeWindow.setVisible(true);
-        this.add(homeWindow);
+        jFrame.setContentPane(homeWindow);
         
         loadWindow = new LoadWindow(this);
         loadWindow.setVisible(false);
-        this.add(loadWindow);
         
         
         currentWindow = homeWindow;
@@ -45,19 +46,19 @@ public class GlobalWindow extends Window {
         super.paintComponent(graphics);
     }
 
-	public void changeWindow(String dest) {
+	public void changeWindow(WindowName dest) {
 		// TODO Auto-generated method stub
 		currentWindow.setVisible(false);
 		switch (dest) {
-		case "GameWindow": {
+		case GameWindow: {
 			currentWindow = gameWindow;
 			break;
 		}
-		case "LoadWindow": {
+		case LoadWindow: {
 			currentWindow = loadWindow;
 			break;
 		}
-		case "HomeWindow": {
+		case HomeWindow: {
 			currentWindow = homeWindow;
 			break;
 		}
@@ -66,5 +67,6 @@ public class GlobalWindow extends Window {
 		}
 		
 		currentWindow.setVisible(true);
+		jFrame.setContentPane(currentWindow);
 	}
 }
