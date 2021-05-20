@@ -50,10 +50,6 @@ public class GameWindow extends Window{
         drawable.clearRect(0, 0, width, height);
         
         super.paintComponent(graphics);
-        
-        /*setComponentZOrder(this, 1);
-        drawable.setColor(new Color(127, 127, 127));
-        drawable.drawLine(0, 0, width, height);*/
     }
     
     public GridWindow getGridWindow() {
@@ -77,7 +73,6 @@ public class GameWindow extends Window{
     }
 
 	public WindowName name() {
-		// TODO Auto-generated method stub
 		return WindowName.GameWindow;
 	}
 }

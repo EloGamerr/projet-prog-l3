@@ -15,7 +15,7 @@ import fr.prog.tablut.view.generic.GenericLabel;
 public class SelectionPlayer extends JPanel {
 	JTextField pseudoAttaquant;
 	JTextField pseudoDefenseur;
-	GridBagConstraints c = new GridBagConstraints();
+	final GridBagConstraints c = new GridBagConstraints();
 	public SelectionPlayer() {
 		this.setLayout(new GridBagLayout());
 		
@@ -31,9 +31,9 @@ public class SelectionPlayer extends JPanel {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void createSide(String side) {
-		c.gridx = side == "Attaquant" ? 0 : 2;
+		c.gridx = side.equals("Attaquant") ? 0 : 2;
 		c.gridy = 0;
-		c.insets = new Insets(100, side == "Attaquant" ? 0 : 50, 0, side == "Attaquant" ? 50 : 0);
+		c.insets = new Insets(100, side == "Attaquant" ? 0 : 50, 0, side.equals("Attaquant") ? 50 : 0);
 		String[] choices = {
 				"Humain",
 				"Ordinateur facile",
@@ -42,7 +42,7 @@ public class SelectionPlayer extends JPanel {
 		};
 		this.add(new GenericLabel(side, 15),c);
 		
-		c.insets = new Insets(0, side == "Attaquant" ? 0 : 50, 0, side == "Attaquant" ? 50 : 0);
+		c.insets = new Insets(0, side.equals("Attaquant") ? 0 : 50, 0, side.equals("Attaquant") ? 50 : 0);
 		c.gridy = 1;
 		
 		JComboBox comboBox = new JComboBox(choices);
@@ -52,8 +52,8 @@ public class SelectionPlayer extends JPanel {
 		this.add(comboBox,c);
 		
 		c.gridy = 2;
-		c.insets = new Insets(20, side == "Attaquant" ? 0 : 50, 0, side == "Attaquant" ? 50 : 0);
-		if(side == "Attaquant") {
+		c.insets = new Insets(20, side.equals("Attaquant") ? 0 : 50, 0, side.equals("Attaquant") ? 50 : 0);
+		if(side.equals("Attaquant")) {
 			pseudoAttaquant = new JTextField();
 			pseudoAttaquant.setPreferredSize(new Dimension(200,30));
 			pseudoAttaquant.setText("Joueur 1");
@@ -69,7 +69,7 @@ public class SelectionPlayer extends JPanel {
 	}
 	
 	public void showInput(String side) {
-		if(side == "Attaquant") {
+		if(side.equals("Attaquant")) {
 			pseudoAttaquant.setVisible(true);
 		}
 		else {
@@ -78,7 +78,7 @@ public class SelectionPlayer extends JPanel {
 	}
 	
 	public void hideInput(String side) {
-		if(side == "Attaquant") {
+		if(side.equals("Attaquant")) {
 			pseudoAttaquant.setVisible(false);
 		}
 		else {

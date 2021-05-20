@@ -3,8 +3,8 @@ package fr.prog.tablut.structures;
 import java.util.Objects;
 
 public class Couple<T, S> {
-    private T first;
-    private S second;
+    private final T first;
+    private final S second;
 
     public Couple(T first, S second) {
         this.first = first;

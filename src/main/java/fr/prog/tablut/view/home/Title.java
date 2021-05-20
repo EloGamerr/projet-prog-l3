@@ -9,7 +9,7 @@ public class Title extends JPanel{
 	private final GenericLabel label;
 	
 	public Title() {
-		this.label = new GenericLabel("TABULT", 70);
+		this.label = new GenericLabel("TABLUT", 70);
 		this.add(label);
 	}
 }

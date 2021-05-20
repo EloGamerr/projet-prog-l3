@@ -10,10 +10,9 @@ import fr.prog.tablut.view.generic.GenericLabel;
 
 public class HelpPannel extends JPanel{
 	
-	private GridBagConstraints c = new GridBagConstraints();
+	private final GridBagConstraints c = new GridBagConstraints();
 	
 	public HelpPannel() {
-		// TODO Auto-generated constructor stub
 		this.setLayout(new GridBagLayout());
 		
 		createHelpTitle();

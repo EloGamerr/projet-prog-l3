@@ -1,5 +1,6 @@
 package fr.prog.tablut.view.game;
 
+import fr.prog.tablut.view.generic.GenericLabel;
 import fr.prog.tablut.view.util.JTextChat;
 
 import javax.swing.*;
@@ -17,7 +18,7 @@ public class ChatWindow extends JPanel {
         jTextChat.setBackground(new Color(26, 29, 33));
 
         this.setLayout(new BorderLayout());
-        JLabel jLabel = new JLabel("Derniers coups");
+        GenericLabel jLabel = new GenericLabel("Derniers coups", 12);
         this.add(jLabel, BorderLayout.NORTH);
 
         scrollPane = new JScrollPane(jTextChat);

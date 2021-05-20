@@ -1,13 +1,14 @@
 package fr.prog.tablut.view.game;
 
+import fr.prog.tablut.view.generic.GenericLabel;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class NorthWindow extends JPanel {
     public NorthWindow() {
-        JLabel jLabel = new JLabel("TABLUT");
+        GenericLabel jLabel = new GenericLabel("TABLUT", 20);
         jLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        jLabel.setFont(new Font("Calibri", Font.BOLD, 20));
         this.add(jLabel);
     }
 

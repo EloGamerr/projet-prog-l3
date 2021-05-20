@@ -3,7 +3,6 @@ package fr.prog.tablut.view.generic;
 import java.awt.Font;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 public class GenericLabel extends JLabel {
 	

@@ -7,12 +7,12 @@ import java.util.List;
 import fr.prog.tablut.structures.Couple;
 
 public class Game {
-	int rowAmount, colAmount;
-	CellContent[][] grid;
-	final int middle;
-	int kingL, kingC;
-	PlayerEnum winner;
-	List<Couple<Integer, Integer>> visited = new ArrayList<>();
+	private int rowAmount, colAmount;
+	private CellContent[][] grid;
+	private final int middle;
+	private int kingL, kingC;
+	private PlayerEnum winner;
+	private final List<Couple<Integer, Integer>> visited = new ArrayList<>();
 	private PlayerEnum player;
 	
 	public Game(){
@@ -121,7 +121,7 @@ public class Game {
 			}
 		}
 		if((winner = checkWin(previousToCellContent, fromCellContent)) != null) {
-			System.out.println(winner.toString() + " a gagné !");
+			System.out.println(winner + " a gagné !");
 		}
 		else {
 			player = player.getOpponent();
@@ -134,55 +134,48 @@ public class Game {
 		List<Couple<Integer, Integer>> accessibleCells = new ArrayList<>();
 		
 		for(int toL = fromL-1 ; toL >= 0 ; toL--) {
-			int toC = fromC;
-			
-			if(!checkAccess(fromL, fromC, toC, toL, accessibleCells))
+
+			if(cantAccess(fromL, fromC, fromC, toL, accessibleCells))
 				break;
 		}
 		
 		for(int toL = fromL+1 ; toL < rowAmount ; toL++) {
-			int toC = fromC;
-			
-			if(!checkAccess(fromL, fromC, toC, toL, accessibleCells))
+
+			if(cantAccess(fromL, fromC, fromC, toL, accessibleCells))
 				break;
 		}
 		
 		for(int toC = fromC-1 ; toC >= 0 ; toC--) {
-			int toL = fromL;
-			
-			if(!checkAccess(fromL, fromC, toC, toL, accessibleCells))
+
+			if(cantAccess(fromL, fromC, toC, fromL, accessibleCells))
 				break;
 		}
 		
 		for(int toC = fromC+1 ; toC < colAmount ; toC++) {
-			int toL = fromL;
-			
-			if(!checkAccess(fromL, fromC, toC, toL, accessibleCells))
+
+			if(cantAccess(fromL, fromC, toC, fromL, accessibleCells))
 				break;
 		}
 		
 		return accessibleCells;
 	}
 	
-	private boolean checkAccess(int fromL, int fromC, int toC, int toL, List<Couple<Integer, Integer>> accessibleCells) {
+	private boolean cantAccess(int fromL, int fromC, int toC, int toL, List<Couple<Integer, Integer>> accessibleCells) {
 		CellContent fromCellContent = grid[fromL][fromC];
 		CellContent toCellContent = grid[toL][toC];
 		
 		if(toCellContent == CellContent.GATE || (isTheKingPlace(toC, toL) && toCellContent == CellContent.EMPTY)) {
 			if(fromCellContent == CellContent.KING) {
 				accessibleCells.add(new Couple<Integer, Integer>(toL, toC));
-				return true;
 			}
-			else {
-				return true;
-			}
+			return false;
 		}
 		
-		if(toCellContent != CellContent.EMPTY) return false;
+		if(toCellContent != CellContent.EMPTY) return true;
 		
 		accessibleCells.add(new Couple<Integer, Integer>(toL, toC));
 		
-		return true;
+		return false;
 	}
 	
 	public void towerTaker_attack(int l, int c) {
@@ -243,7 +236,7 @@ public class Game {
 			counter_obstacle++;
 			counter_enemy++;
 		}
-		else if(!isFree(i,j)){
+		else if(isOccupied(i, j)){
 			allyCells.add(new Couple<Integer, Integer>(i, j));
 			counter_obstacle++;
 		}
@@ -255,7 +248,7 @@ public class Game {
 			counter_obstacle++;
 			counter_enemy++;
 		}
-		else if(!isFree(i,j)){
+		else if(isOccupied(i, j)){
 			allyCells.add(new Couple<Integer, Integer>(i, j));
 			counter_obstacle++;
 		}
@@ -270,23 +263,15 @@ public class Game {
 		Couple<Integer, Integer> nb = new Couple<Integer, Integer>(counter_obstacle, counter_enemy);
 		switch(grid[i][j]) {
 			case DEFENSE_TOWER:
-				
-				nb = checkneighbour_defense(allyCells, nb.getFirst(), nb.getSecond(), i-1, j);
-				nb = checkneighbour_defense(allyCells, nb.getFirst(), nb.getSecond(), i+1, j);
-				nb = checkneighbour_defense(allyCells, nb.getFirst(), nb.getSecond(), i, j-1);
-				nb = checkneighbour_defense(allyCells, nb.getFirst(), nb.getSecond(), i, j+1);
-				
-				break;
-					
 			case KING:
-				
+
 				nb = checkneighbour_defense(allyCells, nb.getFirst(), nb.getSecond(), i-1, j);
 				nb = checkneighbour_defense(allyCells, nb.getFirst(), nb.getSecond(), i+1, j);
 				nb = checkneighbour_defense(allyCells, nb.getFirst(), nb.getSecond(), i, j-1);
 				nb = checkneighbour_defense(allyCells, nb.getFirst(), nb.getSecond(), i, j+1);
 				
 				break;
-				
+
 			case ATTACK_TOWER:
 				
 				nb = checkneighbour_attack(allyCells, nb.getFirst(), nb.getSecond(), i-1, j);
@@ -379,17 +364,11 @@ public class Game {
 	}
 	
 	public boolean isAWall(int i, int j) {
-		if(i == rowAmount-1 || j == colAmount-1) 
-			return true;
-		else
-			return false;
+		return i == rowAmount - 1 || j == colAmount - 1;
 	}
 	
 	public boolean isTheKingPlace(int i, int j) {
-		if(i == middle && j == middle)
-			return true;
-		else
-			return false;
+		return i == middle && j == middle;
 	}
 	
 	
@@ -397,25 +376,20 @@ public class Game {
 	public boolean isADefenseAllied(int i, int j) {
 		if(isAWall(i,j)|| isTheKingPlace(i,j) || isAttackTower(i,j) || isGate(i,j))
 			return false;
-		else if(isDefenseTower(i,j) || isTheKing(i,j)) 
-			return true;
-		return false;
+		else return isDefenseTower(i, j) || isTheKing(i, j);
 	}
 	
 	public boolean isAnAttackAllied(int i, int j) {
 		if(isAWall(i,j) ||isDefenseTower(i,j) || isTheKing(i,j)|| isTheKingPlace(i,j) ||  isGate(i,j)) {
 			return false;
 		}
-		else if(isAttackTower(i,j)) 
-			return true;
-		
-		return false;
+		else return isAttackTower(i, j);
 	}
 	
-	public boolean isFree(int l, int c) {
-		if(!isValid(l, c)) return false;
+	public boolean isOccupied(int l, int c) {
+		if(!isValid(l, c)) return true;
 		
-		return grid[l][c] == CellContent.EMPTY;
+		return grid[l][c] != CellContent.EMPTY;
 	}
 
 	public boolean isTheKing(int l, int c) {

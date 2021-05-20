@@ -56,9 +56,6 @@ public class Controller {
 				}
 				break;
 		}
-		if(game.isFree(row, col)) {
-			
-		}
 	}
 	
 	public Couple<Integer, Integer> getSelectedCell() {

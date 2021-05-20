@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Play {
-	List<Movement> movements;
+	private final List<Movement> movements;
 
 	Play() {
 		movements = new ArrayList<>();

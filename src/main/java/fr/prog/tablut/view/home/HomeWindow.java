@@ -11,14 +11,14 @@ import fr.prog.tablut.view.GlobalWindow;
 import fr.prog.tablut.view.Window;
 
 public class HomeWindow extends Window{
-	private final Button_choice button_choice;
+	private final ButtonChoice button_choice;
 	private final Title title;
 	
 	public HomeWindow(GlobalWindow globalWindow) {
 		this.setLayout(new GridBagLayout());
 		
 		this.title = new Title();
-		this.button_choice = new Button_choice(globalWindow);
+		this.button_choice = new ButtonChoice(globalWindow);
 		
 		GridBagConstraints c = new GridBagConstraints();
 		
@@ -48,7 +48,6 @@ public class HomeWindow extends Window{
 
 	@Override
 	public WindowName name() {
-		// TODO Auto-generated method stub
 		return WindowName.HomeWindow;
 	}
 }

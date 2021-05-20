@@ -20,7 +20,7 @@ public class GlobalWindow extends Window {
     private final HelpWindow helpWindow;
     private final NewGameWindow newGameWindow;
     public Window currentWindow;
-    JFrame jFrame;
+	private final JFrame jFrame;
 
     public GlobalWindow(JFrame jFrame) {
         this.jFrame = jFrame;

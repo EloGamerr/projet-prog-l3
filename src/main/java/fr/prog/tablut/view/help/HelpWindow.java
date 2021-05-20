@@ -45,7 +45,6 @@ public class HelpWindow extends Window{
 
 	@Override
 	public WindowName name() {
-		// TODO Auto-generated method stub
 		return WindowName.HelpWindow;
 	}
 }

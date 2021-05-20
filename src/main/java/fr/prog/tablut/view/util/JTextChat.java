@@ -8,7 +8,7 @@ import java.awt.*;
 public class JTextChat extends JTextPane {
 
     private final StyledDocument styledDocument = getStyledDocument();
-    protected float COMPONENT_ALIGNEMENT = 0.82f;
+    protected final float COMPONENT_ALIGNEMENT = 0.82f;
 
     public JTextChat() {
         super();
@@ -37,12 +37,8 @@ public class JTextChat extends JTextPane {
         // On récupère le style (Si il n'existe pas on récupère null)
         Style style = styledDocument.getStyle(styleName);
 
-        // Si le style existe on le retourne
-        if(style != null) return style;
-
-            // Si le style n'existe pas on le créer
-        else {
-
+        // Si le style n'existe pas on le crée
+        if(style == null) {
             // Création du nouveau style
             Style styleDefaut 	= styledDocument.getStyle(StyleContext.DEFAULT_STYLE);
             style 				= styledDocument.addStyle(styleName, styleDefaut);
@@ -51,10 +47,9 @@ public class JTextChat extends JTextPane {
             StyleConstants.setItalic(style, italic);
             StyleConstants.setUnderline(style, underline);
             StyleConstants.setForeground(style, color);
-
-
-            return style;
         }
+
+        return style;
     }
 
     public synchronized void insertTextEnd(String texte, boolean bold, boolean italic, boolean underline, Color color) {

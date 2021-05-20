@@ -13,20 +13,19 @@ public class ComboBoxAdaptator implements ActionListener{
 	private final String side;
 	
 	public ComboBoxAdaptator(String side, SelectionPlayer selectionPlayer) {
-		// TODO Auto-generated constructor stub
 		this.selectionPlayer = selectionPlayer;
 		this.side = side;
 		
 	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JComboBox comboBox = (JComboBox) e.getSource();
-		if((String)comboBox.getSelectedItem() == "Humain") {
+		if(comboBox.getSelectedItem() == "Humain") {
 			selectionPlayer.showInput(side);
 		}
 		else {
 			selectionPlayer.hideInput(side);
 		}
 	}
-
 }

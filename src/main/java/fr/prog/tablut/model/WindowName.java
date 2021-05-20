@@ -6,5 +6,5 @@ public enum WindowName {
 	LoadWindow(),
 	HelpWindow(),
 	GameWindow(),
-	DefaultWindow();
+	DefaultWindow()
 }

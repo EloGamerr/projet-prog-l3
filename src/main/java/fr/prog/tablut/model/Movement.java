@@ -1,7 +1,10 @@
 package fr.prog.tablut.model;
 
 public class Movement {
-	public int fromL, fromC, toL, toC;
+	public final int fromL;
+	public final int fromC;
+	public final int toL;
+	public final int toC;
 
 	Movement(int fromL, int fromC, int toL, int toC) {
 		this.fromL = fromL;

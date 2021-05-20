@@ -4,23 +4,20 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
-import fr.prog.tablut.controller.adaptators.ButtonNavAdaptator;
 import fr.prog.tablut.model.WindowName;
 import fr.prog.tablut.view.GlobalWindow;
 import fr.prog.tablut.view.generic.GenericButton;
 
-public class Button_choice extends JPanel{
+public class ButtonChoice extends JPanel{
 	private final GenericButton button_new_game;
 	private final GenericButton button_load_game;
 	private final GenericButton button_shortcut;
 	private final GenericButton button_quit;
 	
-	public Button_choice(GlobalWindow globalWindow) {
+	public ButtonChoice(GlobalWindow globalWindow) {
 		this.setLayout(new GridBagLayout());
 		this.button_new_game = new GenericButton("Nouvelle partie", GenericButton.GO(WindowName.NewGameWindow), new Dimension(200,30));
 		this.button_load_game = new GenericButton("Charger partie", GenericButton.GO(WindowName.LoadWindow), new Dimension(200,30));

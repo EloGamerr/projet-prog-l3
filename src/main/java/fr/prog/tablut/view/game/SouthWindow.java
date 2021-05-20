@@ -1,13 +1,14 @@
 package fr.prog.tablut.view.game;
 
+import fr.prog.tablut.view.generic.GenericLabel;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class SouthWindow extends JPanel {
     public SouthWindow() {
-        JLabel jLabel = new JLabel("Au tour du d\u00e9fenseur");
+        GenericLabel jLabel = new GenericLabel("Au tour du d\u00e9fenseur", 15);
         jLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        jLabel.setFont(new Font("Calibri", Font.PLAIN, 15));
         this.add(jLabel);
     }
 

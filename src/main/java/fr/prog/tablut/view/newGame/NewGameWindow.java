@@ -6,27 +6,20 @@ import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import fr.prog.tablut.controller.adaptators.ComboBoxAdaptator;
 import fr.prog.tablut.model.WindowName;
 import fr.prog.tablut.view.GlobalWindow;
 import fr.prog.tablut.view.Window;
 import fr.prog.tablut.view.generic.GenericButton;
-import fr.prog.tablut.view.generic.GenericComboBox;
 import fr.prog.tablut.view.generic.GenericLabel;
 
 public class NewGameWindow extends Window{
 	JTextField pseudoAttaquant;
 	JTextField pseudoDeffenseur;
 	public NewGameWindow(GlobalWindow globalWindow) {
-		// TODO Auto-generated constructor stub
-		
 		this.setLayout(new GridBagLayout());
 		
 		GridBagConstraints c = new GridBagConstraints();
@@ -58,7 +51,6 @@ public class NewGameWindow extends Window{
 
 	@Override
 	public WindowName name() {
-		// TODO Auto-generated method stub
 		return WindowName.NewGameWindow;
 	}
 }
@@ -75,7 +67,6 @@ class TopLabel extends JPanel {
 		c.insets = new Insets(20, 0, 0, 0);
 		c.gridy = 1;
 		this.add(new GenericLabel("Choisissez les paramètres de partie qui vous conviennent puis cliquez sur confirmer", 20),c);
-		
 	}
 }
 
@@ -90,6 +81,5 @@ class BottomButton extends JPanel {
 		c.gridx = 1;
 		c.insets = new Insets(0, 20, 0, 0);
 		this.add(new GenericButton("Jouer !",GenericButton.GO(WindowName.GameWindow), new Dimension(150,30)),c);
-		
 	}
 }

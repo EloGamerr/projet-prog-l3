@@ -19,7 +19,6 @@ public class ButtonTogglePannel extends JPanel{
 	private final String SAVE_LOCATION = System.getProperty("user.dir") + "data/saves/";
 	
 	public ButtonTogglePannel() {
-		// TODO Auto-generated constructor stub
 		this.setLayout(new GridBagLayout());
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 		
@@ -42,6 +41,5 @@ public class ButtonTogglePannel extends JPanel{
 		
 		button_selected = button;
 		button_selected.setBackground(Color.green);
-		
 	}
 }

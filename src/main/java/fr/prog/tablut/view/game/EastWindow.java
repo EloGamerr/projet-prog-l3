@@ -1,12 +1,14 @@
 package fr.prog.tablut.view.game;
 
+import fr.prog.tablut.view.generic.GenericButton;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class EastWindow extends JPanel {
     public EastWindow() {
         this.setBackground(new Color(0, 0, 0));
-        JButton jButton = new JButton("Test");
+        GenericButton jButton = new GenericButton("Test");
         this.add(jButton);
     }
 

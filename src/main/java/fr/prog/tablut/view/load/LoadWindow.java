@@ -14,11 +14,8 @@ import fr.prog.tablut.view.generic.GenericLabel;
 public class LoadWindow extends Window{
 	private final GenericLabel title;
 	private final GenericLabel subtitle;
-	
-	
+
 	public LoadWindow(GlobalWindow globalWindow) {
-		// TODO Auto-generated constructor stub
-		
 		this.setLayout(new GridBagLayout());
 		
 		this.title = new GenericLabel("Charger une partie", 80);
@@ -60,7 +57,6 @@ public class LoadWindow extends Window{
 
 	@Override
 	public WindowName name() {
-		// TODO Auto-generated method stub
 		return WindowName.LoadWindow;
 	}
 }
