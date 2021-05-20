@@ -21,7 +21,12 @@ public class ComboBoxAdaptator implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JComboBox comboBox = (JComboBox) e.getSource();
-		System.out.println(String.format("%s selected %s",side,(String)comboBox.getSelectedItem()));
+		if((String)comboBox.getSelectedItem() == "Humain") {
+			selectionPlayer.showInput(side);
+		}
+		else {
+			selectionPlayer.hideInput(side);
+		}
 	}
 
 }
