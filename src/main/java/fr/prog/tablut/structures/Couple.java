@@ -1,5 +1,7 @@
 package fr.prog.tablut.structures;
 
+import java.util.Objects;
+
 public class Couple<T, S> {
     private T first;
     private S second;
@@ -15,5 +17,23 @@ public class Couple<T, S> {
 
     public S getSecond() {
         return second;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Couple<?, ?> couple = (Couple<?, ?>) o;
+        return Objects.equals(first, couple.first) && Objects.equals(second, couple.second);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(first, second);
+    }
+    
+    @Override
+    public String toString() {
+    	return "(" + first + ", " + second + ")";
     }
 }

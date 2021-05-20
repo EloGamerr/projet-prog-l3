@@ -4,6 +4,9 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JPanel;
 
 import fr.prog.tablut.controller.adaptators.ButtonNavAdaptator;
@@ -19,11 +22,10 @@ public class Button_choice extends JPanel{
 	
 	public Button_choice(GlobalWindow globalWindow) {
 		this.setLayout(new GridBagLayout());
-		//this.button_new_game = new JButton("Nouvelle partie");
-		this.button_new_game = new GenericButton("Nouvelle partie", new Dimension(200,30));
-		this.button_load_game = new GenericButton("Charger partie", new ButtonNavAdaptator(globalWindow, WindowName.LoadWindow), new Dimension(200,30));
-		this.button_shortcut = new GenericButton("Raccourcis", new Dimension(200,30));
-		this.button_quit = new GenericButton("Quitter", new Dimension(200,30));
+		this.button_new_game = new GenericButton("Nouvelle partie", GenericButton.GO(WindowName.NewGameWindow), new Dimension(200,30));
+		this.button_load_game = new GenericButton("Charger partie", GenericButton.GO(WindowName.LoadWindow), new Dimension(200,30));
+		this.button_shortcut = new GenericButton("Raccourcis", GenericButton.GO(WindowName.HelpWindow) ,new Dimension(200,30));
+		this.button_quit = new GenericButton("Quitter", GenericButton.QUIT ,new Dimension(200,30));
 		
 		GridBagConstraints c = new GridBagConstraints();
 		
@@ -46,3 +48,4 @@ public class Button_choice extends JPanel{
 		this.add(button_quit,c);
 	}
 }
+	

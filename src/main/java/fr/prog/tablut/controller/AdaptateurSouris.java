@@ -15,7 +15,23 @@ public class AdaptateurSouris extends MouseAdapter {
 	}
 	
 	@Override
-	public void mouseClicked(MouseEvent e) {
+	public void mousePressed(MouseEvent e) {
+		if(e.getButton() == MouseEvent.BUTTON1) {
+			int	l = gridWindow.getRowFromYCoord(e.getY());
+			int c = gridWindow.getColFromXCoord(e.getX());
+			controller.click(l, c);
+		}
+		else if(e.getButton() == MouseEvent.BUTTON3)
+			controller.undoSelect();
+	}
 
- 	}
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		controller.mouseMoved(e.getPoint());
+	}
+	
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		controller.mouseMoved(e.getPoint());
+	}
 }

@@ -2,21 +2,20 @@ package fr.prog.tablut.view.game;
 
 import fr.prog.tablut.controller.AdaptateurSouris;
 import fr.prog.tablut.controller.Controller;
-import fr.prog.tablut.model.Model;
+import fr.prog.tablut.model.Game;
 import fr.prog.tablut.model.WindowName;
 import fr.prog.tablut.view.Window;
 
-import javax.swing.*;
 import java.awt.*;
 
-@SuppressWarnings("serial")
 public class GameWindow extends Window{
     private final GridWindow gridWindow;
     private final NorthWindow northWindow;
     private final EastWindow eastWindow;
     private final WestWindow westWindow;
     private final SouthWindow southWindow;
-
+    private final Game game;
+    
     public GameWindow() {
     	
         this.setLayout(new BorderLayout());
@@ -30,11 +29,13 @@ public class GameWindow extends Window{
         southWindow = new SouthWindow();
         this.add(southWindow, BorderLayout.SOUTH);
 
-        Model model = new Model();
-        gridWindow = new GridWindow(model);
-        Controller controller = new Controller(model, gridWindow);
+        game = new Game();
+        gridWindow = new GridWindow(game);
+        Controller controller = new Controller(game, gridWindow);
 
-        gridWindow.addMouseListener(new AdaptateurSouris(controller, gridWindow));
+        AdaptateurSouris adaptateurSouris = new AdaptateurSouris(controller, gridWindow);
+        gridWindow.addMouseListener(adaptateurSouris);
+        gridWindow.addMouseMotionListener(adaptateurSouris);
 
         this.add(gridWindow, BorderLayout.CENTER);
     }
@@ -49,6 +50,10 @@ public class GameWindow extends Window{
         drawable.clearRect(0, 0, width, height);
         
         super.paintComponent(graphics);
+        
+        /*setComponentZOrder(this, 1);
+        drawable.setColor(new Color(127, 127, 127));
+        drawable.drawLine(0, 0, width, height);*/
     }
     
     public GridWindow getGridWindow() {
