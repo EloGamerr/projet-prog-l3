@@ -4,17 +4,17 @@ import java.awt.Point;
 
 import fr.prog.tablut.model.Game;
 import fr.prog.tablut.structures.Couple;
-import fr.prog.tablut.view.game.GridWindow;
+import fr.prog.tablut.view.game.GameWindow;
 
 public class Controller {
 
 	private final Game game;
-	private final GridWindow gridWindow;
+	private final GameWindow gameWindow;
 	private Couple<Integer, Integer> selectedCell;
 	
-	public Controller(Game game, GridWindow gridWindow) {
+	public Controller(Game game, GameWindow gameWindow) {
 		this.game = game;
-		this.gridWindow = gridWindow;
+		this.gameWindow = gameWindow;
 	}
 	
 	public void click(int row, int col) {
@@ -25,7 +25,7 @@ public class Controller {
 				if(selectedCell == null) {
 					if(game.isAttackTower(row, col)) {
 						selectedCell = new Couple<Integer, Integer>(row, col);
-						this.mouseMoved(gridWindow.getMousePosition());
+						this.mouseMoved(gameWindow.getMousePosition());
 					}
 					else {
 						return;
@@ -34,7 +34,8 @@ public class Controller {
 				else {
 					if(game.move(selectedCell.getFirst(), selectedCell.getSecond(), row ,col)) {
 						selectedCell = null;
-						gridWindow.clearImageOnMouse();
+						gameWindow.getGridWindow().clearImageOnMouse();
+						gameWindow.getSouthWindow().repaint();
 					}
 				}
 				break;
@@ -42,7 +43,7 @@ public class Controller {
 				if(selectedCell == null) {
 					if(game.isDefenseTower(row, col) || game.isTheKing(row, col)) {
 						selectedCell = new Couple<Integer, Integer>(row, col);
-						this.mouseMoved(gridWindow.getMousePosition());
+						this.mouseMoved(gameWindow.getMousePosition());
 					}
 					else {
 						return;
@@ -51,7 +52,8 @@ public class Controller {
 				else {
 					if(game.move(selectedCell.getFirst(), selectedCell.getSecond(), row ,col)) {
 						selectedCell = null;
-						gridWindow.clearImageOnMouse();
+						gameWindow.getGridWindow().clearImageOnMouse();
+						gameWindow.getSouthWindow().repaint();
 					}
 				}
 				break;
@@ -64,7 +66,7 @@ public class Controller {
 
 	public void undoSelect() {
 		selectedCell = null;
-		gridWindow.clearImageOnMouse();
+		gameWindow.getGridWindow().clearImageOnMouse();
 	}
 	
 	private int lastRowHovered;
@@ -72,16 +74,16 @@ public class Controller {
 	public void mouseMoved(Point mousePosition) {
 		if(mousePosition != null) {
 			if(this.selectedCell != null) {
-				gridWindow.updateImageOnMouse(game.getCellContent(selectedCell.getFirst(), selectedCell.getSecond()).getImage(), selectedCell);
+				gameWindow.getGridWindow().updateImageOnMouse(game.getCellContent(selectedCell.getFirst(), selectedCell.getSecond()).getImage(), selectedCell);
 			}
 			else {
-				int colHovered = gridWindow.getColFromXCoord(mousePosition.x);
-				int rowHovered = gridWindow.getRowFromYCoord(mousePosition.y);
+				int colHovered = gameWindow.getGridWindow().getColFromXCoord(mousePosition.x);
+				int rowHovered = gameWindow.getGridWindow().getRowFromYCoord(mousePosition.y);
 				
 				if(lastRowHovered != rowHovered || lastColHovered != colHovered) {
 					lastRowHovered = rowHovered;
 					lastColHovered = colHovered;
-					gridWindow.repaint();
+					gameWindow.repaint();
 				}
 			}
 		}

@@ -17,8 +17,11 @@ public class GameWindow extends Window{
     private final Game game;
     
     public GameWindow() {
-    	
         this.setLayout(new BorderLayout());
+
+        game = new Game();
+        gridWindow = new GridWindow(game);
+        Controller controller = new Controller(game, this);
 
         northWindow = new NorthWindow();
         this.add(northWindow, BorderLayout.NORTH);
@@ -26,12 +29,8 @@ public class GameWindow extends Window{
         this.add(eastWindow, BorderLayout.EAST);
         westWindow = new WestWindow();
         this.add(westWindow, BorderLayout.WEST);
-        southWindow = new SouthWindow();
+        southWindow = new SouthWindow(game, this);
         this.add(southWindow, BorderLayout.SOUTH);
-
-        game = new Game();
-        gridWindow = new GridWindow(game);
-        Controller controller = new Controller(game, gridWindow);
 
         AdaptateurSouris adaptateurSouris = new AdaptateurSouris(controller, gridWindow);
         gridWindow.addMouseListener(adaptateurSouris);
