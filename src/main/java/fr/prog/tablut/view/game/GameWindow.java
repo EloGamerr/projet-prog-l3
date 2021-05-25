@@ -40,7 +40,7 @@ public class GameWindow extends Window{
 
         this.add(gridWindow, BorderLayout.CENTER);
 
-        Timer time = new Timer(16, new GameTimeAdaptator(gameController));
+        Timer time = new Timer(50, new GameTimeAdaptator(gameController));
         time.start();
     }
 

@@ -12,6 +12,8 @@ public class GameTimeAdaptator implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
+        if(!gameController.getGameWindow().isVisible()) return;
+
         this.gameController.tick();
     }
 }

@@ -16,6 +16,8 @@ public class GameMouseAdaptator extends MouseAdapter {
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
+		if(!gameController.getGameWindow().isVisible()) return;
+
 		if(e.getButton() == MouseEvent.BUTTON1) {
 			int	l = gridWindow.getRowFromYCoord(e.getY());
 			int c = gridWindow.getColFromXCoord(e.getX());
@@ -27,11 +29,15 @@ public class GameMouseAdaptator extends MouseAdapter {
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
+		if(!gameController.getGameWindow().isVisible()) return;
+
 		gameController.mouseMoved(e.getPoint());
 	}
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
+		if(!gameController.getGameWindow().isVisible()) return;
+
 		gameController.mouseMoved(e.getPoint());
 	}
 }

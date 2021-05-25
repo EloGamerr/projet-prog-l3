@@ -39,4 +39,12 @@ public class GameController {
 	public void tick() {
 		gameControllerAI.tick();
 	}
+
+	public Game getGame() {
+		return game;
+	}
+
+	public GameWindow getGameWindow() {
+		return gameWindow;
+	}
 }
