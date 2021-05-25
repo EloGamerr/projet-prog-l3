@@ -19,7 +19,7 @@ public class GameWindow extends Window{
     public GameWindow() {
         this.setLayout(new BorderLayout());
 
-        Player attacker = new HumanPlayer();// Could be a AI
+        Player attacker = new AIRandom();// Could be a AI
         Player defender = new HumanPlayer();// Could be a AI
         game = new Game(attacker, defender);
         gridWindow = new GridWindow(game);

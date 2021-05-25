@@ -110,7 +110,7 @@ public class Game {
 		CellContent fromCellContent = getGrid()[l][c];
 		if(fromCellContent == CellContent.EMPTY || fromCellContent == CellContent.GATE) return false;
 
-		List<Couple<Integer, Integer>> accessibleCells = accessibleCells(l, c);
+		List<Couple<Integer, Integer>> accessibleCells = getAccessibleCells(l, c);
 		if(!accessibleCells.contains(new Couple<Integer, Integer>(toL, toC))) return false;
 
 		Play result = new Play();
@@ -139,7 +139,7 @@ public class Game {
 	}
 
 
-	public List<Couple<Integer, Integer>> accessibleCells(int fromL, int fromC) {
+	public List<Couple<Integer, Integer>> getAccessibleCells(int fromL, int fromC) {
 		List<Couple<Integer, Integer>> accessibleCells = new ArrayList<>();
 		
 		for(int toL = fromL-1 ; toL >= 0 ; toL--) {
@@ -316,5 +316,30 @@ public class Game {
 
 	public void setGrid(CellContent[][] grid) {
 		this.grid = grid;
+	}
+
+	/**
+	 * @param cellContent CellContent to search
+	 * @return All cells of the grid that are equals to the param
+	 */
+	public List<Couple<Integer, Integer>> getCellContentWhereEquals(CellContent cellContent) {
+		List<Couple<Integer, Integer>> cells = new ArrayList<>();
+		for(int i = 0 ; i < grid.length ; i++) {
+			for(int j = 0 ; j < grid[i].length ; j++) {
+				if(grid[i][j] == cellContent) {
+					cells.add(new Couple<>(i, j));
+				}
+			}
+		}
+
+		return cells;
+	}
+
+	public int getKingL() {
+		return kingL;
+	}
+
+	public int getKingC() {
+		return kingC;
 	}
 }

@@ -19,6 +19,7 @@ public class GameControllerAI {
                 AIPlayer aiPlayer = (AIPlayer) game.getPlayingPlayer();
                 System.out.println("AI Play");
                 aiPlayer.play(game, this);
+                timer = speed;
             }
         }
         else {

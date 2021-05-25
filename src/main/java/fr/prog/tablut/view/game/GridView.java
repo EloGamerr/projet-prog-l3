@@ -98,7 +98,7 @@ public class GridView {
 	}
 	
 	private void drawCircles(int row, int col) {
-		List<Couple<Integer, Integer>> accessibleCells = game.accessibleCells(row, col);
+		List<Couple<Integer, Integer>> accessibleCells = game.getAccessibleCells(row, col);
 		
 		this.gridWindow.setColor(GameColors.CIRCLE);
 		int circleWidth = cellWidth/3;

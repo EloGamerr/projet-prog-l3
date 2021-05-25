@@ -16,7 +16,7 @@ public class GameController {
 	public GameController(Game game, GameWindow gameWindow) {
 		this.game = game;
 		this.gameWindow = gameWindow;
-		this.gameControllerAI = new GameControllerAI(game, 1);
+		this.gameControllerAI = new GameControllerAI(game, 20);
 		this.gameControllerHuman = new GameControllerHuman(game, gameWindow);
 	}
 	
