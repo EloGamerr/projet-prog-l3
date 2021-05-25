@@ -2,16 +2,36 @@ plugins {
     id 'java'
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
+group 'fr.prog'
+version '1.0'
 
 repositories {
     mavenCentral()
 }
 
+configurations {
+    extraLibs
+}
+
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    configurations.implementation.extendsFrom(configurations.extraLibs)
+}
+
+jar {
+    manifest.attributes "Main-Class": "fr.prog.tablut.Tablut"
+    from {
+        configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDirs "res"
+        }
+    }
 }
 
 test {
