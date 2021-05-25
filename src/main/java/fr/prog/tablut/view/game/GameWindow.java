@@ -1,8 +1,6 @@
 package fr.prog.tablut.view.game;
 
-import fr.prog.tablut.controller.game.GameMouseAdaptator;
-import fr.prog.tablut.controller.game.GameController;
-import fr.prog.tablut.controller.game.GameTimeAdaptator;
+import fr.prog.tablut.controller.game.*;
 import fr.prog.tablut.model.Game;
 import fr.prog.tablut.model.WindowName;
 import fr.prog.tablut.view.Window;
@@ -21,7 +19,9 @@ public class GameWindow extends Window{
     public GameWindow() {
         this.setLayout(new BorderLayout());
 
-        game = new Game();
+        Player attacker = new HumanPlayer();// Could be a AI
+        Player defender = new HumanPlayer();// Could be a AI
+        game = new Game(attacker, defender);
         gridWindow = new GridWindow(game);
         GameController gameController = new GameController(game, this);
 

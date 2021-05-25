@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import fr.prog.tablut.controller.game.Player;
 import fr.prog.tablut.structures.Couple;
 
 
@@ -13,14 +14,26 @@ public class Game {
 	private final int middle;
 	private int kingL, kingC;
 	private PlayerEnum winner;
-	private PlayerEnum player;
+	private PlayerEnum playingPlayerEnum;
 	private Move move;
-	
-	public Game(){
+	private Player attacker;
+	private Player defender;
+
+	public Game(Player attacker, Player defender){
+		this.attacker = attacker;
+		this.defender = defender;
 		this.middle = 4;
-		this.player = PlayerEnum.ATTACKER;
+		this.playingPlayerEnum = PlayerEnum.ATTACKER;
 		this.move = new Move(this);
 		init_game(9,9);
+	}
+
+	public Player getAttacker() {
+		return attacker;
+	}
+
+	public Player getDefender() {
+		return defender;
 	}
 
 	void init_game(int rowAmount, int colAmount) {
@@ -120,7 +133,7 @@ public class Game {
 			System.out.println(winner + " a gagné !");
 		}
 		else {
-			player = player.getOpponent();
+			playingPlayerEnum = playingPlayerEnum.getOpponent();
 		}
 		return true;
 	}
@@ -196,9 +209,9 @@ public class Game {
 		if(winner != null) return winner;
 		
 		if(!isTheKing(kingL,kingC)) // Si le roi a été tué
-			return player;
+			return playingPlayerEnum;
 		else if(previousToCellContent == CellContent.GATE && toCellContent == CellContent.KING) // Si le roi s'est déplacé sur une porte
-			return player;
+			return playingPlayerEnum;
 		
 		return null;
 	}
@@ -264,8 +277,7 @@ public class Game {
 		
 		return getGrid()[l][c] == CellContent.GATE;
 	}
-	
-	
+
 	public int getRowAmout() {
 		return this.rowAmount;
 	}
@@ -282,12 +294,16 @@ public class Game {
 		return !(l < 0 || c < 0 || l >= rowAmount || c >= colAmount);
 	}
 	
-	public PlayerEnum getPlayer() {
-		return this.player;
+	public PlayerEnum getPlayingPlayerEnum() {
+		return this.playingPlayerEnum;
 	}
-	
+
+	public Player getPlayingPlayer() {
+		return this.getPlayingPlayerEnum() == PlayerEnum.ATTACKER ? attacker : defender;
+	}
+
 	public boolean canPlay(int l, int c) {
-		if(this.player == PlayerEnum.ATTACKER) {
+		if(this.playingPlayerEnum == PlayerEnum.ATTACKER) {
 			return this.getCellContent(l, c) == CellContent.ATTACK_TOWER;
 		}
 		

@@ -10,86 +10,33 @@ public class GameController {
 
 	private final Game game;
 	private final GameWindow gameWindow;
-	private Couple<Integer, Integer> selectedCell;
-	
+	private final GameControllerAI gameControllerAI;
+	private final GameControllerHuman gameControllerHuman;
+
 	public GameController(Game game, GameWindow gameWindow) {
 		this.game = game;
 		this.gameWindow = gameWindow;
+		this.gameControllerAI = new GameControllerAI(game, 1);
+		this.gameControllerHuman = new GameControllerHuman(game, gameWindow);
 	}
 	
 	public void click(int row, int col) {
-		if(!game.isValid(row, col)) return;
-		
-		switch(game.getPlayer()) {
-			case ATTACKER:
-				if(selectedCell == null) {
-					if(game.isAttackTower(row, col)) {
-						selectedCell = new Couple<Integer, Integer>(row, col);
-						this.mouseMoved(gameWindow.getMousePosition());
-					}
-					else {
-						return;
-					}
-				}
-				else {
-					if(game.move(selectedCell.getFirst(), selectedCell.getSecond(), row ,col)) {
-						selectedCell = null;
-						gameWindow.getGridWindow().clearImageOnMouse();
-						gameWindow.getSouthWindow().repaint();
-					}
-				}
-				break;
-			case DEFENDER:
-				if(selectedCell == null) {
-					if(game.isDefenseTower(row, col) || game.isTheKing(row, col)) {
-						selectedCell = new Couple<Integer, Integer>(row, col);
-						this.mouseMoved(gameWindow.getMousePosition());
-					}
-					else {
-						return;
-					}
-				}
-				else {
-					if(game.move(selectedCell.getFirst(), selectedCell.getSecond(), row ,col)) {
-						selectedCell = null;
-						gameWindow.getGridWindow().clearImageOnMouse();
-						gameWindow.getSouthWindow().repaint();
-					}
-				}
-				break;
-		}
-	}
-	
-	public Couple<Integer, Integer> getSelectedCell() {
-		return selectedCell;
+		this.gameControllerHuman.click(row, col);
 	}
 
 	public void undoSelect() {
-		selectedCell = null;
-		gameWindow.getGridWindow().clearImageOnMouse();
+		this.gameControllerHuman.undoSelect();
 	}
-	
-	private int lastRowHovered;
-	private int lastColHovered;
+
 	public void mouseMoved(Point mousePosition) {
-		if(mousePosition != null) {
-			if(this.selectedCell != null) {
-				gameWindow.getGridWindow().updateImageOnMouse(game.getCellContent(selectedCell.getFirst(), selectedCell.getSecond()).getImage(), selectedCell);
-			}
-			else {
-				int colHovered = gameWindow.getGridWindow().getColFromXCoord(mousePosition.x);
-				int rowHovered = gameWindow.getGridWindow().getRowFromYCoord(mousePosition.y);
-				
-				if(lastRowHovered != rowHovered || lastColHovered != colHovered) {
-					lastRowHovered = rowHovered;
-					lastColHovered = colHovered;
-					gameWindow.repaint();
-				}
-			}
-		}
+		this.gameControllerHuman.mouseMoved(mousePosition);
+	}
+
+	public Couple<Integer, Integer> getSelectedCell() {
+		return this.gameControllerHuman.getSelectedCell();
 	}
 
 	public void tick() {
-
+		gameControllerAI.tick();
 	}
 }

@@ -26,7 +26,7 @@ public class SouthWindow extends JPanel {
 
         Graphics2D drawable = (Graphics2D) graphics;
 
-        String text = "Au tour " + (this.game.getPlayer() == PlayerEnum.ATTACKER ? "de l'attaquant" : "du d\u00e9fenseur");
+        String text = "Au tour " + (this.game.getPlayingPlayerEnum() == PlayerEnum.ATTACKER ? "de l'attaquant" : "du d\u00e9fenseur");
         jLabel.setText(text);
     }
 }
