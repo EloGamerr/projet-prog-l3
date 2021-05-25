@@ -1,4 +1,4 @@
-package fr.prog.tablut.controller;
+package fr.prog.tablut.controller.game;
 
 import java.awt.Point;
 
@@ -6,13 +6,13 @@ import fr.prog.tablut.model.Game;
 import fr.prog.tablut.structures.Couple;
 import fr.prog.tablut.view.game.GameWindow;
 
-public class Controller {
+public class GameController {
 
 	private final Game game;
 	private final GameWindow gameWindow;
 	private Couple<Integer, Integer> selectedCell;
 	
-	public Controller(Game game, GameWindow gameWindow) {
+	public GameController(Game game, GameWindow gameWindow) {
 		this.game = game;
 		this.gameWindow = gameWindow;
 	}
@@ -87,5 +87,9 @@ public class Controller {
 				}
 			}
 		}
+	}
+
+	public void tick() {
+
 	}
 }

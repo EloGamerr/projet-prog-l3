@@ -1,16 +1,16 @@
-package fr.prog.tablut.controller;
+package fr.prog.tablut.controller.game;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import fr.prog.tablut.view.game.GridWindow;
 
-public class AdaptateurSouris extends MouseAdapter {
+public class GameMouseAdaptator extends MouseAdapter {
 	private final GridWindow gridWindow;
-	private final Controller controller;
+	private final GameController gameController;
 	
-	public AdaptateurSouris(Controller controller, GridWindow gridWindow) {
-		this.controller = controller;
+	public GameMouseAdaptator(GameController gameController, GridWindow gridWindow) {
+		this.gameController = gameController;
 		this.gridWindow = gridWindow;
 	}
 	
@@ -19,19 +19,19 @@ public class AdaptateurSouris extends MouseAdapter {
 		if(e.getButton() == MouseEvent.BUTTON1) {
 			int	l = gridWindow.getRowFromYCoord(e.getY());
 			int c = gridWindow.getColFromXCoord(e.getX());
-			controller.click(l, c);
+			gameController.click(l, c);
 		}
 		else if(e.getButton() == MouseEvent.BUTTON3)
-			controller.undoSelect();
+			gameController.undoSelect();
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		controller.mouseMoved(e.getPoint());
+		gameController.mouseMoved(e.getPoint());
 	}
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		controller.mouseMoved(e.getPoint());
+		gameController.mouseMoved(e.getPoint());
 	}
 }

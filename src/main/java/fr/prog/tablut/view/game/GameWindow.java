@@ -1,11 +1,13 @@
 package fr.prog.tablut.view.game;
 
-import fr.prog.tablut.controller.AdaptateurSouris;
-import fr.prog.tablut.controller.Controller;
+import fr.prog.tablut.controller.game.GameMouseAdaptator;
+import fr.prog.tablut.controller.game.GameController;
+import fr.prog.tablut.controller.game.GameTimeAdaptator;
 import fr.prog.tablut.model.Game;
 import fr.prog.tablut.model.WindowName;
 import fr.prog.tablut.view.Window;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class GameWindow extends Window{
@@ -21,7 +23,7 @@ public class GameWindow extends Window{
 
         game = new Game();
         gridWindow = new GridWindow(game);
-        Controller controller = new Controller(game, this);
+        GameController gameController = new GameController(game, this);
 
         northWindow = new NorthWindow();
         this.add(northWindow, BorderLayout.NORTH);
@@ -32,11 +34,14 @@ public class GameWindow extends Window{
         southWindow = new SouthWindow(game, this);
         this.add(southWindow, BorderLayout.SOUTH);
 
-        AdaptateurSouris adaptateurSouris = new AdaptateurSouris(controller, gridWindow);
-        gridWindow.addMouseListener(adaptateurSouris);
-        gridWindow.addMouseMotionListener(adaptateurSouris);
+        GameMouseAdaptator gameMouseAdaptator = new GameMouseAdaptator(gameController, gridWindow);
+        gridWindow.addMouseListener(gameMouseAdaptator);
+        gridWindow.addMouseMotionListener(gameMouseAdaptator);
 
         this.add(gridWindow, BorderLayout.CENTER);
+
+        Timer time = new Timer(16, new GameTimeAdaptator(gameController));
+        time.start();
     }
 
     @Override
