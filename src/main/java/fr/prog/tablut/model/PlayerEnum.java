@@ -2,6 +2,7 @@ package fr.prog.tablut.model;
 
 public enum PlayerEnum {
 	ATTACKER(),
+	NONE(),
 	DEFENDER();
 	
 	public PlayerEnum getOpponent() {

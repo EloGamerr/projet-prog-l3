@@ -10,7 +10,9 @@ public class GameControllerHuman {
     private final Game game;
     private final GameWindow gameWindow;
     private Couple<Integer, Integer> selectedCell;
-
+    private int lastRowHovered;
+    private int lastColHovered;
+    
     public GameControllerHuman(Game game, GameWindow gameWindow) {
         this.game = game;
         this.gameWindow = gameWindow;
@@ -23,8 +25,8 @@ public class GameControllerHuman {
 
         HumanPlayer humanPlayer = (HumanPlayer) game.getPlayingPlayer();
 
-        humanPlayer.updateState(row, col, gameWindow);
-        humanPlayer.play(game, this);
+        humanPlayer.updateState(row, col, gameWindow, this);
+        humanPlayer.play(game);
     }
 
     public void undoSelect() {
@@ -32,8 +34,7 @@ public class GameControllerHuman {
         gameWindow.getGridWindow().clearImageOnMouse();
     }
 
-    private int lastRowHovered;
-    private int lastColHovered;
+
     public void mouseMoved(Point mousePosition) {
         if(mousePosition != null) {
             if(this.selectedCell != null) {

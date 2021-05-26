@@ -1,15 +1,27 @@
 package fr.prog.tablut.view.game;
 
+import fr.prog.tablut.model.Game;
 import fr.prog.tablut.view.generic.GenericButton;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class EastWindow extends JPanel {
-    public EastWindow() {
+    public EastWindow(Game game) {
         this.setBackground(new Color(0, 0, 0));
-        GenericButton jButton = new GenericButton("Test");
-        this.add(jButton);
+        GenericButton save = new GenericButton("Sauvegarde");
+        this.add(save);
+        save.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {	
+				
+			}});
+        
+        
+        
+        
     }
 
     @Override
@@ -18,4 +30,6 @@ public class EastWindow extends JPanel {
 
         Graphics2D drawable = (Graphics2D) graphics;
     }
+    
+    
 }

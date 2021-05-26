@@ -6,12 +6,12 @@ import java.util.List;
 
 import fr.prog.tablut.structures.Couple;
 
-public class Move {
+public class PawnTaker {
 	private List<Couple<Integer, Integer>> visited = new ArrayList<>();
 	private Game game;
 	
 	
-	Move(Game game){
+	PawnTaker(Game game){
 		this.game = game;
 	}
 	

@@ -7,6 +7,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import fr.prog.tablut.model.WindowName;
+import fr.prog.tablut.model.saver.GameSaver;
 import fr.prog.tablut.view.GlobalWindow;
 import fr.prog.tablut.view.Window;
 import fr.prog.tablut.view.generic.GenericLabel;
@@ -14,7 +15,7 @@ import fr.prog.tablut.view.generic.GenericLabel;
 public class LoadWindow extends Window{
 	private final GenericLabel title;
 	private final GenericLabel subtitle;
-
+	
 	public LoadWindow(GlobalWindow globalWindow) {
 		this.setLayout(new GridBagLayout());
 		

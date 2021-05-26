@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import fr.prog.tablut.controller.game.Player;
+import fr.prog.tablut.model.saver.GameSaver;
 import fr.prog.tablut.structures.Couple;
-
 
 public class Game {
 	private int rowAmount, colAmount;
@@ -15,26 +14,22 @@ public class Game {
 	private int kingL, kingC;
 	private PlayerEnum winner;
 	private PlayerEnum playingPlayerEnum;
-	private Move move;
-	private Player attacker;
-	private Player defender;
+	private PawnTaker move;
+	private final Player attacker;
+	private final Player defender;
+	private Plays plays;
 
 	public Game(Player attacker, Player defender){
 		this.attacker = attacker;
 		this.defender = defender;
 		this.middle = 4;
 		this.playingPlayerEnum = PlayerEnum.ATTACKER;
-		this.move = new Move(this);
+		this.move = new PawnTaker(this);
 		init_game(9,9);
+		this.plays = new Plays(this);
 	}
+	
 
-	public Player getAttacker() {
-		return attacker;
-	}
-
-	public Player getDefender() {
-		return defender;
-	}
 
 	void init_game(int rowAmount, int colAmount) {
 		setGrid(new CellContent[rowAmount][colAmount]);
@@ -113,10 +108,9 @@ public class Game {
 		List<Couple<Integer, Integer>> accessibleCells = getAccessibleCells(l, c);
 		if(!accessibleCells.contains(new Couple<Integer, Integer>(toL, toC))) return false;
 
-		Play result = new Play();
 		
 		clear(l, c);
-		result.move(l, c, toL, toC);
+		plays.move(l, c, toL, toC);
 		l = toL;
 		c = toC;
 		CellContent previousToCellContent = getGrid()[l][c];
@@ -198,6 +192,20 @@ public class Game {
 			kingC = c;
 			kingL = l;
 		}
+		if(getGrid()[l][c] == CellContent.ATTACK_TOWER) {
+			attacker.getOwnedCells().remove(new Couple<>(l, c));
+		}
+		else if(getGrid()[l][c] == CellContent.DEFENSE_TOWER || getGrid()[l][c] == CellContent.KING) {
+			defender.getOwnedCells().remove(new Couple<>(l, c));
+		}
+		
+		if(cellContent == CellContent.ATTACK_TOWER) {
+			attacker.getOwnedCells().add(new Couple<>(l, c));
+		}
+		else if(cellContent == CellContent.DEFENSE_TOWER || cellContent == CellContent.KING) {
+			defender.getOwnedCells().add(new Couple<>(l, c));
+		}
+	
 		getGrid()[l][c] = cellContent;
 	}
 
@@ -218,26 +226,24 @@ public class Game {
 	
 	
 	private void clear(int l, int c) {
-		getGrid()[l][c] = CellContent.EMPTY;
+		setContent(CellContent.EMPTY, l, c);
 		
 	}
 
 	public void setDefenseTower(int l, int c) {
-		getGrid()[l][c] = CellContent.DEFENSE_TOWER;
+		setContent(CellContent.DEFENSE_TOWER, l, c);
 	}
 	
 	public void setAttackTower(int l, int c) {
-		getGrid()[l][c] = CellContent.ATTACK_TOWER;
+		setContent(CellContent.ATTACK_TOWER, l, c);
 	}
 	
 	public void setKing(int l, int c) {
-		getGrid()[l][c] = CellContent.KING;
-		kingC = c;
-		kingL = l;
+		setContent(CellContent.KING, l, c);
 	}
 	
 	public void setGate(int l, int c) {
-		getGrid()[l][c] = CellContent.GATE;
+		setContent(CellContent.GATE, l, c);
 	}
 	
 	
@@ -298,10 +304,6 @@ public class Game {
 		return this.playingPlayerEnum;
 	}
 
-	public Player getPlayingPlayer() {
-		return this.getPlayingPlayerEnum() == PlayerEnum.ATTACKER ? attacker : defender;
-	}
-
 	public boolean canPlay(int l, int c) {
 		if(this.playingPlayerEnum == PlayerEnum.ATTACKER) {
 			return this.getCellContent(l, c) == CellContent.ATTACK_TOWER;
@@ -342,4 +344,22 @@ public class Game {
 	public int getKingC() {
 		return kingC;
 	}
+	
+	public Player getAttacker() {
+		return attacker;
+	}
+
+	public Player getDefender() {
+		return defender;
+	}
+
+	public Player getPlayingPlayer() {
+		return this.getPlayingPlayerEnum() == PlayerEnum.ATTACKER ? attacker : defender;
+	}
+	
+	public Plays getPlays() {
+		return plays;
+	}
+
+
 }

@@ -3,11 +3,13 @@ package fr.prog.tablut.view.game;
 import fr.prog.tablut.controller.game.*;
 import fr.prog.tablut.model.Game;
 import fr.prog.tablut.model.WindowName;
+import fr.prog.tablut.model.saver.GameSaver;
 import fr.prog.tablut.view.Window;
 
 import javax.swing.*;
 import java.awt.*;
 
+@SuppressWarnings("serial")
 public class GameWindow extends Window{
     private final GridWindow gridWindow;
     private final NorthWindow northWindow;
@@ -18,16 +20,16 @@ public class GameWindow extends Window{
     
     public GameWindow() {
         this.setLayout(new BorderLayout());
-
-        Player attacker = new AIRandom();// Could be a AI
-        Player defender = new HumanPlayer();// Could be a AI
+        
+        AIRandom attacker = new AIRandom();
+        HumanPlayer defender = new HumanPlayer();
         game = new Game(attacker, defender);
         gridWindow = new GridWindow(game);
         GameController gameController = new GameController(game, this);
 
         northWindow = new NorthWindow();
         this.add(northWindow, BorderLayout.NORTH);
-        eastWindow = new EastWindow();
+        eastWindow = new EastWindow(game);
         this.add(eastWindow, BorderLayout.EAST);
         westWindow = new WestWindow();
         this.add(westWindow, BorderLayout.WEST);
@@ -39,12 +41,42 @@ public class GameWindow extends Window{
         gridWindow.addMouseMotionListener(gameMouseAdaptator);
 
         this.add(gridWindow, BorderLayout.CENTER);
+        
+
+        Timer time = new Timer(50, new GameTimeAdaptator(gameController));
+        time.start();
+    }
+    
+    public GameWindow(Game game) {
+        this.setLayout(new BorderLayout());
+        
+        this.game = game;
+        gridWindow = new GridWindow(game);
+        GameController gameController = new GameController(game, this);
+
+        northWindow = new NorthWindow();
+        this.add(northWindow, BorderLayout.NORTH);
+        eastWindow = new EastWindow(game);
+        this.add(eastWindow, BorderLayout.EAST);
+        westWindow = new WestWindow();
+        this.add(westWindow, BorderLayout.WEST);
+        southWindow = new SouthWindow(game, this);
+        this.add(southWindow, BorderLayout.SOUTH);
+
+        GameMouseAdaptator gameMouseAdaptator = new GameMouseAdaptator(gameController, gridWindow);
+        gridWindow.addMouseListener(gameMouseAdaptator);
+        gridWindow.addMouseMotionListener(gameMouseAdaptator);
+
+        this.add(gridWindow, BorderLayout.CENTER);
+        
 
         Timer time = new Timer(50, new GameTimeAdaptator(gameController));
         time.start();
     }
 
-    @Override
+
+
+	@Override
     protected void paintComponent(Graphics graphics) {
         Graphics2D drawable = (Graphics2D) graphics;
 

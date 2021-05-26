@@ -16,9 +16,7 @@ public class GameControllerAI {
     public void tick() {
         if(game.getPlayingPlayer() instanceof AIPlayer) {
             if(timer-- <= 0) {
-                AIPlayer aiPlayer = (AIPlayer) game.getPlayingPlayer();
-                System.out.println("AI Play");
-                aiPlayer.play(game, this);
+                game.getPlayingPlayer().play(game);
                 timer = speed;
             }
         }

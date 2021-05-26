@@ -1,22 +1,26 @@
 package fr.prog.tablut.controller.game;
 
+
 import fr.prog.tablut.model.Game;
+import fr.prog.tablut.model.Player;
 import fr.prog.tablut.structures.Couple;
 import fr.prog.tablut.view.game.GameWindow;
 
-public class HumanPlayer extends Player<GameControllerHuman> {
+public class HumanPlayer extends Player {
     private int row;
     private int col;
     private GameWindow gameWindow;
-
-    public void updateState(int row, int col, GameWindow gameWindow) {
+    private GameControllerHuman gameControllerHuman;
+    
+    public void updateState(int row, int col, GameWindow gameWindow, GameControllerHuman gameControllerHuman) {
         this.row = row;
         this.col = col;
         this.gameWindow = gameWindow;
+        this.gameControllerHuman = gameControllerHuman;
     }
 
     @Override
-    public void play(Game game, GameControllerHuman gameControllerHuman) {
+    public void play(Game game) {
         switch(game.getPlayingPlayerEnum()) {
             case ATTACKER:
                 if(gameControllerHuman.getSelectedCell() == null) {
