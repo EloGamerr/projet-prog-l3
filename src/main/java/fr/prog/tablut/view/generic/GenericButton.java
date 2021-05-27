@@ -58,4 +58,5 @@ public class GenericButton extends JButton{
 		this.addActionListener(actionListener);
 		this.setPreferredSize(defaultSize);
 	}
+	
 }

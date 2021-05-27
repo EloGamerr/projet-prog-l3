@@ -29,7 +29,8 @@ public class Game {
 
 	public Game(){
 		this.middle = 4;
-		
+		gameSaver = new GameSaver(this);
+		loader = new GameLoader(this);
 	}
 	
 	public void start(Player attacker, Player defender) {
@@ -41,17 +42,13 @@ public class Game {
 		this.plays = new Plays(this);
 		setWinner(PlayerEnum.NONE);
 		hasStarted = true;
-		loader = new GameLoader(this);
-		this.gameSaver = new GameSaver(this);
 	}
 	
 	public void load(int index_selected) {
 		init_grid(9,9);
 		this.move = new PawnTaker(this);
-		hasStarted = true;
 		this.plays = new Plays(this);
-		loader = new GameLoader(this);
-		gameSaver = new GameSaver(this);
+		hasStarted = true;
 		loader.loadData(index_selected);
 	}
 	
@@ -456,5 +453,9 @@ public class Game {
 
 		return false;
 
+	}
+
+	public GameSaver getGameSaver() {
+		return gameSaver;
 	}
 }

@@ -18,7 +18,7 @@ import org.json.JSONObject;
 
 import fr.prog.tablut.model.CellContent;
 import fr.prog.tablut.model.Game;
-import fr.prog.tablut.model.Movement;
+
 
 
 public class GameSaver {
@@ -39,8 +39,17 @@ public class GameSaver {
 		 this.currentSavePath = currentSavePath;
 	}
 	 
-	public void saveToFile() {
+	public void save() {
 		save(Paths.get(this.saveName()));
+	}
+	public void saveToFile() {
+		if(this.game.getCurrentSavePath()=="") {
+			save(Paths.get(this.saveName()));
+		}
+		else {
+			save(Paths.get(this.game.getCurrentSavePath()));
+		}
+		
 	}
 	
 	public void save(Path path) {
@@ -57,10 +66,13 @@ public class GameSaver {
 			} else {
 				List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
 			    lines.set(0, jsonParameters.toString());
-			    lines.set(jsonParameters.toString().length(), jsonBoard.toString());
+			    lines.set(1, jsonBoard.toString());
 			    Files.write(path, lines, StandardCharsets.UTF_8);
 			}	
+
 			this.setCurrentSavePath(path.toString());
+			this.game.setCurrentSavePath(path.toString());
+
 			
 		} catch (IOException e) { e.printStackTrace(); }
 	}
@@ -167,7 +179,6 @@ public class GameSaver {
 		    savePath = Paths.get(savesPath, savePrefix + ++index + saveSuffix).toString();
 		    f = new File(savePath);
 		}
-		
 		return savePath;
 	}
 	

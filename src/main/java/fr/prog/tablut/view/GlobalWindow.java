@@ -70,13 +70,15 @@ public class GlobalWindow extends Window {
 		currentWindow.setVisible(false);
 		switch (dest) {
 		case GameWindow: {
-			currentWindow = gameWindow;
-			if(loadWindow.getPanel().index_selected != 0) {
+			if(currentWindow == loadWindow) {
+				currentWindow = gameWindow;
 				gameWindow.getGame().load(loadWindow.getPanel().index_selected);
 			}
-			if(!gameWindow.getGame().hasStarted()) {
+			else {
+				currentWindow = gameWindow;
 				gameWindow.getGame().start(new AIRandom(), new HumanPlayer());
 			}
+				
 			break;
 		}
 		case LoadWindow: {

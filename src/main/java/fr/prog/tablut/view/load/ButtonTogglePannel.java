@@ -33,18 +33,19 @@ public class ButtonTogglePannel extends JPanel{
 		c.gridx = 0;
 		c.insets = new Insets(0, 0, 0, 0);
 		int i = 1;
+		
 		String savePath = Paths.get(savesPath, savePrefix + i + saveSuffix).toString();
 		File f = new File(savePath);
-		while (f.isFile()) {
+		while(f.isFile()) {
 			c.gridy = i;
-			savePath = Paths.get(savesPath, savePrefix + i + saveSuffix).toString();
-		    f = new File(savePath);
-		    
 			button = new GenericButton("Save n°" + i,new Dimension(300,30));
 			button.addActionListener(new ButtonToggleAdaptator(button, i, this));
 			this.add(button,c);
 			i++;
+			savePath = Paths.get(savesPath, savePrefix + i + saveSuffix).toString();
+			f = new File(savePath);
 		}
+		
 	}
 	
 	public void selected(GenericButton button, int index) {

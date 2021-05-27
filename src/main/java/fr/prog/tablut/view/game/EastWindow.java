@@ -12,9 +12,14 @@ import java.awt.event.ActionListener;
 public class EastWindow extends JPanel {
     public EastWindow(Game game) {
         this.setBackground(new Color(0, 0, 0));
-        GenericButton save = new GenericButton("Sauvegarde");
+        GenericButton save = new GenericButton("Nouvelle Sauvegarde");
         this.add(save);
-        save.addMouseListener(new ButtonSaveAdaptator(game));
+        save.addMouseListener(new ButtonSaveAdaptator(game,this));
+        
+        GenericButton saveToFile = new GenericButton("Sauvegarder");
+        this.add(saveToFile);
+        saveToFile.addMouseListener(new ButtonSaveAdaptator(game,this));
+    
     }
 
     @Override

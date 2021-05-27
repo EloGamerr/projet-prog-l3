@@ -6,21 +6,28 @@ import java.awt.event.MouseListener;
 import fr.prog.tablut.model.Game;
 
 import fr.prog.tablut.model.saver.GameSaver;
+import fr.prog.tablut.view.game.EastWindow;
 
 public class ButtonSaveAdaptator implements MouseListener {
 	GameSaver save;
+	EastWindow eastWindow;
 	
-	public ButtonSaveAdaptator(Game game){
-		if(game.getCurrentSavePath().matches(""))
-			save = new GameSaver(game);
-		else
-			save = new GameSaver(game,game.getCurrentSavePath());
+	public ButtonSaveAdaptator(Game game, EastWindow eastWindow){
+		save = game.getGameSaver();
+		this.eastWindow = eastWindow;
 	}
 	
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		save.saveToFile();
+		if(e.getSource() == eastWindow.getComponent(0)) {
+			save.save();
+		
+		}
+		else if(e.getSource() == eastWindow.getComponent(1)) {
+			save.saveToFile();
+		}
+			
 	}
 
 	
