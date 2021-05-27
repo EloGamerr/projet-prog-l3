@@ -16,6 +16,7 @@ configurations {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    extraLibs group: 'com.metaparadigm', name: 'json-rpc', version: '1.0'
     configurations.implementation.extendsFrom(configurations.extraLibs)
 }
 
