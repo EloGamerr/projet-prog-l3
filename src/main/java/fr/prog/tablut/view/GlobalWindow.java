@@ -5,6 +5,10 @@ import java.awt.Graphics2D;
 
 import javax.swing.JFrame;
 
+import fr.prog.tablut.controller.game.AIPlayer;
+import fr.prog.tablut.controller.game.AIRandom;
+import fr.prog.tablut.controller.game.HumanPlayer;
+import fr.prog.tablut.model.Game;
 import fr.prog.tablut.model.WindowName;
 import fr.prog.tablut.view.game.GameWindow;
 import fr.prog.tablut.view.generic.GenericButton;
@@ -14,13 +18,15 @@ import fr.prog.tablut.view.load.LoadWindow;
 import fr.prog.tablut.view.newGame.NewGameWindow;
 
 public class GlobalWindow extends Window {
-    private final GameWindow gameWindow;
-    private final HomeWindow homeWindow;
-    private final LoadWindow loadWindow;
-    private final HelpWindow helpWindow;
-    private final NewGameWindow newGameWindow;
+    private GameWindow gameWindow;
+    private HomeWindow homeWindow;
+    private LoadWindow loadWindow;
+   
+
+	private HelpWindow helpWindow;
+    private NewGameWindow newGameWindow;
     public Window currentWindow;
-	private final JFrame jFrame;
+	private JFrame jFrame;
 
     public GlobalWindow(JFrame jFrame) {
         this.jFrame = jFrame;
@@ -65,6 +71,12 @@ public class GlobalWindow extends Window {
 		switch (dest) {
 		case GameWindow: {
 			currentWindow = gameWindow;
+			if(loadWindow.getPanel().index_selected != 0) {
+				gameWindow.getGame().load(loadWindow.getPanel().index_selected);
+			}
+			if(!gameWindow.getGame().hasStarted()) {
+				gameWindow.getGame().start(new AIRandom(), new HumanPlayer());
+			}
 			break;
 		}
 		case LoadWindow: {
@@ -91,4 +103,60 @@ public class GlobalWindow extends Window {
 		currentWindow.setVisible(true);
 		jFrame.setContentPane(currentWindow);
 	}
+	
+	 public GameWindow getGameWindow() {
+			return gameWindow;
+		}
+
+		public HomeWindow getHomeWindow() {
+			return homeWindow;
+		}
+
+		public LoadWindow getLoadWindow() {
+			return loadWindow;
+		}
+
+		public HelpWindow getHelpWindow() {
+			return helpWindow;
+		}
+
+		public NewGameWindow getNewGameWindow() {
+			return newGameWindow;
+		}
+
+		public Window getCurrentWindow() {
+			return currentWindow;
+		}
+
+		public JFrame getjFrame() {
+			return jFrame;
+		}
+
+		public void setGameWindow(GameWindow gameWindow) {
+			this.gameWindow = gameWindow;
+		}
+
+		public void setHomeWindow(HomeWindow homeWindow) {
+			this.homeWindow = homeWindow;
+		}
+
+		public void setLoadWindow(LoadWindow loadWindow) {
+			this.loadWindow = loadWindow;
+		}
+
+		public void setHelpWindow(HelpWindow helpWindow) {
+			this.helpWindow = helpWindow;
+		}
+
+		public void setNewGameWindow(NewGameWindow newGameWindow) {
+			this.newGameWindow = newGameWindow;
+		}
+
+		public void setCurrentWindow(Window currentWindow) {
+			this.currentWindow = currentWindow;
+		}
+
+		public void setjFrame(JFrame jFrame) {
+			this.jFrame = jFrame;
+		}
 }

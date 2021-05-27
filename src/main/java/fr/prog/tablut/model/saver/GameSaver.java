@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+
+import org.json.JSONArray;
 import fr.prog.tablut.model.Play;
 import org.json.JSONObject;
 
@@ -26,7 +28,6 @@ public class GameSaver {
 	private final Game game;
 	private String currentSavePath;
 	
-	private static int saves_limit = 10;
 	private final List<Game> saves = new ArrayList<>();
 
 	 public GameSaver(Game game){
@@ -39,41 +40,36 @@ public class GameSaver {
 	}
 	 
 	public void saveToFile() {
-		save(Paths.get(this.generateSaveName()));
+		save(Paths.get(this.saveName()));
 	}
 	
-	private void save(Path path) {
+	public void save(Path path) {
 		JSONObject jsonBoard = this.generateJSONBoard();
-		JSONObject jsonParameters = this.generateJSONParameters();
+		JSONArray jsonArrayParameters = this.generateJSONParameters();
+		JSONObject jsonParameters = new JSONObject();
+		jsonParameters.put("parameters", jsonArrayParameters);
 		
 		try {
 			Files.createDirectories(path.getParent());
-			
 			if (!Files.exists(path)) {
-				
-				Files.write(path, Collections.singletonList(jsonBoard.toString()), StandardCharsets.UTF_8, StandardOpenOption.CREATE);
-				Files.write(path, Collections.singletonList(jsonParameters.toString()), StandardCharsets.UTF_8, StandardOpenOption.APPEND);
+				Files.write(path, Collections.singletonList(jsonParameters.toString()), StandardCharsets.UTF_8, StandardOpenOption.CREATE);
+				Files.write(path, Collections.singletonList(jsonBoard.toString()), StandardCharsets.UTF_8, StandardOpenOption.APPEND);
 			} else {
-				
 				List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
-			    lines.set(0, jsonBoard.toString());
-			    lines.set(jsonBoard.toString().length(), jsonParameters.toString());
+			    lines.set(0, jsonParameters.toString());
+			    lines.set(jsonParameters.toString().length(), jsonBoard.toString());
 			    Files.write(path, lines, StandardCharsets.UTF_8);
 			}	
-			
 			this.setCurrentSavePath(path.toString());
 			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		} catch (IOException e) { e.printStackTrace(); }
 	}
 	
 	
 	
-	private JSONObject generateJSONBoard() {
+	public JSONObject generateJSONBoard() {
 		JSONObject jsonBoard = new JSONObject();
 		jsonBoard.put("board", saveBoard().toString());
-		
 		return jsonBoard;
 	}
 	
@@ -83,27 +79,14 @@ public class GameSaver {
 		for(int l = 0; l < game.getRowAmout();l++) {
 			for(int c = 0; c < game.getColAmout();c++) {
 				cell = game.getCellContent(l, c);
-				
 				switch(cell) {
-					case EMPTY:
-							builder.append(SaverConstants.EMPTY);
-						break;
-						
-					case ATTACK_TOWER:
-							builder.append(SaverConstants.ATTACK_TOWER);
-						break;
-						
-					case DEFENSE_TOWER:
-							builder.append(SaverConstants.DEFENSE_TOWER);
-						break;
-						
-					case KING:
-							builder.append(SaverConstants.KING);
-						break;
-						
-					case GATE:
-							builder.append(SaverConstants.GATE);
-						break;
+					case EMPTY: builder.append(SaverConstants.EMPTY); break;	
+					case ATTACK_TOWER: builder.append(SaverConstants.ATTACK_TOWER); break;	
+					case DEFENSE_TOWER: builder.append(SaverConstants.DEFENSE_TOWER); break;	
+					case KING: builder.append(SaverConstants.KING); break;
+					case GATE: builder.append(SaverConstants.GATE); break;
+					case KINGPLACE: builder.append(SaverConstants.KINGPLACE); break;
+					default: break;
 				}
 				builder.append(SaverConstants.BLANK);
 			}
@@ -116,7 +99,21 @@ public class GameSaver {
 	public StringBuilder savePlays() {
 		StringBuilder builder = new StringBuilder();
 		for(Play move : game.getPlays().movements()) {
+
+			builder.append(SaverConstants.BR_LEFT);
+			builder.append(move.getMovement().fromL);
+			builder.append(SaverConstants.COMMA);
+			builder.append(move.getMovement().fromC);
+			builder.append(SaverConstants.BR_RIGHT);
 			
+			builder.append(SaverConstants.BLANK);
+			
+			builder.append(SaverConstants.BR_LEFT);
+			builder.append(move.getMovement().toC);
+			builder.append(SaverConstants.COMMA);
+			builder.append(move.getMovement().toL);
+			builder.append(SaverConstants.BR_RIGHT);
+
 			builder.append(SaverConstants.BR_RIGHT);
 			builder.append(move.getMovement().fromL);
 			builder.append(SaverConstants.COMMA);
@@ -128,28 +125,40 @@ public class GameSaver {
 			builder.append(SaverConstants.COMMA);
 			builder.append(move.getMovement().toL);
 			builder.append(SaverConstants.BR_LEFT);
+
 			
-			builder.append(SaverConstants.BLANK);
+			builder.append(SaverConstants.NEXT_LINE);
 		}
 		return builder;
 	}
 	
-	private JSONObject generateJSONParameters() {
-		JSONObject jsonParameters = new JSONObject();
-		JSONObject winner = new JSONObject();
-		JSONObject playingPlayer = new JSONObject();
-		JSONObject plays = new JSONObject();
+	public JSONArray generateJSONParameters() {
+		JSONArray jsonParameters = new JSONArray();
 		
-		winner.put("Winner",this.game.getWinner());
-		playingPlayer.put("playingPlayer", game.getPlayingPlayer());
-		plays.put("plays", savePlays());
+		JSONObject jsonWinner = new JSONObject();
+		JSONObject jsonPlayingPlayer = new JSONObject();
+		JSONObject jsonPlays = new JSONObject();
+		JSONObject jsonDefender = new JSONObject();
+		JSONObject jsonAttacker = new JSONObject();
 		
+		 jsonDefender.put("defender", game.getDefender().toString());
+		 jsonAttacker.put("attacker", game.getAttacker().toString());
+		 jsonWinner.put("winner",this.game.getWinner().toString());
+		 jsonPlayingPlayer.put("playingPlayer", game.getPlayingPlayerEnum().toString());
+		 jsonPlays.put("plays", savePlays().toString());
 		
+		 jsonParameters.put(jsonDefender);
+		 jsonParameters.put(jsonAttacker);
+		 jsonParameters.put(jsonWinner);
+		 jsonParameters.put(jsonPlayingPlayer);
+		 jsonParameters.put(jsonPlays);
+
+		 
 		return jsonParameters;
 	}
 	
 
-	private String generateSaveName() {
+	private String saveName() {
 		int index = 1;
 		String savePath = Paths.get(savesPath, savePrefix + index + saveSuffix).toString();
 		File f = new File(savePath);

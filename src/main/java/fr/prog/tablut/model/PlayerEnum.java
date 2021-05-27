@@ -11,6 +11,11 @@ public enum PlayerEnum {
 	
 	@Override
 	public String toString() {
-		return this == ATTACKER ? "L'attaquant" : "Le défenseur";
+		if(this == ATTACKER)
+			return "Attacker";
+		else if(this == DEFENDER)
+			return "Defender";
+		else
+			return "None";
 	}
 }

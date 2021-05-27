@@ -14,8 +14,10 @@ public class GameControllerAI {
     }
 
     /**
-     * @return True if we should repaint the window after the tick
-     */
+	 * @return True if we should repaint the window after the tick
+	 */
+
+
     public boolean tick() {
         if(game.getPlayingPlayer() instanceof AIPlayer) {
             if(timer-- <= 0) {

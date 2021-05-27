@@ -1,10 +1,10 @@
 package fr.prog.tablut.model;
 
 public class Movement {
-	public final int fromL;
-	public final int fromC;
-	public final int toL;
-	public final int toC;
+	public int fromL;
+	public int fromC;
+	public int toL;
+	public int toC;
 
 	Movement(int fromL, int fromC, int toL, int toC) {
 		this.fromL = fromL;
@@ -13,4 +13,39 @@ public class Movement {
 		this.toC = toC;
 	}
 	
+	public Movement() {
+	}
+	
+	public int getFromL() {
+		return fromL;
+	}
+
+	public int getFromC() {
+		return fromC;
+	}
+
+	public int getToL() {
+		return toL;
+	}
+
+	public int getToC() {
+		return toC;
+	}
+	
+	public void setFromL(int fromL) {
+		this.fromL = fromL;
+	}
+
+	public void setFromC(int fromC) {
+		this.fromC = fromC;
+	}
+
+	public void setToL(int toL) {
+		this.toL = toL;
+	}
+
+	public void setToC(int toC) {
+		this.toC = toC;
+	}
+
 }

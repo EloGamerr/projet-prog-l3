@@ -15,8 +15,12 @@ import fr.prog.tablut.view.generic.GenericLabel;
 public class LoadWindow extends Window{
 	private final GenericLabel title;
 	private final GenericLabel subtitle;
+	private final ButtonTogglePannel panel = new  ButtonTogglePannel();
 	
+	
+
 	public LoadWindow(GlobalWindow globalWindow) {
+		
 		this.setLayout(new GridBagLayout());
 		
 		this.title = new GenericLabel("Charger une partie", 80);
@@ -37,7 +41,7 @@ public class LoadWindow extends Window{
 		
 		c.gridy = 3;
 		
-		this.add(new ButtonTogglePannel(),c);
+		this.add(panel,c);
 		
 		c.gridy = 4;
 		
@@ -59,5 +63,8 @@ public class LoadWindow extends Window{
 	@Override
 	public WindowName name() {
 		return WindowName.LoadWindow;
+	}
+	public ButtonTogglePannel getPanel() {
+		return panel;
 	}
 }

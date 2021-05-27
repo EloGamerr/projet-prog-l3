@@ -6,6 +6,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import java.io.File;
+import java.nio.file.Paths;
+
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
@@ -15,8 +18,11 @@ import fr.prog.tablut.view.generic.GenericButton;
 public class ButtonTogglePannel extends JPanel{
 	
 	public GenericButton button_selected = null;
+	public int index_selected = 0;
 	
-	private final String SAVE_LOCATION = System.getProperty("user.dir") + "data/saves/";
+	private final String savesPath = Paths.get(System.getProperty("user.dir"), "saves").toString();
+	private static final String savePrefix = "save-";
+	private static final String saveSuffix = ".sv";
 	
 	public ButtonTogglePannel() {
 		this.setLayout(new GridBagLayout());
@@ -26,20 +32,29 @@ public class ButtonTogglePannel extends JPanel{
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.insets = new Insets(0, 0, 0, 0);
-		for(int i = 0; i < 6; i++) {
+		int i = 1;
+		String savePath = Paths.get(savesPath, savePrefix + i + saveSuffix).toString();
+		File f = new File(savePath);
+		while (f.isFile()) {
 			c.gridy = i;
-			button = new GenericButton("Button number " + i,new Dimension(300,30));
-			button.addActionListener(new ButtonToggleAdaptator(button, this));
+			savePath = Paths.get(savesPath, savePrefix + i + saveSuffix).toString();
+		    f = new File(savePath);
+		    
+			button = new GenericButton("Save n°" + i,new Dimension(300,30));
+			button.addActionListener(new ButtonToggleAdaptator(button, i, this));
 			this.add(button,c);
+			i++;
 		}
 	}
 	
-	public void selected(GenericButton button) {
+	public void selected(GenericButton button, int index) {
 		if(button_selected != null) {
 			button_selected.setBackground(new GenericButton("").getBackground());
 		}
 		
 		button_selected = button;
 		button_selected.setBackground(Color.green);
+		index_selected = index;
 	}
+
 }

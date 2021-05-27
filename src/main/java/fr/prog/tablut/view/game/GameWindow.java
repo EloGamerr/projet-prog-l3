@@ -21,9 +21,7 @@ public class GameWindow extends Window{
     public GameWindow() {
         this.setLayout(new BorderLayout());
         
-        AIRandom attacker = new AIRandom();
-        HumanPlayer defender = new HumanPlayer();
-        game = new Game(attacker, defender);
+        game = new Game();
         gridWindow = new GridWindow(game);
         GameController gameController = new GameController(game, this);
 
@@ -110,5 +108,9 @@ public class GameWindow extends Window{
 
 	public WindowName name() {
 		return WindowName.GameWindow;
+	}
+	
+	public Game getGame() {
+		return game;
 	}
 }

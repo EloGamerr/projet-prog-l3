@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import fr.prog.tablut.model.saver.GameLoader;
 import fr.prog.tablut.model.saver.GameSaver;
 import fr.prog.tablut.structures.Couple;
 
@@ -16,18 +17,46 @@ public class Game {
 	private PlayerEnum winner;
 	private PlayerEnum playingPlayerEnum;
 	private PawnTaker move;
-	private final Player attacker;
-	private final Player defender;
+	private Player attacker;
+	private Player defender;
 	private Plays plays;
+	private boolean hasStarted;
+	private GameSaver gameSaver;
+	private String currentSavePath = "";
+	public GameLoader loader;
+	
 
-	public Game(Player attacker, Player defender){
+
+	public Game(){
+		this.middle = 4;
+		
+	}
+	
+	public void start(Player attacker, Player defender) {
 		this.attacker = attacker;
 		this.defender = defender;
-		this.middle = 4;
-		this.playingPlayerEnum = PlayerEnum.ATTACKER;
+		setPlayingPlayer(PlayerEnum.ATTACKER);
 		this.move = new PawnTaker(this);
 		init_game(9,9);
 		this.plays = new Plays(this);
+		setWinner(PlayerEnum.NONE);
+		hasStarted = true;
+		loader = new GameLoader(this);
+		this.gameSaver = new GameSaver(this);
+	}
+	
+	public void load(int index_selected) {
+		init_grid(9,9);
+		this.move = new PawnTaker(this);
+		hasStarted = true;
+		this.plays = new Plays(this);
+		loader = new GameLoader(this);
+		gameSaver = new GameSaver(this);
+		loader.loadData(index_selected);
+	}
+	
+	public boolean hasStarted() {
+		return hasStarted;
 	}
 
 	void init_game(int rowAmount, int colAmount) {
@@ -43,6 +72,16 @@ public class Game {
 		init_towers();
 	}
 
+	public void init_grid(int rowAmount, int colAmount) {
+
+		setGrid(new CellContent[rowAmount][colAmount]);
+		for(int i = 0 ; i < rowAmount ; i++) {
+			Arrays.fill(getGrid()[i], CellContent.EMPTY);
+		}
+		
+		this.rowAmount = rowAmount;
+		this.colAmount = colAmount;
+	}
 	
 	void init_king() {
 		setKing(middle,middle);
@@ -95,7 +134,7 @@ public class Game {
 	}
 
 	public boolean move(int l, int c, int toL, int toC) {
-		if(getWinner() != null) return false;
+		if(isWon()) return false;
 		
 		if(!isValid(toL, toC)) return false;
 
@@ -124,7 +163,8 @@ public class Game {
 		if(isDefenseTower(l, c)) {
 			move.towerTaker_defense(l,c, play);
 		}
-		if((winner = checkWin(previousToCellContent, fromCellContent)) != null) {
+		setWinner(checkWin(previousToCellContent, fromCellContent));
+		if(isWon()) {
 			System.out.println(winner + " a gagné !");
 		}
 		else {
@@ -215,14 +255,14 @@ public class Game {
 	}
 	
 	private PlayerEnum checkWin(CellContent previousToCellContent, CellContent toCellContent) {
-		if(winner != null) return winner;
+		if(isWon()) return winner;
 		
 		if(!isTheKing(kingL,kingC)) // Si le roi a été tué
 			return playingPlayerEnum;
 		else if(previousToCellContent == CellContent.GATE && toCellContent == CellContent.KING) // Si le roi s'est déplacé sur une porte
 			return playingPlayerEnum;
 		
-		return null;
+		return PlayerEnum.NONE;
 	}
 	
 	
@@ -230,13 +270,28 @@ public class Game {
 		setContent(CellContent.EMPTY, l, c);
 		
 	}
-
+	
+	public void setWinner(PlayerEnum winner) {
+		this.winner = winner;
+	}
+	
+	public void setPlayingPlayer(PlayerEnum playingPlayer) {
+		this.playingPlayerEnum = playingPlayer;
+	}
+	
 	public void setDefenseTower(int l, int c) {
 		setContent(CellContent.DEFENSE_TOWER, l, c);
 	}
 	
 	public void setAttackTower(int l, int c) {
 		setContent(CellContent.ATTACK_TOWER, l, c);
+	}
+	
+	public void setDefender(Player defender) {
+		this.defender = defender;
+	}
+	public void setAttacker(Player attacker) {
+		this.attacker = attacker;
 	}
 	
 	public void setKing(int l, int c) {
@@ -362,6 +417,18 @@ public class Game {
 		return plays;
 	}
 
+
+	public boolean isWon() {
+		return this.getWinner() != PlayerEnum.NONE;
+	}
+	
+	public String getCurrentSavePath() {
+		return currentSavePath;
+	}
+
+	public void setCurrentSavePath(String currentSavePath) {
+		this.currentSavePath = currentSavePath;
+	}
 	public boolean undo_move() {
 		Play play = this.getPlays().undo_move();
 		if(play != null) {
@@ -388,5 +455,6 @@ public class Game {
 		}
 
 		return false;
+
 	}
 }

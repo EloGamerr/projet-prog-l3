@@ -29,5 +29,13 @@ public class AIRandom extends AIPlayer {
         Couple<Integer, Integer> toCell = accesibleCells.get(random.nextInt(accesibleCells.size()));
         game.move(fromCell.getFirst(), fromCell.getSecond(), toCell.getFirst(), toCell.getSecond());
         return true;
+
+    }
+    
+    @Override
+    public String toString() {
+    	
+    	return "AIRandom";
+
     }
 }

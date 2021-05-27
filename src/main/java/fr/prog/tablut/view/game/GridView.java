@@ -40,7 +40,7 @@ public class GridView {
 		x = gridWindow.getWidth()/2 - width/2; // getWidth() method returns the real width of the component
 		y = gridWindow.getHeight()/2 - height/2; // getHeight() method returns the real height of the component
 		
-		if(this.game.getWinner() != null) {
+		if(this.game.isWon()) {
 			this.clearImageOnMouse();
 		}
 		
@@ -66,7 +66,7 @@ public class GridView {
 		
 			this.drawCircles(selectedCell.getFirst(), selectedCell.getSecond());
 		}
-		else if(mousePosition != null && this.game.getWinner() == null) {
+		else if(mousePosition != null && !this.game.isWon()) {
 			this.gridWindow.setColor(GameColors.CELL_SELECTION);
 			int col = this.getColFromXCoord(mousePosition.x);
 			int row = this.getRowFromYCoord(mousePosition.y);

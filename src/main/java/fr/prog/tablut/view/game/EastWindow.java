@@ -1,5 +1,6 @@
 package fr.prog.tablut.view.game;
 
+import fr.prog.tablut.controller.adaptators.ButtonSaveAdaptator;
 import fr.prog.tablut.model.Game;
 import fr.prog.tablut.view.generic.GenericButton;
 
@@ -13,15 +14,7 @@ public class EastWindow extends JPanel {
         this.setBackground(new Color(0, 0, 0));
         GenericButton save = new GenericButton("Sauvegarde");
         this.add(save);
-        save.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {	
-				
-			}});
-        
-        
-        
-        
+        save.addMouseListener(new ButtonSaveAdaptator(game));
     }
 
     @Override

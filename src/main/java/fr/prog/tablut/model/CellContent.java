@@ -11,7 +11,7 @@ public enum CellContent {
 	ATTACK_TOWER("black_tower.png"),
 	DEFENSE_TOWER("white_tower.png"),
 	KING("king.png"),
-	GATE("door.png");
+	GATE("door.png"), KINGPLACE("king_place.png");
 	
 	Image image;
 	CellContent(String imagePath) {

@@ -38,9 +38,14 @@ public class GameController {
 	}
 
 	public void tick() {
+
+		if(gameControllerAI.tick())
+			this.gameWindow.repaint();	
+
 		if(gameControllerAI.tick()) {
 			this.gameWindow.repaint();
 		}
+
 	}
 
 	public Game getGame() {

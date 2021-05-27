@@ -19,7 +19,9 @@ public class HumanPlayer extends Player {
         this.gameControllerHuman = gameControllerHuman;
     }
 
-    @Override
+
+
+
     public boolean play(Game game) {
         switch(game.getPlayingPlayerEnum()) {
             case ATTACKER:
@@ -29,12 +31,19 @@ public class HumanPlayer extends Player {
                         gameControllerHuman.mouseMoved(gameWindow.getMousePosition());
                     }
                 }
+
+                else if(game.move(gameControllerHuman.getSelectedCell().getFirst(), gameControllerHuman.getSelectedCell().getSecond(), row ,col)) {
+                    gameControllerHuman.setSelectedCell(null);
+                    gameWindow.getGridWindow().clearImageOnMouse();
+                    return true;
+                }
                 else {
                     if(game.move(gameControllerHuman.getSelectedCell().getFirst(), gameControllerHuman.getSelectedCell().getSecond(), row ,col)) {
                         gameControllerHuman.setSelectedCell(null);
                         gameWindow.getGridWindow().clearImageOnMouse();
                         return true;
                     }
+
                 }
                 break;
             case DEFENDER:
@@ -44,6 +53,16 @@ public class HumanPlayer extends Player {
                         gameControllerHuman.mouseMoved(gameWindow.getMousePosition());
                     }
                 }
+
+                else if(game.move(gameControllerHuman.getSelectedCell().getFirst(), gameControllerHuman.getSelectedCell().getSecond(), row ,col)) {
+                    gameControllerHuman.setSelectedCell(null);
+                    gameWindow.getGridWindow().clearImageOnMouse();
+                    return true;
+                }
+                
+      
+        
+    
                 else {
                     if(game.move(gameControllerHuman.getSelectedCell().getFirst(), gameControllerHuman.getSelectedCell().getSecond(), row ,col)) {
                         gameControllerHuman.setSelectedCell(null);
@@ -53,6 +72,14 @@ public class HumanPlayer extends Player {
                 }
                 break;
         }
+
         return false;
     }
+    
+
+    public String toString() {
+    	// TODO Auto-generated method stub
+    	return "HumanPlayer";
+    }
+    
 }

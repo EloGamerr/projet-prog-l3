@@ -74,4 +74,6 @@ public abstract class AIPlayer extends Player {
 		//Manger une pièce --> 
 		return false;
 	}
+	
+	
 }

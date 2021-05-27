@@ -10,14 +10,16 @@ public class ButtonToggleAdaptator implements ActionListener{
 	
 	private final GenericButton button;
 	private final ButtonTogglePannel buttonTogglePannel;
+	private int index;
 	
-	public ButtonToggleAdaptator(GenericButton button, ButtonTogglePannel buttonTogglePannel) {
+	public ButtonToggleAdaptator(GenericButton button, int index, ButtonTogglePannel buttonTogglePannel) {
 		this.button = button;
 		this.buttonTogglePannel = buttonTogglePannel;
+		this.index = index;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		buttonTogglePannel.selected(button);
+		buttonTogglePannel.selected(button,index);
 	}
 }
