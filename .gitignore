@@ -3,6 +3,7 @@ bin/
 .settings/
 .classpath
 .project
+saves/
 
 # Intellij
 out/
