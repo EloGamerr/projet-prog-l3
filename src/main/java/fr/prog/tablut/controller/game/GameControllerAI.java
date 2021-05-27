@@ -13,15 +13,21 @@ public class GameControllerAI {
         timer = speed;
     }
 
-    public void tick() {
+    /**
+     * @return True if we should repaint the window after the tick
+     */
+    public boolean tick() {
         if(game.getPlayingPlayer() instanceof AIPlayer) {
             if(timer-- <= 0) {
-                game.getPlayingPlayer().play(game);
+                boolean shouldRepaint = game.getPlayingPlayer().play(game);
                 timer = speed;
+                return shouldRepaint;
             }
         }
         else {
             timer = speed;
         }
+
+        return false;
     }
 }

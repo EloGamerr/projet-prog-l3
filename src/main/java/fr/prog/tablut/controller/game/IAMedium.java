@@ -7,9 +7,9 @@ public class IAMedium extends AIPlayer {
 	
 	
 	@Override
-	public void play(Game game) {
+	public boolean play(Game game) {
 		// TODO Auto-generated method stub
-
+		return true;
 	}
 
 }

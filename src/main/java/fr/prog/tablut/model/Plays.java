@@ -4,26 +4,51 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Plays {
-	private final List<Movement> movements;
+	private final List<Play> plays;
+	private int currentMovement;
 	private Game game;
 
 	Plays(Game game) {
-		movements = new ArrayList<>();
+		plays = new ArrayList<>();
 		this.game = game;
+		this.currentMovement = -1;
 	}
 
-	public void move(int dL, int dC, int vL, int vC) {
-		movements.add(new Movement(dL, dC, vL, vC));
+	public Play move(int dL, int dC, int vL, int vC) {
+		getNextMovements().clear(); // We must clear nextMovements if a player plays without using undo/redo buttons
+
+		Play play = new Play(new Movement(dL, dC, vL, vC));
+		plays.add(play);
+		this.currentMovement++;
+
+		return play;
 	}
 	
-	public void undo_move() {
-		Movement moveToUndo = movements.get(movements.size()-1);
-		game.setContent(game.getCellContent(moveToUndo.toL, moveToUndo.toC),moveToUndo.fromL, moveToUndo.fromC);
-		game.setContent(CellContent.EMPTY, moveToUndo.toL, moveToUndo.toC);
-		movements.remove(movements.size()-1);
+	public Play undo_move() {
+		if(getPreviousMovements().isEmpty()) return null;
+
+		this.currentMovement--;
+
+		return plays.get(this.currentMovement+1);
 	}
 
-	public List<Movement> movements() {
-		return movements;
+	public Play redo_move() {
+		if(getNextMovements().isEmpty()) return null;
+
+		this.currentMovement++;
+
+		return plays.get(this.currentMovement);
+	}
+
+	public List<Play> movements() {
+		return plays;
+	}
+
+	public List<Play> getPreviousMovements() {
+		return plays.subList(0, this.currentMovement+1);
+	}
+
+	public List<Play> getNextMovements() {
+		return plays.subList(this.currentMovement+1, plays.size());
 	}
 }

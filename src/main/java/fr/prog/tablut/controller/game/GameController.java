@@ -21,7 +21,8 @@ public class GameController {
 	}
 	
 	public void click(int row, int col) {
-		this.gameControllerHuman.click(row, col);
+		if(this.gameControllerHuman.click(row, col))
+			this.gameWindow.repaint();
 	}
 
 	public void undoSelect() {
@@ -37,7 +38,9 @@ public class GameController {
 	}
 
 	public void tick() {
-		gameControllerAI.tick();
+		if(gameControllerAI.tick()) {
+			this.gameWindow.repaint();
+		}
 	}
 
 	public Game getGame() {
@@ -46,5 +49,25 @@ public class GameController {
 
 	public GameWindow getGameWindow() {
 		return gameWindow;
+	}
+
+	public void undo() {
+		if(this.game.undo_move()) {
+			System.out.println("Undo");
+			this.gameWindow.repaint();
+		}
+		else {
+			System.out.println("Can't Undo");
+		}
+	}
+
+	public void redo() {
+		if(this.game.redo_move()) {
+			System.out.println("Redo");
+			this.gameWindow.repaint();
+		}
+		else {
+			System.out.println("Can't Redo");
+		}
 	}
 }

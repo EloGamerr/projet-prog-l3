@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import fr.prog.tablut.model.Play;
 import org.json.JSONObject;
 
 import fr.prog.tablut.model.CellContent;
@@ -114,18 +115,18 @@ public class GameSaver {
 	
 	public StringBuilder savePlays() {
 		StringBuilder builder = new StringBuilder();
-		for(Movement move : game.getPlays().movements()) {
+		for(Play move : game.getPlays().movements()) {
 			
 			builder.append(SaverConstants.BR_RIGHT);
-			builder.append(move.fromL);
+			builder.append(move.getMovement().fromL);
 			builder.append(SaverConstants.COMMA);
-			builder.append(move.fromC);
+			builder.append(move.getMovement().fromC);
 			builder.append(SaverConstants.BR_LEFT);
 			
 			builder.append(SaverConstants.BR_RIGHT);
-			builder.append(move.toC);
+			builder.append(move.getMovement().toC);
 			builder.append(SaverConstants.COMMA);
-			builder.append(move.toL);
+			builder.append(move.getMovement().toL);
 			builder.append(SaverConstants.BR_LEFT);
 			
 			builder.append(SaverConstants.BLANK);

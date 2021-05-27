@@ -14,7 +14,7 @@ public class AIRandom extends AIPlayer {
     }
 
     @Override
-    public void play(Game game) {
+    public boolean play(Game game) {
         List<Couple<Integer, Integer>> accesibleCells;
         Couple<Integer, Integer> fromCell;
         do {
@@ -28,5 +28,6 @@ public class AIRandom extends AIPlayer {
         System.out.println("AI Play");
         Couple<Integer, Integer> toCell = accesibleCells.get(random.nextInt(accesibleCells.size()));
         game.move(fromCell.getFirst(), fromCell.getSecond(), toCell.getFirst(), toCell.getSecond());
+        return true;
     }
 }

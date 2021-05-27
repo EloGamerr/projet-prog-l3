@@ -20,7 +20,7 @@ public class HumanPlayer extends Player {
     }
 
     @Override
-    public void play(Game game) {
+    public boolean play(Game game) {
         switch(game.getPlayingPlayerEnum()) {
             case ATTACKER:
                 if(gameControllerHuman.getSelectedCell() == null) {
@@ -28,15 +28,12 @@ public class HumanPlayer extends Player {
                         gameControllerHuman.setSelectedCell(new Couple<Integer, Integer>(row, col));
                         gameControllerHuman.mouseMoved(gameWindow.getMousePosition());
                     }
-                    else {
-                        return;
-                    }
                 }
                 else {
                     if(game.move(gameControllerHuman.getSelectedCell().getFirst(), gameControllerHuman.getSelectedCell().getSecond(), row ,col)) {
                         gameControllerHuman.setSelectedCell(null);
                         gameWindow.getGridWindow().clearImageOnMouse();
-                        gameWindow.getSouthWindow().repaint();
+                        return true;
                     }
                 }
                 break;
@@ -46,18 +43,16 @@ public class HumanPlayer extends Player {
                         gameControllerHuman.setSelectedCell(new Couple<Integer, Integer>(row, col));
                         gameControllerHuman.mouseMoved(gameWindow.getMousePosition());
                     }
-                    else {
-                        return;
-                    }
                 }
                 else {
                     if(game.move(gameControllerHuman.getSelectedCell().getFirst(), gameControllerHuman.getSelectedCell().getSecond(), row ,col)) {
                         gameControllerHuman.setSelectedCell(null);
                         gameWindow.getGridWindow().clearImageOnMouse();
-                        gameWindow.getSouthWindow().repaint();
+                        return true;
                     }
                 }
                 break;
         }
+        return false;
     }
 }

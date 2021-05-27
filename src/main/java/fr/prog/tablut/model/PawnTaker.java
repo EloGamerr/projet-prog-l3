@@ -16,49 +16,59 @@ public class PawnTaker {
 	}
 	
 	// On check les voisins du pion attaquant qui a joué
-	public void towerTaker_attack(int l, int c) {
-		towerTaker_attack_core(l-1,c,-1,0);
-		towerTaker_attack_core(l+1,c,1,0);
-		towerTaker_attack_core(l,c-1,0,-1);
-		towerTaker_attack_core(l,c+1,0,1);
+	public void towerTaker_attack(int l, int c, Play play) {
+		towerTaker_attack_core(l-1,c,-1,0, play);
+		towerTaker_attack_core(l+1,c,1,0, play);
+		towerTaker_attack_core(l,c-1,0,-1, play);
+		towerTaker_attack_core(l,c+1,0,1, play);
 	}
 	// On check les voisins du pion attaquant qui a joué
-	public void towerTaker_defense(int l, int c) {
-		towerTaker_defense_core(l-1,c,-1,0);
-		towerTaker_defense_core(l+1,c,1,0);
-		towerTaker_defense_core(l,c-1,0,-1);
-		towerTaker_defense_core(l,c+1,0,1);
+	public void towerTaker_defense(int l, int c, Play play) {
+		towerTaker_defense_core(l-1,c,-1,0, play);
+		towerTaker_defense_core(l+1,c,1,0, play);
+		towerTaker_defense_core(l,c-1,0,-1, play);
+		towerTaker_defense_core(l,c+1,0,1, play);
 	}
 	
 	
-	public void towerTaker_defense_core(int l, int c, int dl, int dc){
+	public void towerTaker_defense_core(int l, int c, int dl, int dc, Play play){
 		if(game.isAttackTower(l, c)){
-			if(isDefTowerHelper(l+dl, c+dc)) // Si deux cases plus loin nous avons un allié de circonstance pour la défense
+			if(isDefTowerHelper(l+dl, c+dc)) { // Si deux cases plus loin nous avons un allié de circonstance pour la défense
+				play.putModifiedOldCellContent(new Couple<>(l, c), game.getCellContent(l, c));
 				game.setContent(CellContent.EMPTY,l,c); // on enleve le pion ennemi
+				play.putModifiedNewCellContent(new Couple<>(l, c), CellContent.EMPTY);
+			}
 			else  
-				testSurround(l, c); // Sinon on vérifie que le coup joué  bloque totalement le pion ennemi
+				testSurround(l, c, play); // Sinon on vérifie que le coup joué  bloque totalement le pion ennemi
 				
 		}
 	}
 	
-	public void towerTaker_attack_core(int l, int c, int dl, int dc){
+	public void towerTaker_attack_core(int l, int c, int dl, int dc, Play play){
 		if(game.isDefenseTower(l, c)){ // Si la case contient une tour défensive
-			if(isAttTowerHelper(l+dl, c+dc)) // Si deux cases plus loin nous avons un allié de circonstance pour l'attaque
+			if(isAttTowerHelper(l+dl, c+dc)) { // Si deux cases plus loin nous avons un allié de circonstance pour l'attaque
+				play.putModifiedOldCellContent(new Couple<>(l, c), game.getCellContent(l, c));
 				game.setContent(CellContent.EMPTY,l,c); // on enleve le pion ennemi
+				play.putModifiedNewCellContent(new Couple<>(l, c), CellContent.EMPTY);
+			}
 			else 
-				testSurround(l, c);  // Sinon on vérifie que le coup joué  bloque totalement le pion ennemi
+				testSurround(l, c, play);  // Sinon on vérifie que le coup joué  bloque totalement le pion ennemi
 		}
 		else if(game.isTheKing(l,c)) // Si la case contient le roi
-				testSurround(l, c);  // On vérifie que le coup joué  bloque totalement le roi ennemi
+				testSurround(l, c, play);  // On vérifie que le coup joué  bloque totalement le roi ennemi
 	}
 	
 	
-	public void testSurround(int l, int c) {
+	public void testSurround(int l, int c, Play play) {
 		if(isSurrounded(new Couple<Integer, Integer>(l, c),l,c)) { // Si le pion est encerclé
+			play.putModifiedOldCellContent(new Couple<>(l, c), game.getCellContent(l, c));
 			game.setContent(CellContent.EMPTY,l,c); // On enlève le pion
+			play.putModifiedNewCellContent(new Couple<>(l, c), CellContent.EMPTY);
 			if(!visited.isEmpty()) {
-				for(Couple<Integer, Integer> cell : visited) { 
+				for(Couple<Integer, Integer> cell : visited) {
+					play.putModifiedOldCellContent(cell, game.getCellContent(cell.getFirst(), cell.getSecond()));
 					game.setContent(CellContent.EMPTY,cell.getFirst(),cell.getSecond()); // // Et on enlève les pions encerclés avec le précédent
+					play.putModifiedOldCellContent(cell, CellContent.EMPTY);
 				}
 			}
 		}
@@ -73,12 +83,6 @@ public class PawnTaker {
 		
 		switch(game.getGrid()[i][j]) {
 			case DEFENSE_TOWER:
-				var = checkneighbour_defense(var.getSecond(), var.getFirst(), i-1, j);
-				var = checkneighbour_defense(var.getSecond(), var.getFirst(), i+1, j);
-				var = checkneighbour_defense(var.getSecond(), var.getFirst(), i, j-1);
-				var = checkneighbour_defense(var.getSecond(), var.getFirst(), i, j+1);
-				break;
-
 			case KING:
 				var = checkneighbour_defense(var.getSecond(), var.getFirst(), i-1, j);
 				var = checkneighbour_defense(var.getSecond(), var.getFirst(), i+1, j);

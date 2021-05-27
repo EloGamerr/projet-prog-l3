@@ -3,6 +3,7 @@ package fr.prog.tablut.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import fr.prog.tablut.model.saver.GameSaver;
 import fr.prog.tablut.structures.Couple;
@@ -28,8 +29,6 @@ public class Game {
 		init_game(9,9);
 		this.plays = new Plays(this);
 	}
-	
-
 
 	void init_game(int rowAmount, int colAmount) {
 		setGrid(new CellContent[rowAmount][colAmount]);
@@ -106,22 +105,24 @@ public class Game {
 		if(fromCellContent == CellContent.EMPTY || fromCellContent == CellContent.GATE) return false;
 
 		List<Couple<Integer, Integer>> accessibleCells = getAccessibleCells(l, c);
-		if(!accessibleCells.contains(new Couple<Integer, Integer>(toL, toC))) return false;
+		if(!accessibleCells.contains(new Couple<>(toL, toC))) return false;
 
-		
+		Play play = plays.move(l, c, toL, toC);
+		play.putModifiedOldCellContent(new Couple<>(l, c), getCellContent(l, c));
 		clear(l, c);
-		plays.move(l, c, toL, toC);
+		play.putModifiedNewCellContent(new Couple<>(l, c), CellContent.EMPTY);
 		l = toL;
 		c = toC;
-		CellContent previousToCellContent = getGrid()[l][c];
+		CellContent previousToCellContent = getCellContent(l, c);
+		play.putModifiedOldCellContent(new Couple<>(l, c), previousToCellContent);
 		setContent(fromCellContent, l, c);
+		play.putModifiedNewCellContent(new Couple<>(l, c), fromCellContent);
 		
 		if(isAttackTower(l, c)) {
-			move.towerTaker_attack(l,c);
-
+			move.towerTaker_attack(l,c, play);
 		}
 		if(isDefenseTower(l, c)) {
-			move.towerTaker_defense(l,c);
+			move.towerTaker_defense(l,c, play);
 		}
 		if((winner = checkWin(previousToCellContent, fromCellContent)) != null) {
 			System.out.println(winner + " a gagné !");
@@ -361,5 +362,31 @@ public class Game {
 		return plays;
 	}
 
+	public boolean undo_move() {
+		Play play = this.getPlays().undo_move();
+		if(play != null) {
+			for(Map.Entry<Couple<Integer, Integer>, CellContent> entry : play.getModifiedOldCellContents().entrySet()) {
+				this.setContent(entry.getValue(), entry.getKey().getFirst(), entry.getKey().getSecond());
+			}
 
+			this.playingPlayerEnum = this.getPlayingPlayerEnum().getOpponent();
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean redo_move() {
+		Play play = this.getPlays().redo_move();
+		if(play != null) {
+			for(Map.Entry<Couple<Integer, Integer>, CellContent> entry : play.getModifiedNewCellContents().entrySet()) {
+				this.setContent(entry.getValue(), entry.getKey().getFirst(), entry.getKey().getSecond());
+			}
+
+			this.playingPlayerEnum = this.getPlayingPlayerEnum().getOpponent();
+			return true;
+		}
+
+		return false;
+	}
 }

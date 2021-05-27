@@ -18,15 +18,19 @@ public class GameControllerHuman {
         this.gameWindow = gameWindow;
     }
 
-    public void click(int row, int col) {
-        if(!game.isValid(row, col)) return;
+    /**
+     * @return True if we should repaint the window after the click
+     */
+    public boolean click(int row, int col) {
+        if(!game.isValid(row, col)) return false;
 
-        if(!(game.getPlayingPlayer() instanceof HumanPlayer)) return;
+        if(!(game.getPlayingPlayer() instanceof HumanPlayer)) return false;
 
         HumanPlayer humanPlayer = (HumanPlayer) game.getPlayingPlayer();
 
         humanPlayer.updateState(row, col, gameWindow, this);
-        humanPlayer.play(game);
+
+        return humanPlayer.play(game);
     }
 
     public void undoSelect() {

@@ -7,8 +7,11 @@ import fr.prog.tablut.structures.Couple;
 
 public abstract class Player {
 	private List<Couple<Integer, Integer>> ownedCells = new ArrayList<>();
-	
-	public abstract void play(Game game);
+
+	/**
+	 * @return True if we should repaint the window after the play
+	 */
+	public abstract boolean play(Game game);
 	
 	public List<Couple<Integer, Integer>> getOwnedCells() {
 		return this.ownedCells;
