@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 import org.json.JSONObject;
 
-import fr.prog.tablut.model.Game;
+import fr.prog.tablut.model.game.Game;
 
 public class GameLoader {
  
@@ -21,9 +21,9 @@ public class GameLoader {
 	
 	private final Game game;
 	
-	GameLoader(Game game){
+	GameLoader(Game game) {
 		this.game = game;
-		this.currentSavePath = null;
+		currentSavePath = null;
 	}
 	
 	public boolean loadData() {
@@ -36,7 +36,7 @@ public class GameLoader {
 			e1.printStackTrace();
 		}
 		
-		this.currentSavePath = savesPath;
+		currentSavePath = savesPath;
 		
 		
 		File save = new File(savesPath);
@@ -81,6 +81,6 @@ public class GameLoader {
 	
 	
 	public String getCurrentSavePath() {
-		return this.currentSavePath;
+		return currentSavePath;
 	}
 }

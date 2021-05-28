@@ -1,7 +1,7 @@
 package fr.prog.tablut;
 
-
-import javax.swing.*;
+import java.text.ParseException;
+import javax.swing.SwingUtilities;
 
 import fr.prog.tablut.view.GlobalWindow;
 
@@ -11,13 +11,16 @@ public class Tablut implements Runnable {
     }
 
     public void run() {
-        JFrame jFrame = new JFrame("Tablut");
+        try {
+            // can be changed to any configuration file later - or by entry
+            String configFolder = "res/config/";
+            String configFile = "project.json";
 
-        new GlobalWindow(jFrame);
+            new GlobalWindow(configFolder + configFile);
+        }
 
-        jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);  
-        jFrame.setSize(1200, 800);
-        jFrame.setLocationRelativeTo(null);
-        jFrame.setVisible(true);
+        catch(ParseException e) {
+            e.printStackTrace();
+        }
     }
 }

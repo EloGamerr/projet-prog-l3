@@ -1,6 +1,6 @@
 package fr.prog.tablut.controller.game;
 
-import fr.prog.tablut.model.Game;
+import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.structures.Couple;
 
 import java.util.List;

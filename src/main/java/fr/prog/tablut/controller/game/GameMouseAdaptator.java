@@ -3,7 +3,7 @@ package fr.prog.tablut.controller.game;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import fr.prog.tablut.view.game.GridWindow;
+import fr.prog.tablut.view.pages.game.grid.GridWindow;
 
 public class GameMouseAdaptator extends MouseAdapter {
 	private final GridWindow gridWindow;

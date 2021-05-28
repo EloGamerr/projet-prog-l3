@@ -7,10 +7,9 @@ public class Arbre {
 	public List<Arbre> allChild;
 	public Arbre Father;
 	
-	public Arbre(List<Arbre> list, Arbre Father) {
-		// TODO Auto-generated constructor stub
-		this.allChild = list;
-		this.Father = Father;
+	public Arbre(List<Arbre> list, Arbre parent) {
+		allChild = list;
+		Father = parent;
 	}
 	
 	public boolean isRoot() {

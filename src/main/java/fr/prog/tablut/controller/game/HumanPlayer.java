@@ -1,21 +1,21 @@
 package fr.prog.tablut.controller.game;
 
-
-import fr.prog.tablut.model.Game;
-import fr.prog.tablut.model.Player;
+import fr.prog.tablut.model.game.Game;
+import fr.prog.tablut.model.game.player.Player;
+import fr.prog.tablut.model.game.player.PlayerEnum;
 import fr.prog.tablut.structures.Couple;
-import fr.prog.tablut.view.game.GameWindow;
+import fr.prog.tablut.view.pages.game.GamePage;
 
 public class HumanPlayer extends Player {
     private int row;
     private int col;
-    private GameWindow gameWindow;
+    private GamePage gamePage;
     private GameControllerHuman gameControllerHuman;
     
-    public void updateState(int row, int col, GameWindow gameWindow, GameControllerHuman gameControllerHuman) {
+    public void updateState(int row, int col, GamePage gamePage, GameControllerHuman gameControllerHuman) {
         this.row = row;
         this.col = col;
-        this.gameWindow = gameWindow;
+        this.gamePage = gamePage;
         this.gameControllerHuman = gameControllerHuman;
     }
 
@@ -26,13 +26,13 @@ public class HumanPlayer extends Player {
                 if(gameControllerHuman.getSelectedCell() == null) {
                     if(game.isAttackTower(row, col)) {
                         gameControllerHuman.setSelectedCell(new Couple<Integer, Integer>(row, col));
-                        gameControllerHuman.mouseMoved(gameWindow.getMousePosition());
+                        gameControllerHuman.mouseMoved(gamePage.getMousePosition());
                     }
                 }
                 else {
                     if(game.move(gameControllerHuman.getSelectedCell().getFirst(), gameControllerHuman.getSelectedCell().getSecond(), row ,col)) {
                         gameControllerHuman.setSelectedCell(null);
-                        gameWindow.getGridWindow().clearImageOnMouse();
+                        gamePage.getGridWindow().clearImageOnMouse();
                         return true;
                     }
                 }
@@ -41,16 +41,18 @@ public class HumanPlayer extends Player {
                 if(gameControllerHuman.getSelectedCell() == null) {
                     if(game.isDefenseTower(row, col) || game.isTheKing(row, col)) {
                         gameControllerHuman.setSelectedCell(new Couple<Integer, Integer>(row, col));
-                        gameControllerHuman.mouseMoved(gameWindow.getMousePosition());
+                        gameControllerHuman.mouseMoved(gamePage.getMousePosition());
                     }
                 }
                 else {
                     if(game.move(gameControllerHuman.getSelectedCell().getFirst(), gameControllerHuman.getSelectedCell().getSecond(), row ,col)) {
                         gameControllerHuman.setSelectedCell(null);
-                        gameWindow.getGridWindow().clearImageOnMouse();
+                        gamePage.getGridWindow().clearImageOnMouse();
                         return true;
                     }
                 }
+                break;
+            default:
                 break;
         }
         return false;

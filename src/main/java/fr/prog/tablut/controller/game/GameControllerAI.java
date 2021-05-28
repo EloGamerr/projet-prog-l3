@@ -1,6 +1,8 @@
 package fr.prog.tablut.controller.game;
 
-import fr.prog.tablut.model.Game;
+import fr.prog.tablut.model.game.Game;
+import fr.prog.tablut.model.game.player.Player;
+import fr.prog.tablut.controller.game.AIPlayer;
 
 public class GameControllerAI {
     private final Game game;

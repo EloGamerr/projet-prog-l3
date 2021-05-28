@@ -1,6 +1,6 @@
 package fr.prog.tablut.controller.game;
 
-import fr.prog.tablut.model.Game;
+import fr.prog.tablut.model.game.Game;
 
 public class IAMedium extends AIPlayer {
 	
@@ -8,7 +8,6 @@ public class IAMedium extends AIPlayer {
 	
 	@Override
 	public boolean play(Game game) {
-		// TODO Auto-generated method stub
 		return true;
 	}
 

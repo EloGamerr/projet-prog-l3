@@ -11,12 +11,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import fr.prog.tablut.model.Play;
 import org.json.JSONObject;
 
-import fr.prog.tablut.model.CellContent;
-import fr.prog.tablut.model.Game;
-import fr.prog.tablut.model.Movement;
+import fr.prog.tablut.model.game.CellContent;
+import fr.prog.tablut.model.game.Game;
+import fr.prog.tablut.model.game.Movement;
+import fr.prog.tablut.model.game.Play;
+import fr.prog.tablut.model.game.player.PlayerEnum;
 
 
 public class GameSaver {
@@ -39,12 +40,12 @@ public class GameSaver {
 	}
 	 
 	public void saveToFile() {
-		save(Paths.get(this.generateSaveName()));
+		save(Paths.get(generateSaveName()));
 	}
 	
 	private void save(Path path) {
-		JSONObject jsonBoard = this.generateJSONBoard();
-		JSONObject jsonParameters = this.generateJSONParameters();
+		JSONObject jsonBoard = generateJSONBoard();
+		JSONObject jsonParameters = generateJSONParameters();
 		
 		try {
 			Files.createDirectories(path.getParent());
@@ -61,7 +62,7 @@ public class GameSaver {
 			    Files.write(path, lines, StandardCharsets.UTF_8);
 			}	
 			
-			this.setCurrentSavePath(path.toString());
+			setCurrentSavePath(path.toString());
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -86,23 +87,23 @@ public class GameSaver {
 				
 				switch(cell) {
 					case EMPTY:
-							builder.append(SaverConstants.EMPTY);
+						builder.append(SaverConstants.EMPTY);
 						break;
 						
 					case ATTACK_TOWER:
-							builder.append(SaverConstants.ATTACK_TOWER);
+						builder.append(SaverConstants.ATTACK_TOWER);
 						break;
 						
 					case DEFENSE_TOWER:
-							builder.append(SaverConstants.DEFENSE_TOWER);
+						builder.append(SaverConstants.DEFENSE_TOWER);
 						break;
 						
 					case KING:
-							builder.append(SaverConstants.KING);
+						builder.append(SaverConstants.KING);
 						break;
 						
 					case GATE:
-							builder.append(SaverConstants.GATE);
+						builder.append(SaverConstants.GATE);
 						break;
 				}
 				builder.append(SaverConstants.BLANK);
@@ -140,7 +141,7 @@ public class GameSaver {
 		JSONObject playingPlayer = new JSONObject();
 		JSONObject plays = new JSONObject();
 		
-		winner.put("Winner",this.game.getWinner());
+		winner.put("Winner", game.getWinner());
 		playingPlayer.put("playingPlayer", game.getPlayingPlayer());
 		plays.put("plays", savePlays());
 		
@@ -168,11 +169,11 @@ public class GameSaver {
 	
 	
 	public String getCurrentSavePath() {
-		return this.currentSavePath;
+		return currentSavePath;
 	}
 	
 	public void setCurrentSavePath(String path) {
-		this.currentSavePath = path;
+		currentSavePath = path;
 	}
 	
 	public Game reload(int index_game) {

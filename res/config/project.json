@@ -1,0 +1,27 @@
+{
+    "project": {
+        "name": "Tablut"
+    },
+    "window": {
+        "background": [230, 230, 230],
+        "color": [255, 255, 255],
+        "width": 1280,
+        "height": 720
+    },
+    "components": {
+        "button": {
+            "background": [200, 200, 200],
+            "color": [0, 0, 0],
+
+            "green": {
+                "background": [0, 255, 0],
+                "color": [255, 255, 255]
+            },
+
+            "red": {
+                "background": [255, 0, 0],
+                "color": [255, 255, 255]
+            }
+        }
+    }
+}

@@ -3,10 +3,10 @@ package fr.prog.tablut.controller.adaptators;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import fr.prog.tablut.model.WindowName;
+import fr.prog.tablut.model.window.WindowName;
 import fr.prog.tablut.view.GlobalWindow;
 
-public class ButtonNavAdaptator implements ActionListener{
+public class ButtonNavAdaptator implements ActionListener {
 	private final GlobalWindow globalWindow;
 	private final WindowName dest;
 	

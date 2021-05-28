@@ -3,8 +3,8 @@ package fr.prog.tablut.controller.adaptators;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import fr.prog.tablut.view.generic.GenericButton;
-import fr.prog.tablut.view.load.ButtonTogglePannel;
+import fr.prog.tablut.view.components.generic.GenericButton;
+import fr.prog.tablut.view.pages.load.ButtonTogglePannel;
 
 public class ButtonToggleAdaptator implements ActionListener{
 	

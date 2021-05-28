@@ -2,27 +2,29 @@ package fr.prog.tablut.controller.game;
 
 import java.awt.Point;
 
-import fr.prog.tablut.model.Game;
+import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.structures.Couple;
-import fr.prog.tablut.view.game.GameWindow;
+import fr.prog.tablut.view.pages.game.GamePage;
+import fr.prog.tablut.controller.game.GameControllerAI;
+import fr.prog.tablut.controller.game.GameControllerHuman;
 
 public class GameController {
 
 	private final Game game;
-	private final GameWindow gameWindow;
+	private final GamePage gamePage;
 	private final GameControllerAI gameControllerAI;
 	private final GameControllerHuman gameControllerHuman;
 
-	public GameController(Game game, GameWindow gameWindow) {
+	public GameController(Game game, GamePage gamePage) {
 		this.game = game;
-		this.gameWindow = gameWindow;
+		this.gamePage = gamePage;
 		this.gameControllerAI = new GameControllerAI(game, 20);
-		this.gameControllerHuman = new GameControllerHuman(game, gameWindow);
+		this.gameControllerHuman = new GameControllerHuman(game, gamePage);
 	}
 	
 	public void click(int row, int col) {
 		if(this.gameControllerHuman.click(row, col))
-			this.gameWindow.repaint();
+			this.gamePage.repaint();
 	}
 
 	public void undoSelect() {
@@ -39,7 +41,7 @@ public class GameController {
 
 	public void tick() {
 		if(gameControllerAI.tick()) {
-			this.gameWindow.repaint();
+			this.gamePage.repaint();
 		}
 	}
 
@@ -47,14 +49,14 @@ public class GameController {
 		return game;
 	}
 
-	public GameWindow getGameWindow() {
-		return gameWindow;
+	public GamePage getGameWindow() {
+		return gamePage;
 	}
 
 	public void undo() {
 		if(this.game.undo_move()) {
 			System.out.println("Undo");
-			this.gameWindow.repaint();
+			this.gamePage.repaint();
 		}
 		else {
 			System.out.println("Can't Undo");
@@ -64,7 +66,7 @@ public class GameController {
 	public void redo() {
 		if(this.game.redo_move()) {
 			System.out.println("Redo");
-			this.gameWindow.repaint();
+			this.gamePage.repaint();
 		}
 		else {
 			System.out.println("Can't Redo");

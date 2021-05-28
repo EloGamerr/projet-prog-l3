@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JComboBox;
 
-import fr.prog.tablut.view.newGame.SelectionPlayer;
+import fr.prog.tablut.view.pages.newGame.SelectionPlayer;
 
 public class ComboBoxAdaptator implements ActionListener{
 	
