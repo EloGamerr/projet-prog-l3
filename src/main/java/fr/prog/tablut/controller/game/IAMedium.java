@@ -2,6 +2,7 @@ package fr.prog.tablut.controller.game;
 
 import fr.prog.tablut.model.Game;
 
+@Deprecated
 public class IAMedium extends AIPlayer {
 	
 	

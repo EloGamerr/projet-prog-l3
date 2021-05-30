@@ -9,12 +9,13 @@ import fr.prog.tablut.model.PlayerEnum;
 import fr.prog.tablut.structures.Couple;
 import fr.prog.tablut.structures.Possibility;
 
+@Deprecated
 public abstract class AIPlayer extends Player {	
 	/**
 	 * 
 	 * @param grid : le tableau du jeu
-	 * @param ownedCells : Les cases utilisées par le joueur dont on simule le coup
-	 * @return La liste des possibilitées
+	 * @param ownedCells : Les cases utilisï¿½es par le joueur dont on simule le coup
+	 * @return La liste des possibilitï¿½es
 	 */
 	protected List<Possibility> getPossibilities(CellContent[][] grid, List<Couple<Integer, Integer>> ownedCells) {
 		List<Possibility> listPossibilities = new ArrayList<>();
@@ -66,12 +67,12 @@ public abstract class AIPlayer extends Player {
 	 * @return
 	 */
 	protected boolean isBetter(PlayerEnum playingPlayer,CellContent[][] grid, Possibility P1, Possibility P2) {
-		// Peut etre supprimé pour mettre la note directement dans possibility
+		// Peut etre supprimï¿½ pour mettre la note directement dans possibility
 		
 		//TODO Le truc chiant
-		//Roi encadré --> meilleur pour les noir
+		//Roi encadrï¿½ --> meilleur pour les noir
 		//Le roi peut s'echapper --> meilleur pour les blancs
-		//Manger une pièce --> 
+		//Manger une piï¿½ce --> 
 		return false;
 	}
 	
