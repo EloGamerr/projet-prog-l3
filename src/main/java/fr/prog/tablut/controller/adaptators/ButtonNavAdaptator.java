@@ -15,8 +15,11 @@ public class ButtonNavAdaptator implements ActionListener {
 		this.dest = dest;
 	}
 	
-	 @Override
+	@Override
     public void actionPerformed(ActionEvent e) {
-        globalWindow.changeWindow(dest);
+		if(dest == null)
+			System.exit(0);
+		else
+	        globalWindow.changeWindow(dest);
     }
 }

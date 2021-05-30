@@ -1,61 +1,81 @@
 package fr.prog.tablut.view.components.generic;
 
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Cursor;
+import java.awt.event.MouseAdapter;
 
 import javax.swing.JButton;
 
 import fr.prog.tablut.controller.adaptators.ButtonNavAdaptator;
 import fr.prog.tablut.model.window.WindowName;
-import fr.prog.tablut.view.GlobalWindow;
 
+/**
+ * A component that extends JButton, a basic button.
+ * @see JButton
+ */
+public class GenericButton extends JButton {
+	protected boolean hovering = false;
+    protected boolean canHoverStyle = false;
+    protected Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
+    protected Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
 
-public class GenericButton extends JButton{
+    protected String styleName = "button";
+
+    protected WindowName href = null;
 	
-	static public final ActionListener QUIT = new ActionListener() {
-		
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			System.exit(0);
-			
-		}
-	};
-	static private GlobalWindow globalWindow;
-	
-	static public void setGlobalWindow(GlobalWindow globalWin) {
-		GenericButton.globalWindow = globalWin;
+	/**
+	 * Default constructor.
+	 * <p>Creates a generic button of type JButton.</p>
+	 * <p>Handles these events : when the mouse enters or leaves the button,
+	 * or clicks on, to set the cursor icon and the hovering boolean state.</p>
+	 */
+	public GenericButton() {
+        init();
+    }
+
+	/**
+	 * Creates a generic button of type JButton with given text inside.
+	 * <p>Handles these events : when the mouse enters or leaves the button,
+	 * or clicks on, to set the cursor icon and the hovering boolean state.</p>
+	 * @param label The text in the button
+	 */
+	public GenericButton(String label) {
+		super(label);
+		init();
+    }
+
+	/**
+	 * Initializes the button : event handlers
+	 */
+	private void init() {
+		// hover listener
+        GenericButton me = this;
+
+		// TODO: move it in the controller
+        addMouseListener(new MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+				hovering = true;
+                me.setCursor(me.handCursor);
+            }
+        
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                hovering = false;
+                me.setCursor(me.defaultCursor);
+            }
+
+			public void mouseReleased(java.awt.event.MouseEvent evt) {
+				hovering = false;
+                me.setCursor(me.handCursor);
+			}
+        });
 	}
-	
-	static public GlobalWindow getGlobalWindow() {
-		return GenericButton.globalWindow;
-	}
-	
-	static public ButtonNavAdaptator GO (WindowName dest) {
-		return new ButtonNavAdaptator(GenericButton.globalWindow, dest);
-	}
-	
-	static public Dimension DIMENSION() {
-		return new Dimension(250, 30);
-	}
-	
-	public GenericButton(String text) {
-		super(text);
-	}
-	
-	public GenericButton(String text, ActionListener actionListener) {
-		super(text);
-		addActionListener(actionListener);
-	}
-	
-	public GenericButton(String text, Dimension defaultSize) {
-		super(text);
-		setPreferredSize(defaultSize);
-	}
-	
-	public GenericButton(String text, ActionListener actionListener, Dimension defaultSize) {
-		super(text);
-		addActionListener(actionListener);
-		setPreferredSize(defaultSize);
-	}
+
+	/**
+	 * Sets the href location (the page to go to in the app)
+	 * when the user clicks on.
+	 * @param href The page to go to
+	 */
+    public void setHref(WindowName href) {
+        this.href = href;
+        addActionListener(new ButtonNavAdaptator(GenericObjectStyle.getGlobalWindow(), href));
+    }
 }

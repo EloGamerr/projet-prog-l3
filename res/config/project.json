@@ -3,24 +3,94 @@
         "name": "Tablut"
     },
     "window": {
-        "background": [230, 230, 230],
-        "color": [255, 255, 255],
+        "background": [26, 29, 33],
+        "color": [221, 221, 221],
         "width": 1280,
         "height": 720
     },
     "components": {
+        "label": {
+            "color": [221, 221, 221]
+        },
+        "description": {
+            "color": [136, 136, 136]
+        },
+        "area": {
+            "background": [48, 54, 62],
+            "borderColor": [71, 79, 90]
+        },
+        "input": {
+            "background": [48, 54, 62],
+            "borderColor": [71, 79, 90],
+            "color": [241, 241, 241]
+        },
         "button": {
-            "background": [200, 200, 200],
-            "color": [0, 0, 0],
+            "background": [48, 54, 62],
+            "borderColor": [48, 54, 62],
+            "color": [221, 221, 221],
 
-            "green": {
-                "background": [0, 255, 0],
+            ":hover": {
+                "background": [58, 65, 74],
+                "borderColor": [58, 65, 74],
                 "color": [255, 255, 255]
             },
 
-            "red": {
-                "background": [255, 0, 0],
-                "color": [255, 255, 255]
+            ".home": {
+                "background": [48, 54, 62],
+                "borderColor": [71, 79, 90],
+                "color": [221, 221, 221],
+
+                ":hover": {
+                    "background": [58, 65, 74],
+                    "borderColor": [85, 95, 108],
+                    "color": [255, 255, 255]
+                }
+            },
+
+            ".green": {
+                "background": [119, 178, 85],
+                "borderColor": [119, 178, 85],
+                "color": [221, 221, 221],
+
+                ":hover": {
+                    "background": [143, 214, 102],
+                    "borderColor": [143, 214, 102],
+                    "color": [221, 221, 221]
+                }
+            },
+
+            ".red": {
+                "background": [221, 46, 68],
+                "borderColor": [221, 46, 68],
+                "color": [221, 221, 221],
+
+                ":hover": {
+                    "background": [241, 66, 88],
+                    "borderColor": [241, 66, 88],
+                    "color": [241, 241, 241]
+                }
+            },
+
+            ".load": {
+                "background": [64, 72, 81],
+                "borderColor": [28, 31, 34],
+                "color": [221, 221, 221],
+
+                ":hover": {
+                    "background": [77, 86, 97],
+                    "borderColor": [104, 115, 129],
+                    "color": [255, 255, 255]
+                }
+            }
+        },
+        "table": {
+            ".th": {
+                "color": [241, 241, 241]
+            },
+
+            ".td": {
+                "color": [145, 145, 145],
+                "borderColor": [48, 54, 62]
             }
         }
     }

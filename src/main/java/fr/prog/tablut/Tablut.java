@@ -1,6 +1,7 @@
 package fr.prog.tablut;
 
 import java.text.ParseException;
+
 import javax.swing.SwingUtilities;
 
 import fr.prog.tablut.view.GlobalWindow;

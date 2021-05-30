@@ -1,50 +1,51 @@
 package fr.prog.tablut.view.pages.home;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javax.swing.JPanel;
 
 import fr.prog.tablut.model.window.WindowName;
-import fr.prog.tablut.view.GlobalWindow;
-import fr.prog.tablut.view.components.generic.GenericButton;
+import fr.prog.tablut.view.components.generic.GenericRoundedButton;
 
 public class ButtonChoice extends JPanel {
-	private final GenericButton button_new_game;
-	private final GenericButton button_load_game;
-	private final GenericButton button_shortcut;
-	private final GenericButton button_quit;
-	
-	public ButtonChoice(GlobalWindow globalWindow) {
+	public ButtonChoice() {
 		setOpaque(false);
 		setLayout(new GridBagLayout());
 
-		button_new_game = new GenericButton("Nouvelle partie", GenericButton.GO(WindowName.NewGameWindow), new Dimension(200, 30));
-		button_load_game = new GenericButton("Charger partie", GenericButton.GO(WindowName.LoadWindow), new Dimension(200, 30));
-		button_shortcut = new GenericButton("Raccourcis", GenericButton.GO(WindowName.HelpWindow), new Dimension(200, 30));
-		button_quit = new GenericButton("Quitter", GenericButton.QUIT ,new Dimension(200, 30));
-		
+		int bWidth, bHeight;
+		bWidth = 396;
+		bHeight = 35;
+
+		// list of the buttons in the home page
+		LinkedHashMap<String, WindowName> buttons = new LinkedHashMap<>() {{
+			put("Nouvelle partie", WindowName.NewGameWindow);
+			put("Charger partie", WindowName.LoadWindow);
+			put("Raccourcis", WindowName.HelpWindow);
+			put("Quitter", null);
+		}};
+
 		GridBagConstraints c = new GridBagConstraints();
-		
 		c.insets = new Insets(10, 10, 10, 10);
-		
 		c.gridx = 0;
-		c.gridy = 1;
-		add(button_new_game, c);
-		
-		c.gridx = 0;
-		c.gridy = 2;
-		add(button_load_game, c);
-		
-		c.gridx = 0;
-		c.gridy = 3;
-		add(button_shortcut, c);
-		
-		c.gridx = 0;
-		c.gridy = 4;
-		add(button_quit, c);
+
+		int i = 1;
+
+		// create and add each buttons in the grid container
+		for(Map.Entry<String, WindowName> button : buttons.entrySet()) {
+            String label = button.getKey();
+            WindowName href = button.getValue();
+
+			GenericRoundedButton btn = new GenericRoundedButton(label, bWidth, bHeight);
+			btn.setStyle("button.home");
+			btn.setHref(href);
+
+			c.gridy = i++;
+			add(btn, c);
+		}
 	}
 }
 	

@@ -1,26 +1,27 @@
 package fr.prog.tablut.view.pages.home;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import fr.prog.tablut.model.window.WindowConfig;
 import fr.prog.tablut.model.window.WindowName;
 import fr.prog.tablut.view.Page;
-import fr.prog.tablut.view.GlobalWindow;
+import fr.prog.tablut.view.components.Title;
 
 public class HomePage extends Page {
 	private final ButtonChoice button_choice;
 	private final Title title;
 	
-	public HomePage(GlobalWindow globalWindow) {
-		super(globalWindow);
+	public HomePage(WindowConfig config) {
+		super(config);
+
+		windowName = WindowName.HomeWindow;
 
 		setLayout(new GridBagLayout());
 		
-		title = new Title();
-		button_choice = new ButtonChoice(globalWindow);
+		title = new Title("TABLUT");
+		button_choice = new ButtonChoice();
 		
 		GridBagConstraints c = new GridBagConstraints();
 		
@@ -33,22 +34,5 @@ public class HomePage extends Page {
 		c.gridx = 0;
 		c.gridy = 2;
 		add(button_choice, c);
-	}
-	
-	@Override
-    protected void paintComponent(Graphics graphics) {
-        Graphics2D drawable = (Graphics2D) graphics;
-
-        int width = getSize().width;
-        int height = getSize().height;
-
-        drawable.clearRect(0, 0, width, height);
-        
-        super.paintComponent(graphics);
-    }
-
-	@Override
-	public WindowName name() {
-		return WindowName.HomeWindow;
 	}
 }

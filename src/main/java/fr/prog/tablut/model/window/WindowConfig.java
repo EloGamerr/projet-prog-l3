@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.text.ParseException;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -35,14 +34,7 @@ public class WindowConfig {
         { 1920, 1080 }
     };
 
-    // Component style for something in the window
-    // it can be the window itself, a button, personalized buttons etc...
-    public HashMap<String, ComponentStyle> components = new HashMap<>() {{
-        put("window", new ComponentStyle());
-        put("button", new ComponentStyle());
-        put("greenButton", new ComponentStyle());
-        put("redButton", new ComponentStyle());
-    }};
+    Style style = new Style();
     
     /**
      * Default constructor
@@ -90,13 +82,13 @@ public class WindowConfig {
      * @param config The WindowConfig to copy
      */
     public void setConfig(WindowConfig config) {
-        components = new HashMap<>();
+        style.reset();
 
-        for(Map.Entry<String, ComponentStyle> item : config.components.entrySet()) {
+        for(Map.Entry<String, ComponentStyle> item : config.style.entrySet()) {
             String key = item.getKey();
             ComponentStyle value = item.getValue();
 
-            components.put(key, new ComponentStyle(value));
+            style.set(key, new ComponentStyle(value));
         }
     }
 
@@ -189,7 +181,6 @@ public class WindowConfig {
             // iterate through components
             while(keys.hasNext()) {
                 String key = (String)keys.next();
-                String keyName = key.substring(0, 1).toUpperCase() + key.substring(1);
 
                 // get a component
                 if(o.get(key) instanceof JSONObject) {
@@ -201,9 +192,28 @@ public class WindowConfig {
                     // get a stylized form of the component / not the default
                     while(subkeys.hasNext()) {
                         String subkey = (String)subkeys.next();
+
+                        if(subkey.charAt(0) != '.' && subkey.charAt(0) != ':')
+                            continue;
+
+                        String subName = key + subkey;
                         
                         if(component.get(subkey) instanceof JSONObject) {
-                            getComponentStyleFromJSONObject(component, subkey, subkey + keyName);
+                            getComponentStyleFromJSONObject(component, subkey, subName);
+
+                            // pseudo-classes
+                            JSONObject subComponent = component.getJSONObject(subkey);
+                            Iterator<?> subsubkeys = subComponent.keys();
+
+                            // get a stylized form of the component / not the default
+                            while(subsubkeys.hasNext()) {
+                                String subsubkey = (String)subsubkeys.next();
+                                String subsubName = subName + subsubkey;
+                                
+                                if(subsubkey.charAt(0) == ':' && subComponent.get(subsubkey) instanceof JSONObject) {
+                                    getComponentStyleFromJSONObject(subComponent, subsubkey, subsubName);
+                                }
+                            }
                         }
                     }
                 }
@@ -237,15 +247,22 @@ public class WindowConfig {
 
         JSONObject o = json.getJSONObject(key);
 
-        if(o.isNull("background") || o.isNull("color"))
-            return;
+        Iterator<?> it = o.keys();
+        boolean hasAtLeastOneProp = false;
+        ComponentStyle cpnt = new ComponentStyle();
         
-        Color bg, col;
+        while(it.hasNext()) {
+            String k = (String)it.next();
 
-        bg = loader.getColorFromArray(o.getJSONArray("background"));
-        col = loader.getColorFromArray(o.getJSONArray("color"));
+            if(cpnt.hasProperty(k)) {
+                hasAtLeastOneProp = true;
+                Color color = loader.getColorFromArray(o.getJSONArray(k));
+                cpnt.set(k, color);
+            }
+        }
 
-        setComponentStyle(componentName, new ComponentStyle(bg, col));
+        if(hasAtLeastOneProp)
+            setComponentStyle(componentName, cpnt);
     }
 
     /**
@@ -254,12 +271,18 @@ public class WindowConfig {
      * @param component The component's object
      */
     protected void setComponentStyle(String name, ComponentStyle component) {
-        if(components.containsKey(name)) {
-            components.get(name).set(component);
-        }
+        style.set(name, component);
+    }
 
-        else {
-            components.put(name, component);
-        }
+    public boolean hasComp(String componentName) {
+        return style.has(componentName);
+    }
+
+    public ComponentStyle getComp(String componentName) {
+        return style.get(componentName);
+    }
+
+    public Style getStyle() {
+        return style;
     }
 }

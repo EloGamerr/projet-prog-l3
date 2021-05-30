@@ -1,5 +1,11 @@
 package fr.prog.tablut.view;
 
+import java.awt.BorderLayout;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+import fr.prog.tablut.model.window.WindowConfig;
+
 public class Page extends Window {
     /**
      * Default constructor.
@@ -16,13 +22,25 @@ public class Page extends Window {
      * @param globalWindow The parent window in which the page will be shown. inherits from its configuration.
      * @param name 
      */
-    public Page(GlobalWindow globalWindow) {
+    public Page(WindowConfig config) {
         super();
-
         setVisible(false);
-		setConfig(globalWindow.getConfig());
+        setLayout(new BorderLayout());
        
         // apply config's style
-        setBackground(config.components.get("window").background);
+        if(config.hasComp("window"))
+            setBackground(config.getComp("window").get("background"));
+    }
+
+    @Override
+    protected void paintComponent(Graphics graphics) {
+        Graphics2D drawable = (Graphics2D)graphics;
+
+        int width = getSize().width;
+        int height = getSize().height;
+
+        drawable.clearRect(0, 0, width, height);
+        
+        super.paintComponent(graphics);
     }
 }

@@ -1,92 +1,99 @@
 package fr.prog.tablut.view.pages.newGame;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 import fr.prog.tablut.controller.adaptators.ComboBoxAdaptator;
+import fr.prog.tablut.view.components.generic.GenericComboBox;
+import fr.prog.tablut.view.components.generic.GenericInput;
 import fr.prog.tablut.view.components.generic.GenericLabel;
 
 public class SelectionPlayer extends JPanel {
-	JTextField pseudoAttaquant;
-	JTextField pseudoDefenseur;
-	final GridBagConstraints c = new GridBagConstraints();
+	protected JTextField pseudoAttaquant;
+	protected JTextField pseudoDefenseur;
+
+	protected final String[] playerTypes = {
+		"Humain",
+		"Ordinateur facile",
+		"Ordinateur moyen",
+		"Ordinateur difficile"
+	};
+
+	protected PlayerData attaquant = new PlayerData("Attaquant", "Joueur 1");
+	protected PlayerData defenseur = new PlayerData("Défenseur", "Joueur 2");
 
 	public SelectionPlayer() {
 		setOpaque(false);
-		
 		setLayout(new GridBagLayout());
-		
-		createSide("Attaquant");
-		
-		c.gridx = 1;
+
+		GridBagConstraints c = new GridBagConstraints();
+
 		c.gridy = 0;
+		createSide(c, 0, attaquant);
+
 		c.insets = new Insets(100, 0, 0, 0);
-		
 		add(new GenericLabel("VS", 20));
-		createSide("Défenseur");
+
+		createSide(c, 2, defenseur);
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void createSide(String side) {
-		c.gridx = side.equals("Attaquant") ? 0 : 2;
+	private void createSide(GridBagConstraints cc, int gridX, PlayerData side) {
+		cc.gridx = gridX;
+
+		JPanel pannel = new JPanel();
+		pannel.setOpaque(false);
+		pannel.setLayout(new GridBagLayout());
+		pannel.setBorder(new EmptyBorder(0, 100, 0, 100));
+		GridBagConstraints c = new GridBagConstraints();
+
+		c.gridx = 0;
+		
 		c.gridy = 0;
-		c.insets = new Insets(100, side == "Attaquant" ? 0 : 50, 0, side.equals("Attaquant") ? 50 : 0);
-		String[] choices = {
-			"Humain",
-			"Ordinateur facile",
-			"Ordinateur moyen",
-			"Ordinateur difficile"
-		};
-		add(new GenericLabel(side, 15),c);
-		
-		c.insets = new Insets(0, side.equals("Attaquant") ? 0 : 50, 0, side.equals("Attaquant") ? 50 : 0);
+		GenericLabel label = new GenericLabel(side.name, 15);
+		label.setBorder(new EmptyBorder(0, 0, 30, 0));
+		pannel.add(label, c);
+				
 		c.gridy = 1;
-		
-		JComboBox comboBox = new JComboBox(choices);
-		comboBox.setSelectedIndex(0);
-		comboBox.setPreferredSize(new Dimension(200, 30));
-		comboBox.addActionListener(new ComboBoxAdaptator(side, this));
-		add(comboBox, c);
-		
+		GenericComboBox<String> comboBox = new GenericComboBox<>(playerTypes);
+		comboBox.addActionListener(new ComboBoxAdaptator(side.name, this));
+		pannel.add(comboBox, c);
+
 		c.gridy = 2;
-		c.insets = new Insets(20, side.equals("Attaquant") ? 0 : 50, 0, side.equals("Attaquant") ? 50 : 0);
-		
-		if(side.equals("Attaquant")) {
-			pseudoAttaquant = new JTextField();
-			pseudoAttaquant.setPreferredSize(new Dimension(200, 30));
-			pseudoAttaquant.setText("Joueur 1");
-			add(pseudoAttaquant, c);
-		}
-		
-		else {
-			pseudoDefenseur = new JTextField();
-			pseudoDefenseur.setPreferredSize(new Dimension(200, 30));
-			pseudoDefenseur.setText("Joueur 2");
-			add(pseudoDefenseur, c);
-		}
+		c.insets = new Insets(10, 0, 0, 0);
+		pannel.add(side.usernameInput, c);
+
+		add(pannel);
 	}
 	
 	public void showInput(String side) {
-		if(side.equals("Attaquant")) {
-			pseudoAttaquant.setVisible(true);
-		}
-		else {
-			pseudoDefenseur.setVisible(true);
-		}
+		PlayerData p = (side == "Attaquant")? attaquant : defenseur;
+		p.usernameInput.setVisible(true);
 	}
 	
 	public void hideInput(String side) {
-		if(side.equals("Attaquant")) {
-			pseudoAttaquant.setVisible(false);
-		}
-		else {
-			pseudoDefenseur.setVisible(false);
-		}
+		PlayerData p = (side == "Attaquant")? attaquant : defenseur;
+		p.usernameInput.setVisible(false);
+	}
+}
+
+class PlayerData {
+	public String name;
+	public String username;
+	public String type;
+	public JTextField usernameInput;
+
+	public PlayerData(String name) {
+		this(name, "");
+	}
+
+	public PlayerData(String name, String username) {
+		this.name = name;
+		this.username = username;
+		usernameInput = new GenericInput(this.username);
 	}
 }

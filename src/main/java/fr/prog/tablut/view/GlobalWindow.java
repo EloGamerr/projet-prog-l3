@@ -1,5 +1,6 @@
 package fr.prog.tablut.view;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.text.ParseException;
@@ -7,8 +8,13 @@ import java.text.ParseException;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import org.json.JSONObject;
+
+import fr.prog.tablut.model.Loader;
+import fr.prog.tablut.model.window.WindowConfig;
 import fr.prog.tablut.model.window.WindowName;
-import fr.prog.tablut.view.components.generic.GenericButton;
+import fr.prog.tablut.view.components.NavPage;
+import fr.prog.tablut.view.components.generic.GenericObjectStyle;
 import fr.prog.tablut.view.pages.game.GamePage;
 import fr.prog.tablut.view.pages.help.HelpPage;
 import fr.prog.tablut.view.pages.home.HomePage;
@@ -16,13 +22,14 @@ import fr.prog.tablut.view.pages.load.LoadPage;
 import fr.prog.tablut.view.pages.newGame.NewGamePage;
 
 public class GlobalWindow extends Window {
+	protected WindowConfig config;
     private final GamePage gamePage;
     private final HomePage homePage;
     private final LoadPage loadPage;
     private final HelpPage helpPage;
     private final NewGamePage newGamePage;
-    public Page currentPage;
 	private JFrame jFrame;
+    public Page currentPage;
 
 	/**
 	 * Creates the main window with given surface
@@ -42,20 +49,30 @@ public class GlobalWindow extends Window {
     public GlobalWindow(String configfilePath) throws ParseException {
 		super();
 
+		config = new WindowConfig();
+
 		if(configfilePath != null) {
 			setConfig(configfilePath);
 		}
 		
+		setSize(config.width, config.height);
+		GenericObjectStyle.setStyle(config.getStyle());
+		NavPage.setDimension(new Dimension(config.width, config.height));
+
+
+		Loader loader = new Loader();
+		loader.loadCustomFont("Farro-Regular.ttf");
+		
 		jFrame = new JFrame(config.projectName);
 	
-		GenericButton.setGlobalWindow(this);
+		GenericObjectStyle.setGlobalWindow(this);
 		
 		gamePage = new GamePage();
-		homePage = new HomePage(this);
+		homePage = new HomePage(this.config);
 		currentPage = homePage;
-		loadPage = new LoadPage(this);
-		helpPage = new HelpPage(this);
-		newGamePage = new NewGamePage(this);
+		loadPage = new LoadPage(this.config);
+		helpPage = new HelpPage(this.config, this.currentPage);
+		newGamePage = new NewGamePage(this.config);
 		
 		homePage.setVisible(true);
 		jFrame.setContentPane(homePage);
@@ -64,7 +81,41 @@ public class GlobalWindow extends Window {
 		jFrame.setSize(config.width, config.height);
 		jFrame.setLocationRelativeTo(null);
 		jFrame.setVisible(true);
+		jFrame.setResizable(false);
     }
+
+	/**
+	 * Returns the configuration object of the window
+	 * @return The window's configuration
+	 */
+	public WindowConfig getConfig() {
+		return config;
+	}
+
+	/**
+	 * Set the window's configuration from the file at given path
+	 * @param configPath file's path
+	 * @throws ParseException
+	 */
+	protected void setConfig(String configPath) throws ParseException {
+		config.setConfig(configPath);
+	}
+
+	/**
+	 * Set the window's configuration from given JSON
+	 * @param configObject The json object
+	 */
+	protected void setConfig(JSONObject configObject) {
+		config.setConfig(configObject);
+	}
+
+	/**
+	 * Copies the window's configuration from another window's config
+	 * @param config The configuration to copy
+	 */
+	protected void setConfig(WindowConfig config) {
+		this.config.setConfig(config);
+	}
 
 
     @Override

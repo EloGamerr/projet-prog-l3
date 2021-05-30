@@ -1,10 +1,17 @@
 package fr.prog.tablut.model;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
+
+import java.io.File;
 import java.io.IOException;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
 import java.text.ParseException;
-import java.awt.Color;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -56,5 +63,17 @@ public class Loader {
         }
         
         return new Color(r, g, b);
+    }
+
+    public void loadCustomFont(String fontFamily) {
+        try {
+            String fontPath = "res/fonts/" + fontFamily;
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath));
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(customFont);
+        }
+        catch(FontFormatException | IOException e) {
+            e.printStackTrace();
+        }
     }
 }
