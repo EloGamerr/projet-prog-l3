@@ -1,9 +1,7 @@
 package fr.prog.tablut.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
 import fr.prog.tablut.structures.Couple;
 
 public class PawnTaker {
@@ -11,40 +9,40 @@ public class PawnTaker {
 	private Game game;
 	
 	
+	////////////////////////////////////////////////////
+	// Constructor
+	////////////////////////////////////////////////////	
+	
 	PawnTaker(Game game){
 		this.game = game;
 	}
 	
-	// On check les voisins du pion attaquant qui a joué
-	public void towerTaker_attack(int l, int c, Play play) {
-		towerTaker_attack_core(l-1,c,-1,0, play);
-		towerTaker_attack_core(l+1,c,1,0, play);
-		towerTaker_attack_core(l,c-1,0,-1, play);
-		towerTaker_attack_core(l,c+1,0,1, play);
-	}
-	// On check les voisins du pion attaquant qui a joué
-	public void towerTaker_defense(int l, int c, Play play) {
-		towerTaker_defense_core(l-1,c,-1,0, play);
-		towerTaker_defense_core(l+1,c,1,0, play);
-		towerTaker_defense_core(l,c-1,0,-1, play);
-		towerTaker_defense_core(l,c+1,0,1, play);
-	}
 	
+	////////////////////////////////////////////////////
+	// Main function
+	////////////////////////////////////////////////////	
 	
-	public void towerTaker_defense_core(int l, int c, int dl, int dc, Play play){
-		if(game.isAttackTower(l, c)){
-			if(isDefTowerHelper(l+dl, c+dc)) { // Si deux cases plus loin nous avons un allié de circonstance pour la défense
-				play.putModifiedOldCellContent(new Couple<>(l, c), game.getCellContent(l, c));
-				game.setContent(CellContent.EMPTY,l,c); // on enleve le pion ennemi
-				play.putModifiedNewCellContent(new Couple<>(l, c), CellContent.EMPTY);
-			}
-			else  
-				testSurround(l, c, play); // Sinon on vérifie que le coup joué  bloque totalement le pion ennemi
-				
+	public void clearTakedPawns(int l, int c, Play play) {
+		if(game.isAttackTower(l, c)) {
+			attack(l,c, play );
+		}
+		if(game.isDefenseTower(l, c)) {
+			defense(l,c, play);
 		}
 	}
 	
-	public void towerTaker_attack_core(int l, int c, int dl, int dc, Play play){
+	////////////////////////////////////////////////////
+	// Attack 
+	////////////////////////////////////////////////////
+	
+	public void attack(int l, int c, Play play) {
+		attack_core(l-1,c,-1,0, play);
+		attack_core(l+1,c,1,0, play);
+		attack_core(l,c-1,0,-1, play);
+		attack_core(l,c+1,0,1, play);
+	}
+	
+	public void attack_core(int l, int c, int dl, int dc, Play play){
 		if(game.isDefenseTower(l, c)){ // Si la case contient une tour défensive
 			if(isAttTowerHelper(l+dl, c+dc)) { // Si deux cases plus loin nous avons un allié de circonstance pour l'attaque
 				play.putModifiedOldCellContent(new Couple<>(l, c), game.getCellContent(l, c));
@@ -57,6 +55,32 @@ public class PawnTaker {
 		else if(game.isTheKing(l,c)) // Si la case contient le roi
 				testSurround(l, c, play);  // On vérifie que le coup joué  bloque totalement le roi ennemi
 	}
+	
+	////////////////////////////////////////////////////
+	// Defense 
+	////////////////////////////////////////////////////
+	
+	public void defense(int l, int c, Play play) {
+		defense_core(l-1,c,-1,0, play);
+		defense_core(l+1,c,1,0, play);
+		defense_core(l,c-1,0,-1, play);
+		defense_core(l,c+1,0,1, play);
+	}
+	
+	public void defense_core(int l, int c, int dl, int dc, Play play){
+		if(game.isAttackTower(l, c)){
+			if(isDefTowerHelper(l+dl, c+dc)) { // Si deux cases plus loin nous avons un allié de circonstance pour la défense
+				play.putModifiedOldCellContent(new Couple<>(l, c), game.getCellContent(l, c));
+				game.setContent(CellContent.EMPTY,l,c); // on enleve le pion ennemi
+				play.putModifiedNewCellContent(new Couple<>(l, c), CellContent.EMPTY);
+			}
+			else  testSurround(l, c, play); // Sinon on vérifie que le coup joué  bloque totalement le pion ennemi		
+		}
+	}
+	
+	////////////////////////////////////////////////////
+	// Surround test 
+	////////////////////////////////////////////////////
 	
 	
 	public void testSurround(int l, int c, Play play) {
@@ -121,62 +145,42 @@ public class PawnTaker {
 		return false;		
 	}
 
-	// vérifie de quelle nature est la case voisine 
+	
+	////////////////////////////////////////////////////
+	// Check content functions
+	////////////////////////////////////////////////////
+	
 	public Couple<Integer, List<Couple<Integer, Integer>>> checkneighbour_attack(List<Couple<Integer, Integer>> allyCells, int counter_obstacle, int i, int j){
-			if(!game.isValid(i, j)) 
-				counter_obstacle++;
-			
-			else if(isDefTowerHelper(i,j)) 
-				counter_obstacle++;
-			
-			else if(game.isAttackTower(i,j)){
-				allyCells.add(new Couple<Integer, Integer>(i, j));
-				counter_obstacle++;
-			}
-			
-			return new Couple<Integer, List<Couple<Integer, Integer>>>(counter_obstacle, allyCells);
+		if(!game.isValid(i, j)) counter_obstacle++;
+		else if(isDefTowerHelper(i,j)) counter_obstacle++;
+		else if(game.isAttackTower(i,j)){
+			allyCells.add(new Couple<Integer, Integer>(i, j));
+			counter_obstacle++;
+		}
+		return new Couple<Integer, List<Couple<Integer, Integer>>>(counter_obstacle, allyCells);
 	}
-	
-	// vérifie de quelle nature est la case voisine 
+
 	public Couple<Integer, List<Couple<Integer, Integer>>> checkneighbour_defense(List<Couple<Integer, Integer>> allyCells, int counter_obstacle, int i, int j){
-			if(!game.isValid(i, j)) 
-				counter_obstacle++;
-			
-			else if(isAttTowerHelper(i,j)) 
-				counter_obstacle++;	
-			
-			else if(isDefenseAlly(i, j)) {
-				allyCells.add(new Couple<Integer, Integer>(i, j));
-				counter_obstacle++;
-			}
-			
-			return new Couple<Integer, List<Couple<Integer, Integer>>>(counter_obstacle, allyCells);
+		if(!game.isValid(i, j)) counter_obstacle++;
+		else if(isAttTowerHelper(i,j)) counter_obstacle++;	
+		else if(isDefenseAlly(i, j)) {
+			allyCells.add(new Couple<Integer, Integer>(i, j));
+			counter_obstacle++;
+		}
+		return new Couple<Integer, List<Couple<Integer, Integer>>>(counter_obstacle, allyCells);
 	}
-	
-	
-	
-	
 	
 	public boolean isDefTowerHelper(int i, int j) {
-		if((game.isTheKingPlace(i,j) && !game.isOccupied(i,j)) || game.isDefenseTower(i,j) || game.isGate(i,j)) 
-			return true;
-		else 
-			return false;
+		if((game.isTheKingPlace(i,j) && !game.isOccupied(i,j)) || game.isDefenseTower(i,j) || game.isGate(i,j)) return true;
+		else return false;
 	}
-	
-	
-	
 	public boolean isAttTowerHelper(int i, int j) {
-		if((game.isTheKingPlace(i,j) && !game.isOccupied(i,j)) || game.isAttackTower(i,j) || game.isGate(i,j)) 
-			return true;
-		else 
-			return false;
+		if((game.isTheKingPlace(i,j) && !game.isOccupied(i,j)) || game.isAttackTower(i,j) || game.isGate(i,j)) return true;
+		else return false;
 	}
 	
 	public boolean isDefenseAlly(int i ,int j) {
-		if(game.isTheKing(i, j) || game.isDefenseTower(i, j))
-			return true;
-		else
-			return false;
+		if(game.isTheKing(i, j) || game.isDefenseTower(i, j)) return true;
+		else return false;
 	}
 }

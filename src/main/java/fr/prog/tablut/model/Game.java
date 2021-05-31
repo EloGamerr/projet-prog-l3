@@ -25,21 +25,27 @@ public class Game {
 	private String currentSavePath = "";
 	public GameLoader loader;
 	
-
-
+	////////////////////////////////////////////////////
+	// Constructor
+	////////////////////////////////////////////////////
+	
 	public Game(){
 		this.middle = 4;
 		gameSaver = new GameSaver(this);
 		loader = new GameLoader(this);
 	}
 	
+	////////////////////////////////////////////////////
+	// Load or Create a new Game
+	////////////////////////////////////////////////////
+	
 	public void start(Player attacker, Player defender) {
 		this.attacker = attacker;
 		this.defender = defender;
 		setPlayingPlayer(PlayerEnum.ATTACKER);
 		this.move = new PawnTaker(this);
-		init_game(9,9);
 		this.plays = new Plays(this);
+		init_game(9,9);
 		setWinner(PlayerEnum.NONE);
 		hasStarted = true;
 	}
@@ -48,14 +54,85 @@ public class Game {
 		init_grid(9,9);
 		this.move = new PawnTaker(this);
 		this.plays = new Plays(this);
-		hasStarted = true;
 		loader.loadData(index_selected);
+		hasStarted = true;
 	}
 	
-	public boolean hasStarted() {
-		return hasStarted;
+	
+	////////////////////////////////////////////////////
+	// When a pawn is moved
+	////////////////////////////////////////////////////
+
+	public boolean move(int l, int c, int toL, int toC) {
+		if(isWon()) return false;
+		if(!isValid(toL, toC)) return false;
+		if(toL != l && toC != c) return false; 
+
+		CellContent fromCellContent = getGrid()[l][c];
+		if(fromCellContent == CellContent.EMPTY || fromCellContent == CellContent.GATE) return false;
+
+		List<Couple<Integer, Integer>> accessibleCells = getAccessibleCells(l, c);
+		if(!accessibleCells.contains(new Couple<>(toL, toC))) return false;
+
+		Play play = plays.move(l, c, toL, toC);
+		play.putModifiedOldCellContent(new Couple<>(l, c), getCellContent(l, c));
+		setContent(CellContent.EMPTY, l, c);
+		play.putModifiedNewCellContent(new Couple<>(l, c), CellContent.EMPTY);
+		
+		l = toL;
+		c = toC;
+		
+		CellContent previousToCellContent = getCellContent(l, c);
+		play.putModifiedOldCellContent(new Couple<>(l, c), previousToCellContent);
+		setContent(fromCellContent, l, c);
+		play.putModifiedNewCellContent(new Couple<>(l, c), fromCellContent);
+		
+		move.clearTakedPawns(l, c, play);
+		
+		setWinner(checkWin(previousToCellContent, fromCellContent));
+		playingPlayerEnum = playingPlayerEnum.getOpponent();
+		
+		return true;
 	}
 
+
+	////////////////////////////////////////////////////
+	//  Undo & Redo move
+	////////////////////////////////////////////////////
+
+	public boolean undo_move() {
+		Play play = this.getPlays().undo_move();
+		if(play != null) {
+			for(Map.Entry<Couple<Integer, Integer>, CellContent> entry : play.getModifiedOldCellContents().entrySet()) {
+				this.setContent(entry.getValue(), entry.getKey().getFirst(), entry.getKey().getSecond());
+			}
+
+			this.playingPlayerEnum = this.getPlayingPlayerEnum().getOpponent();
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean redo_move() {
+		Play play = this.getPlays().redo_move();
+		if(play != null) {
+			for(Map.Entry<Couple<Integer, Integer>, CellContent> entry : play.getModifiedNewCellContents().entrySet()) {
+				this.setContent(entry.getValue(), entry.getKey().getFirst(), entry.getKey().getSecond());
+			}
+
+			this.playingPlayerEnum = this.getPlayingPlayerEnum().getOpponent();
+			return true;
+		}
+
+		return false;
+	}
+
+	
+	////////////////////////////////////////////////////
+	// Initializing grid functions
+	////////////////////////////////////////////////////
+	
 	void init_game(int rowAmount, int colAmount) {
 		setGrid(new CellContent[rowAmount][colAmount]);
 		for(int i = 0 ; i < rowAmount ; i++) {
@@ -129,77 +206,10 @@ public class Game {
 		setGate(0,colAmount-1);
 		setGate(rowAmount-1,colAmount-1);
 	}
-
-	public boolean move(int l, int c, int toL, int toC) {
-		if(isWon()) return false;
-		
-		if(!isValid(toL, toC)) return false;
-
-		if(toL != l && toC != c) return false; // Déplacements en diagonal non autorisés
-
-		CellContent fromCellContent = getGrid()[l][c];
-		if(fromCellContent == CellContent.EMPTY || fromCellContent == CellContent.GATE) return false;
-
-		List<Couple<Integer, Integer>> accessibleCells = getAccessibleCells(l, c);
-		if(!accessibleCells.contains(new Couple<>(toL, toC))) return false;
-
-		Play play = plays.move(l, c, toL, toC);
-		play.putModifiedOldCellContent(new Couple<>(l, c), getCellContent(l, c));
-		clear(l, c);
-		play.putModifiedNewCellContent(new Couple<>(l, c), CellContent.EMPTY);
-		l = toL;
-		c = toC;
-		CellContent previousToCellContent = getCellContent(l, c);
-		play.putModifiedOldCellContent(new Couple<>(l, c), previousToCellContent);
-		setContent(fromCellContent, l, c);
-		play.putModifiedNewCellContent(new Couple<>(l, c), fromCellContent);
-		
-		if(isAttackTower(l, c)) {
-			move.towerTaker_attack(l,c, play);
-		}
-		if(isDefenseTower(l, c)) {
-			move.towerTaker_defense(l,c, play);
-		}
-		setWinner(checkWin(previousToCellContent, fromCellContent));
-		if(isWon()) {
-			System.out.println(winner + " a gagné !");
-		}
-		else {
-			playingPlayerEnum = playingPlayerEnum.getOpponent();
-		}
-		return true;
-	}
-
-
-	public List<Couple<Integer, Integer>> getAccessibleCells(int fromL, int fromC) {
-		List<Couple<Integer, Integer>> accessibleCells = new ArrayList<>();
-		
-		for(int toL = fromL-1 ; toL >= 0 ; toL--) {
-
-			if(cantAccess(fromL, fromC, fromC, toL, accessibleCells))
-				break;
-		}
-		
-		for(int toL = fromL+1 ; toL < rowAmount ; toL++) {
-
-			if(cantAccess(fromL, fromC, fromC, toL, accessibleCells))
-				break;
-		}
-		
-		for(int toC = fromC-1 ; toC >= 0 ; toC--) {
-
-			if(cantAccess(fromL, fromC, toC, fromL, accessibleCells))
-				break;
-		}
-		
-		for(int toC = fromC+1 ; toC < colAmount ; toC++) {
-
-			if(cantAccess(fromL, fromC, toC, fromL, accessibleCells))
-				break;
-		}
-		
-		return accessibleCells;
-	}
+	
+	////////////////////////////////////////////////////
+	// Content Test functions
+	////////////////////////////////////////////////////
 	
 	private boolean cantAccess(int fromL, int fromC, int toC, int toL, List<Couple<Integer, Integer>> accessibleCells) {
 		CellContent fromCellContent = getGrid()[fromL][fromC];
@@ -220,11 +230,168 @@ public class Game {
 	}
 	
 	
+	public boolean canPlay(int l, int c) {
+		if(this.playingPlayerEnum == PlayerEnum.ATTACKER) {
+			return this.getCellContent(l, c) == CellContent.ATTACK_TOWER;
+		}
+		
+		return this.getCellContent(l, c) == CellContent.DEFENSE_TOWER || this.getCellContent(l, c) == CellContent.KING;
+	}
 	
+	/**
+	 * @param the two last states of the targeted CellContent 
+	 * @return Return the PlayerEnum winner (NONE if no one won)
+	 */
+	private PlayerEnum checkWin(CellContent previousToCellContent, CellContent toCellContent) {
+		if(this.getWinner() != PlayerEnum.NONE) return winner;
+		
+		if(!isTheKing(kingL,kingC)) // If the king has been killed
+			return playingPlayerEnum;
+		else if(previousToCellContent == CellContent.GATE && toCellContent == CellContent.KING) // If the king is on a gate
+			return playingPlayerEnum;
+		
+		return PlayerEnum.NONE;
+	}
+	
+	public boolean isTheKingPlace(int i, int j) {
+		return i == middle && j == middle;
+	}
+	
+	public boolean isOccupied(int l, int c) {
+		if(!isValid(l, c)) return true;
+		return getGrid()[l][c] != CellContent.EMPTY;
+	}
 
+	public boolean isTheKing(int l, int c) {
+		if(!isValid(l, c)) return false;
+		return getGrid()[l][c] == CellContent.KING;
+	}
 	
+	public boolean isAttackTower(int l, int c) {
+		if(!isValid(l, c)) return false;
+		return getGrid()[l][c] == CellContent.ATTACK_TOWER;
+	}
+	
+	public boolean  isDefenseTower(int l, int c) {
+		if(!isValid(l, c)) return false;
+		return getGrid()[l][c] == CellContent.DEFENSE_TOWER;
+	}
+	
+	public boolean isGate(int l, int c) {
+		if(!isValid(l, c)) return false;
+		return getGrid()[l][c] == CellContent.GATE;
+	}
+	
+	public boolean isValid(int l, int c) {
+		return !(l < 0 || c < 0 || l >= rowAmount || c >= colAmount);
+	}
+	
+	public boolean isWon() {
+		if(winner != PlayerEnum.NONE) return true;
+		else return false;
+	}
+	
+	public boolean hasStarted() {
+		return hasStarted;
+	}
+	
+	////////////////////////////////////////////////////
+	// Getters & Setters
+	////////////////////////////////////////////////////
+	
+	public PlayerEnum getWinner() {
+		return winner;
+	}
+	
+	public int getRowAmout() {
+		return this.rowAmount;
+	}
+	
+	public int getColAmout() {
+		return this.colAmount;
+	}
+	
+	public GameSaver getGameSaver() {
+		return gameSaver;
+	}
 
+	public int getKingL() {
+		return kingL;
+	}
+
+	public int getKingC() {
+		return kingC;
+	}
 	
+	public Player getAttacker() {
+		return attacker;
+	}
+
+	public Player getDefender() {
+		return defender;
+	}
+
+	public Player getPlayingPlayer() {
+		return this.getPlayingPlayerEnum() == PlayerEnum.ATTACKER ? attacker : defender;
+	}
+	
+	public Plays getPlays() {
+		return plays;
+	}
+	
+	public CellContent[][] getGrid() {
+		return grid;
+	}
+	
+	public String getCurrentSavePath() {
+		return currentSavePath;
+	}
+
+	public PlayerEnum getPlayingPlayerEnum() {
+		return this.playingPlayerEnum;
+	}
+	
+	public CellContent getCellContent(int l, int c) {
+		return this.getGrid()[l][c];
+	}
+	
+	public List<Couple<Integer, Integer>> getAccessibleCells(int fromL, int fromC) {
+		List<Couple<Integer, Integer>> accessibleCells = new ArrayList<>();
+		for(int toL = fromL-1 ; toL >= 0 ; toL--) {
+			if(cantAccess(fromL, fromC, fromC, toL, accessibleCells)) break;
+		}
+		for(int toL = fromL+1 ; toL < rowAmount ; toL++) {
+			if(cantAccess(fromL, fromC, fromC, toL, accessibleCells)) break;
+		}
+		for(int toC = fromC-1 ; toC >= 0 ; toC--) {
+			if(cantAccess(fromL, fromC, toC, fromL, accessibleCells)) break;
+		}
+		for(int toC = fromC+1 ; toC < colAmount ; toC++) {
+			if(cantAccess(fromL, fromC, toC, fromL, accessibleCells)) break;
+		}
+		return accessibleCells;
+	}
+
+	/**
+	 * @param cellContent CellContent to search
+	 * @return All cells of the grid that are equals to the param
+	 */
+	public List<Couple<Integer, Integer>> getCellContentWhereEquals(CellContent cellContent) {
+		List<Couple<Integer, Integer>> cells = new ArrayList<>();
+		for(int i = 0 ; i < grid.length ; i++) {
+			for(int j = 0 ; j < grid[i].length ; j++) {
+				if(grid[i][j] == cellContent) {
+					cells.add(new Couple<>(i, j));
+				}
+			}
+		}
+
+		return cells;
+	}
+	
+	/**
+	 * @param cellContent CellContent to be setted, l and c his new row and column
+	 */
 	public void setContent(CellContent cellContent, int l, int c) {
 		if (cellContent == CellContent.KING) {
 			kingC = c;
@@ -245,27 +412,6 @@ public class Game {
 		}
 	
 		getGrid()[l][c] = cellContent;
-	}
-
-	public PlayerEnum getWinner() {
-		return winner;
-	}
-	
-	private PlayerEnum checkWin(CellContent previousToCellContent, CellContent toCellContent) {
-		if(isWon()) return winner;
-		
-		if(!isTheKing(kingL,kingC)) // Si le roi a été tué
-			return playingPlayerEnum;
-		else if(previousToCellContent == CellContent.GATE && toCellContent == CellContent.KING) // Si le roi s'est déplacé sur une porte
-			return playingPlayerEnum;
-		
-		return PlayerEnum.NONE;
-	}
-	
-	
-	private void clear(int l, int c) {
-		setContent(CellContent.EMPTY, l, c);
-		
 	}
 	
 	public void setWinner(PlayerEnum winner) {
@@ -299,163 +445,29 @@ public class Game {
 		setContent(CellContent.GATE, l, c);
 	}
 	
-	
-	public boolean isTheKingPlace(int i, int j) {
-		return i == middle && j == middle;
-	}
-	
-	
-
-	
-	public boolean isOccupied(int l, int c) {
-		if(!isValid(l, c)) return true;
-		
-		return getGrid()[l][c] != CellContent.EMPTY;
-	}
-
-	public boolean isTheKing(int l, int c) {
-		if(!isValid(l, c)) return false;
-		
-		return getGrid()[l][c] == CellContent.KING;
-	}
-	
-	public boolean isAttackTower(int l, int c) {
-		if(!isValid(l, c)) return false;
-		
-		return getGrid()[l][c] == CellContent.ATTACK_TOWER;
-	}
-	
-	public boolean  isDefenseTower(int l, int c) {
-		if(!isValid(l, c)) return false;
-		
-		return getGrid()[l][c] == CellContent.DEFENSE_TOWER;
-	}
-	
-	public boolean isGate(int l, int c) {
-		if(!isValid(l, c)) return false;
-		
-		return getGrid()[l][c] == CellContent.GATE;
-	}
-
-	public int getRowAmout() {
-		return this.rowAmount;
-	}
-	
-	public int getColAmout() {
-		return this.colAmount;
-	}
-	
-	public CellContent getCellContent(int l, int c) {
-		return this.getGrid()[l][c];
-	}
-	
-	public boolean isValid(int l, int c) {
-		return !(l < 0 || c < 0 || l >= rowAmount || c >= colAmount);
-	}
-	
-	public PlayerEnum getPlayingPlayerEnum() {
-		return this.playingPlayerEnum;
-	}
-
-	public boolean canPlay(int l, int c) {
-		if(this.playingPlayerEnum == PlayerEnum.ATTACKER) {
-			return this.getCellContent(l, c) == CellContent.ATTACK_TOWER;
-		}
-		
-		return this.getCellContent(l, c) == CellContent.DEFENSE_TOWER || this.getCellContent(l, c) == CellContent.KING;
-	}
-
-	public CellContent[][] getGrid() {
-		return grid;
-	}
-
 	public void setGrid(CellContent[][] grid) {
 		this.grid = grid;
 	}
-
-	/**
-	 * @param cellContent CellContent to search
-	 * @return All cells of the grid that are equals to the param
-	 */
-	public List<Couple<Integer, Integer>> getCellContentWhereEquals(CellContent cellContent) {
-		List<Couple<Integer, Integer>> cells = new ArrayList<>();
-		for(int i = 0 ; i < grid.length ; i++) {
-			for(int j = 0 ; j < grid[i].length ; j++) {
-				if(grid[i][j] == cellContent) {
-					cells.add(new Couple<>(i, j));
-				}
-			}
-		}
-
-		return cells;
-	}
-
-	public int getKingL() {
-		return kingL;
-	}
-
-	public int getKingC() {
-		return kingC;
-	}
 	
-	public Player getAttacker() {
-		return attacker;
-	}
-
-	public Player getDefender() {
-		return defender;
-	}
-
-	public Player getPlayingPlayer() {
-		return this.getPlayingPlayerEnum() == PlayerEnum.ATTACKER ? attacker : defender;
-	}
-	
-	public Plays getPlays() {
-		return plays;
-	}
-
-
-	public boolean isWon() {
-		return this.getWinner() != PlayerEnum.NONE;
-	}
-	
-	public String getCurrentSavePath() {
-		return currentSavePath;
-	}
-
 	public void setCurrentSavePath(String currentSavePath) {
 		this.currentSavePath = currentSavePath;
 	}
-	public boolean undo_move() {
-		Play play = this.getPlays().undo_move();
-		if(play != null) {
-			for(Map.Entry<Couple<Integer, Integer>, CellContent> entry : play.getModifiedOldCellContents().entrySet()) {
-				this.setContent(entry.getValue(), entry.getKey().getFirst(), entry.getKey().getSecond());
-			}
+	
+	
 
-			this.playingPlayerEnum = this.getPlayingPlayerEnum().getOpponent();
-			return true;
-		}
+	
 
-		return false;
-	}
 
-	public boolean redo_move() {
-		Play play = this.getPlays().redo_move();
-		if(play != null) {
-			for(Map.Entry<Couple<Integer, Integer>, CellContent> entry : play.getModifiedNewCellContents().entrySet()) {
-				this.setContent(entry.getValue(), entry.getKey().getFirst(), entry.getKey().getSecond());
-			}
+	
 
-			this.playingPlayerEnum = this.getPlayingPlayerEnum().getOpponent();
-			return true;
-		}
 
-		return false;
+	
 
-	}
 
-	public GameSaver getGameSaver() {
-		return gameSaver;
-	}
+	
+	
+	
+
+
+
 }

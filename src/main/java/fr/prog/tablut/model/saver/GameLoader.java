@@ -22,19 +22,23 @@ import fr.prog.tablut.model.Play;
 import fr.prog.tablut.model.PlayerEnum;
 
 public class GameLoader {
- 
 	private static final String savesPath = Paths.get(System.getProperty("user.dir"), "saves").toString();
 	private static final String savePrefix = "save-";
 	private static final String saveSuffix = ".sv";
 	private String currentSavePath;
-	
 	private Game game;
 	
+	////////////////////////////////////////////////////
+	// Constructor
+	////////////////////////////////////////////////////	
 	
 	public GameLoader(Game game){
 		this.game = game;
 	}
 
+	////////////////////////////////////////////////////
+	// Main function
+	////////////////////////////////////////////////////	
 	
 	public boolean loadData(int index_Save) {
 		try {
@@ -72,7 +76,9 @@ public class GameLoader {
 	}
 	
 	
-	
+	////////////////////////////////////////////////////
+	// Load Functions
+	////////////////////////////////////////////////////	
 	public boolean loadParameters(String line) {
 
 		try { 
@@ -140,7 +146,9 @@ public class GameLoader {
 	}
 	
 	
-	
+	////////////////////////////////////////////////////
+	// Setter and Getters
+	////////////////////////////////////////////////////	
 	public void setWinner(String winner) {
 		if(winner.matches("Attacker"))
 			game.setWinner(PlayerEnum.ATTACKER);

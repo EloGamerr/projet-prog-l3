@@ -27,32 +27,39 @@ public class GameSaver {
 	private static final String saveSuffix = ".sv";
 	private final Game game;
 	private String currentSavePath;
-	
 	private final List<Game> saves = new ArrayList<>();
+	
+	////////////////////////////////////////////////////
+	// Constructors
+	////////////////////////////////////////////////////	
 
-	 public GameSaver(Game game){
+	public GameSaver(Game game){
 		 this.game = game; 
 	}
-	 
+	
 	 public GameSaver(Game game, String currentSavePath){
 		 this.game = game; 
 		 this.currentSavePath = currentSavePath;
 	}
 	 
-	public void save() {
-		save(Paths.get(this.saveName()));
+	 ////////////////////////////////////////////////////
+	 // Main Functions
+	 ////////////////////////////////////////////////////	
+	 
+	public void saveNewFile() {
+		save_core(Paths.get(this.saveName()));
 	}
 	public void saveToFile() {
 		if(this.game.getCurrentSavePath()=="") {
-			save(Paths.get(this.saveName()));
+			save_core(Paths.get(this.saveName()));
 		}
 		else {
-			save(Paths.get(this.game.getCurrentSavePath()));
+			save_core(Paths.get(this.game.getCurrentSavePath()));
 		}
 		
 	}
 	
-	public void save(Path path) {
+	public void save_core(Path path) {
 		JSONObject jsonBoard = this.generateJSONBoard();
 		JSONArray jsonArrayParameters = this.generateJSONParameters();
 		JSONObject jsonParameters = new JSONObject();
@@ -77,13 +84,44 @@ public class GameSaver {
 		} catch (IOException e) { e.printStackTrace(); }
 	}
 	
-	
+	 ////////////////////////////////////////////////////
+	 // JSON generators
+	 ////////////////////////////////////////////////////
 	
 	public JSONObject generateJSONBoard() {
 		JSONObject jsonBoard = new JSONObject();
 		jsonBoard.put("board", saveBoard().toString());
 		return jsonBoard;
 	}
+	
+	public JSONArray generateJSONParameters() {
+		JSONArray jsonParameters = new JSONArray();
+		
+		JSONObject jsonWinner = new JSONObject();
+		JSONObject jsonPlayingPlayer = new JSONObject();
+		JSONObject jsonPlays = new JSONObject();
+		JSONObject jsonDefender = new JSONObject();
+		JSONObject jsonAttacker = new JSONObject();
+		
+		 jsonDefender.put("defender", game.getDefender().toString());
+		 jsonAttacker.put("attacker", game.getAttacker().toString());
+		 jsonWinner.put("winner",this.game.getWinner().toString());
+		 jsonPlayingPlayer.put("playingPlayer", game.getPlayingPlayerEnum().toString());
+		 jsonPlays.put("plays", savePlays().toString());
+		
+		 jsonParameters.put(jsonDefender);
+		 jsonParameters.put(jsonAttacker);
+		 jsonParameters.put(jsonWinner);
+		 jsonParameters.put(jsonPlayingPlayer);
+		 jsonParameters.put(jsonPlays);
+
+		 
+		return jsonParameters;
+	}
+	
+	 ////////////////////////////////////////////////////
+	 // StringBuilder functions
+	 ////////////////////////////////////////////////////
 	
 	public StringBuilder saveBoard() {
 		StringBuilder builder = new StringBuilder();
@@ -144,32 +182,7 @@ public class GameSaver {
 		return builder;
 	}
 	
-	public JSONArray generateJSONParameters() {
-		JSONArray jsonParameters = new JSONArray();
-		
-		JSONObject jsonWinner = new JSONObject();
-		JSONObject jsonPlayingPlayer = new JSONObject();
-		JSONObject jsonPlays = new JSONObject();
-		JSONObject jsonDefender = new JSONObject();
-		JSONObject jsonAttacker = new JSONObject();
-		
-		 jsonDefender.put("defender", game.getDefender().toString());
-		 jsonAttacker.put("attacker", game.getAttacker().toString());
-		 jsonWinner.put("winner",this.game.getWinner().toString());
-		 jsonPlayingPlayer.put("playingPlayer", game.getPlayingPlayerEnum().toString());
-		 jsonPlays.put("plays", savePlays().toString());
-		
-		 jsonParameters.put(jsonDefender);
-		 jsonParameters.put(jsonAttacker);
-		 jsonParameters.put(jsonWinner);
-		 jsonParameters.put(jsonPlayingPlayer);
-		 jsonParameters.put(jsonPlays);
-
-		 
-		return jsonParameters;
-	}
 	
-
 	private String saveName() {
 		int index = 1;
 		String savePath = Paths.get(savesPath, savePrefix + index + saveSuffix).toString();
@@ -182,10 +195,25 @@ public class GameSaver {
 		return savePath;
 	}
 	
+	////////////////////////////////////////////////////
+	// Reload / Delete / overwrite saves
+	////////////////////////////////////////////////////
+	
 	public void overwriteSave() {
-		save(Paths.get(currentSavePath));
+		save_core(Paths.get(currentSavePath));
 	}
 	
+	public Game reload(int index_game) {
+		return saves.get(index_game);
+	}
+
+	public void delete(int index_game) {
+		saves.remove(index_game);
+	}
+	
+	////////////////////////////////////////////////////
+	// Getter and Setters functions
+	////////////////////////////////////////////////////
 	
 	public String getCurrentSavePath() {
 		return this.currentSavePath;
@@ -193,15 +221,6 @@ public class GameSaver {
 	
 	public void setCurrentSavePath(String path) {
 		this.currentSavePath = path;
-	}
-	
-	public Game reload(int index_game) {
-		return saves.get(index_game);
-	}
-	
-	
-	public void delete(int index_game) {
-		saves.remove(index_game);
 	}
 	
 	public List<Game> getSaves() {

@@ -21,7 +21,7 @@ public class ButtonSaveAdaptator implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if(e.getSource() == eastWindow.getComponent(0)) {
-			save.save();
+			save.saveNewFile();
 		
 		}
 		else if(e.getSource() == eastWindow.getComponent(1)) {
