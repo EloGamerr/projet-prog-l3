@@ -11,7 +11,16 @@ import javax.swing.JPanel;
 import fr.prog.tablut.model.window.WindowName;
 import fr.prog.tablut.view.components.generic.GenericRoundedButton;
 
+/**
+ * The home pannel that contains all buttons.
+ * <p>Extends JPanel</p>
+ * @see JPanel
+ */
 public class ButtonChoice extends JPanel {
+	/**
+	 * Default constructor.
+	 * <p>Creates a pannel of home buttons.</p>
+	 */
 	public ButtonChoice() {
 		setOpaque(false);
 		setLayout(new GridBagLayout());

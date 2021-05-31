@@ -18,14 +18,19 @@ import fr.prog.tablut.view.components.generic.GenericObjectStyle;
 import fr.prog.tablut.view.pages.game.GamePage;
 import fr.prog.tablut.view.pages.help.HelpPage;
 import fr.prog.tablut.view.pages.home.HomePage;
-import fr.prog.tablut.view.pages.load.LoadPage;
+import fr.prog.tablut.view.pages.load.LoadSavesPage;
 import fr.prog.tablut.view.pages.newGame.NewGamePage;
 
+/**
+ * The main window of the application
+ * @see Window
+ * @see JPanel
+ */
 public class GlobalWindow extends Window {
 	protected WindowConfig config;
     private final GamePage gamePage;
     private final HomePage homePage;
-    private final LoadPage loadPage;
+    private final LoadSavesPage loadPage;
     private final HelpPage helpPage;
     private final NewGamePage newGamePage;
 	private JFrame jFrame;
@@ -70,7 +75,7 @@ public class GlobalWindow extends Window {
 		gamePage = new GamePage();
 		homePage = new HomePage(this.config);
 		currentPage = homePage;
-		loadPage = new LoadPage(this.config);
+		loadPage = new LoadSavesPage(this.config);
 		helpPage = new HelpPage(this.config, this.currentPage);
 		newGamePage = new NewGamePage(this.config);
 		
@@ -93,7 +98,7 @@ public class GlobalWindow extends Window {
 	}
 
 	/**
-	 * Set the window's configuration from the file at given path
+	 * Sets the window's configuration from the file at given path
 	 * @param configPath file's path
 	 * @throws ParseException
 	 */
@@ -102,7 +107,7 @@ public class GlobalWindow extends Window {
 	}
 
 	/**
-	 * Set the window's configuration from given JSON
+	 * Sets the window's configuration from given JSON
 	 * @param configObject The json object
 	 */
 	protected void setConfig(JSONObject configObject) {

@@ -26,6 +26,7 @@ public class Loader {
 
     /**
      * Reads a file and returns a JSONObject from it
+     * @see JSONObject
      * @param filepath The file path
      * @return The created JSONObject
      * @throws ParseException
@@ -45,6 +46,8 @@ public class Loader {
 
     /**
      * Converts from a JSONArray to a Color
+     * @see JSONArray
+     * @see Color
      * @param array the JSONArray
      * @return The converted Color
      */
@@ -65,6 +68,11 @@ public class Loader {
         return new Color(r, g, b);
     }
 
+    /**
+     * Loads a font family from given file (truetype only)
+     * @see Font
+     * @param fontFamily
+     */
     public void loadCustomFont(String fontFamily) {
         try {
             String fontPath = "res/fonts/" + fontFamily;

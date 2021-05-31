@@ -13,13 +13,28 @@ import fr.prog.tablut.view.components.generic.GenericButton;
 import fr.prog.tablut.view.components.generic.GenericRoundedButton;
 import fr.prog.tablut.view.components.generic.GenericRoundedPanel;
 
-public class ButtonTogglePannel extends JPanel {
+/**
+ * A component that regroups every saved games in a list and shows them.
+ * <p>Extends JPanel</p>
+ * @see JPanel
+ */
+public class SavedGamesPannel extends JPanel {
+
+	protected int width = 460;
+	protected int height = 350;
 	
 	public GenericRoundedButton button_selected = null;
 	
 	private final String SAVE_LOCATION = System.getProperty("user.dir") + "data/saves/";
 	
-	public ButtonTogglePannel() {
+	/**
+	 * Default constructor.
+	 * <p>Creates the list of saved games and shows them.</p>
+	 * <p>Applies the style "area" and "button.load".</p>
+	 * @see Style
+	 * @see ComponentStyle
+	 */
+	public SavedGamesPannel() {
 		setOpaque(false);
 		setBorder(new EmptyBorder(0, 0, 50, 0));
 		setLayout(new GridBagLayout());
@@ -28,7 +43,7 @@ public class ButtonTogglePannel extends JPanel {
 		wrapper.setLayout(new GridBagLayout());
 		wrapper.setStyle("area");
 
-		Dimension size = new Dimension(460, 350);
+		Dimension size = new Dimension(width, height);
 
 		wrapper.setPreferredSize(size);
 		wrapper.setMaximumSize(size);
@@ -42,7 +57,7 @@ public class ButtonTogglePannel extends JPanel {
 
 		for(int i = 0; i < 6; i++) {
 			c.gridy = i;
-			button = new GenericRoundedButton("Partie " + (i+1) + " : (10/12/45 12:15) IA vs IA", 450, 35);
+			button = new GenericRoundedButton("Partie " + (i+1) + " : (10/12/45 12:15) IA vs IA", width - 10, 35);
 			button.setStyle("button.load");
 			button.addActionListener(new ButtonToggleAdaptator(button, this));
 			wrapper.add(button, c);
@@ -50,10 +65,18 @@ public class ButtonTogglePannel extends JPanel {
 
 		add(wrapper);
 	}
-	
+
+	/**
+	 * Triggered when the user clicks on a save.
+	 * <p>Changes its style to button.selected.</p>
+	 * @see Style
+	 * @see ComponentStyle
+	 * @param button the button that's been clicked on (a save)
+	 */
 	public void selected(GenericButton button) {
+		// TODO: issue to fix : need to double-click to toggle the style
 		if(button_selected != null) {
-			button_selected.setBackground(new GenericRoundedButton().getBackground());
+			button_selected.setStyle("button.selected");
 		}
 		
 		button_selected = (GenericRoundedButton)button;

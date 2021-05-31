@@ -11,21 +11,58 @@ import javax.swing.border.EmptyBorder;
 import fr.prog.tablut.view.components.generic.GenericLabel;
 import fr.prog.tablut.view.components.generic.GenericObjectStyle;
 
+/**
+ * A component extending JPanel that creates a page with header and footer.
+ * <p>The header has a title and can have a description.</p>
+ * <p>The footer is a BottomButtonPannel with one or two buttons.</p>
+ * <p>The content of the page is centered.</p>
+ * @see JPanel
+ * @see BottomButtonPannel
+ * @see Title
+ * @see GenericLabel
+ */
 public class NavPage extends JPanel {
     protected static Dimension maxDimension;
 
+    /**
+     * Static method that stores the dimension that the instances of NavPage should take.
+     * <p>Normally only called by GlobalWindow once, at initialization or when resizing the window.</p>
+     * @param d The dimension of NavPage instances
+     */
     public static void setDimension(Dimension d) {
         maxDimension = d;
     }
 
-    public NavPage(String title, BottomButtonPannel bottomPannel) {
-        this(title, null, bottomPannel);
-    }
-
+    /**
+     * Default constructor.
+     * <p>Creates a page only containing a BottomButtonPannel.</p>
+     * @see BottomButtonPannel
+     * @param bottomPannel The BottomButtonPannel object to set to the page
+     */
     public NavPage(BottomButtonPannel bottomPannel) {
         this(null, null, bottomPannel);
     }
 
+    /**
+     * Creates a page only containing a title and a BottomButtonPannel.
+     * @see Title
+     * @see BottomButtonPannel
+     * @param title The title of the page
+     * @param bottomPannel The BottomButtonPannel of the page
+     */
+    public NavPage(String title, BottomButtonPannel bottomPannel) {
+        this(title, null, bottomPannel);
+    }
+
+    /**
+     * Creates a page containing a title, a description, and a bottomPannel.
+     * @see TItle
+     * @see GenericLabel
+     * @see BottomButtonPannel
+     * @param title The title
+     * @param description THe description
+     * @param bottomPannel The BottomButtonPannel
+     */
     public NavPage(String title, String description, BottomButtonPannel bottomPannel) {
         setLayout(new BorderLayout());
         setOpaque(false);
@@ -65,6 +102,11 @@ public class NavPage extends JPanel {
 		add(bottomPannel, BorderLayout.SOUTH);
     }
 
+    /**
+     * Sets the content of the page.
+     * <p>The content is centered.</p>
+     * @param content The content to put in the page
+     */
     public void setContent(JPanel content) {
         add(content, BorderLayout.CENTER);
     }

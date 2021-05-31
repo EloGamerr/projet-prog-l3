@@ -6,8 +6,18 @@ import fr.prog.tablut.view.Page;
 import fr.prog.tablut.view.components.BottomButtonPannel;
 import fr.prog.tablut.view.components.NavPage;
 
-public class LoadPage extends Page {
-	public LoadPage(WindowConfig config) {
+/**
+ * The Load page. Extends Page class.
+ * <p>Loaded games are shown in this page. The user have to click on one and confirm
+ * To continue to play this game.</p>
+ * @see Page
+ */
+public class LoadSavesPage extends Page {
+	/**
+	 * Creates the load page.
+	 * @param config The configuration to set to the page
+	 */
+	public LoadSavesPage(WindowConfig config) {
 		super(config);
 
 		windowName = WindowName.LoadWindow;
@@ -19,7 +29,7 @@ public class LoadPage extends Page {
 		);
 		
 		// load games
-		page.setContent(new ButtonTogglePannel());
+		page.setContent(new SavedGamesPannel());
 
 		add(page);
 	}

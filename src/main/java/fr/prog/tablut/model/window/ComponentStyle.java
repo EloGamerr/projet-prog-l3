@@ -5,6 +5,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+/**
+ * A component storing color style rules
+ * @see Color
+ */
 public class ComponentStyle {
     protected HashMap<String, Color> properties = new HashMap<>() {{
         put("background", new Color(255, 255, 255));
@@ -58,15 +62,30 @@ public class ComponentStyle {
         }
     }
 
+    /**
+     * Sets the given color value to the given property if the property exists.
+     * @param property The property to change
+     * @param value The value to set
+     */
     public void set(String property, Color value) {
         if(hasProperty(property))
             properties.put(property, value);
     }
 
+    /**
+     * Returns either it has the given property or not
+     * @param property The property to check its existence
+     * @return Either the property exists or not
+     */
     public boolean hasProperty(String property) {
         return properties.containsKey(property);
     }
 
+    /**
+     * Returns the value of the given property if it exists, black color otherwise
+     * @param property The property to get its value
+     * @return The property's value
+     */
     public Color get(String property) {
         if(hasProperty(property))
             return properties.get(property);

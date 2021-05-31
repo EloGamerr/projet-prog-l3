@@ -6,6 +6,12 @@ import java.awt.Graphics2D;
 
 import fr.prog.tablut.model.window.WindowConfig;
 
+/**
+ * A page inside the app, in the main window
+ * @see GlobalWindow
+ * @see Window
+ * @see JPanel
+ */
 public class Page extends Window {
     /**
      * Default constructor.

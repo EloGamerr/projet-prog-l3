@@ -4,14 +4,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import fr.prog.tablut.view.components.generic.GenericButton;
-import fr.prog.tablut.view.pages.load.ButtonTogglePannel;
+import fr.prog.tablut.view.pages.load.SavedGamesPannel;
 
 public class ButtonToggleAdaptator implements ActionListener {
 	
 	private final GenericButton button;
-	private final ButtonTogglePannel buttonTogglePannel;
+	private final SavedGamesPannel buttonTogglePannel;
 	
-	public ButtonToggleAdaptator(GenericButton button, ButtonTogglePannel buttonTogglePannel) {
+	public ButtonToggleAdaptator(GenericButton button, SavedGamesPannel buttonTogglePannel) {
 		this.button = button;
 		this.buttonTogglePannel = buttonTogglePannel;
 	}

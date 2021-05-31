@@ -8,21 +8,43 @@ import javax.swing.JPanel;
 
 import fr.prog.tablut.model.window.ComponentStyle;
 
+/**
+ * A component extending a JPanel, to create a rounded JPanel
+ * @see JPanel
+ */
 public class GenericRoundedPanel extends JPanel {
     protected ComponentStyle style = new ComponentStyle();
     protected int borderRadius = 10;
 
+    /**
+     * Creates a JPanel, and make it translucent, to not see the default painting
+     */
     public GenericRoundedPanel() {
         super();
         setOpaque(false);
     }
 
+    /**
+     * Sets the border radius of the button (the same for each border).
+     * <p>radius can't be a negative integer.</p>
+     * <p>If a negative integer is given, sets the radius to 0.</p>
+     * @param radius The border radius
+     */
     public void setBorderRadius(int radius) {
         if(radius < 0)
             radius = 0;
         borderRadius = radius;
     }
 
+    /**
+     * Sets the button's style.
+     * <p>Search the ComponentStyle in the generic global stylesheet thanks its name.
+     * If the component is found, then apply its style, otherwise it does not change it.</p>
+     * @see ComponentStyle
+     * @see Style
+     * @see GenericObjectStyle
+     * @param style The style to apply
+     */
     public void setStyle(String style) {
         if(GenericObjectStyle.getStyle().has(style))
             this.style = GenericObjectStyle.getStyle().get(style);

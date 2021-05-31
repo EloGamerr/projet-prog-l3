@@ -81,6 +81,12 @@
                     "borderColor": [104, 115, 129],
                     "color": [255, 255, 255]
                 }
+            },
+
+            ".selected": {
+                "background": [84, 92, 101],
+                "borderColor": [48, 51, 54],
+                "color": [241, 241, 241]
             }
         },
         "table": {

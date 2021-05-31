@@ -9,10 +9,19 @@ import fr.prog.tablut.model.window.WindowName;
 import fr.prog.tablut.view.Page;
 import fr.prog.tablut.view.components.Title;
 
+/**
+ * The home page. Extends Page class.
+ * <p>Shows home's button.</p>
+ * @see Page
+ */
 public class HomePage extends Page {
 	private final ButtonChoice button_choice;
 	private final Title title;
 	
+	/**
+	 * Creates the home page.
+	 * @param config The configuration to set to the page
+	 */
 	public HomePage(WindowConfig config) {
 		super(config);
 

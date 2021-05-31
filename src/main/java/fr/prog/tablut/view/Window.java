@@ -4,6 +4,10 @@ import javax.swing.JPanel;
 
 import fr.prog.tablut.model.window.WindowName;
 
+/**
+ * A window extending the JPanel
+ * @see JPanel
+ */
 public abstract class Window extends JPanel {
 	protected WindowName windowName = WindowName.DefaultWindow;
 

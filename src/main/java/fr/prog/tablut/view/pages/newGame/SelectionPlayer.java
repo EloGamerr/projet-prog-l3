@@ -13,6 +13,11 @@ import fr.prog.tablut.view.components.generic.GenericComboBox;
 import fr.prog.tablut.view.components.generic.GenericInput;
 import fr.prog.tablut.view.components.generic.GenericLabel;
 
+/**
+ * The settings form component to create a new game.
+ * <p>Extends JPanel</p>
+ * @see JPanel
+ */
 public class SelectionPlayer extends JPanel {
 	protected JTextField pseudoAttaquant;
 	protected JTextField pseudoDefenseur;
@@ -27,6 +32,11 @@ public class SelectionPlayer extends JPanel {
 	protected PlayerData attaquant = new PlayerData("Attaquant", "Joueur 1");
 	protected PlayerData defenseur = new PlayerData("Défenseur", "Joueur 2");
 
+	/**
+	 * Default construtor.
+	 * <p>Creates a new form, with 2 sides, "attaquant" and "defenseur",
+	 * with their player's type and username.</p>
+	 */
 	public SelectionPlayer() {
 		setOpaque(false);
 		setLayout(new GridBagLayout());
@@ -41,10 +51,17 @@ public class SelectionPlayer extends JPanel {
 
 		createSide(c, 2, defenseur);
 	}
-	
-	private void createSide(GridBagConstraints cc, int gridX, PlayerData side) {
+
+	/**
+	 * Creates a form side for a player
+	 * @param cc The GridBagConstraint for the side
+	 * @param gridX The position of the side in the grid
+	 * @param p The player's role
+	 */
+	private void createSide(GridBagConstraints cc, int gridX, PlayerData p) {
 		cc.gridx = gridX;
 
+		// wrapper pannel
 		JPanel pannel = new JPanel();
 		pannel.setOpaque(false);
 		pannel.setLayout(new GridBagLayout());
@@ -53,44 +70,69 @@ public class SelectionPlayer extends JPanel {
 
 		c.gridx = 0;
 		
+		// side title (player's role)
 		c.gridy = 0;
-		GenericLabel label = new GenericLabel(side.name, 15);
+		GenericLabel label = new GenericLabel(p.name, 15);
 		label.setBorder(new EmptyBorder(0, 0, 30, 0));
 		pannel.add(label, c);
-				
+		
+		// player's type
 		c.gridy = 1;
 		GenericComboBox<String> comboBox = new GenericComboBox<>(playerTypes);
-		comboBox.addActionListener(new ComboBoxAdaptator(side.name, this));
+		comboBox.addActionListener(new ComboBoxAdaptator(p.name, this));
 		pannel.add(comboBox, c);
 
+		// player's username
 		c.gridy = 2;
 		c.insets = new Insets(10, 0, 0, 0);
-		pannel.add(side.usernameInput, c);
+		pannel.add(p.usernameInput, c);
 
 		add(pannel);
 	}
 	
+	/**
+	 * Shows the player's username input
+	 * @param side The player to show his input
+	 */
 	public void showInput(String side) {
 		PlayerData p = (side == "Attaquant")? attaquant : defenseur;
 		p.usernameInput.setVisible(true);
 	}
 	
+	/**
+	 * hides the player's username input
+	 * @param side The player to hide his input
+	 */
 	public void hideInput(String side) {
 		PlayerData p = (side == "Attaquant")? attaquant : defenseur;
 		p.usernameInput.setVisible(false);
 	}
 }
 
+/**
+ * A struct of player's form data
+ */
 class PlayerData {
 	public String name;
 	public String username;
 	public String type;
 	public JTextField usernameInput;
 
+	/**
+	 * Default constructor.
+	 * <p>Creates a player's data struct with the given role name and empty username</p>
+	 * @param name The player role's name
+	 */
 	public PlayerData(String name) {
 		this(name, "");
 	}
 
+	/**
+	 * Default constructor.
+	 * <p>Creates a player's data struct with the given role name and default username</p>
+	 * @param name The player role's name
+	 * @param username The default player's username
+	 */
 	public PlayerData(String name, String username) {
 		this.name = name;
 		this.username = username;

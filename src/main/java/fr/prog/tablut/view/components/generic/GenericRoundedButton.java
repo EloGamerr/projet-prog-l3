@@ -15,6 +15,11 @@ import fr.prog.tablut.model.window.WindowName;
 
 // Source : Adapted from http://www.bryanesmith.com/docs/rounded-jbuttons
 
+/**
+ * A component that extends a GenericButton (Jbutton), a button with rounded corners
+ * @see GenericButton
+ * @see JButton
+ */
 public class GenericRoundedButton extends GenericButton {
     protected int paddingWidth = 60;
     protected int paddingHeight = 20;
@@ -24,48 +29,98 @@ public class GenericRoundedButton extends GenericButton {
     protected float labelX = 0;
     protected float labelY = 0;
 
-
+    /**
+     * Defaults constructor.
+     * <p>Initializes all stuff around the draw : the position of the text, the rectangle etc...</p>
+     * <p>Sets the font, the size, the colors</p>
+     */
     public GenericRoundedButton() {
         super();
         init();
     }
 
+    /**
+     * <p>Initializes all stuff around the draw : the position of the text, the rectangle etc...</p>
+     * <p>Sets the font, the size, the colors</p>
+     * @param size The button's dimension
+     */
     public GenericRoundedButton(Dimension size) {
         super();
         init(size);
     }
     
+    /**
+     * <p>Initializes all stuff around the draw : the position of the text, the rectangle etc...</p>
+     * <p>Sets the font, the size, the colors</p>
+     * @param width The button's width
+     * @param height The button's height
+     */
     public GenericRoundedButton(int width, int height) {
         super();
         init(new Dimension(width, height));
     }
 
-    public GenericRoundedButton(String title) {
-        super(title);
+    /**
+     * <p>Initializes all stuff around the draw : the position of the text, the rectangle etc...</p>
+     * <p>Sets the font, the size, the colors</p>
+     * @param text The button's text
+     */
+    public GenericRoundedButton(String text) {
+        super(text);
         init();
     }
 
-    public GenericRoundedButton(String title, Dimension size) {
-        super(title);
+    /**
+     * <p>Initializes all stuff around the draw : the position of the text, the rectangle etc...</p>
+     * <p>Sets the font, the size, the colors</p>
+     * @param text The button's text
+     * @param size The button's dimension
+     */
+    public GenericRoundedButton(String text, Dimension size) {
+        super(text);
         init(size);
     }
 
-    public GenericRoundedButton(String title, int width, int height) {
-        super(title);
+    /**
+     * <p>Initializes all stuff around the draw : the position of the text, the rectangle etc...</p>
+     * <p>Sets the font, the size, the colors</p>
+     * @param text The button's text
+     * @param width The button's width
+     * @param The button's height
+     */
+    public GenericRoundedButton(String text, int width, int height) {
+        super(text);
         init(new Dimension(width, height));
     }
 
-    public GenericRoundedButton(String title, WindowName href) {
-        super(title);
+    /**
+     * <p>Initializes all stuff around the draw : the position of the text, the rectangle etc...</p>
+     * <p>Sets the font, the size, the colors</p>
+     * @see WindowName
+     * @param text The button's text
+     * @param href The button's href location (WidnowName)
+     */
+    public GenericRoundedButton(String text, WindowName href) {
+        super(text);
         init(null);
         setHref(href);
     }
 
+    /**
+     * <p>Initializes all stuff around the draw : the position of the text, the rectangle etc...</p>
+     * <p>Sets the font, the size, the colors</p>
+     */
     private void init() {
         init(null);
     }
 
+    /**
+     * <p>Initializes all stuff around the draw : the position of the text, the rectangle etc...</p>
+     * <p>Sets the font, the size, the colors</p>
+     * @param size The button's dimension
+     */
     private void init(Dimension size) {
+        // style
         setBackground(GenericObjectStyle.getProp("button", "background"));
         setBorder(BorderFactory.createEmptyBorder());
         setFocusable(false);
@@ -81,15 +136,18 @@ public class GenericRoundedButton extends GenericButton {
             size = new Dimension(width, height);
         }
 
-        setPreferredSize(size);
-        setMinimumSize(size);
+        setSize(size);
 
-        labelX = (float) (size.getWidth() - textBounds.getBounds().width) / 2;
-        labelY = (float) getFont().getSize() + (float) (size.getHeight() - getFont().getSize()) / 2 - 1;
-
+        // when mouse hovering it, could we apply the :hover style cause it exists or not
+        // if it does not exist, then keep the normal style when hovering
 		canHoverStyle = GenericObjectStyle.getStyle().has(styleName);
     }
 
+    /**
+     * Sets the button's size.
+     * <p>Re-calculates the text's position in the button</p>
+     * @param size The button's dimension
+     */
     public void setSize(Dimension size) {
         setPreferredSize(size);
         setMinimumSize(size);
@@ -98,20 +156,42 @@ public class GenericRoundedButton extends GenericButton {
         labelY = (float) getFont().getSize() + (float) (size.getHeight() - getFont().getSize()) / 2;
     }
 
+    /**
+     * Sets the button's size.
+     * <p>Re-calculates the text's position in the button</p>
+     * @param width The button's width
+     * @param height The button's height
+     */
     public void setSize(int width, int height) {
         setSize(new Dimension(width, height));
     }
 
+    /**
+     * Sets the border radius of the button (the same for each border).
+     * <p>radius can't be a negative integer.</p>
+     * <p>If a negative integer is given, sets the radius to 0.</p>
+     * @param radius The border radius
+     */
     public void setBorderRadius(int radius) {
         if(radius < 0)
             radius = 0;
         borderRadius = radius;
     }
 
+    /**
+     * Sets the button's style.
+     * <p>Search the ComponentStyle in the generic global stylesheet thanks its name.
+     * If the component is found, then apply its style, otherwise it does not change it.</p>
+     * @see ComponentStyle
+     * @see Style
+     * @see GenericObjectStyle
+     * @param style The style to apply
+     */
     public void setStyle(String style) {
-        if(GenericObjectStyle.getStyle().has(style))
+        if(GenericObjectStyle.getStyle().has(style)) {
             styleName = style;
-		canHoverStyle = GenericObjectStyle.getStyle().has(styleName);
+		    canHoverStyle = GenericObjectStyle.getStyle().has(styleName);
+        }
     }
 
     public void paint(Graphics g) {

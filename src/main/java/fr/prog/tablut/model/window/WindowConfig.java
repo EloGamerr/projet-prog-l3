@@ -20,10 +20,6 @@ public class WindowConfig {
     // project name
     public String projectName = "";
 
-    // window dimension
-    public int width = 0;
-    public int height = 0;
-
     // possible resolutions of the window
     // we keep basic HD screen resolutions
     public int resolutions[][] = {
@@ -33,6 +29,10 @@ public class WindowConfig {
         { 1600, 900 },
         { 1920, 1080 }
     };
+
+    // window dimension
+    public int width = resolutions[1][0];
+    public int height = resolutions[1][1];
 
     Style style = new Style();
     
@@ -274,14 +274,29 @@ public class WindowConfig {
         style.set(name, component);
     }
 
+    /**
+     * Returns either the config's stylesheet has a component or not
+     * @param componentName The ComponentStyle to check its existence
+     * @return The existence of the component
+     */
     public boolean hasComp(String componentName) {
         return style.has(componentName);
     }
 
+    /**
+     * Returns the ComponentStyle object of a given component name
+     * @param componentName The component name
+     * @return The ComponentStyle object
+     */
     public ComponentStyle getComp(String componentName) {
         return style.get(componentName);
     }
 
+    /**
+     * Returns the config's stylesheet
+     * @see Style
+     * @return The stylesheet
+     */
     public Style getStyle() {
         return style;
     }
