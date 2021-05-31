@@ -6,6 +6,7 @@ import fr.prog.tablut.structures.Couple;
 import java.util.List;
 import java.util.Random;
 
+@Deprecated
 public class AIRandom extends AIPlayer {
     private Random random;
 
