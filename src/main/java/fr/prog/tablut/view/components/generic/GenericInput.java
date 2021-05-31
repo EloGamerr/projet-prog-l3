@@ -81,10 +81,10 @@ public class GenericInput extends JTextField {
 
     /**
      * Repaints the input
-     * TODO: issue - the real text is drawn behind
-     * TODO: iisue - the carret isn't drawn
      */
     public void paintComponent(Graphics g) {
+        //TODO : issue - the real text is drawn behind
+        //TODO : iisue - the carret isn't drawn
         Graphics2D g2d = (Graphics2D) g;
 
         // Anti-aliased lines and text

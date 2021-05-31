@@ -74,7 +74,7 @@ public class SavedGamesPannel extends JPanel {
 	 * @param button the button that's been clicked on (a save)
 	 */
 	public void selected(GenericButton button) {
-		// TODO: issue to fix : need to double-click to toggle the style
+		//TODO : issue to fix : need to double-click to toggle the style
 		if(button_selected != null) {
 			button_selected.setStyle("button.selected");
 		}

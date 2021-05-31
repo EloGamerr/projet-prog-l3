@@ -125,7 +125,7 @@ class HTable {
 			}
 		}
 
-		// TODO: fix why the container has huge size overflowing the window
+		//TODO : fix why the container has huge size overflowing the window
 		// and then the table can't be seen at the top of it (BorderLayout.NORTH)
 		//tableContainer.add(table, BorderLayout.CENTER);
 	}

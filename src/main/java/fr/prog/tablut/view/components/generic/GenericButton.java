@@ -50,7 +50,7 @@ public class GenericButton extends JButton {
 		// hover listener
         GenericButton me = this;
 
-		// TODO: move it in the controller
+		//TODO : move it in the controller
         addMouseListener(new MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
 				hovering = true;
