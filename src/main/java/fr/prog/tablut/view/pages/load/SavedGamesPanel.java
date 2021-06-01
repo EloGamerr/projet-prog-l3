@@ -69,7 +69,7 @@ public class SavedGamesPanel extends JPanel {
 
 		while(f.isFile()) {
 			c.gridy = i;
-			button = new GenericRoundedButton("Save n°" + i, 300, 30);
+			button = new GenericRoundedButton("Save n°" + i, width - 10, 35);
 			button.setStyle("button.load");
 			button.addActionListener(new ButtonToggleAdaptator(button, i, this));
 			wrapper.add(button, c);
