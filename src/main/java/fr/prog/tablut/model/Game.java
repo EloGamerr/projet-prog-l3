@@ -28,41 +28,49 @@ public class Game {
 	////////////////////////////////////////////////////
 	// Constructor
 	////////////////////////////////////////////////////
-	
-	public Game(){
+
+	public Game() {
 		this.middle = 4;
 		gameSaver = new GameSaver(this);
 		loader = new GameLoader(this);
 	}
-	
-	////////////////////////////////////////////////////
-	// Load or Create a new Game
-	////////////////////////////////////////////////////
-	
+
+	/**
+	 * Start a new game
+	 * @param attacker Player object which can be a human or a AI
+	 * @param defender Player object which can be a human or a AI
+	 */
 	public void start(Player attacker, Player defender) {
 		this.attacker = attacker;
 		this.defender = defender;
 		setPlayingPlayer(PlayerEnum.ATTACKER);
 		this.move = new PawnTaker(this);
-		this.plays = new Plays(this);
+		this.plays = new Plays();
 		init_game(9,9);
 		setWinner(PlayerEnum.NONE);
 		hasStarted = true;
 	}
-	
+
+	/**
+	 * Load a new game. All properties of the current game are lost if not saved.
+	 * @param index_selected Save index (>= 0 and < amount of saves)
+	 */
 	public void load(int index_selected) {
 		init_grid(9,9);
 		this.move = new PawnTaker(this);
-		this.plays = new Plays(this);
+		this.plays = new Plays();
 		loader.loadData(index_selected);
 		hasStarted = true;
 	}
-	
-	
-	////////////////////////////////////////////////////
-	// When a pawn is moved
-	////////////////////////////////////////////////////
 
+	/**
+	 * Move a pawn with checks.
+	 * @param l Row index on which we must remove the pawn
+	 * @param c Column index on which we must remove the pawn
+	 * @param toL Row index on which we must put the pawn
+	 * @param toC Column index on which we must put the pawn
+	 * @return True if the pawn was moved, false otherwise
+	 */
 	public boolean move(int l, int c, int toL, int toC) {
 		if(isWon()) return false;
 		if(!isValid(toL, toC)) return false;
@@ -95,11 +103,10 @@ public class Game {
 		return true;
 	}
 
-
-	////////////////////////////////////////////////////
-	//  Undo & Redo move
-	////////////////////////////////////////////////////
-
+	/**
+	 * Undo the last move
+	 * @return True if undo was done, false otherwise
+	 */
 	public boolean undo_move() {
 		Play play = this.getPlays().undo_move();
 		if(play != null) {
@@ -114,6 +121,10 @@ public class Game {
 		return false;
 	}
 
+	/**
+	 * Redo the last move which was undone
+	 * @return True if redo was done, false otherwise
+	 */
 	public boolean redo_move() {
 		Play play = this.getPlays().redo_move();
 		if(play != null) {
@@ -128,26 +139,21 @@ public class Game {
 		return false;
 	}
 
-	
-	////////////////////////////////////////////////////
-	// Initializing grid functions
-	////////////////////////////////////////////////////
-	
-	void init_game(int rowAmount, int colAmount) {
-		setGrid(new CellContent[rowAmount][colAmount]);
-		for(int i = 0 ; i < rowAmount ; i++) {
-			Arrays.fill(getGrid()[i], CellContent.EMPTY);
-		}
-		
-		this.rowAmount = rowAmount;
-		this.colAmount = colAmount;
+	/**
+	 * Initializing grid with pawns
+	 */
+	private void init_game(int rowAmount, int colAmount) {
+		this.init_grid(rowAmount, colAmount);
+
 		init_king();
 		init_gates();
 		init_towers();
 	}
 
+	/**
+	 * Initializing grid with empty cells
+	 */
 	public void init_grid(int rowAmount, int colAmount) {
-
 		setGrid(new CellContent[rowAmount][colAmount]);
 		for(int i = 0 ; i < rowAmount ; i++) {
 			Arrays.fill(getGrid()[i], CellContent.EMPTY);
@@ -157,16 +163,16 @@ public class Game {
 		this.colAmount = colAmount;
 	}
 	
-	void init_king() {
+	private void init_king() {
 		setKing(middle,middle);
 	}
 
-	void init_towers() {
+	private void init_towers() {
 		init_attackTowers();
 		init_defenseTowers();
 	}
 
-	void init_defenseTowers() {
+	private void init_defenseTowers() {
 		setDefenseTower(middle-1,middle);
 		setDefenseTower(middle-2,middle);
 		setDefenseTower(middle+1,middle);
@@ -177,8 +183,8 @@ public class Game {
 		setDefenseTower(middle,middle+1);
 		setDefenseTower(middle,middle+2);
 	}
-	
-	void init_attackTowers() {
+
+	private void init_attackTowers() {
 		setAttackTower(middle,0);
 		setAttackTower(middle,colAmount-1);
 		setAttackTower(0,middle);
@@ -199,19 +205,26 @@ public class Game {
 		setAttackTower(1,middle);
 		setAttackTower(rowAmount-2,middle);
 	}
-	
-	void init_gates() {
+
+	private void init_gates() {
 		setGate(0,0);
 		setGate(rowAmount-1,0);
 		setGate(0,colAmount-1);
 		setGate(rowAmount-1,colAmount-1);
 	}
-	
-	////////////////////////////////////////////////////
-	// Content Test functions
-	////////////////////////////////////////////////////
-	
-	private boolean cantAccess(int fromL, int fromC, int toC, int toL, List<Couple<Integer, Integer>> accessibleCells) {
+
+
+	/**
+	 * Check if a pawn can't access to a cell, the following rules must be followed :
+	 * <p>
+	 * - Towers can't go on a gate
+	 * <p>
+	 * - Towers can't go on the king throne
+	 * <p>
+	 * - Pawns can't go on a cell which is already occupied
+	 * @return True if the pawn can't access to the cell, otherwise, a couple of the cell coord is added to the param accessibleCells and false is returned
+	 */
+	private boolean cantAccess(int fromL, int fromC, int toL, int toC, List<Couple<Integer, Integer>> accessibleCells) {
 		CellContent fromCellContent = getGrid()[fromL][fromC];
 		CellContent toCellContent = getGrid()[toL][toC];
 		
@@ -228,8 +241,7 @@ public class Game {
 		
 		return false;
 	}
-	
-	
+
 	public boolean canPlay(int l, int c) {
 		if(this.playingPlayerEnum == PlayerEnum.ATTACKER) {
 			return this.getCellContent(l, c) == CellContent.ATTACK_TOWER;
@@ -239,8 +251,13 @@ public class Game {
 	}
 	
 	/**
-	 * @param the two last states of the targeted CellContent 
-	 * @return Return the PlayerEnum winner (NONE if no one won)
+	 * We first check if someone already won, if not, then we check the following rules :
+	 * <p>
+	 * - If the king was killed, the attacker won
+	 * - If the king went on a gate cell, the defender won
+	 * @param previousToCellContent previous cell content of the cell in which the pawn was moved in the last play
+	 * @param toCellContent new cell content of the cell in which the pawn was moved in the last play
+	 * @return the PlayerEnum winner (PlayerEnum.NONE if no one won)
 	 */
 	private PlayerEnum checkWin(CellContent previousToCellContent, CellContent toCellContent) {
 		if(this.getWinner() != PlayerEnum.NONE) return winner;
@@ -256,7 +273,10 @@ public class Game {
 	public boolean isTheKingPlace(int i, int j) {
 		return i == middle && j == middle;
 	}
-	
+
+	/**
+	 * @return True if the cell content is not empty, false otherwise
+	 */
 	public boolean isOccupied(int l, int c) {
 		if(!isValid(l, c)) return true;
 		return getGrid()[l][c] != CellContent.EMPTY;
@@ -298,7 +318,10 @@ public class Game {
 	////////////////////////////////////////////////////
 	// Getters & Setters
 	////////////////////////////////////////////////////
-	
+
+	/**
+	 * @return The winner, equals PlayerEnum.NONE if the game is not won
+	 */
 	public PlayerEnum getWinner() {
 		return winner;
 	}
@@ -357,24 +380,26 @@ public class Game {
 	
 	public List<Couple<Integer, Integer>> getAccessibleCells(int fromL, int fromC) {
 		List<Couple<Integer, Integer>> accessibleCells = new ArrayList<>();
-		for(int toL = fromL-1 ; toL >= 0 ; toL--) {
-			if(cantAccess(fromL, fromC, fromC, toL, accessibleCells)) break;
+
+		for(Orientation orientation : Orientation.values()) {
+			if(orientation.getDl() != 0) {
+				for(int toL = fromL+orientation.getDl() ; toL >= 0 ; toL--) {
+					if(cantAccess(fromL, fromC, toL, fromC, accessibleCells)) break;
+				}
+			}
+			if(orientation.getDc() != 0) {
+				for(int toC = fromC+orientation.getDc() ; toC >= 0 ; toC--) {
+					if(cantAccess(fromL, fromC, fromL, toC, accessibleCells)) break;
+				}
+			}
 		}
-		for(int toL = fromL+1 ; toL < rowAmount ; toL++) {
-			if(cantAccess(fromL, fromC, fromC, toL, accessibleCells)) break;
-		}
-		for(int toC = fromC-1 ; toC >= 0 ; toC--) {
-			if(cantAccess(fromL, fromC, toC, fromL, accessibleCells)) break;
-		}
-		for(int toC = fromC+1 ; toC < colAmount ; toC++) {
-			if(cantAccess(fromL, fromC, toC, fromL, accessibleCells)) break;
-		}
+
 		return accessibleCells;
 	}
 
 	/**
 	 * @param cellContent CellContent to search
-	 * @return All cells of the grid that are equals to the param
+	 * @return All cells of the grid that are equals to the param cellContent
 	 */
 	public List<Couple<Integer, Integer>> getCellContentWhereEquals(CellContent cellContent) {
 		List<Couple<Integer, Integer>> cells = new ArrayList<>();
@@ -390,7 +415,9 @@ public class Game {
 	}
 	
 	/**
-	 * @param cellContent CellContent to be setted, l and c his new row and column
+	 * @param cellContent CellContent to be set in the target cell
+	 * @param l Row of the target cell
+	 * @param c Column of the target cell
 	 */
 	public void setContent(CellContent cellContent, int l, int c) {
 		if (cellContent == CellContent.KING) {
@@ -452,22 +479,4 @@ public class Game {
 	public void setCurrentSavePath(String currentSavePath) {
 		this.currentSavePath = currentSavePath;
 	}
-	
-	
-
-	
-
-
-	
-
-
-	
-
-
-	
-	
-	
-
-
-
 }

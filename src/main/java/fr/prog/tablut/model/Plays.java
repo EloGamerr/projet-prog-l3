@@ -6,24 +6,29 @@ import java.util.List;
 public class Plays {
 	private final List<Play> plays;
 	private int currentMovement;
-	private Game game;
 
-	Plays(Game game) {
+	Plays() {
 		plays = new ArrayList<>();
-		this.game = game;
 		this.currentMovement = -1;
 	}
 
-	public Play move(int dL, int dC, int vL, int vC) {
+	/**
+	 * This method is called when a moved is done in the game
+	 * @return The Play created by the move and add it to the plays list
+	 */
+	public Play move(int fromL, int fromC, int toL, int toC) {
 		getNextMovements().clear(); // We must clear nextMovements if a player plays without using undo/redo buttons
 
-		Play play = new Play(new Movement(dL, dC, vL, vC));
+		Play play = new Play(new Movement(fromL, fromC, toL, toC));
 		plays.add(play);
 		this.currentMovement++;
 
 		return play;
 	}
-	
+
+	/**
+	 * @return The last play, null if there is no previous play
+	 */
 	public Play undo_move() {
 		if(getPreviousMovements().isEmpty()) return null;
 
@@ -32,6 +37,9 @@ public class Plays {
 		return plays.get(this.currentMovement+1);
 	}
 
+	/**
+	 * @return The next play, null if there is no next play
+	 */
 	public Play redo_move() {
 		if(getNextMovements().isEmpty()) return null;
 

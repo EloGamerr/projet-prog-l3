@@ -6,7 +6,7 @@ public enum PlayerEnum {
 	DEFENDER();
 	
 	public PlayerEnum getOpponent() {
-		return this == ATTACKER ? DEFENDER : ATTACKER;
+		return this == NONE ? NONE : this == ATTACKER ? DEFENDER : ATTACKER;
 	}
 	
 	@Override
