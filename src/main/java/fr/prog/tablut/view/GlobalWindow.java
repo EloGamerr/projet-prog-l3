@@ -60,9 +60,9 @@ public class GlobalWindow extends Window {
 			setConfig(configfilePath);
 		}
 		
-		setSize(config.width, config.height);
+		setSize(config.windowWidth, config.windowHeight);
 		GenericObjectStyle.setStyle(config.getStyle());
-		NavPage.setDimension(new Dimension(config.width, config.height));
+		NavPage.setDimension(new Dimension(config.windowWidth, config.windowHeight));
 
 
 		Loader loader = new Loader();
@@ -72,7 +72,7 @@ public class GlobalWindow extends Window {
 	
 		GenericObjectStyle.setGlobalWindow(this);
 		
-		gamePage = new GamePage();
+		gamePage = new GamePage(this.config);
 		homePage = new HomePage(this.config);
 		currentPage = homePage;
 		loadPage = new LoadSavesPage(this.config);
@@ -83,7 +83,7 @@ public class GlobalWindow extends Window {
 		jFrame.setContentPane(homePage);
 		
 		jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		jFrame.setSize(config.width, config.height);
+		jFrame.setSize(config.windowWidth, config.windowHeight);
 		jFrame.setLocationRelativeTo(null);
 		jFrame.setVisible(true);
 		jFrame.setResizable(false);

@@ -1,120 +1,116 @@
 package fr.prog.tablut.view.pages.game;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 
-import javax.swing.*;
+import javax.swing.Timer;
 
 import fr.prog.tablut.controller.game.*;
 import fr.prog.tablut.model.game.Game;
+import fr.prog.tablut.model.window.WindowConfig;
 import fr.prog.tablut.model.window.WindowName;
 import fr.prog.tablut.view.Page;
-import fr.prog.tablut.view.pages.game.grid.GridWindow;
-import fr.prog.tablut.view.pages.game.regions.EastWindow;
-import fr.prog.tablut.view.pages.game.regions.NorthWindow;
-import fr.prog.tablut.view.pages.game.regions.SouthWindow;
-import fr.prog.tablut.view.pages.game.regions.WestWindow;
+import fr.prog.tablut.view.pages.game.sides.center.CenterSideGame;
+import fr.prog.tablut.view.pages.game.sides.center.board.GridWindow;
+import fr.prog.tablut.view.pages.game.sides.left.LeftSideGame;
+import fr.prog.tablut.view.pages.game.sides.right.RightSideGame;
 
-@SuppressWarnings("serial")
+/**
+ * The page component that manages the game's view and regroups every components of the page
+ * @see Page
+ */
 public class GamePage extends Page {
-    private final GridWindow gridWindow;
-    private final NorthWindow northWindow;
-    private final EastWindow eastWindow;
-    private final WestWindow westWindow;
-    private final SouthWindow southWindow;
+    private final CenterSideGame centerSide;
+    private final RightSideGame rightSide;
+    private final LeftSideGame leftSide;
     private final Game game;
-    
-    public GamePage() {
-        super();
 
-        setLayout(new BorderLayout());
-        
-        AIRandom attacker = new AIRandom();
-        HumanPlayer defender = new HumanPlayer();
-        game = new Game(attacker, defender);
-        gridWindow = new GridWindow(game);
-        GameController gameController = new GameController(game, this);
+    /**
+     * Creates the game's view manager
+     * @param config The configuration to apply to the page
+     * @param g The game's object reference
+     */
+    private GamePage(WindowConfig config, Game g) {
+        super(config);
 
-        northWindow = new NorthWindow();
-        add(northWindow, BorderLayout.NORTH);
-        eastWindow = new EastWindow(game);
-        add(eastWindow, BorderLayout.EAST);
-        westWindow = new WestWindow();
-        add(westWindow, BorderLayout.WEST);
-        southWindow = new SouthWindow(game, this);
-        add(southWindow, BorderLayout.SOUTH);
-
-        GameMouseAdaptator gameMouseAdaptator = new GameMouseAdaptator(gameController, gridWindow);
-        gridWindow.addMouseListener(gameMouseAdaptator);
-        gridWindow.addMouseMotionListener(gameMouseAdaptator);
-
-        add(gridWindow, BorderLayout.CENTER);
-
-        Timer time = new Timer(50, new GameTimeAdaptator(gameController));
-        time.start();
-    }
-    
-    public GamePage(Game g) {
-        setLayout(new BorderLayout());
+        windowName = WindowName.GameWindow;
         
         game = g;
-        gridWindow = new GridWindow(g);
-        GameController gameController = new GameController(g, this);
 
-        northWindow = new NorthWindow();
-        add(northWindow, BorderLayout.NORTH);
-        eastWindow = new EastWindow(g);
-        add(eastWindow, BorderLayout.EAST);
-        westWindow = new WestWindow();
-        add(westWindow, BorderLayout.WEST);
-        southWindow = new SouthWindow(g, this);
-        add(southWindow, BorderLayout.SOUTH);
+        final int s = (int)(config.windowHeight / 1.2);
+        final Dimension d = new Dimension((config.windowWidth - s)/2, config.windowHeight);
 
-        GameMouseAdaptator gameMouseAdaptator = new GameMouseAdaptator(gameController, gridWindow);
-        gridWindow.addMouseListener(gameMouseAdaptator);
-        gridWindow.addMouseMotionListener(gameMouseAdaptator);
+        centerSide = new CenterSideGame(config, g, new Dimension(s, s));
+        leftSide = new LeftSideGame(config, g, d);
+        rightSide = new RightSideGame(config, g, d);
 
-        add(gridWindow, BorderLayout.CENTER);
+        setLayout(new GridBagLayout());
+
+        GridBagConstraints c = new GridBagConstraints();
+
+        c.fill = GridBagConstraints.BOTH;
+        c.gridwidth = 3;
+        c.gridwidth = 1;
+
+        c.gridx = 0;
+        c.gridy = 0;
+
+        add(leftSide, c);
+
+        c.gridx = 1;
+        add(centerSide, c);
+
+        c.gridx = 2;
+        add(rightSide, c);
         
+        GameController gameController = new GameController(g, this);
+        GameMouseAdaptator gameMouseAdaptator = new GameMouseAdaptator(gameController, centerSide.getBoard());
+        centerSide.getBoard().addMouseListener(gameMouseAdaptator);
+        centerSide.getBoard().addMouseMotionListener(gameMouseAdaptator);
 
         Timer time = new Timer(50, new GameTimeAdaptator(gameController));
         time.start();
     }
 
-
-
-	@Override
-    protected void paintComponent(Graphics graphics) {
-        Graphics2D drawable = (Graphics2D) graphics;
-
-        int width = getSize().width;
-        int height = getSize().height;
-
-        drawable.clearRect(0, 0, width, height);
-        
-        super.paintComponent(graphics);
+    /**
+     * Creates the game's view manager.
+     * <p>Creates 2 players, a random AI (att) and a human player (def).</p>
+     * @param config The configuration to apply to the page
+     */
+    public GamePage(WindowConfig config) {
+        this(config, new Game(new AIRandom(), new HumanPlayer()));
     }
     
+    /**
+     * Creates the game's view manager without any page's confiugration.
+     * @param g The game's object reference
+     */
+    public GamePage(Game g) {
+        this(null, g);
+    }
+    
+    /**
+     * Returns the grid window object
+     * @return The grid window
+     */
     public GridWindow getGridWindow() {
-        return gridWindow;
+        return centerSide.getBoard();
     }
 
-    public NorthWindow getNorthWindow() {
-        return northWindow;
+    /**
+     * Returns the right side component of the page
+     * @return The right side component of the page
+     */
+    public RightSideGame getRightSide() {
+        return rightSide;
     }
 
-    public EastWindow getEastWindow() {
-        return eastWindow;
+    /**
+     * Returns the left side component of the page
+     * @return The left side component of the page
+     */
+    public LeftSideGame getLeftSide() {
+        return leftSide;
     }
-
-    public WestWindow getWestWindow() {
-        return westWindow;
-    }
-
-    public SouthWindow getSouthWindow() {
-        return southWindow;
-    }
-
-	public WindowName name() {
-		return WindowName.GameWindow;
-	}
 }

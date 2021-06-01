@@ -31,8 +31,8 @@ public class WindowConfig {
     };
 
     // window dimension
-    public int width = resolutions[1][0];
-    public int height = resolutions[1][1];
+    public int windowWidth = resolutions[1][0];
+    public int windowHeight = resolutions[1][1];
 
     Style style = new Style();
     
@@ -132,12 +132,12 @@ public class WindowConfig {
 
             // check if it has dimension keys
             if(!o.isNull("width") && !o.isNull("height")) {
-                width = o.getInt("width");
-                height = o.getInt("height");
+                windowWidth = o.getInt("width");
+                windowHeight = o.getInt("height");
 
                 // if it overflows the screen, check for available resolutions
                 // that fit the screen
-                if(width > w || height > h) {
+                if(windowWidth > w || windowHeight > h) {
                     int l = resolutions.length - 1;
                     int i = l;
 
@@ -148,8 +148,8 @@ public class WindowConfig {
                             res = resolutions[--i];
                         }
 
-                        width = res[0];
-                        height = res[1];
+                        windowWidth = res[0];
+                        windowHeight = res[1];
                     }
                 }
             }
@@ -166,9 +166,9 @@ public class WindowConfig {
             minY = resolutions[0][1];
         }
 
-        if(width < minX || height < minY) {
-            width = minX;
-            height = minY;
+        if(windowWidth < minX || windowHeight < minY) {
+            windowWidth = minX;
+            windowHeight = minY;
         }
 
 

@@ -59,18 +59,6 @@
                 }
             },
 
-            ".red": {
-                "background": [221, 46, 68],
-                "borderColor": [221, 46, 68],
-                "color": [221, 221, 221],
-
-                ":hover": {
-                    "background": [241, 66, 88],
-                    "borderColor": [241, 66, 88],
-                    "color": [241, 241, 241]
-                }
-            },
-
             ".load": {
                 "background": [64, 72, 81],
                 "borderColor": [28, 31, 34],
@@ -87,8 +75,45 @@
                 "background": [84, 92, 101],
                 "borderColor": [48, 51, 54],
                 "color": [241, 241, 241]
+            },
+
+            ".menuIngame": {
+                "background": [48, 54, 62],
+                "borderColor": [0, 0, 0, 0],
+                "color": [221, 221, 221],
+
+                ":hover": {
+                    "background": [58, 65, 74],
+                    "borderColor": [0, 0, 0, 0],
+                    "color": [255, 255, 255]
+                }
+            },
+
+            ".redHover": {
+                "background": [48, 54, 62],
+                "borderColor": [48, 54, 62],
+                "color": [221, 221, 221],
+
+                ":hover": {
+                    "background": [221, 46, 68],
+                    "borderColor": [221, 46, 68],
+                    "color": [221, 221, 221]
+                }
+            },
+
+            ".greenHover": {
+                "background": [48, 54, 62],
+                "borderColor": [48, 54, 62],
+                "color": [221, 221, 221],
+
+                ":hover": {
+                    "background": [119, 178, 85],
+                    "borderColor": [119, 178, 85],
+                    "color": [221, 221, 221]
+                }
             }
         },
+        
         "table": {
             ".th": {
                 "color": [241, 241, 241]

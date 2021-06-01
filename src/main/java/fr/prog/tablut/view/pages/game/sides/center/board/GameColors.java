@@ -1,4 +1,4 @@
-package fr.prog.tablut.view.util;
+package fr.prog.tablut.view.pages.game.sides.center.board;
 
 import java.awt.Color;
 

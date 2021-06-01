@@ -23,12 +23,12 @@ import fr.prog.tablut.view.components.generic.GenericRoundedButton;
 public class BottomButtonPannel extends JPanel {
     /**
      * Default constructor.
-     * <p>Creates a button with text "Annuler"</p>
+     * <p>Creates a button with text "Retour"</p>
      * @see WindowName
      * @param href1 The href location of the button
      */
     public BottomButtonPannel(WindowName href1) {
-        this(href1, null, null, "Annuler");
+        this(href1, null, null, "Retour");
     }
 
     /**
@@ -42,7 +42,7 @@ public class BottomButtonPannel extends JPanel {
     }
 
     /**
-     * Creates two buttons, the first with the text "Annuler"
+     * Creates two buttons, the first with the text "Retour"
      * and the second with the text "Confirmer" and with button.green style.
      * @see WindowName
      * @see Style
@@ -51,11 +51,11 @@ public class BottomButtonPannel extends JPanel {
      * @param href2 The href of the confirm button
      */
     public BottomButtonPannel(WindowName href1, WindowName href2) {
-        this(href1, href2, "Confirmer", "Annuler");
+        this(href1, href2, "Confirmer", "Retour");
     }
 
     /**
-     * Creates two buttons, with first having the text "Annuler",
+     * Creates two buttons, with first having the text "Retour",
      * the second with given text, and button.green style.
      * @see WindowName
      * @see Style
@@ -65,7 +65,7 @@ public class BottomButtonPannel extends JPanel {
      * @param btnTextConfirm The text of the second button
      */
     public BottomButtonPannel(WindowName href1, WindowName href2, String btnTextConfirm) {
-        this(href1, href2, btnTextConfirm, "Annuler");
+        this(href1, href2, btnTextConfirm, "Retour");
     }
 
     /**
@@ -85,17 +85,19 @@ public class BottomButtonPannel extends JPanel {
 		setBorder(new EmptyBorder(10, 0, 10, 0));
 
 		GridBagConstraints c = new GridBagConstraints();
-		c.insets = new Insets(0, 20, 0, 0);
+		c.insets = new Insets(0, 1, 0, 1);
 		c.gridx = 0;
 
-        GenericRoundedButton btn1 = new GenericRoundedButton(btnTextCancel, 150, 35);
+        GenericRoundedButton btn1 = new GenericRoundedButton(btnTextCancel, 170, 35);
         btn1.setHref(href1);
+        btn1.setBorderRadius(8);
         c.gridy = 0;
 		add(btn1, c);
 		
         if(href2 != null) {
-            GenericRoundedButton btn2 = new GenericRoundedButton(btnTextConfirm, 150, 35);
+            GenericRoundedButton btn2 = new GenericRoundedButton(btnTextConfirm, 170, 35);
             btn2.setHref(href2);
+            btn2.setBorderRadius(8);
             btn2.setStyle("button.green");
             c.gridx = 1;
             add(btn2, c);

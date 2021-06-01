@@ -1,4 +1,4 @@
-package fr.prog.tablut.view.pages.game.grid;
+package fr.prog.tablut.view.pages.game.sides.center.board;
 
 import java.awt.Image;
 import java.awt.Point;
@@ -7,27 +7,26 @@ import java.util.List;
 
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.structures.Couple;
-import fr.prog.tablut.view.util.GameColors;
 
 public class GridView {
+	private static final int widthSeperator = 6;
+	public static final int widthBorder = 25;
 	private final GridWindow gridWindow;
 	private final Game game;
-	private int cellWidth, cellHeight;
-	public static final int widthBorder = 25;
-	private static final int widthSeperator = 6;
+    private int x, y, height, width, cellWidth, cellHeight;
     private Image imageOnMouse;
     private Couple<Integer, Integer> selectedCell;
-    private int x, y, height, width;
+
 	public GridView(GridWindow gridWindow, Game game) {
 		this.gridWindow = gridWindow;
 		this.game = game;
 	}
 	
-	public int cellHeight(){
+	public int cellHeight() {
 		return cellHeight;
 	}
 	
-	public int cellWidth(){
+	public int cellWidth() {
 		return cellWidth;
 	}
 	
@@ -61,38 +60,44 @@ public class GridView {
 		gridWindow.fillRect(x + width - widthBorder, y, widthBorder + 2, height);
 
 		Point mousePosition = gridWindow.getMousePosition();
+
 		if(selectedCell != null) {
 			gridWindow.setColor(GameColors.CELL_SELECTION);
 			gridWindow.fillRect(x + widthBorder + selectedCell.getSecond() * cellWidth, y + widthBorder + selectedCell.getFirst() * cellHeight, cellWidth, cellHeight);
 		
 			drawCircles(selectedCell.getFirst(), selectedCell.getSecond());
 		}
+
 		else if(mousePosition != null && game.getWinner() == null) {
 			gridWindow.setColor(GameColors.CELL_SELECTION);
+
 			int col = getColFromXCoord(mousePosition.x);
 			int row = getRowFromYCoord(mousePosition.y);
 			
 			if(game.isValid(row, col) && game.canPlay(row, col)) {
 				gridWindow.fillRect(x + widthBorder + col * cellWidth, y + widthBorder + row * cellHeight, cellWidth, cellHeight);
-				
 				drawCircles(row, col);
 			}
 		}
 		
 		gridWindow.setColor(GameColors.CELL_BORDER);
+
 		for(int i = 0 ; i <= game.getRowAmout() ; i++) {
 			gridWindow.drawLine(x + widthBorder, y + widthBorder + i * cellHeight, x + width - widthBorder, y + widthBorder + i * cellHeight);
 			gridWindow.drawLine(x + widthBorder, y + widthBorder + i * cellHeight + widthSeperator + 1, x + width - widthBorder, y + widthBorder + i * cellHeight + widthSeperator + 1);
 		}
+
 		for(int j = 0 ; j <= game.getColAmout() ; j++) {
 			gridWindow.drawLine(x + widthBorder + j * cellWidth, y + widthBorder, x + widthBorder + j * cellWidth, y + height - widthBorder);
 			gridWindow.drawLine(x + widthBorder + j * cellWidth + widthSeperator + 1, y + widthBorder, x + widthBorder + j * cellWidth + widthSeperator + 1, y + height - widthBorder);
 		}
 		
 		gridWindow.setColor(GameColors.CELL_SEPARATOR);
+
 		for(int i = 0 ; i <= game.getRowAmout() ; i++) {
 			gridWindow.fillRect(x + widthBorder + 1, y + widthBorder + i * cellHeight + 1, width - widthBorder*2, widthSeperator);
 		}
+
 		for(int j = 0 ; j <= game.getColAmout() ; j++) {
 			gridWindow.fillRect(x + widthBorder + j * cellWidth + 1, y + widthBorder + 1, widthSeperator, height - widthBorder*2);
 		}
@@ -104,6 +109,7 @@ public class GridView {
 		gridWindow.setColor(GameColors.CIRCLE);
 		int circleWidth = cellWidth/3;
 		int circleHeight = cellHeight/3;
+
 		for(Couple<Integer, Integer> accessibleCell : accessibleCells) {
 			gridWindow.fillOval(x + widthBorder + accessibleCell.getSecond() * cellWidth + cellWidth/2 - circleWidth/2 + 3, y + widthBorder + accessibleCell.getFirst() * cellHeight + cellHeight/2 - circleHeight/2 + 3, circleWidth, circleHeight);
 		}
@@ -112,6 +118,7 @@ public class GridView {
 	private void drawPawns() {
 		int imgWidth = cellWidth/2;
 		int imgHeight = cellHeight/2;
+
 		for(int i = 0 ; i < game.getRowAmout() ; i++) {
 			for(int j = 0 ; j < game.getColAmout() ; j++) {
 				if(selectedCell != null && selectedCell.getFirst() == i && selectedCell.getSecond() == j) continue;
@@ -122,6 +129,7 @@ public class GridView {
 		}
 		
 		Point mousePosition = gridWindow.getMousePosition();
+
 		if(imageOnMouse != null && mousePosition != null) {
 			int xImg = Math.max(x, mousePosition.x - imgWidth/2);
 			xImg = Math.min(xImg, x + width - imgWidth);

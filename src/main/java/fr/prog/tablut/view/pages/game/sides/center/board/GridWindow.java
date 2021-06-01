@@ -1,30 +1,30 @@
-package fr.prog.tablut.view.pages.game.grid;
+package fr.prog.tablut.view.pages.game.sides.center.board;
 
-import java.awt.*;
-
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.structures.Couple;
+import fr.prog.tablut.view.pages.game.sides.GameInterfaceSide;
 
-public class GridWindow extends JPanel {
+public class GridWindow extends GameInterfaceSide {
 	private final GridView gridView;
 	private int width, height;
 	private Graphics2D drawable;
 	
-    public GridWindow(Game game) {
+    public GridWindow(Game game, int size) {
+		super(new Dimension(size, size));
+
     	gridView = new GridView(this, game);
 	}
 
     @Override
-    protected void paintComponent(Graphics graphics) {
-		super.paintComponent(graphics);
-
-        drawable = (Graphics2D) graphics;
-    	
-    	width = Math.min(getSize().width, getSize().height);
+    protected void paint(Graphics2D drawable) {
+		this.drawable = drawable;
+    	width = Math.min(getWidth(), getHeight());
 		height = width;
-		
     	gridView.draw();
     }
     
@@ -40,7 +40,7 @@ public class GridWindow extends JPanel {
 		return gridView.cellHeight();
 	}
 	
-	public int cellWidth(){
+	public int cellWidth() {
 		return gridView.cellWidth();
 	}
 
@@ -66,13 +66,11 @@ public class GridWindow extends JPanel {
 	
 	public void updateImageOnMouse(Image image, Couple<Integer, Integer> selectedCell) {
 		gridView.updateImageOnMouse(image, selectedCell);
-		
 		repaint();
 	}
 	
 	public void clearImageOnMouse() {
 		gridView.clearImageOnMouse();
-		
 		repaint();
 	}
 	
