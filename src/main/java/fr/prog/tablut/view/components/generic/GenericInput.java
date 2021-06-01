@@ -91,9 +91,6 @@ public class GenericInput extends JTextField {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-        // This is needed on non-Mac so text is repainted correctly
-        super.paintComponent(g);
-
         // fill
         g2d.setColor(style.get("background"));
         g2d.fillRoundRect(1, 1, getWidth()-2, getHeight()-2, borderRadius, borderRadius);
