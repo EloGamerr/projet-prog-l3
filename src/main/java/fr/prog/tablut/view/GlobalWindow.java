@@ -1,57 +1,129 @@
 package fr.prog.tablut.view;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.text.ParseException;
 
 import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
-import fr.prog.tablut.controller.game.AIPlayer;
-import fr.prog.tablut.controller.game.AIRandom;
+import org.json.JSONObject;
+
 import fr.prog.tablut.controller.game.HumanPlayer;
-import fr.prog.tablut.model.Game;
-import fr.prog.tablut.model.WindowName;
-import fr.prog.tablut.view.game.GameWindow;
-import fr.prog.tablut.view.generic.GenericButton;
-import fr.prog.tablut.view.help.HelpWindow;
-import fr.prog.tablut.view.home.HomeWindow;
-import fr.prog.tablut.view.load.LoadWindow;
-import fr.prog.tablut.view.newGame.NewGameWindow;
+import fr.prog.tablut.controller.game.ia.AIRandom;
+import fr.prog.tablut.model.Loader;
+import fr.prog.tablut.model.window.WindowConfig;
+import fr.prog.tablut.model.window.WindowName;
+import fr.prog.tablut.view.components.NavPage;
+import fr.prog.tablut.view.components.generic.GenericObjectStyle;
+import fr.prog.tablut.view.pages.game.GamePage;
+import fr.prog.tablut.view.pages.help.HelpPage;
+import fr.prog.tablut.view.pages.home.HomePage;
+import fr.prog.tablut.view.pages.load.LoadSavesPage;
+import fr.prog.tablut.view.pages.newGame.NewGamePage;
 
+/**
+ * The main window of the application
+ * @see Window
+ * @see JPanel
+ */
 public class GlobalWindow extends Window {
-    private GameWindow gameWindow;
-    private HomeWindow homeWindow;
-    private LoadWindow loadWindow;
-   
-
-	private HelpWindow helpWindow;
-    private NewGameWindow newGameWindow;
-    public Window currentWindow;
+	protected WindowConfig config;
+    private GamePage gamePage;
+    private HomePage homePage;
+    private LoadSavesPage loadPage;
+    private HelpPage helpPage;
+    private NewGamePage newGamePage;
 	private JFrame jFrame;
+    public Page currentPage;
 
-    public GlobalWindow(JFrame jFrame) {
-        this.jFrame = jFrame;
-        
-        GenericButton.setGlobalWindow(this);
-    	//this.setBackground(new Color(85, 85, 85));
-    	gameWindow = new GameWindow();
-    	gameWindow.setVisible(false);
-        
-        homeWindow = new HomeWindow(this);
-        jFrame.setContentPane(homeWindow);
-        
-        currentWindow = homeWindow;
-        loadWindow = new LoadWindow(this);
-        loadWindow.setVisible(false);
-        
-        helpWindow = new HelpWindow(this);
-        helpWindow.setVisible(false);
-        
-        newGameWindow = new NewGameWindow(this);
-        newGameWindow.setVisible(false);
-        
-        
-        currentWindow = homeWindow;
+	/**
+	 * Creates the main window with given surface
+	 * @param frame The surface
+	 * @throws ParseException
+	 */
+	public GlobalWindow() throws ParseException {
+		this(null);
+	}
+
+	/**
+	 * Creates the main window with given surface and configuration
+	 * @param frame The surface
+	 * @param configfilePath The configuration file path
+	 * @throws ParseException
+	 */
+    public GlobalWindow(String configfilePath) throws ParseException {
+		super();
+
+		config = new WindowConfig();
+
+		if(configfilePath != null) {
+			setConfig(configfilePath);
+		}
+		
+		setSize(config.windowWidth, config.windowHeight);
+		GenericObjectStyle.setStyle(config.getStyle());
+		NavPage.setDimension(new Dimension(config.windowWidth, config.windowHeight));
+
+
+		Loader loader = new Loader();
+		loader.loadCustomFont("Farro-Regular.ttf");
+		
+		jFrame = new JFrame(config.projectName);
+	
+		GenericObjectStyle.setGlobalWindow(this);
+		
+		gamePage = new GamePage(this.config);
+		homePage = new HomePage(this.config);
+		currentPage = homePage;
+		loadPage = new LoadSavesPage(this.config);
+		helpPage = new HelpPage(this.config, this.currentPage);
+		newGamePage = new NewGamePage(this.config);
+		
+		homePage.setVisible(true);
+		jFrame.setContentPane(homePage);
+		
+		jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		jFrame.setSize(config.windowWidth, config.windowHeight);
+		jFrame.setLocationRelativeTo(null);
+		jFrame.setVisible(true);
+		jFrame.setResizable(false);
     }
+
+	/**
+	 * Returns the configuration object of the window
+	 * @return The window's configuration
+	 */
+	public WindowConfig getConfig() {
+		return config;
+	}
+
+	/**
+	 * Sets the window's configuration from the file at given path
+	 * @param configPath file's path
+	 * @throws ParseException
+	 */
+	protected void setConfig(String configPath) throws ParseException {
+		config.setConfig(configPath);
+	}
+
+	/**
+	 * Sets the window's configuration from given JSON
+	 * @param configObject The json object
+	 */
+	protected void setConfig(JSONObject configObject) {
+		config.setConfig(configObject);
+	}
+
+	/**
+	 * Copies the window's configuration from another window's config
+	 * @param config The configuration to copy
+	 */
+	protected void setConfig(WindowConfig config) {
+		this.config.setConfig(config);
+	}
+
 
     @Override
     protected void paintComponent(Graphics graphics) {
@@ -65,97 +137,96 @@ public class GlobalWindow extends Window {
         super.paintComponent(graphics);
     }
 
+	/**
+	 * Changes the visibility of the windows, depending of the window to display
+	 * @param dest The window's name
+	 */
 	public void changeWindow(WindowName dest) {
-		// TODO Auto-generated method stub
-		currentWindow.setVisible(false);
-		switch (dest) {
-		case GameWindow: {
-			if(currentWindow == loadWindow) {
-				currentWindow = gameWindow;
-				gameWindow.getGame().load(loadWindow.getPanel().index_selected);
-			}
-			else {
-				currentWindow = gameWindow;
-				gameWindow.getGame().start(new AIRandom(), new HumanPlayer());
-			}
-				
-			break;
-		}
-		case LoadWindow: {
-			currentWindow = loadWindow;
-			break;
-		}
-		case HomeWindow: {
-			currentWindow = homeWindow;
-			break;
-		}
-		
-		case HelpWindow: {
-			currentWindow = helpWindow;
-			break;
-		}
-		case NewGameWindow: {
-			currentWindow = newGameWindow;
-			break;
-		}
-		default:
-			throw new IllegalArgumentException("Unexpected value: " + dest);
+		currentPage.setVisible(false);
+
+		switch(dest) {
+			case GameWindow:
+				currentPage = gamePage;
+				if(currentPage == loadPage)
+					gamePage.getGame().load(loadPage.getPanel().getSelectedIndex());
+				else
+					gamePage.getGame().start(new AIRandom(), new HumanPlayer());
+				break;
+
+			case LoadWindow:
+				currentPage = loadPage;
+				break;
+
+			case HomeWindow:
+				currentPage = homePage;
+				break;
+
+			case HelpWindow:
+				currentPage = helpPage;
+				break;
+
+			case NewGameWindow:
+				currentPage = newGamePage;
+				break;
+
+			default:
+				throw new IllegalArgumentException("Unexpected value: " + dest);
 		}
 		
-		currentWindow.setVisible(true);
-		jFrame.setContentPane(currentWindow);
+		currentPage.setVisible(true);
+		jFrame.setContentPane(currentPage);
 	}
 	
-	 public GameWindow getGameWindow() {
-			return gameWindow;
+	 public GamePage getGamePage() {
+			return gamePage;
 		}
 
-		public HomeWindow getHomeWindow() {
-			return homeWindow;
+		public HomePage getHomePage() {
+			return homePage;
 		}
 
-		public LoadWindow getLoadWindow() {
-			return loadWindow;
+		public LoadSavesPage getLoadPage() {
+			return loadPage;
 		}
 
-		public HelpWindow getHelpWindow() {
-			return helpWindow;
+		public HelpPage getHelpPage() {
+			return helpPage;
 		}
 
-		public NewGameWindow getNewGameWindow() {
-			return newGameWindow;
+		public NewGamePage getNewGamePage() {
+			return newGamePage;
 		}
 
-		public Window getCurrentWindow() {
-			return currentWindow;
+		public Window getcurrentPage() {
+			return currentPage;
 		}
 
 		public JFrame getjFrame() {
 			return jFrame;
 		}
 
-		public void setGameWindow(GameWindow gameWindow) {
-			this.gameWindow = gameWindow;
+		public void setGameWindow(GamePage gamePage) {
+			this.gamePage = gamePage;
 		}
 
-		public void setHomeWindow(HomeWindow homeWindow) {
-			this.homeWindow = homeWindow;
+		public void setHomePage(HomePage homePage) {
+			this.homePage = homePage;
 		}
 
-		public void setLoadWindow(LoadWindow loadWindow) {
-			this.loadWindow = loadWindow;
+		public void setLoadPage(LoadSavesPage loadPage) {
+			this.loadPage = loadPage;
 		}
 
-		public void setHelpWindow(HelpWindow helpWindow) {
-			this.helpWindow = helpWindow;
+		public void setHelpPage(HelpPage helpPage) {
+			this.helpPage = helpPage;
 		}
 
-		public void setNewGameWindow(NewGameWindow newGameWindow) {
-			this.newGameWindow = newGameWindow;
+		public void setNewGameWindow(NewGamePage newGamePage) {
+			this.newGamePage = newGamePage;
 		}
 
-		public void setCurrentWindow(Window currentWindow) {
-			this.currentWindow = currentWindow;
+		public void setcurrentPage(Page currentPage) {
+			this.currentPage = currentPage;
 		}
 
 		public void setjFrame(JFrame jFrame) {

@@ -1,6 +1,6 @@
 package fr.prog.tablut.model.saver;
 
-public class SaverConstants{
+public class SaverConstants {
 	public static final String COMMA = ",";
 	public static final String BR_RIGHT = ")";
 	public static final String BR_LEFT = "(";
@@ -13,6 +13,4 @@ public class SaverConstants{
 	public static final String GATE = "G";
 	public static final String KINGPLACE = "KP";
 	public static final String EMPTY = "#";
-	
-	
 }

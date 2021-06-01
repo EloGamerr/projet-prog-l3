@@ -3,41 +3,42 @@ package fr.prog.tablut.controller.adaptators;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import fr.prog.tablut.model.Game;
+import fr.prog.tablut.model.game.Game;
 
 import fr.prog.tablut.model.saver.GameSaver;
-import fr.prog.tablut.view.game.EastWindow;
+import fr.prog.tablut.view.pages.game.sides.GameInterfaceSide;
 
 public class ButtonSaveAdaptator implements MouseListener {
 	GameSaver save;
-	EastWindow eastWindow;
+	GameInterfaceSide leftSideGame;
 	
-	public ButtonSaveAdaptator(Game game, EastWindow eastWindow){
+	public ButtonSaveAdaptator(Game game, GameInterfaceSide leftSideGame) {
 		save = game.getGameSaver();
-		this.eastWindow = eastWindow;
+		this.leftSideGame = leftSideGame;
 	}
 	
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if(e.getSource() == eastWindow.getComponent(0)) {
+		if(e.getSource() == leftSideGame.getComponent(0)) {
 			save.saveNewFile();
 		
 		}
-		else if(e.getSource() == eastWindow.getComponent(1)) {
+		else if(e.getSource() == leftSideGame.getComponent(1)) {
 			save.saveToFile();
 		}
 			
 	}
-
 	
 	@Override
 	public void mousePressed(MouseEvent e) {}
+
 	@Override
 	public void mouseReleased(MouseEvent e) {}
+
 	@Override
 	public void mouseEntered(MouseEvent e) {}
+
 	@Override
 	public void mouseExited(MouseEvent e) {}
-
 }

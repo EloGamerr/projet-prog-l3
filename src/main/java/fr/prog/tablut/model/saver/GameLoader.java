@@ -13,13 +13,13 @@ import java.util.Scanner;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import fr.prog.tablut.controller.game.AIRandom;
 import fr.prog.tablut.controller.game.HumanPlayer;
-import fr.prog.tablut.model.CellContent;
-import fr.prog.tablut.model.Game;
-import fr.prog.tablut.model.Movement;
-import fr.prog.tablut.model.Play;
-import fr.prog.tablut.model.PlayerEnum;
+import fr.prog.tablut.controller.game.ia.AIRandom;
+import fr.prog.tablut.model.game.CellContent;
+import fr.prog.tablut.model.game.Game;
+import fr.prog.tablut.model.game.Movement;
+import fr.prog.tablut.model.game.Play;
+import fr.prog.tablut.model.game.player.PlayerEnum;
 
 public class GameLoader {
 	private static final String savesPath = Paths.get(System.getProperty("user.dir"), "saves").toString();
@@ -27,108 +27,115 @@ public class GameLoader {
 	private static final String saveSuffix = ".sv";
 	private String currentSavePath;
 	private Game game;
-	
+
 	////////////////////////////////////////////////////
 	// Constructor
-	////////////////////////////////////////////////////	
-	
-	public GameLoader(Game game){
+	////////////////////////////////////////////////////
+
+	public GameLoader(Game game) {
 		this.game = game;
 	}
 
 	////////////////////////////////////////////////////
 	// Main function
-	////////////////////////////////////////////////////	
-	
+	////////////////////////////////////////////////////
+
 	public boolean loadData(int index_Save) {
 		try {
 			Path path = Paths.get(savesPath);
 			Files.createDirectories(path);
-		} catch (IOException e1) {
+		}
+		catch(IOException e1) {
 			e1.printStackTrace();
 		}
-		
+
 		String savePath = Paths.get(savesPath, savePrefix + index_Save + saveSuffix).toString();
-		
+
 		this.currentSavePath = savePath;
 		game.setCurrentSavePath(currentSavePath);
 		File save = new File(savePath);
         Scanner scanner = null;
+
 		try {
 			scanner = new Scanner(save);
-		} catch (FileNotFoundException e) {
+		}
+		catch(FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		if (scanner == null) throw new RuntimeException();
-		
+
+		if(scanner == null)
+			throw new RuntimeException();
+
 		int lineNumber = 0;
-		
-		 while(scanner.hasNextLine()) {
-			 String lineContent = scanner.nextLine();
-	         if (lineNumber == 0) {
-	        	 if(!loadParameters(lineContent)) return false;
-	         } else {
-	            if(!loadBoard(lineContent)) return false;  
-	         }
-	         lineNumber++;
-		 }     
+
+		while(scanner.hasNextLine()) {
+			String lineContent = scanner.nextLine();
+
+			if((lineNumber == 0 && !loadParameters(lineContent))
+			|| (lineNumber != 0 && !loadBoard(lineContent)))
+				return false;
+			
+			lineNumber++;
+		}
+
 		return true;
 	}
-	
-	
+
 	////////////////////////////////////////////////////
 	// Load Functions
-	////////////////////////////////////////////////////	
+	////////////////////////////////////////////////////
 	public boolean loadParameters(String line) {
-
-		try { 
-			JSONObject jsonParameters = new JSONObject(line); 
+		try {
+			JSONObject jsonParameters = new JSONObject(line);
 			JSONArray array = jsonParameters.getJSONArray("parameters");
+
 			setDefender(new JSONObject(array.getString(0)).getString("defender"));
 			setAttacker(new JSONObject(array.getString(1)).getString("attacker"));
+			
 			setWinner(new JSONObject(array.getString(2)).getString("winner"));
 			setPlayingPlayer(new JSONObject(array.getString(3)).getString("playingPlayer"));
 			setPlays(new JSONObject(array.getString(4)).getString("plays"));
-			
-		} 
-		catch (ParseException e) { e.printStackTrace(); return false; }
-		
-		return true;
-	}
-	
-	
-	
-	public boolean loadBoard(String line) {
-		String board;
-    	
-	 	try {
-			board = new JSONObject(line).getString("board");
-		} catch (NoSuchElementException | ParseException e) {
+
+		}
+		catch (ParseException e) {
 			e.printStackTrace();
 			return false;
 		}
-	 	
-	 	
+
+		return true;
+	}
+
+	public boolean loadBoard(String line) {
+		String board;
+
+	 	try {
+			board = new JSONObject(line).getString("board");
+		}
+		catch(NoSuchElementException | ParseException e) {
+			e.printStackTrace();
+			return false;
+		}
+
+
 
     	int index = 0;
     	int currColumn = 0;
     	int currLine = 0;
     	String val = "";
-    
-    	while (index < board.length()) {
-    		if (board.charAt(index) == ' ') {
-    			if(val.matches(SaverConstants.ATTACK_TOWER)) 
-    				game.setContent(CellContent.ATTACK_TOWER, currLine , currColumn);
+
+    	while(index < board.length()) {
+    		if(board.charAt(index) == ' ') {
+    			if(val.matches(SaverConstants.ATTACK_TOWER))
+    				game.setContent(CellContent.ATTACK_TOWER, currLine, currColumn);
     			else if(val.matches(SaverConstants.DEFENSE_TOWER))
-    				game.setContent(CellContent.DEFENSE_TOWER, currLine , currColumn);
+    				game.setContent(CellContent.DEFENSE_TOWER, currLine, currColumn);
     			else if(val.matches(SaverConstants.GATE))
-    				game.setContent(CellContent.GATE, currLine , currColumn);
+    				game.setContent(CellContent.GATE, currLine, currColumn);
     			else if(val.matches(SaverConstants.KING))
-    				game.setContent(CellContent.KING, currLine , currColumn);
+    				game.setContent(CellContent.KING, currLine, currColumn);
     			else if(val.matches(SaverConstants.KINGPLACE))
-    				game.setContent(CellContent.KINGPLACE, currLine , currColumn);
-    			
-    			
+    				game.setContent(CellContent.KINGPLACE, currLine, currColumn);
+
     			val = "";
     			currColumn++;
     		}
@@ -139,16 +146,16 @@ public class GameLoader {
     		else {
     			val += board.charAt(index);
     		}
-    		
+
     		index++;
     	}
+
     	return true;
 	}
-	
-	
+
 	////////////////////////////////////////////////////
 	// Setter and Getters
-	////////////////////////////////////////////////////	
+	////////////////////////////////////////////////////
 	public void setWinner(String winner) {
 		if(winner.matches("Attacker"))
 			game.setWinner(PlayerEnum.ATTACKER);
@@ -157,41 +164,37 @@ public class GameLoader {
 		if(winner.matches("None"))
 			game.setWinner(PlayerEnum.NONE);
 	}
-	
-	
-	
+
 	public void setPlayingPlayer(String playingPlayer) {
 		if(playingPlayer.matches("Attacker"))
 			game.setPlayingPlayer(PlayerEnum.ATTACKER);
 		if(playingPlayer.matches("Defender"))
 			game.setPlayingPlayer(PlayerEnum.DEFENDER);
 	}
-	
+
 	public void setAttacker(String attacker) {
 		switch(attacker) {
-			case "AIRandom": game.setAttacker(new AIRandom()); break;
-			case "HumanPlayer": game.setDefender(new HumanPlayer()); break;	
+			case "AIRandom": 	game.setAttacker(new AIRandom()); break;
+			case "HumanPlayer": game.setDefender(new HumanPlayer()); break;
 			default: break;
 		}
 	}
-	
+
 	public void setDefender(String defender) {
 		switch(defender) {
-			case "AIRandom": game.setAttacker(new AIRandom()); break;
-			case "HumanPlayer": game.setDefender(new HumanPlayer()); break;	
+			case "AIRandom": 	game.setAttacker(new AIRandom()); break;
+			case "HumanPlayer": game.setDefender(new HumanPlayer()); break;
 			default: break;
 		}
 	}
-	
-	
-	
+
 	public void setPlays(String playsString) {
 		String toOrFrom = SaverConstants.NEXT_LINE;
 		String lOrC = "";
         int index = 0;
         Movement movement = new Movement();
-        
-    	while (index < playsString.length()) {
+
+    	while(index < playsString.length()) {
     		switch(playsString.charAt(index)) {
     			case ' ':
     				toOrFrom = SaverConstants.BLANK;
@@ -209,23 +212,21 @@ public class GameLoader {
     			case ')':
     				break;
     			default:
-    				if ( toOrFrom == SaverConstants.NEXT_LINE && lOrC == SaverConstants.BR_LEFT) 
+    				if(toOrFrom == SaverConstants.NEXT_LINE && lOrC == SaverConstants.BR_LEFT)
     	    			movement.setFromL(playsString.charAt(index));
-    	    		else if	(toOrFrom == SaverConstants.NEXT_LINE && lOrC == SaverConstants.COMMA)
+    	    		else if(toOrFrom == SaverConstants.NEXT_LINE && lOrC == SaverConstants.COMMA)
     	    			movement.setFromC(playsString.charAt(index));
-    	    		if ( toOrFrom == SaverConstants.BLANK && lOrC == SaverConstants.BR_LEFT) 
+    	    		if(toOrFrom == SaverConstants.BLANK && lOrC == SaverConstants.BR_LEFT)
     	    			movement.setToL(playsString.charAt(index));
-    	    		else if	(toOrFrom == SaverConstants.BLANK && lOrC == SaverConstants.COMMA)
+    	    		else if(toOrFrom == SaverConstants.BLANK && lOrC == SaverConstants.COMMA)
     	    			movement.setToC(playsString.charAt(index));
-    				break;		
+    				break;
     		}
-    		
-    	index++;
+
+    		index++;
     	}
 	}
-	
-	
-	
+
 	public String getCurrentSavePath() {
 		return this.currentSavePath;
 	}

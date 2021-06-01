@@ -5,9 +5,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JComboBox;
 
-import fr.prog.tablut.view.newGame.SelectionPlayer;
+import fr.prog.tablut.view.pages.newGame.SelectionPlayer;
 
-public class ComboBoxAdaptator implements ActionListener{
+public class ComboBoxAdaptator implements ActionListener {
 	
 	private final SelectionPlayer selectionPlayer;
 	private final String side;
@@ -15,17 +15,15 @@ public class ComboBoxAdaptator implements ActionListener{
 	public ComboBoxAdaptator(String side, SelectionPlayer selectionPlayer) {
 		this.selectionPlayer = selectionPlayer;
 		this.side = side;
-		
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		JComboBox comboBox = (JComboBox) e.getSource();
-		if(comboBox.getSelectedItem() == "Humain") {
+		JComboBox<?> comboBox = (JComboBox<?>)e.getSource();
+
+		if(comboBox.getSelectedItem() == "Humain")
 			selectionPlayer.showInput(side);
-		}
-		else {
+		else
 			selectionPlayer.hideInput(side);
-		}
 	}
 }
