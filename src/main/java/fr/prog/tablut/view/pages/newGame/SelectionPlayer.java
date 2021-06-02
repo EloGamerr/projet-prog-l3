@@ -22,7 +22,7 @@ import fr.prog.tablut.view.components.generic.GenericLabel;
 public class SelectionPlayer extends JPanel {
 
 	protected PlayerData attaquant = new PlayerData("Attaquant", "Joueur 1");
-	protected PlayerData defenseur = new PlayerData("Défenseur", "Joueur 2");
+	protected PlayerData defenseur = new PlayerData("D\u00e9fenseur", "Joueur 2");
 	protected GenericComboBox<PlayerTypeEnum> comboBox1;
 	protected GenericComboBox<PlayerTypeEnum> comboBox2;
 

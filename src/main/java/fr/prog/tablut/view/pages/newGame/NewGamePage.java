@@ -31,7 +31,7 @@ public class NewGamePage extends Page {
 
 		NavPage page = new NavPage(
 			"Nouvelle partie",
-			"Choisissez les paramètres de partie qui vous conviennent puis cliquez sur confirmer",
+			"Choisissez les param\u00e8tres de partie qui vous conviennent puis cliquez sur confirmer",
 			panel
 		);
 		

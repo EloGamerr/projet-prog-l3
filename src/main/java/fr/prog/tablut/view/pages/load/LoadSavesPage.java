@@ -34,7 +34,7 @@ public class LoadSavesPage extends Page {
 
 		NavPage page = new NavPage(
 			"Charger une partie",
-			"Choisissez une sauvegarde à charger",
+			"Choisissez une sauvegarde \u00e0 charger",
 			bottomPanel
 		);
 		
