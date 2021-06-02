@@ -6,11 +6,9 @@ import java.awt.GridBagLayout;
 
 import javax.swing.Timer;
 
-import fr.prog.tablut.controller.game.*;
 import fr.prog.tablut.controller.game.gameAdaptator.GameMouseAdaptator;
 import fr.prog.tablut.controller.game.gameAdaptator.GameTimeAdaptator;
 import fr.prog.tablut.controller.game.gameController.GameController;
-import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.window.WindowConfig;
 import fr.prog.tablut.model.window.WindowName;
 import fr.prog.tablut.view.Page;
@@ -27,26 +25,22 @@ public class GamePage extends Page {
     private final CenterSideGame centerSide;
     private final RightSideGame rightSide;
     private final LeftSideGame leftSide;
-    private final Game game;
 
     /**
      * Creates the game's view manager
      * @param config The configuration to apply to the page
-     * @param g The game's object reference
      */
-    private GamePage(WindowConfig config, Game g) {
+    public GamePage(WindowConfig config) {
         super(config);
 
         windowName = WindowName.GameWindow;
-        
-        game = g;
 
         final int s = (int)(config.windowHeight / 1.2);
         final Dimension d = new Dimension((config.windowWidth - s)/2, config.windowHeight);
 
-        centerSide = new CenterSideGame(config, g, new Dimension(s, s));
-        leftSide = new LeftSideGame(config, g, d);
-        rightSide = new RightSideGame(config, g, d);
+        centerSide = new CenterSideGame(config, new Dimension(s, s));
+        leftSide = new LeftSideGame(config, d);
+        rightSide = new RightSideGame(config, d);
 
         setLayout(new GridBagLayout());
 
@@ -67,7 +61,7 @@ public class GamePage extends Page {
         c.gridx = 2;
         add(rightSide, c);
         
-        GameController gameController = new GameController(g, this);
+        GameController gameController = new GameController(this);
         GameMouseAdaptator gameMouseAdaptator = new GameMouseAdaptator(gameController, centerSide.getBoard());
         centerSide.getBoard().addMouseListener(gameMouseAdaptator);
         centerSide.getBoard().addMouseMotionListener(gameMouseAdaptator);
@@ -75,31 +69,12 @@ public class GamePage extends Page {
         Timer time = new Timer(50, new GameTimeAdaptator(gameController));
         time.start();
     }
-
-    /**
-     * Creates the game's view manager.
-     * <p>Creates 2 players, a random AI (att) and a human player (def).</p>
-     * @param config The configuration to apply to the page
-     */
-    public GamePage(WindowConfig config) {
-        this(config, new Game());
-    }
     
     /**
      * Creates the game's view manager without any page's confiugration.
-     * @param g The game's object reference
      */
-    public GamePage(Game g) {
-        this(null, g);
-    }
-
-    /**
-     * Returns the current game's object reference that is using
-     * the game's page
-     * @return A game object's reference
-     */
-    public Game getGame() {
-        return game;
+    public GamePage() {
+        this(null);
     }
     
     /**

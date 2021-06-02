@@ -2,6 +2,7 @@ package fr.prog.tablut.view.components.generic;
 
 import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
@@ -12,11 +13,14 @@ import fr.prog.tablut.model.window.WindowName;
  * A component that extends JButton, a basic button.
  * @see JButton
  */
-public class GenericButton extends JButton {
+public class GenericButton extends JButton implements GenericComponent {
 	protected boolean hovering = false;
     protected boolean canHoverStyle = false;
     protected Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
     protected Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
+
+	protected ActionListener actionListenerHref = null;
+	protected ActionListener actionListenerBase = null;
 
     protected String styleName = "button";
 
@@ -54,7 +58,9 @@ public class GenericButton extends JButton {
         addMouseListener(new MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
 				hovering = true;
-                me.setCursor(me.handCursor);
+
+				if(!styleName.contains(":disabled"))
+                	me.setCursor(me.handCursor);
             }
         
             public void mouseExited(java.awt.event.MouseEvent evt) {
@@ -75,7 +81,45 @@ public class GenericButton extends JButton {
 	 * @param href The page to go to
 	 */
     public void setHref(WindowName href) {
-        this.href = href;
-        addActionListener(new ButtonNavAdaptator(GenericObjectStyle.getGlobalWindow(), href));
+        setHref(href, new ButtonNavAdaptator(this, GenericObjectStyle.getGlobalWindow(), href));
     }
+
+	public void setHref(WindowName href, ActionListener action) {
+		this.href = href;
+		setHrefAction(action);
+	}
+
+	public void setHrefAction(ActionListener actionHref) {
+		if(actionListenerHref != null)
+			removeActionListener(actionListenerHref);
+		
+		actionListenerHref = actionHref;
+
+		addActionListener(actionListenerHref);
+	}
+
+	public void setAction(ActionListener action) {
+		if(actionListenerBase != null) {
+			removeActionListener(actionListenerBase);
+		}
+
+		actionListenerBase = action;
+		
+		addActionListener(actionListenerBase);
+	}
+
+	public void setStyle(String style) {
+		if(GenericObjectStyle.getStyle().has(style)) {
+            styleName = style;
+		    canHoverStyle = GenericObjectStyle.getStyle().has(style + ":hover");
+        }
+	}
+
+	public String getStyle() {
+		return styleName;
+	}
+
+	public boolean isDisabled() {
+		return getStyle().endsWith(":disabled");
+	}
 }

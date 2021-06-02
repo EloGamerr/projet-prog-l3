@@ -10,8 +10,6 @@ import javax.swing.WindowConstants;
 
 import org.json.JSONObject;
 
-import fr.prog.tablut.controller.game.HumanPlayer;
-import fr.prog.tablut.controller.game.ia.AIRandom;
 import fr.prog.tablut.model.Loader;
 import fr.prog.tablut.model.window.WindowConfig;
 import fr.prog.tablut.model.window.WindowName;
@@ -26,7 +24,6 @@ import fr.prog.tablut.view.pages.newGame.NewGamePage;
 /**
  * The main window of the application
  * @see Window
- * @see JPanel
  */
 public class GlobalWindow extends Window {
 	protected WindowConfig config;
@@ -36,11 +33,11 @@ public class GlobalWindow extends Window {
     private HelpPage helpPage;
     private NewGamePage newGamePage;
 	private JFrame jFrame;
-    public Page currentPage;
+    private Page currentPage;
+	private WindowName previousPageName;
 
 	/**
 	 * Creates the main window with given surface
-	 * @param frame The surface
 	 * @throws ParseException
 	 */
 	public GlobalWindow() throws ParseException {
@@ -49,7 +46,6 @@ public class GlobalWindow extends Window {
 
 	/**
 	 * Creates the main window with given surface and configuration
-	 * @param frame The surface
 	 * @param configfilePath The configuration file path
 	 * @throws ParseException
 	 */
@@ -77,9 +73,10 @@ public class GlobalWindow extends Window {
 		gamePage = new GamePage(this.config);
 		homePage = new HomePage(this.config);
 		currentPage = homePage;
-		loadPage = new LoadSavesPage(this.config);
-		helpPage = new HelpPage(this.config, this.currentPage);
+		previousPageName = currentPage.name();
+		helpPage = new HelpPage(this.config, this.previousPageName);
 		newGamePage = new NewGamePage(this.config);
+		loadPage = new LoadSavesPage(this.config);
 		
 		homePage.setVisible(true);
 		jFrame.setContentPane(homePage);
@@ -143,14 +140,12 @@ public class GlobalWindow extends Window {
 	 */
 	public void changeWindow(WindowName dest) {
 		currentPage.setVisible(false);
+		previousPageName = currentPage.name();
+		helpPage.setBackPage(previousPageName);
 
 		switch(dest) {
 			case GameWindow:
 				currentPage = gamePage;
-				if(currentPage == loadPage)
-					gamePage.getGame().load(loadPage.getPanel().getSelectedIndex());
-				else
-					gamePage.getGame().start(new AIRandom(), new HumanPlayer());
 				break;
 
 			case LoadWindow:

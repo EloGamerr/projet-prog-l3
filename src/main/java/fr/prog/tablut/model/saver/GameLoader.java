@@ -20,6 +20,7 @@ import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.Movement;
 import fr.prog.tablut.model.game.Play;
 import fr.prog.tablut.model.game.player.PlayerEnum;
+import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 
 public class GameLoader {
 	private static final String savesPath = Paths.get(System.getProperty("user.dir"), "saves").toString();
@@ -89,8 +90,8 @@ public class GameLoader {
 			JSONObject jsonParameters = new JSONObject(line);
 			JSONArray array = jsonParameters.getJSONArray("parameters");
 
-			setDefender(new JSONObject(array.getString(0)).getString("defender"));
-			setAttacker(new JSONObject(array.getString(1)).getString("attacker"));
+			setDefender(new JSONObject(array.getString(0)).getInt("defender"));
+			setAttacker(new JSONObject(array.getString(1)).getInt("attacker"));
 			
 			setWinner(new JSONObject(array.getString(2)).getString("winner"));
 			setPlayingPlayer(new JSONObject(array.getString(3)).getString("playingPlayer"));
@@ -172,20 +173,27 @@ public class GameLoader {
 			game.setPlayingPlayer(PlayerEnum.DEFENDER);
 	}
 
-	public void setAttacker(String attacker) {
-		switch(attacker) {
-			case "AIRandom": 	game.setAttacker(new AIRandom()); break;
-			case "HumanPlayer": game.setDefender(new HumanPlayer()); break;
-			default: break;
+
+	public void setAttacker(int attacker) {
+		PlayerTypeEnum[] values = PlayerTypeEnum.values();
+
+		if(values.length == 0 || attacker < 0 || attacker >= values.length) {
+			game.setAttacker(PlayerTypeEnum.getDefaultPlayer());
+			return;
 		}
+
+		game.setAttacker(values[attacker].createPlayer());
 	}
 
-	public void setDefender(String defender) {
-		switch(defender) {
-			case "AIRandom": 	game.setAttacker(new AIRandom()); break;
-			case "HumanPlayer": game.setDefender(new HumanPlayer()); break;
-			default: break;
+	public void setDefender(int defender) {
+		PlayerTypeEnum[] values = PlayerTypeEnum.values();
+
+		if(values.length == 0 || defender < 0 || defender >= values.length) {
+			game.setDefender(PlayerTypeEnum.getDefaultPlayer());
+			return;
 		}
+
+		game.setDefender(values[defender].createPlayer());
 	}
 
 	public void setPlays(String playsString) {

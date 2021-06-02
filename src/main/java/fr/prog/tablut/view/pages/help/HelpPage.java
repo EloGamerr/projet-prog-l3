@@ -12,6 +12,8 @@ import fr.prog.tablut.view.components.NavPage;
  * @see Page
  */
 public class HelpPage extends Page {
+	BottomButtonPanel bbp;
+
 	/**
 	 * Creates a help page.
 	 * <p>It needs to know the reference of the last opened page so when the user clicks on "Retour",
@@ -19,13 +21,19 @@ public class HelpPage extends Page {
 	 * @param config The configuration to apply to the page
 	 * @param currentPage The previous page to go on when the user closes this page
 	 */
-	public HelpPage(WindowConfig config, Page currentPage) {
+	public HelpPage(WindowConfig config, WindowName pageBack) {
 		super(config);
 
 		windowName = WindowName.HelpWindow;
 
-		NavPage page = new NavPage(new BottomButtonPanel(WindowName.HomeWindow, "Retour"));
+		bbp = new BottomButtonPanel(pageBack, "Retour");
+
+		NavPage page = new NavPage(bbp);
 		page.setContent(new HelpTable());
 		add(page);
+	}
+
+	public void setBackPage(WindowName pageBack) {
+		bbp.setFirstButtonHref(pageBack);
 	}
 }

@@ -9,6 +9,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import fr.prog.tablut.controller.adaptators.ComboBoxAdaptator;
+import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 import fr.prog.tablut.view.components.generic.GenericComboBox;
 import fr.prog.tablut.view.components.generic.GenericInput;
 import fr.prog.tablut.view.components.generic.GenericLabel;
@@ -19,18 +20,11 @@ import fr.prog.tablut.view.components.generic.GenericLabel;
  * @see JPanel
  */
 public class SelectionPlayer extends JPanel {
-	protected JTextField pseudoAttaquant;
-	protected JTextField pseudoDefenseur;
-
-	protected final String[] playerTypes = {
-		"Humain",
-		"Ordinateur facile",
-		"Ordinateur moyen",
-		"Ordinateur difficile"
-	};
 
 	protected PlayerData attaquant = new PlayerData("Attaquant", "Joueur 1");
 	protected PlayerData defenseur = new PlayerData("Défenseur", "Joueur 2");
+	protected GenericComboBox<PlayerTypeEnum> comboBox1;
+	protected GenericComboBox<PlayerTypeEnum> comboBox2;
 
 	/**
 	 * Default construtor.
@@ -49,17 +43,17 @@ public class SelectionPlayer extends JPanel {
 		c.insets = new Insets(100, 0, 0, 0);
 		add(new GenericLabel("VS", 20));
 
-		createSide(c, 2, defenseur);
+		createSide(c, 1, defenseur);
 	}
 
 	/**
 	 * Creates a form side for a player
 	 * @param cc The GridBagConstraint for the side
-	 * @param gridX The position of the side in the grid
+	 * @param n The position of the side in the grid
 	 * @param p The player's role
 	 */
-	private void createSide(GridBagConstraints cc, int gridX, PlayerData p) {
-		cc.gridx = gridX;
+	private void createSide(GridBagConstraints cc, int n, PlayerData p) {
+		cc.gridx = n * 2;
 
 		// wrapper panel
 		JPanel panel = new JPanel();
@@ -78,9 +72,12 @@ public class SelectionPlayer extends JPanel {
 		
 		// player's type
 		c.gridy = 1;
-		GenericComboBox<String> comboBox = new GenericComboBox<>(playerTypes);
-		comboBox.addActionListener(new ComboBoxAdaptator(p.name, this));
-		panel.add(comboBox, c);
+		GenericComboBox<PlayerTypeEnum> cb = new GenericComboBox<>(PlayerTypeEnum.values());
+		cb.addActionListener(new ComboBoxAdaptator(p.name, this));
+		panel.add(cb, c);
+
+		if(n == 0) 	comboBox1 = cb;
+		else		comboBox2 = cb;
 
 		// player's username
 		c.gridy = 2;
@@ -106,6 +103,14 @@ public class SelectionPlayer extends JPanel {
 	public void hideInput(String side) {
 		PlayerData p = (side == "Attaquant")? attaquant : defenseur;
 		p.usernameInput.setVisible(false);
+	}
+
+	public PlayerTypeEnum getPlayerType1() {
+		return (PlayerTypeEnum) this.comboBox1.getSelectedItem();
+	}
+
+	public PlayerTypeEnum getPlayerType2() {
+		return (PlayerTypeEnum) this.comboBox2.getSelectedItem();
 	}
 }
 

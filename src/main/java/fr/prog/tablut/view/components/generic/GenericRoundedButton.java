@@ -86,7 +86,7 @@ public class GenericRoundedButton extends GenericButton {
      * <p>Sets the font, the size, the colors</p>
      * @param text The button's text
      * @param width The button's width
-     * @param The button's height
+     * @param height The button's height
      */
     public GenericRoundedButton(String text, int width, int height) {
         super(text);
@@ -140,7 +140,7 @@ public class GenericRoundedButton extends GenericButton {
 
         // when mouse hovering it, could we apply the :hover style cause it exists or not
         // if it does not exist, then keep the normal style when hovering
-		canHoverStyle = GenericObjectStyle.getStyle().has(styleName);
+		canHoverStyle = GenericObjectStyle.getStyle().has(getStyle());
     }
 
     /**
@@ -188,9 +188,12 @@ public class GenericRoundedButton extends GenericButton {
      * @param style The style to apply
      */
     public void setStyle(String style) {
-        if(GenericObjectStyle.getStyle().has(style)) {
-            styleName = style;
-		    canHoverStyle = GenericObjectStyle.getStyle().has(styleName);
+        String oldStyle = getStyle();
+        
+        super.setStyle(style);
+
+        if(oldStyle != style) {
+            repaint();
         }
     }
 
@@ -208,7 +211,7 @@ public class GenericRoundedButton extends GenericButton {
         // This is needed on non-Mac so text is repainted correctly
         super.paint(g);
 
-        String currentStyle = styleName + ((hovering && canHoverStyle)? ":hover" : "");
+        String currentStyle = getStyle() + ((!getStyle().contains(":disabled") && hovering && canHoverStyle)? ":hover" : "");
 
         Color background = GenericObjectStyle.getProp(currentStyle, "background");
         Color borderColor = GenericObjectStyle.getProp(currentStyle, "borderColor");

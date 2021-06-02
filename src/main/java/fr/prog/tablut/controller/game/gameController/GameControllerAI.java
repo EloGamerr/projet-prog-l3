@@ -4,12 +4,10 @@ import fr.prog.tablut.controller.game.ia.AIPlayer;
 import fr.prog.tablut.model.game.Game;
 
 public class GameControllerAI {
-    private final Game game;
     private int timer;
     private final int speed;
 
-    public GameControllerAI(Game game, int speed) {
-        this.game = game;
+    public GameControllerAI(int speed) {
         this.speed = speed;
         timer = speed;
     }
@@ -21,9 +19,9 @@ public class GameControllerAI {
     @Deprecated
     public boolean tick() {
     	// TODO
-        if(game.getPlayingPlayer() instanceof AIPlayer) {
+        if(Game.getInstance().getPlayingPlayer() instanceof AIPlayer) {
             if(timer-- <= 0) {
-                boolean shouldRepaint = game.getPlayingPlayer().play(game);
+                boolean shouldRepaint = Game.getInstance().getPlayingPlayer().play(Game.getInstance());
                 timer = speed;
                 return shouldRepaint;
             }

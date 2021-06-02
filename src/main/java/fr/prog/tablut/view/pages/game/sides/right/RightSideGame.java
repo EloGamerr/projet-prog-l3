@@ -6,13 +6,13 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import fr.prog.tablut.controller.adaptators.ButtonSaveAdaptator;
-import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.window.WindowConfig;
+import fr.prog.tablut.model.window.WindowName;
 import fr.prog.tablut.view.components.generic.GenericRoundedButton;
 import fr.prog.tablut.view.pages.game.sides.GameInterfaceSide;
 
 public class RightSideGame extends GameInterfaceSide {
-    public RightSideGame(WindowConfig config, Game game, Dimension d) {
+    public RightSideGame(WindowConfig config, Dimension d) {
         super(d);
 
         GenericRoundedButton save = new GenericRoundedButton("Sauvegarder", 200, 40);
@@ -23,6 +23,10 @@ public class RightSideGame extends GameInterfaceSide {
 
         save.setStyle("button.greenHover");
         quit.setStyle("button.redHover");
+
+        shortcuts.setHref(WindowName.HelpWindow);
+        quit.setHref(WindowName.HomeWindow);
+        save.addActionListener(new ButtonSaveAdaptator(save, this));
 
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -36,7 +40,5 @@ public class RightSideGame extends GameInterfaceSide {
         c.gridy = 2; add(restart, c);
         c.gridy = 3; add(shortcuts, c);
         c.gridy = 4; add(quit, c);
-
-        save.addMouseListener(new ButtonSaveAdaptator(game, this));
     }
 }

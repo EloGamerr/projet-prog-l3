@@ -14,7 +14,8 @@ public class Tablut implements Runnable {
     String configFile = null;
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Tablut("project.json"));
+        String config = (args.length > 0)? args[0] : "project.json";
+        SwingUtilities.invokeLater(new Tablut(config));
     }
 
     /**

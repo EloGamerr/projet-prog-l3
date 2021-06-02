@@ -57,12 +57,22 @@ public class Style {
         components = new HashMap<>(){{
             put("window", new ComponentStyle());
             put("button", new ComponentStyle());
+            put("button:hover", new ComponentStyle());
             put("button.red", new ComponentStyle());
             put("button.green", new ComponentStyle());
-            put("button:hover", new ComponentStyle());
-            put("button.green:hover", new ComponentStyle());
-            put("button.red:hover", new ComponentStyle());
+            put("button.green:disabled", new ComponentStyle());
+            put("description", new ComponentStyle());
+            put("area", new ComponentStyle());
+            put("input", new ComponentStyle());
+            put("button.home", new ComponentStyle());
             put("label", new ComponentStyle());
+            put("redHover", new ComponentStyle());
+            put("greenHover", new ComponentStyle());
+            put("button.load", new ComponentStyle());
+            put("button.load:selected", new ComponentStyle());
+            put("table", new ComponentStyle());
+            put("table.th", new ComponentStyle());
+            put("table.td", new ComponentStyle());
         }};
     }
 

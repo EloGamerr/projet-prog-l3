@@ -1,9 +1,17 @@
 package fr.prog.tablut.view.pages.game.sides.left.moveHistory;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
 
-import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JScrollBar;
+
 
 public class MoveHistoryPanel extends JPanel {
     private final HistoryChat historyChat;

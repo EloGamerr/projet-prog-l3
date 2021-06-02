@@ -1,6 +1,6 @@
 package fr.prog.tablut.view.pages.load;
 
-import java.awt.Color;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import fr.prog.tablut.controller.adaptators.ButtonToggleAdaptator;
+import fr.prog.tablut.controller.adaptators.ButtonLoadAdaptator;
 import fr.prog.tablut.view.components.generic.GenericButton;
 import fr.prog.tablut.view.components.generic.GenericLabel;
 import fr.prog.tablut.view.components.generic.GenericRoundedButton;
@@ -24,9 +24,11 @@ import fr.prog.tablut.view.components.generic.GenericRoundedPanel;
  */
 public class SavedGamesPanel extends JPanel {
 
-	protected int width = 460;
-	protected int height = 350;
+	protected final int width = 460;
+	protected final int height = 350;
+	protected final int btnHeight = 35;
 	protected int index_selected = 0;
+	protected GenericRoundedButton buttonToLightup;
 	
 	public GenericRoundedButton button_selected = null;
 	
@@ -41,26 +43,35 @@ public class SavedGamesPanel extends JPanel {
 	 * @see Style
 	 * @see ComponentStyle
 	 */
-	public SavedGamesPanel() {
+	public SavedGamesPanel(GenericRoundedButton btnToLightup) {
 		setOpaque(false);
 		setBorder(new EmptyBorder(0, 0, 50, 0));
 		setLayout(new GridBagLayout());
 
-		GenericRoundedPanel wrapper = new GenericRoundedPanel();
-		wrapper.setLayout(new GridBagLayout());
-		wrapper.setStyle("area");
+		buttonToLightup = btnToLightup;
 
 		Dimension size = new Dimension(width, height);
 
-		wrapper.setPreferredSize(size);
-		wrapper.setMaximumSize(size);
-		wrapper.setMinimumSize(size);
+		GenericRoundedPanel wrapperContainer = new GenericRoundedPanel();
+		wrapperContainer.setLayout(new BorderLayout());
+		wrapperContainer.setStyle("area");
+		
+		wrapperContainer.setPreferredSize(size);
+		wrapperContainer.setMaximumSize(size);
+		wrapperContainer.setMinimumSize(size);
+		
+		JPanel wrapper = new JPanel();
+		wrapper.setLayout(new GridBagLayout());
+		wrapper.setOpaque(false);
+		wrapper.setBorder(new EmptyBorder(5, 0, 5, 0));
 
 		GenericRoundedButton button;
 		GridBagConstraints c = new GridBagConstraints();
 
 		c.anchor = GridBagConstraints.NORTH;
 		c.gridx = 0;
+		c.weightx = 1;
+		c.weighty = 0;
 
 		int i = 1;
 
@@ -69,9 +80,9 @@ public class SavedGamesPanel extends JPanel {
 
 		while(f.isFile()) {
 			c.gridy = i;
-			button = new GenericRoundedButton("Save n°" + i, width - 10, 35);
+			button = new GenericRoundedButton("Save n°" + i, width - 10, btnHeight);
 			button.setStyle("button.load");
-			button.addActionListener(new ButtonToggleAdaptator(button, i, this));
+			button.addActionListener(new ButtonLoadAdaptator(button, i, this));
 			wrapper.add(button, c);
 			i++;
 			savePath = Paths.get(savesPath, savePrefix + i + saveSuffix).toString();
@@ -80,10 +91,20 @@ public class SavedGamesPanel extends JPanel {
 
 		if(i == 1) {
 			// no save found
-			wrapper.add(new GenericLabel("No save found", 12), c);
+			wrapper.add(new GenericLabel("No save found", 12));
 		}
 
-		add(wrapper);
+		else {
+			// align content to the top
+			JPanel emptyPanel = new JPanel();
+			emptyPanel.setOpaque(false);
+			c.gridy = i;
+			c.weighty = 1;
+			wrapper.add(emptyPanel, c);
+		}
+
+		wrapperContainer.add(wrapper, BorderLayout.NORTH);
+		add(wrapperContainer);
 	}
 
 	/**
@@ -96,12 +117,15 @@ public class SavedGamesPanel extends JPanel {
 	public void selected(GenericButton button, int index) {
 		//TODO : issue to fix : need to double-click to toggle the style
 		if(button_selected != null) {
-			button_selected.setStyle("button.selected");
+			button_selected.setStyle("button.load");
 		}
 		
 		button_selected = (GenericRoundedButton)button;
-		button_selected.setBackground(Color.green);
+		button_selected.setStyle("button.load:selected");
 		index_selected = index;
+
+		if(buttonToLightup.getStyle() != "button.green")
+			buttonToLightup.setStyle("button.green");
 	}
 
 	public int getSelectedIndex() {

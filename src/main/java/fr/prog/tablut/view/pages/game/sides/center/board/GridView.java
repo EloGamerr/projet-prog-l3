@@ -13,14 +13,12 @@ public class GridView {
 	private static final int widthSeperator = 6;
 	public static final int widthBorder = 25;
 	private final GridWindow gridWindow;
-	private final Game game;
     private int x, y, height, width, cellWidth, cellHeight;
     private Image imageOnMouse;
     private Couple<Integer, Integer> selectedCell;
 
-	public GridView(GridWindow gridWindow, Game game) {
+	public GridView(GridWindow gridWindow) {
 		this.gridWindow = gridWindow;
-		this.game = game;
 	}
 	
 	public int cellHeight() {
@@ -32,6 +30,8 @@ public class GridView {
 	}
 	
 	public void draw() {
+		Game game = Game.getInstance();
+
 		cellWidth = (gridWindow.width() - widthBorder*2) / game.getColAmout();
 		cellHeight = (gridWindow.height() - widthBorder*2) / game.getRowAmout();
 	
@@ -51,6 +51,8 @@ public class GridView {
 	}
 	
 	private void drawGrid() {
+		Game game = Game.getInstance();
+
 		gridWindow.setColor(GameColors.BACKGROUND_GRID);
 		gridWindow.fillRect(x, y, width, height);
 		
@@ -105,7 +107,7 @@ public class GridView {
 	}
 	
 	private void drawCircles(int row, int col) {
-		List<Couple<Integer, Integer>> accessibleCells = game.getAccessibleCells(row, col);
+		List<Couple<Integer, Integer>> accessibleCells = Game.getInstance().getAccessibleCells(row, col);
 		
 		gridWindow.setColor(GameColors.CIRCLE);
 		int circleWidth = cellWidth/3;
@@ -117,6 +119,8 @@ public class GridView {
 	}
 	
 	private void drawPawns() {
+		Game game = Game.getInstance();
+
 		int imgWidth = cellWidth/2;
 		int imgHeight = cellHeight/2;
 

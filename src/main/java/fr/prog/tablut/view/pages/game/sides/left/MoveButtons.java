@@ -22,8 +22,8 @@ public class MoveButtons extends JLabel {
         GenericRoundedButton cancel = new GenericRoundedButton("Undo", 100, 40);
         GenericRoundedButton redo = new GenericRoundedButton("Redo", 100, 40);
 
-        cancel.setStyle("button.menuIngame");
-        redo.setStyle("button.menuIngame");
+        // cancel.setStyle("button.menuIngame");
+        // redo.setStyle("button.menuIngame");
 
         lc.gridy = 0;
 

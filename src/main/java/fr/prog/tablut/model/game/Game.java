@@ -7,11 +7,14 @@ import java.util.Map;
 
 import fr.prog.tablut.model.game.player.Player;
 import fr.prog.tablut.model.game.player.PlayerEnum;
+import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 import fr.prog.tablut.model.saver.GameLoader;
 import fr.prog.tablut.model.saver.GameSaver;
 import fr.prog.tablut.structures.Couple;
 
 public class Game {
+	private static Game instance = null;
+
 	private int rowAmount, colAmount;
 	private CellContent[][] grid;
 	private final int middle;
@@ -37,14 +40,20 @@ public class Game {
 		loader = new GameLoader(this);
 	}
 
+	public static Game getInstance() {
+		if(instance == null) {
+			instance = new Game();
+		}
+
+		return instance;
+	}
+
 	/**
 	 * Start a new game
-	 * @param attacker Player object which can be a human or a AI
-	 * @param defender Player object which can be a human or a AI
 	 */
-	public void start(Player attacker, Player defender) {
-		this.attacker = attacker;
-		this.defender = defender;
+	public void start(PlayerTypeEnum attacker, PlayerTypeEnum defender) {
+		this.attacker = attacker.createPlayer();
+		this.defender = defender.createPlayer();
 		setPlayingPlayer(PlayerEnum.ATTACKER);
 		this.move = new PawnTaker(this);
 		this.plays = new Plays();
@@ -58,7 +67,7 @@ public class Game {
 	 * @param index_selected Save index (>= 0 and < amount of saves)
 	 */
 	public void load(int index_selected) {
-		init_grid(9,9);
+		init_grid(9, 9);
 		this.move = new PawnTaker(this);
 		this.plays = new Plays();
 		loader.loadData(index_selected);

@@ -25,8 +25,6 @@ public class Page extends Window {
     /**
      * Creates a page.
      * <p>A page is hidden by default.</p>
-     * @param globalWindow The parent window in which the page will be shown. inherits from its configuration.
-     * @param name 
      */
     public Page(WindowConfig config) {
         super();

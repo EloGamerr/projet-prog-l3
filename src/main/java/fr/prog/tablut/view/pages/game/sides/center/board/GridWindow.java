@@ -5,7 +5,6 @@ import java.awt.Image;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 
-import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.structures.Couple;
 import fr.prog.tablut.view.pages.game.sides.GameInterfaceSide;
 
@@ -14,10 +13,10 @@ public class GridWindow extends GameInterfaceSide {
 	private int width, height;
 	private Graphics2D drawable;
 	
-    public GridWindow(Game game, int size) {
+    public GridWindow(int size) {
 		super(new Dimension(size, size));
 
-    	gridView = new GridView(this, game);
+    	gridView = new GridView(this);
 	}
 
     @Override

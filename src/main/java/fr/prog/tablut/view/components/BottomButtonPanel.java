@@ -21,6 +21,9 @@ import fr.prog.tablut.view.components.generic.GenericRoundedButton;
  * @see ComponentStyle
  */
 public class BottomButtonPanel extends JPanel {
+    private GenericRoundedButton btn1 = null;
+    private GenericRoundedButton btn2 = null;
+
     /**
      * Default constructor.
      * <p>Creates a button with text "Retour"</p>
@@ -88,19 +91,36 @@ public class BottomButtonPanel extends JPanel {
 		c.insets = new Insets(0, 1, 0, 1);
 		c.gridx = 0;
 
-        GenericRoundedButton btn1 = new GenericRoundedButton(btnTextCancel, 170, 35);
+        btn1 = new GenericRoundedButton(btnTextCancel, 170, 35);
         btn1.setHref(href1);
         btn1.setBorderRadius(8);
         c.gridy = 0;
 		add(btn1, c);
 		
         if(href2 != null) {
-            GenericRoundedButton btn2 = new GenericRoundedButton(btnTextConfirm, 170, 35);
+            btn2 = new GenericRoundedButton(btnTextConfirm, 170, 35);
             btn2.setHref(href2);
             btn2.setBorderRadius(8);
             btn2.setStyle("button.green");
             c.gridx = 1;
             add(btn2, c);
         }
+    }
+
+    public void setFirstButtonHref(WindowName href) {
+        btn1.setHref(href);
+    }
+
+    public void setSecondButtonHref(WindowName href) {
+        if(btn2 != null)
+            btn2.setHref(href);
+    }
+
+    public GenericRoundedButton getButton1() {
+        return btn1;
+    }
+
+    public GenericRoundedButton getButton2() {
+        return btn2;
     }
 }
