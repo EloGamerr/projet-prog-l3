@@ -17,6 +17,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
     extraLibs group: 'com.metaparadigm', name: 'json-rpc', version: '1.0'
+    extraLibs group: 'org.apache.commons', name: 'commons-io', version: '1.3.2'
     configurations.implementation.extendsFrom(configurations.extraLibs)
 }
 

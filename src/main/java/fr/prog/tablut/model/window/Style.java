@@ -54,7 +54,7 @@ public class Style {
      * Sets every component to their default value
      */
     public void reset() {
-        components = new HashMap<>(){{
+        components = new HashMap<String, ComponentStyle>(){{
             put("window", new ComponentStyle());
             put("button", new ComponentStyle());
             put("button:hover", new ComponentStyle());

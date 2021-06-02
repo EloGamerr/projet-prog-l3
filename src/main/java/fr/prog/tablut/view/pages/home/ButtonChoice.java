@@ -30,7 +30,7 @@ public class ButtonChoice extends JPanel {
 		bHeight = 35;
 
 		// list of the buttons in the home page
-		LinkedHashMap<String, WindowName> buttons = new LinkedHashMap<>() {{
+		LinkedHashMap<String, WindowName> buttons = new LinkedHashMap<String, WindowName>() {{
 			put("Nouvelle partie", WindowName.NewGameWindow);
 			put("Charger partie", WindowName.LoadWindow);
 			put("Raccourcis", WindowName.HelpWindow);

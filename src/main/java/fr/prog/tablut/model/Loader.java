@@ -5,14 +5,15 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 
-import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.InputStream;
 
 import java.text.ParseException;
 
+import fr.prog.tablut.Tablut;
+import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -35,7 +36,14 @@ public class Loader {
         String content = "{}";
  
         try {
-            content = new String(Files.readAllBytes(Paths.get(filepath)));
+            InputStream in;
+            if(Tablut.configPath.equals(filepath)) {
+                in = ClassLoader.getSystemClassLoader().getResourceAsStream(filepath);
+            }
+            else {
+                in = new FileInputStream(filepath);
+            }
+            content = IOUtils.toString(in);
         }
         catch(IOException e) {
             e.printStackTrace();
@@ -75,8 +83,9 @@ public class Loader {
      */
     public void loadCustomFont(String fontFamily) {
         try {
-            String fontPath = "res/fonts/" + fontFamily;
-            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath));
+            String fontPath = "fonts/" + fontFamily;
+            InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(fontPath);
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, in);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(customFont);
         }
