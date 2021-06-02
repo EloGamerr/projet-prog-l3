@@ -23,6 +23,10 @@ public class Play {
         modifiedOldCellContents.put(cell, cellContent);
     }
 
+    /**
+     *
+     * @return each cell which has been modified after the move, the value of the entry corresponds to the cell content before the play
+     */
     public HashMap<Couple<Integer, Integer>, CellContent> getModifiedOldCellContents() {
         return modifiedOldCellContents;
     }
@@ -31,6 +35,10 @@ public class Play {
         modifiedNewCellContents.put(cell, cellContent);
     }
 
+    /**
+     *
+     * @return each cell which has been modified after the move, the value of the entry corresponds to the cell content after the play
+     */
     public HashMap<Couple<Integer, Integer>, CellContent> getModifiedNewCellContents() {
         return modifiedNewCellContents;
     }
