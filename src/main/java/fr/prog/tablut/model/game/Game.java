@@ -29,6 +29,12 @@ public class Game {
 	private GameSaver gameSaver;
 	private String currentSavePath = "";
 	public GameLoader loader;
+	
+	private String attackerName = "";
+
+
+	private String defenderName = "";
+
 
 	private boolean paused = false;
 	
@@ -55,9 +61,11 @@ public class Game {
 	/**
 	 * Start a new game
 	 */
-	public void start(PlayerTypeEnum attacker, PlayerTypeEnum defender) {
+	public void start(PlayerTypeEnum attacker, PlayerTypeEnum defender, String attackerName, String defenderName) {
+		
 		this.attacker = attacker.createPlayer();
 		this.defender = defender.createPlayer();
+		setNames(attacker, defender, attackerName, defenderName);
 		setPlayingPlayer(PlayerEnum.ATTACKER);
 		this.move = new PawnTaker(this);
 		this.plays = new Plays();
@@ -66,12 +74,14 @@ public class Game {
 		hasStarted = true;
 	}
 
+
 	/**
 	 * Load a new game. All properties of the current game are lost if not saved.
 	 * @param index_selected Save index (>= 0 and < amount of saves)
 	 */
 	public void load(int index_selected) {
 		init_grid(9, 9);
+		setPlayingPlayer(PlayerEnum.ATTACKER);
 		this.move = new PawnTaker(this);
 		this.plays = new Plays();
 		loader.loadData(index_selected);
@@ -408,6 +418,15 @@ public class Game {
 		return this.playingPlayerEnum;
 	}
 	
+	public String getDefenderName() {
+		return defenderName;
+	}
+	
+	public String getAttackerName() {
+		return attackerName;
+	}
+
+	
 	public CellContent getCellContent(int l, int c) {
 		return this.getGrid()[l][c];
 	}
@@ -524,6 +543,28 @@ public class Game {
 	public void setPaused(boolean paused) {
 		this.paused = paused;
 	}
+	
+	public void setNames(PlayerTypeEnum attacker, PlayerTypeEnum defender, String attackerName, String defenderName) {
+		if(attacker.equals(PlayerTypeEnum.EASY_AI))
+			setAttackerName(PlayerTypeEnum.EASY_AI.toString());
+		else
+			setAttackerName(attackerName);
+			
+		if(defender == PlayerTypeEnum.EASY_AI)
+			setDefenderName(PlayerTypeEnum.EASY_AI.toString());
+		else
 
+			setDefenderName(defenderName);
+	}
+	
+	public void setDefenderName(String defenderName) {
+		this.defenderName = defenderName;	
+	}
+
+	public void setAttackerName(String attackerName) {
+		this.attackerName = attackerName;	
+	}
+
+	
 	
 }

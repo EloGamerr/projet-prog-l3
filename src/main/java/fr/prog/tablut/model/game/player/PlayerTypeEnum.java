@@ -46,4 +46,6 @@ public enum PlayerTypeEnum {
     public static Player getDefaultPlayer() {
         return HUMAN.createPlayer();
     }
+    
+    
 }

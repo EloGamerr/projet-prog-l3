@@ -119,16 +119,22 @@ public class GameSaver {
 		JSONObject jsonPlayingPlayer = new JSONObject();
 		JSONObject jsonPlays = new JSONObject();
 		JSONObject jsonDefender = new JSONObject();
+		JSONObject jsonDefenderName = new JSONObject();
 		JSONObject jsonAttacker = new JSONObject();
+		JSONObject jsonAttackerName = new JSONObject();
 
 		jsonDefender.put("defender", PlayerTypeEnum.getFromPlayer(game.getDefender()).ordinal());
+		jsonDefenderName.put("defenderName", game.getDefenderName());
 		jsonAttacker.put("attacker", PlayerTypeEnum.getFromPlayer(game.getAttacker()).ordinal());
+		jsonAttackerName.put("attackerName", game.getAttackerName());
 		jsonWinner.put("winner",this.game.getWinner().toString());
 		jsonPlayingPlayer.put("playingPlayer", game.getPlayingPlayerEnum().toString());
 		jsonPlays.put("plays", savePlays().toString());
 
 		jsonParameters.put(jsonDefender);
+		jsonParameters.put(jsonDefenderName);
 		jsonParameters.put(jsonAttacker);
+		jsonParameters.put(jsonAttackerName);
 		jsonParameters.put(jsonWinner);
 		jsonParameters.put(jsonPlayingPlayer);
 		jsonParameters.put(jsonPlays);

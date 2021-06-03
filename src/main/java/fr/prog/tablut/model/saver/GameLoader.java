@@ -79,6 +79,8 @@ public class GameLoader {
 
 		return true;
 	}
+	
+	
 
 	////////////////////////////////////////////////////
 	// Load Functions
@@ -89,11 +91,12 @@ public class GameLoader {
 			JSONArray array = jsonParameters.getJSONArray("parameters");
 
 			setDefender(new JSONObject(array.getString(0)).getInt("defender"));
-			setAttacker(new JSONObject(array.getString(1)).getInt("attacker"));
-			
-			setWinner(new JSONObject(array.getString(2)).getString("winner"));
-			setPlayingPlayer(new JSONObject(array.getString(3)).getString("playingPlayer"));
-			setPlays(new JSONObject(array.getString(4)).getString("plays"));
+			setDefenderName(new JSONObject(array.getString(1)).getString("defenderName"));
+			setAttacker(new JSONObject(array.getString(2)).getInt("attacker"));
+			setAttackerName(new JSONObject(array.getString(3)).getString("attackerName"));
+			setWinner(new JSONObject(array.getString(4)).getString("winner"));
+			setPlayingPlayer(new JSONObject(array.getString(5)).getString("playingPlayer"));
+			setPlays(new JSONObject(array.getString(6)).getString("plays"));
 
 		}
 		catch (ParseException e) {
@@ -103,6 +106,7 @@ public class GameLoader {
 
 		return true;
 	}
+
 
 	public boolean loadBoard(String line) {
 		String board;
@@ -232,7 +236,15 @@ public class GameLoader {
     		index++;
     	}
 	}
+	
 
+	private void setDefenderName(String string) {
+		game.setDefenderName(string);
+	}
+	private void setAttackerName(String string) {
+		game.setAttackerName(string);
+	}
+	
 	public String getCurrentSavePath() {
 		return this.currentSavePath;
 	}

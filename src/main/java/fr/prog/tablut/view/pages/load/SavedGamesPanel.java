@@ -5,11 +5,21 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import fr.prog.tablut.controller.adaptators.ButtonLoadAdaptator;
 import fr.prog.tablut.view.components.generic.GenericButton;
@@ -104,7 +114,7 @@ public class SavedGamesPanel extends JPanel {
 
         // recover saves
 		while(f.isFile()) {
-            saves.add("Partie " + i);
+			saves.add(generateSaveName(f,i));
 			i++;
 			savePath = Paths.get(savesPath, savePrefix + i + saveSuffix).toString();
 			f = new File(savePath);
@@ -176,4 +186,43 @@ public class SavedGamesPanel extends JPanel {
             }
 		}
     }
+
+	private String generateSaveName(File f, int i) {
+        Scanner scanner = null;
+
+		try {
+			scanner = new Scanner(f);
+		}
+		catch(FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		if(scanner == null)
+			throw new RuntimeException();
+		if(scanner.hasNextLine()) 
+			return getData(scanner.nextLine(),f,i);
+		return "Erreur de lecture";
+	}
+
+
+	private String getData(String nextLine, File f, int i) {
+		try {
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+			String date = "("+sdf.format(f.lastModified())+")";
+			JSONObject jsonParameters = new JSONObject(nextLine);
+			JSONArray array = jsonParameters.getJSONArray("parameters");
+			String defenderName = new JSONObject(array.getString(1)).getString("defenderName");
+			
+			String attackerName = new JSONObject(array.getString(3)).getString("attackerName");
+			return "Partie "+i+" : "+date+"   "+ attackerName +"  vs  "+defenderName;
+		}
+		catch (ParseException e) {
+			e.printStackTrace();
+			return "Erreur de lecture";
+		}
+
+	
+	}
+
 }
