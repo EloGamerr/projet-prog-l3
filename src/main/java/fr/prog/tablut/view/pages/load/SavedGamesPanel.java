@@ -1,6 +1,7 @@
 package fr.prog.tablut.view.pages.load;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import fr.prog.tablut.controller.adaptators.ButtonDeleteSaveAdaptator;
 import fr.prog.tablut.controller.adaptators.ButtonLoadAdaptator;
 import fr.prog.tablut.view.components.generic.GenericButton;
 import fr.prog.tablut.view.components.generic.GenericLabel;
@@ -32,6 +34,7 @@ public class SavedGamesPanel extends JPanel {
 	private GenericRoundedButton buttonToLightup;
     private final GenericRoundedPanel wrapperContainer;
     private final JPanel wrapper;
+    private JPanel wrapperInner = null;
 	
 	public GenericRoundedButton button_selected = null;
 	
@@ -105,6 +108,7 @@ public class SavedGamesPanel extends JPanel {
         // recover saves
 		while(f.isFile()) {
             saves.add("Partie " + i);
+
 			i++;
 			savePath = Paths.get(savesPath, savePrefix + i + saveSuffix).toString();
 			f = new File(savePath);
@@ -112,18 +116,9 @@ public class SavedGamesPanel extends JPanel {
 
 
         wrapper.removeAll();
-
-        GenericRoundedButton button;
-		GridBagConstraints c = new GridBagConstraints();
-
-		c.anchor = GridBagConstraints.NORTH;
-		c.gridx = 0;
-		c.weightx = 1;
-		c.weighty = 0;
         
         // no save found
 		if(i == 1) {
-            c.weightx = 0;
             GenericLabel label = new GenericLabel("Aucune partie sauvegardée", 12);
             label.setBorder(new EmptyBorder(height/2 - 20, 0, 0, 0));
 			wrapper.add(label);
@@ -134,8 +129,17 @@ public class SavedGamesPanel extends JPanel {
             // calculate if number of saves overflow the wrapper
             // in that case, create a JScrollPane
 
-            JPanel wrapperInner = new JPanel();
+            GridBagConstraints c = new GridBagConstraints();
+
+            c.anchor = GridBagConstraints.NORTH;
+            c.gridx = 0;
+            c.weightx = 1;
+            c.weighty = 0;
+
+            wrapperInner = new JPanel();
             GenericScrollPane scrollPane = new GenericScrollPane(wrapperInner);
+            GenericRoundedButton buttonLoad;
+            GenericRoundedButton buttonDelete;
 
             final boolean isOverflowing = saves.size() * (btnHeight+2) >= height;
             int btnWidth = width - 10;
@@ -147,24 +151,47 @@ public class SavedGamesPanel extends JPanel {
                 scrollPane.setPreferredSize(new Dimension(width - 5, height - 5));
                 btnWidth -= 25;
             }
-
+            else {
+                wrapperInner.removeAll();
+                wrapperInner = null;
+            }
             
             for(i=0; i < saves.size(); i++) {
                 c.gridy = i;
+                String saveName = saves.get(i); // TODO: set the real save name with date/time/vs
 
-                button = new GenericRoundedButton(saves.get(i), btnWidth, btnHeight);
-                button.setStyle("button.load");
-                button.addActionListener(new ButtonLoadAdaptator(button, i, this));
+                JPanel saveBtn = new JPanel();
+                saveBtn.setOpaque(false);
+                saveBtn.setPreferredSize(new Dimension(btnWidth, btnHeight));
+                saveBtn.setLayout(new GridBagLayout());
+                GridBagConstraints cs = new GridBagConstraints();
+
+                cs.gridx = 0;
+                cs.gridy = 0;
+
+                buttonLoad = new GenericRoundedButton(saveName, btnWidth - btnHeight, btnHeight);
+                buttonLoad.setStyle("button.load");
+                buttonLoad.addActionListener(new ButtonLoadAdaptator(buttonLoad, i, this));
+
+                buttonDelete = new GenericRoundedButton("", btnHeight, btnHeight);
+                buttonDelete.setStyle("button.load");
+                buttonDelete.setImage("cross.png", 10, 10, btnHeight - 20, btnHeight - 20);
+                buttonDelete.addActionListener(new ButtonDeleteSaveAdaptator(buttonDelete, i, saveBtn, this));
+
+                saveBtn.add(buttonLoad, cs);
+                cs.gridx = 2;
+                saveBtn.add(buttonDelete, cs);
+
 
                 if(isOverflowing)
-                    wrapperInner.add(button, c);
+                    wrapperInner.add(saveBtn, c);
                 else
-                    wrapper.add(button, c);
+                    wrapper.add(saveBtn, c);
             }
             
-            if(isOverflowing) {
+            if(isOverflowing)
                 wrapper.add(scrollPane);
-            }
+
             else {
                 // align content to the top
                 JPanel emptyPanel = new JPanel();
@@ -175,5 +202,49 @@ public class SavedGamesPanel extends JPanel {
 			    wrapper.add(emptyPanel, c);
             }
 		}
+    }
+
+    public void deleteSave(JPanel saveButtonToDelete) {
+        final boolean win = wrapperInner == null;
+        JPanel w = win? wrapper : wrapperInner;
+
+        w.remove(saveButtonToDelete);
+
+        int n = w.getComponentCount();
+
+        if(!win && n * (btnHeight+2) < height) {
+            Component cpnts[] = w.getComponents();
+
+            GridBagConstraints c = new GridBagConstraints();
+            c.anchor = GridBagConstraints.NORTH;
+            c.gridx = 0;
+            c.weightx = 1;
+            c.weighty = 0;
+            int i;
+            
+            for(i=0; i < cpnts.length; i++) {
+                JPanel b = (JPanel)cpnts[i];
+                c.gridy = i;
+                wrapper.add(b, c);
+            }
+
+            // align content to the top
+            JPanel emptyPanel = new JPanel();
+            emptyPanel.setOpaque(false);
+            c.gridy = i;
+            c.weighty = 1;
+
+            wrapper.add(emptyPanel, c);
+            wrapper.remove(0);
+
+            wrapperInner.removeAll();
+            wrapperInner = null;
+        }
+
+        if(n == 1) {
+            GenericLabel label = new GenericLabel("Aucune partie sauvegardée", 12);
+            label.setBorder(new EmptyBorder(height/2 - 20, 0, 0, 0));
+            wrapper.add(label);
+        }
     }
 }

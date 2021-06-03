@@ -2,21 +2,26 @@ package fr.prog.tablut.controller.adaptators;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.JPanel;
+
 import fr.prog.tablut.view.components.generic.GenericButton;
 import fr.prog.tablut.view.pages.load.SavedGamesPanel;
 
-public class ButtonLoadAdaptator extends ActionAdaptator<GenericButton> {
+public class ButtonDeleteSaveAdaptator extends ActionAdaptator<GenericButton> {
 	private final SavedGamesPanel savedGamesPanel;
+    private final JPanel saveButton;
 	private final int index;
 	
-	public ButtonLoadAdaptator(GenericButton button, int index, SavedGamesPanel savedGamesPanel) {
+	public ButtonDeleteSaveAdaptator(GenericButton button, int index, JPanel saveButton, SavedGamesPanel savedGamesPanel) {
 		super(button);
 		this.savedGamesPanel = savedGamesPanel;
+        this.saveButton = saveButton;
 		this.index = index;
 	}
 	
 	@Override
 	public void process(ActionEvent e) {
-		savedGamesPanel.selected(entity, index);
+		System.out.println("Deleting the save " + index);
+        savedGamesPanel.deleteSave(saveButton);
 	}
 }
