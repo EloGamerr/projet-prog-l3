@@ -168,8 +168,11 @@ public class GlobalWindow extends Window {
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + dest);
 		}
-		
-		currentPage.update();
+
+		// update page if previous wasn't the help one
+		if(previousPageName != WindowName.HelpWindow)
+			currentPage.update();
+
 		currentPage.setVisible(true);
 		jFrame.setContentPane(currentPage);
 	}

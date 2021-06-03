@@ -34,11 +34,11 @@ public class HistoryChatField extends JPanel {
         
 
         for(int i = 0; i < 5; i++) {
-        	addAction(new Couple(new Couple(1, 1), new Couple(2, 2)), Game.getInstance().getPlays());
+        	addAction(new Couple(new Couple(1, 1), new Couple(2, 2)));
         }
     }
 
-    public void addAction(Couple<Couple<Integer, Integer>, Couple<Integer, Integer>> action, Plays plays) {
+    public void addAction(Couple<Couple<Integer, Integer>, Couple<Integer, Integer>> action) {
         labelField newPlayerAction = new labelField(action, String.format("Action du joueur"));
 
         // GenericObjectStyle.getProp("chat", "color");         // -- couleur orange du texte
@@ -78,12 +78,12 @@ public class HistoryChatField extends JPanel {
                 /* for(Play play : plays.getPlays()) {
                     System.out.println(String.format("Pion bougé de %d,%d vers %d,%d", play.getMovement().fromC,play.getMovement().fromL, play.getMovement().toC,play.getMovement().toL));
                 } */
-				if(plays.getPlays() == null) {
+				/* if(plays.getPlays() == null) {
 					System.out.println("Aucun play trouvé ...");
 				}
 				else {
 					System.out.println("Play trouvé");
-				}
+				} */
 				
 			}
 		});
@@ -95,6 +95,10 @@ public class HistoryChatField extends JPanel {
 
     }
 
+
+	public void updateContent() {
+
+	}
 }
 
 class labelField extends JLabel{

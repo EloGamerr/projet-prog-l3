@@ -35,8 +35,7 @@ public class ButtonChoice extends JPanel {
 			put("Charger partie", WindowName.LoadWindow);
 			put("Raccourcis", WindowName.HelpWindow);
 			put("Quitter", null);
-		}
-	};
+		}};
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.insets = new Insets(10, 10, 10, 10);

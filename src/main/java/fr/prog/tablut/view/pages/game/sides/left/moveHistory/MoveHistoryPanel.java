@@ -97,4 +97,8 @@ public class MoveHistoryPanel extends JPanel {
 
         super.paintComponent(g);
     }
+
+    public void update() {
+        historyChat.update();
+    }
 }
