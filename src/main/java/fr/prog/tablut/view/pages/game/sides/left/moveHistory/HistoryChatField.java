@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import fr.prog.tablut.model.game.Game;
+import fr.prog.tablut.model.game.Play;
 import fr.prog.tablut.model.game.Plays;
 import fr.prog.tablut.structures.Couple;
 
@@ -75,15 +76,15 @@ public class HistoryChatField extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				// TODO Auto-generated method stub
 				System.out.println("Clik sur le bouton");
-                /* for(Play play : plays.getPlays()) {
-                    System.out.println(String.format("Pion bougé de %d,%d vers %d,%d", play.getMovement().fromC,play.getMovement().fromL, play.getMovement().toC,play.getMovement().toL));
-                } */
-				/* if(plays.getPlays() == null) {
-					System.out.println("Aucun play trouvé ...");
+				Plays test = Game.getInstance().getPlays();
+
+				if(test == null){
+					System.out.println("Pas de donnée");
 				}
+
 				else {
-					System.out.println("Play trouvé");
-				} */
+					System.out.println("Des données !");
+				}
 				
 			}
 		});
@@ -97,7 +98,7 @@ public class HistoryChatField extends JPanel {
 
 
 	public void updateContent() {
-
+		System.out.println("Update content");
 	}
 }
 

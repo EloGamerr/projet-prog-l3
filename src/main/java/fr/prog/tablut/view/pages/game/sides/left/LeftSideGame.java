@@ -16,11 +16,11 @@ public class LeftSideGame extends GameInterfaceSide {
 
         Dimension mbd = new Dimension(d.width, 40);
 
-        hisoryPanel = new MoveHistoryPanel(d.width - 10, d.height - mbd.height*2 - 25);
+        historyPanel = new MoveHistoryPanel(d.width - 10, d.height - mbd.height*2 - 25);
 
         buttons = new MoveButtons(mbd,gameController);
 
-        add(hisoryPanel);
+        add(historyPanel);
         add(buttons);
     }
 

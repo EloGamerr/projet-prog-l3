@@ -99,6 +99,6 @@ public class MoveHistoryPanel extends JPanel {
     }
 
     public void update() {
-        historyChat.update();
+        historyChat.updateContent();
     }
 }
