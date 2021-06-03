@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JPanel;
 
+import fr.prog.tablut.model.saver.GameSaver;
 import fr.prog.tablut.view.components.generic.GenericButton;
 import fr.prog.tablut.view.pages.load.SavedGamesPanel;
 
@@ -21,7 +22,11 @@ public class ButtonDeleteSaveAdaptator extends ActionAdaptator<GenericButton> {
 	
 	@Override
 	public void process(ActionEvent e) {
-		System.out.println("Deleting the save " + index);
-        savedGamesPanel.deleteSave(saveButton);
+		if(GameSaver.getInstance().delete(index)) {
+            if(savedGamesPanel.getSelectedIndex() == index)
+                savedGamesPanel.disableConfirmButton();
+
+            savedGamesPanel.deleteSave(saveButton);
+        }
 	}
 }

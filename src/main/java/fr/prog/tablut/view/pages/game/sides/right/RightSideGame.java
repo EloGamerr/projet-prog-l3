@@ -16,25 +16,24 @@ import fr.prog.tablut.view.pages.game.sides.GameInterfaceSide;
 
 public class RightSideGame extends GameInterfaceSide {
 	GameController gameController;
+    GenericRoundedButton pause;
+
     public RightSideGame(WindowConfig config, Dimension d, GameController gameController) {
         super(d);
         this.gameController = gameController;
         
-        GenericRoundedButton saveToNewFile = new GenericRoundedButton("Nouvelle sauvegarde", 200, 40);
-        GenericRoundedButton saveToFile = new GenericRoundedButton("Ecraser la sauvegarde", 200, 40);
-        GenericRoundedButton pause = new GenericRoundedButton("Pause", 200, 40);
+        GenericRoundedButton saveToNewFile = new GenericRoundedButton("Sauvegarder la partie", 200, 40);
+        pause = new GenericRoundedButton("Pause", 200, 40);
         GenericRoundedButton restart = new GenericRoundedButton("Recommencer la partie", 200, 40);
         GenericRoundedButton shortcuts = new GenericRoundedButton("Raccourcis", 200, 40);
         GenericRoundedButton quit = new GenericRoundedButton("Quitter la partie", 200, 40);
         
         saveToNewFile.setStyle("button.greenHover");
-        saveToFile.setStyle("button.greenHover");
         quit.setStyle("button.redHover");
 
         shortcuts.setHref(WindowName.HelpWindow);
         quit.setHref(WindowName.HomeWindow);
         
-        saveToFile.addActionListener(new ButtonSaveAdaptator(saveToFile, this));
         saveToNewFile.addActionListener(new ButtonSaveAdaptator(saveToNewFile, this));
         
         pause.addActionListener(new ButtonPauseAdaptator(pause, this));
@@ -48,10 +47,25 @@ public class RightSideGame extends GameInterfaceSide {
         c.gridx = 0;
         
         c.gridy = 0; add(saveToNewFile, c);
-        c.gridy = 1; add(saveToFile, c);
-        c.gridy = 2; add(pause, c);
-        c.gridy = 3; add(restart, c);
-        c.gridy = 4; add(shortcuts, c);
-        c.gridy = 5; add(quit, c);
+        c.gridy = 1; add(pause, c);
+        c.gridy = 2; add(restart, c);
+        c.gridy = 3; add(shortcuts, c);
+        c.gridy = 4; add(quit, c);
+    }
+
+    public GameController getGameController() {
+        return this.gameController;
+    }
+
+    public GenericRoundedButton getPauseButton() {
+        return this.pause;
+    }
+
+    public void togglePauseButton(boolean isPaused) {
+        pause.updateText(isPaused? "Reprendre" : "Pause");
+    }
+
+    public void enablePauseButton(boolean enable) {
+        pause.setStyle("button" + (enable? "" : ":disabled"));
     }
 }

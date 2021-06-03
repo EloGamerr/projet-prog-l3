@@ -8,9 +8,13 @@ import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
+import java.io.FileNotFoundException;
 
 
 import org.json.JSONArray;
@@ -18,29 +22,28 @@ import org.json.JSONObject;
 
 import fr.prog.tablut.model.game.Play;
 import fr.prog.tablut.model.game.player.PlayerTypeEnum;
+import fr.prog.tablut.structures.Couple;
 import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Game;
 
 
 
 public class GameSaver {
+    private static GameSaver gameSaver;
 	private static final String savesPath = Paths.get(System.getProperty("user.dir"), "saves").toString();
 	private static final String savePrefix = "save-";
 	private static final String saveSuffix = ".sv";
-	private final Game game;
 	private String currentSavePath = "";
-	private final List<Game> saves = new ArrayList<>();
 
 	////////////////////////////////////////////////////
 	// Constructors
 	////////////////////////////////////////////////////
 
-	public GameSaver(Game game) {
-		this.game = game;
+	public GameSaver() {
+		
 	}
 
-	 public GameSaver(Game game, String currentSavePath) {
-		this.game = game;
+	 public GameSaver(String currentSavePath) {
 		this.currentSavePath = currentSavePath;
 	}
 
@@ -48,11 +51,19 @@ public class GameSaver {
 	// Main Functions
 	////////////////////////////////////////////////////
 
+	public static GameSaver getInstance() {
+		if(gameSaver == null) {
+			gameSaver = new GameSaver();
+		}
+		
+		return gameSaver;
+	}
+
 	public void save() {
-		if(game.getCurrentSavePath().matches(""))
+		if(Game.getInstance().getCurrentSavePath().matches(""))
             newSave();
         else
-			save_core(Paths.get(game.getCurrentSavePath()));
+			save_core(Paths.get(Game.getInstance().getCurrentSavePath()));
 	}
 
 	private void writeInFile(Path path, List<String> items, OpenOption... options) {
@@ -94,10 +105,10 @@ public class GameSaver {
 			}
 
 			setCurrentSavePath(path.toString());
-			game.setCurrentSavePath(path.toString());
+			Game.getInstance().setCurrentSavePath(path.toString());
 
 		}
-		catch (IOException e) {
+		catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -119,16 +130,22 @@ public class GameSaver {
 		JSONObject jsonPlayingPlayer = new JSONObject();
 		JSONObject jsonPlays = new JSONObject();
 		JSONObject jsonDefender = new JSONObject();
+		JSONObject jsonDefenderName = new JSONObject();
 		JSONObject jsonAttacker = new JSONObject();
+		JSONObject jsonAttackerName = new JSONObject();
 
-		jsonDefender.put("defender", PlayerTypeEnum.getFromPlayer(game.getDefender()).ordinal());
-		jsonAttacker.put("attacker", PlayerTypeEnum.getFromPlayer(game.getAttacker()).ordinal());
-		jsonWinner.put("winner",this.game.getWinner().toString());
-		jsonPlayingPlayer.put("playingPlayer", game.getPlayingPlayerEnum().toString());
+		jsonDefender.put("defender", PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender()).ordinal());
+		jsonDefenderName.put("defenderName", Game.getInstance().getDefenderName());
+		jsonAttacker.put("attacker", PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker()).ordinal());
+		jsonAttackerName.put("attackerName", Game.getInstance().getAttackerName());
+		jsonWinner.put("winner", Game.getInstance().getWinner().toString());
+		jsonPlayingPlayer.put("playingPlayer", Game.getInstance().getPlayingPlayerEnum().toString());
 		jsonPlays.put("plays", savePlays().toString());
 
 		jsonParameters.put(jsonDefender);
+		jsonParameters.put(jsonDefenderName);
 		jsonParameters.put(jsonAttacker);
+		jsonParameters.put(jsonAttackerName);
 		jsonParameters.put(jsonWinner);
 		jsonParameters.put(jsonPlayingPlayer);
 		jsonParameters.put(jsonPlays);
@@ -144,9 +161,9 @@ public class GameSaver {
 		StringBuilder builder = new StringBuilder();
 		CellContent cell = null;
 
-		for(int l = 0; l < game.getRowAmout();l++) {
-			for(int c = 0; c < game.getColAmout();c++) {
-				cell = game.getCellContent(l, c);
+		for(int l = 0; l < Game.getInstance().getRowAmout();l++) {
+			for(int c = 0; c < Game.getInstance().getColAmout();c++) {
+				cell = Game.getInstance().getCellContent(l, c);
 
 				switch(cell) {
 					case EMPTY: 		builder.append(SaverConstants.EMPTY); break;
@@ -171,7 +188,7 @@ public class GameSaver {
 	public StringBuilder savePlays() {
 		StringBuilder builder = new StringBuilder();
 
-		for(Play move : game.getPlays().movements()) {
+		for(Play move : Game.getInstance().getPlays().movements()) {
 			builder.append(SaverConstants.BR_LEFT);
 			builder.append(move.getMovement().fromL);
 			builder.append(SaverConstants.COMMA);
@@ -216,24 +233,22 @@ public class GameSaver {
 		    f = new File(savePath);
 		   
 		}
+
 		System.out.println(savePath);
 		return savePath;
 	}
 
 	////////////////////////////////////////////////////
-	// Reload / Delete / overwrite saves
+	// Delete / overwrite saves
 	////////////////////////////////////////////////////
 
 	public void overwriteSave() {
 		save_core(Paths.get(currentSavePath));
 	}
 
-	public Game reload(int index_game) {
-		return saves.get(index_game);
-	}
-
-	public void delete(int index_game) {
-		saves.remove(index_game);
+	public boolean delete(int index_game) {
+        File f = Paths.get(savesPath + "/" + savePrefix + index_game + saveSuffix).toFile();
+        return f.exists() && f.isFile() && f.delete();
 	}
 
 	////////////////////////////////////////////////////
@@ -248,7 +263,61 @@ public class GameSaver {
 		currentSavePath = path;
 	}
 
-	public List<Game> getSaves() {
-		return saves;
+	public ArrayList<Couple<String, Integer>> getSavesNames() {
+        int i = 0;
+		File folder = new File(savesPath);
+        String[] files = folder.list();
+        ArrayList<Couple<String, Integer>> saves = new ArrayList<Couple<String, Integer>>();
+
+        // recover saves
+		for(String f : files) {
+            if(f.startsWith(savePrefix) && f.endsWith(saveSuffix)) {
+                int fi = Integer.parseInt(f.replace(savePrefix, "").replace(saveSuffix, ""));
+                saves.add(new Couple<String, Integer>(generateSaveName(new File(savesPath + "/" + f), i++), fi));
+            }
+		}
+
+        return saves;
+	}
+
+        
+	private String generateSaveName(File f, int i) {
+        Scanner scanner = null;
+
+		try {
+			scanner = new Scanner(f);
+		}
+		catch(FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		if(scanner == null)
+			throw new RuntimeException();
+        
+		if(scanner.hasNextLine()) 
+			return getData(scanner.nextLine(), f, i);
+
+		return "Erreur de lecture";
+	}
+
+	private String getData(String nextLine, File f, int i) {
+		try {
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+			
+            String date = "(" + sdf.format(f.lastModified()) + ")";
+			
+            JSONObject jsonParameters = new JSONObject(nextLine);
+			JSONArray array = jsonParameters.getJSONArray("parameters");
+
+			String defenderName = new JSONObject(array.getString(1)).getString("defenderName");
+			String attackerName = new JSONObject(array.getString(3)).getString("attackerName");
+
+			return "Partie " + (i+1) + " : " + date + "   " + attackerName + "  vs  " + defenderName;
+		}
+		catch (ParseException e) {
+			e.printStackTrace();
+			return "Erreur de lecture";
+		}
 	}
 }

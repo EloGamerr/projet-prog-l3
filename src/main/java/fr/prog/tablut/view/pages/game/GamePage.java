@@ -6,9 +6,14 @@ import java.awt.GridBagLayout;
 
 import javax.swing.Timer;
 
+import javax.swing.JFrame;
+
+import fr.prog.tablut.controller.game.gameAdaptator.GameKeyAdaptator;
 import fr.prog.tablut.controller.game.gameAdaptator.GameMouseAdaptator;
 import fr.prog.tablut.controller.game.gameAdaptator.GameTimeAdaptator;
 import fr.prog.tablut.controller.game.gameController.GameController;
+import fr.prog.tablut.model.game.Game;
+import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 import fr.prog.tablut.model.window.WindowConfig;
 import fr.prog.tablut.model.window.WindowName;
 import fr.prog.tablut.view.Page;
@@ -30,7 +35,7 @@ public class GamePage extends Page {
      * Creates the game's view manager
      * @param config The configuration to apply to the page
      */
-    public GamePage(WindowConfig config) {
+    public GamePage(WindowConfig config, JFrame jFrame) {
         super(config);
         GameController gameController = new GameController(this);
         
@@ -69,13 +74,8 @@ public class GamePage extends Page {
 
         Timer time = new Timer(50, new GameTimeAdaptator(gameController));
         time.start();
-    }
-    
-    /**
-     * Creates the game's view manager without any page's confiugration.
-     */
-    public GamePage() {
-        this(null);
+
+        jFrame.addKeyListener(new GameKeyAdaptator(gameController));
     }
     
     /**
@@ -100,5 +100,13 @@ public class GamePage extends Page {
      */
     public LeftSideGame getLeftSide() {
         return leftSide;
+    }
+
+    @Override
+    public void update() {
+         boolean a = PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker()).isAI(),
+            b = PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender()).isAI();
+
+        rightSide.enablePauseButton(a && b);
     }
 }

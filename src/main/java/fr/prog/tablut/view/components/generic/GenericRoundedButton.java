@@ -26,6 +26,9 @@ import fr.prog.tablut.model.window.WindowName;
  * @see JButton
  */
 public class GenericRoundedButton extends GenericButton {
+    protected TextAlignment alignment = TextAlignment.CENTER;
+    protected int width = 0;
+    protected int height = 0;
     protected int paddingWidth = 60;
     protected int paddingHeight = 20;
     protected int borderRadius = 12;
@@ -162,8 +165,12 @@ public class GenericRoundedButton extends GenericButton {
         setPreferredSize(size);
         setMinimumSize(size);
 
-        labelX = (float) (size.getWidth() - textBounds.getBounds().width) / 2;
-        labelY = (float) getFont().getSize() + (float) (size.getHeight() - getFont().getSize()) / 2;
+        width = size.width;
+        height = size.height;
+
+        labelY = (float) getFont().getSize() + (float) (height - getFont().getSize()) / 2 - 1;
+        
+        alignText(alignment);
     }
 
     /**
@@ -207,6 +214,25 @@ public class GenericRoundedButton extends GenericButton {
         }
     }
 
+    public void alignText(TextAlignment alignment) {
+        this.alignment = alignment;
+        int padding = 10;
+
+        switch(alignment) {
+            case CENTER:
+                labelX = (float) (width - textBounds.getBounds().width) / 2;
+                break;
+
+            case LEFT:
+                labelX = padding;
+                break;
+
+            case RIGHT:
+                labelX = width - textBounds.getBounds().width - padding;
+                break;
+        }
+    }
+
     public boolean setImage(String imageSrc, int x, int y, int width, int height) {
         if(imageSrc != null) {
 			InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream("images/" + imageSrc);
@@ -228,6 +254,13 @@ public class GenericRoundedButton extends GenericButton {
 		}
 
         return false;
+    }
+
+    // @Override
+    public void updateText(String text) {
+        super.setText(text);
+        textBounds = getFont().getStringBounds(text, new FontRenderContext(null, false, false));
+        alignText(alignment);
     }
 
     public void paint(Graphics g) {

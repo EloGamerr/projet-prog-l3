@@ -70,7 +70,7 @@ public class GlobalWindow extends Window {
 	
 		GenericObjectStyle.setGlobalWindow(this);
 		
-		gamePage = new GamePage(this.config);
+		gamePage = new GamePage(this.config, jFrame);
 		homePage = new HomePage(this.config);
 		currentPage = homePage;
 		previousPageName = currentPage.name();

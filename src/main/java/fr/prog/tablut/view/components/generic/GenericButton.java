@@ -40,10 +40,10 @@ public class GenericButton extends JButton implements GenericComponent {
 	 * Creates a generic button of type JButton with given text inside.
 	 * <p>Handles these events : when the mouse enters or leaves the button,
 	 * or clicks on, to set the cursor icon and the hovering boolean state.</p>
-	 * @param label The text in the button
+	 * @param text The text in the button
 	 */
-	public GenericButton(String label) {
-		super(label);
+	public GenericButton(String text) {
+		super(text);
 		init();
     }
 
@@ -70,7 +70,8 @@ public class GenericButton extends JButton implements GenericComponent {
 
 			public void mouseReleased(java.awt.event.MouseEvent evt) {
 				hovering = false;
-                me.setCursor(me.handCursor);
+                if(!styleName.contains(":disabled"))
+                    me.setCursor(me.handCursor);
 			}
         });
 	}

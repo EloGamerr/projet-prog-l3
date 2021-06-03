@@ -3,6 +3,8 @@ package fr.prog.tablut.controller.game.gameController;
 import java.awt.Point;
 
 import fr.prog.tablut.model.game.Game;
+import fr.prog.tablut.model.game.player.PlayerTypeEnum;
+import fr.prog.tablut.model.saver.GameSaver;
 import fr.prog.tablut.structures.Couple;
 import fr.prog.tablut.view.pages.game.GamePage;
 
@@ -36,14 +38,8 @@ public class GameController {
 	}
 
 	public void tick() {
-
 		if(gameControllerAI.tick())
-			this.gamePage.repaint();	
-
-		if(gameControllerAI.tick()) {
 			this.gamePage.repaint();
-		}
-
 	}
 	
 	public void restart() {
@@ -66,5 +62,18 @@ public class GameController {
 		if(Game.getInstance().redo_move()) {
 			this.gamePage.repaint();
 		}
+	}
+
+	public void save() {
+		GameSaver.getInstance().newSave();
+	}
+
+	public void pause() {
+		boolean pause = PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker()).isAI() && PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender()).isAI();
+
+        if(pause)
+			pause = !Game.getInstance().isPaused();
+
+		Game.getInstance().setPaused(pause);
 	}
 }

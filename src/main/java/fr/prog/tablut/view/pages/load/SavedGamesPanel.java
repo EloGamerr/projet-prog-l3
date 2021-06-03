@@ -5,8 +5,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.io.File;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -14,11 +12,14 @@ import javax.swing.border.EmptyBorder;
 
 import fr.prog.tablut.controller.adaptators.ButtonDeleteSaveAdaptator;
 import fr.prog.tablut.controller.adaptators.ButtonLoadAdaptator;
+import fr.prog.tablut.model.saver.GameSaver;
+import fr.prog.tablut.structures.Couple;
 import fr.prog.tablut.view.components.generic.GenericButton;
 import fr.prog.tablut.view.components.generic.GenericLabel;
 import fr.prog.tablut.view.components.generic.GenericRoundedButton;
 import fr.prog.tablut.view.components.generic.GenericRoundedPanel;
 import fr.prog.tablut.view.components.generic.GenericScrollPane;
+import fr.prog.tablut.view.components.generic.TextAlignment;
 
 /**
  * A component that regroups every saved games in a list and shows them.
@@ -26,7 +27,6 @@ import fr.prog.tablut.view.components.generic.GenericScrollPane;
  * @see JPanel
  */
 public class SavedGamesPanel extends JPanel {
-
 	private final int width = 460;
 	private final int height = 350;
 	private final int btnHeight = 35;
@@ -37,10 +37,6 @@ public class SavedGamesPanel extends JPanel {
     private JPanel wrapperInner = null;
 	
 	public GenericRoundedButton button_selected = null;
-	
-	private final String savesPath = Paths.get(System.getProperty("user.dir"), "saves").toString();
-	private static final String savePrefix = "save-";
-	private static final String saveSuffix = ".sv";
 	
 	/**
 	 * Default constructor.
@@ -82,7 +78,7 @@ public class SavedGamesPanel extends JPanel {
 	 * @see ComponentStyle
 	 * @param button the button that's been clicked on (a save)
 	 */
-	public void selected(GenericButton button, int index) {
+	public void select(GenericButton button, int index) {
 		if(button_selected != null) {
 			button_selected.setStyle("button.load");
 		}
@@ -95,30 +91,21 @@ public class SavedGamesPanel extends JPanel {
 			buttonToLightup.setStyle("button.green");
 	}
 
+    public void disableConfirmButton() {
+        buttonToLightup.setStyle("button.green:disabled");
+    }
+
 	public int getSelectedIndex() {
 		return index_selected;
 	}
 
     public void updateContent() {
-		int i = 1;
-        ArrayList<String> saves = new ArrayList<String>();
-		String savePath = Paths.get(savesPath, savePrefix + i + saveSuffix).toString();
-		File f = new File(savePath);
-
-        // recover saves
-		while(f.isFile()) {
-            saves.add("Partie " + i);
-
-			i++;
-			savePath = Paths.get(savesPath, savePrefix + i + saveSuffix).toString();
-			f = new File(savePath);
-		}
-
-
+		ArrayList<Couple<String, Integer>> saves = GameSaver.getInstance().getSavesNames();
+        
         wrapper.removeAll();
         
         // no save found
-		if(i == 1) {
+		if(saves.size() == 0) {
             GenericLabel label = new GenericLabel("Aucune partie sauvegardée", 12);
             label.setBorder(new EmptyBorder(height/2 - 20, 0, 0, 0));
 			wrapper.add(label);
@@ -156,9 +143,9 @@ public class SavedGamesPanel extends JPanel {
                 wrapperInner = null;
             }
             
-            for(i=0; i < saves.size(); i++) {
+            for(int i=0; i < saves.size(); i++) {
                 c.gridy = i;
-                String saveName = saves.get(i); // TODO: set the real save name with date/time/vs
+                String saveName = saves.get(i).getFirst();
 
                 JPanel saveBtn = new JPanel();
                 saveBtn.setOpaque(false);
@@ -171,12 +158,13 @@ public class SavedGamesPanel extends JPanel {
 
                 buttonLoad = new GenericRoundedButton(saveName, btnWidth - btnHeight, btnHeight);
                 buttonLoad.setStyle("button.load");
-                buttonLoad.addActionListener(new ButtonLoadAdaptator(buttonLoad, i, this));
+                buttonLoad.alignText(TextAlignment.LEFT);
+                buttonLoad.addActionListener(new ButtonLoadAdaptator(buttonLoad, saves.get(i).getSecond(), this));
 
                 buttonDelete = new GenericRoundedButton("", btnHeight, btnHeight);
                 buttonDelete.setStyle("button.load");
                 buttonDelete.setImage("cross.png", 10, 10, btnHeight - 20, btnHeight - 20);
-                buttonDelete.addActionListener(new ButtonDeleteSaveAdaptator(buttonDelete, i, saveBtn, this));
+                buttonDelete.addActionListener(new ButtonDeleteSaveAdaptator(buttonDelete, saves.get(i).getSecond(), saveBtn, this));
 
                 saveBtn.add(buttonLoad, cs);
                 cs.gridx = 2;
@@ -196,7 +184,7 @@ public class SavedGamesPanel extends JPanel {
                 // align content to the top
                 JPanel emptyPanel = new JPanel();
                 emptyPanel.setOpaque(false);
-                c.gridy = i;
+                c.gridy = saves.size();
                 c.weighty = 1;
 
 			    wrapper.add(emptyPanel, c);

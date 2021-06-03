@@ -25,10 +25,10 @@ public class HelpTable extends JPanel {
 
 		table.setHeader("TOUCHES RACCOURCIS", "DESCRIPTION");
 		table.addLine("CRTL+S", "Sauvegarder");
-		table.addLine("Espace", "Pause (fonctionne uniquement en ordinateur contre ordinateur)");
 		table.addLine("CRTL+Z", "Annuler le dernier coup");
 		table.addLine("CRTL+Y", "Refaire le dernier coup");
 		table.addLine("CRTL+N", "Recommencer la partie");
+		table.addLine("Espace", "Pause (fonctionne uniquement en ordinateur contre ordinateur)");
 
 		table.insertInto(this);
 	}

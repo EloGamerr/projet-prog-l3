@@ -17,6 +17,6 @@ public class ButtonLoadAdaptator extends ActionAdaptator<GenericButton> {
 	
 	@Override
 	public void process(ActionEvent e) {
-		savedGamesPanel.selected(entity, index);
+		savedGamesPanel.select(entity, index);
 	}
 }

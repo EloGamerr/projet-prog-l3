@@ -5,13 +5,11 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import fr.prog.tablut.controller.adaptators.ComboBoxAdaptator;
 import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 import fr.prog.tablut.view.components.generic.GenericComboBox;
-import fr.prog.tablut.view.components.generic.GenericInput;
 import fr.prog.tablut.view.components.generic.GenericLabel;
 
 /**
@@ -20,9 +18,9 @@ import fr.prog.tablut.view.components.generic.GenericLabel;
  * @see JPanel
  */
 public class SelectionPlayer extends JPanel {
-
-	protected PlayerData attaquant = new PlayerData("Attaquant", "Joueur 1");
-	protected PlayerData defenseur = new PlayerData("D\u00e9fenseur", "Joueur 2");
+    // TODO: passer les PlayerData dans le model
+	protected PlayerData attacker = new PlayerData("attacker", "Player 1");
+	protected PlayerData defender = new PlayerData("defender", "Player 2");
 	protected GenericComboBox<PlayerTypeEnum> comboBox1;
 	protected GenericComboBox<PlayerTypeEnum> comboBox2;
 
@@ -38,12 +36,12 @@ public class SelectionPlayer extends JPanel {
 		GridBagConstraints c = new GridBagConstraints();
 
 		c.gridy = 0;
-		createSide(c, 0, attaquant);
+		createSide(c, 0, attacker);
 
 		c.insets = new Insets(100, 0, 0, 0);
 		add(new GenericLabel("VS", 20));
 
-		createSide(c, 1, defenseur);
+		createSide(c, 1, defender);
 	}
 
 	/**
@@ -92,7 +90,7 @@ public class SelectionPlayer extends JPanel {
 	 * @param side The player to show his input
 	 */
 	public void showInput(String side) {
-		PlayerData p = (side == "Attaquant")? attaquant : defenseur;
+		PlayerData p = (side == "attacker")? attacker : defender;
 		p.usernameInput.setVisible(true);
 	}
 	
@@ -101,7 +99,7 @@ public class SelectionPlayer extends JPanel {
 	 * @param side The player to hide his input
 	 */
 	public void hideInput(String side) {
-		PlayerData p = (side == "Attaquant")? attaquant : defenseur;
+		PlayerData p = (side == "attacker")? attacker : defender;
 		p.usernameInput.setVisible(false);
 	}
 
@@ -112,35 +110,15 @@ public class SelectionPlayer extends JPanel {
 	public PlayerTypeEnum getPlayerType2() {
 		return (PlayerTypeEnum) this.comboBox2.getSelectedItem();
 	}
-}
-
-/**
- * A struct of player's form data
- */
-class PlayerData {
-	public String name;
-	public String username;
-	public String type;
-	public JTextField usernameInput;
-
-	/**
-	 * Default constructor.
-	 * <p>Creates a player's data struct with the given role name and empty username</p>
-	 * @param name The player role's name
-	 */
-	public PlayerData(String name) {
-		this(name, "");
+	
+	public PlayerData getDefender() {
+		return defender;
 	}
-
-	/**
-	 * Default constructor.
-	 * <p>Creates a player's data struct with the given role name and default username</p>
-	 * @param name The player role's name
-	 * @param username The default player's username
-	 */
-	public PlayerData(String name, String username) {
-		this.name = name;
-		this.username = username;
-		usernameInput = new GenericInput(this.username);
+	
+	public PlayerData getAttaquant() {
+		return attacker;
 	}
 }
+
+
+	

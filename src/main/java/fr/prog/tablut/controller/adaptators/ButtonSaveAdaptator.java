@@ -2,15 +2,13 @@ package fr.prog.tablut.controller.adaptators;
 
 import java.awt.event.ActionEvent;
 
-import fr.prog.tablut.model.game.Game;
-
 import fr.prog.tablut.view.components.generic.GenericButton;
-import fr.prog.tablut.view.pages.game.sides.GameInterfaceSide;
+import fr.prog.tablut.view.pages.game.sides.right.RightSideGame;
 
 public class ButtonSaveAdaptator extends ActionAdaptator<GenericButton> {
-	GameInterfaceSide sideGame;
+	RightSideGame sideGame;
 	
-	public ButtonSaveAdaptator(GenericButton button, GameInterfaceSide sideGame) {
+	public ButtonSaveAdaptator(GenericButton button, RightSideGame sideGame) {
 		super(button);
 		this.sideGame = sideGame;
 	}
@@ -18,9 +16,6 @@ public class ButtonSaveAdaptator extends ActionAdaptator<GenericButton> {
 	
 	@Override
 	public void process(ActionEvent e) {
-		if(e.getSource() == sideGame.getComponent(0)) 
-			Game.getInstance().getGameSaver().newSave();	
-		if(e.getSource() == sideGame.getComponent(1))
-			Game.getInstance().getGameSaver().save();
+		sideGame.getGameController().save();
 	}
 }

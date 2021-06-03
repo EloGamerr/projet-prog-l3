@@ -6,14 +6,17 @@ import fr.prog.tablut.controller.game.HumanPlayer;
 import fr.prog.tablut.controller.game.ia.AIRandom;
 
 public enum PlayerTypeEnum {
-    HUMAN("Humain", HumanPlayer.class),
-    EASY_AI("Ordinateur facile", AIRandom.class);
+    HUMAN("Humain", HumanPlayer.class, false),
+    EASY_AI("Ordinateur facile", AIRandom.class, true);
     
 	private String name;
     private Class<? extends Player> playerClass;
-    PlayerTypeEnum(String name, Class<? extends Player> playerClass) {
+    private boolean isAI;
+    
+    PlayerTypeEnum(String name, Class<? extends Player> playerClass, boolean isAI) {
         this.name = name;
         this.playerClass = playerClass;
+        this.isAI = isAI;
     }
 
     @Override
@@ -45,5 +48,9 @@ public enum PlayerTypeEnum {
 
     public static Player getDefaultPlayer() {
         return HUMAN.createPlayer();
+    }
+    
+    public boolean isAI() {
+        return this.isAI;
     }
 }
