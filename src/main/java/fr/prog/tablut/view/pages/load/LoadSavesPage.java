@@ -51,4 +51,9 @@ public class LoadSavesPage extends Page {
 	public BottomButtonPanel getBottomPanel() {
 		return bottomPanel;
 	}
+
+    @Override
+    public void update() {
+        panel.updateContent();
+    }
 }

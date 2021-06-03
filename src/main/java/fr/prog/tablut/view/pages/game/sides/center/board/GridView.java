@@ -121,27 +121,32 @@ public class GridView {
 	private void drawPawns() {
 		Game game = Game.getInstance();
 
-		int imgWidth = cellWidth/2;
-		int imgHeight = cellHeight/2;
+		int imgSize = cellWidth/2;
 
 		for(int i = 0 ; i < game.getRowAmout() ; i++) {
 			for(int j = 0 ; j < game.getColAmout() ; j++) {
 				if(selectedCell != null && selectedCell.getFirst() == i && selectedCell.getSecond() == j) continue;
 				
 				if(game.getCellContent(i, j).getImage() != null)
-					gridWindow.drawImage(game.getCellContent(i, j).getImage(), x + widthBorder + j * cellWidth - imgWidth/2 + cellWidth/2 + 4, y + widthBorder + i * cellHeight - imgHeight/2 + cellHeight/2 + 4, imgWidth, imgHeight);
+					gridWindow.drawImage(
+                        game.getCellContent(i, j).getImage(),
+                        x + widthBorder + j * cellWidth - imgSize/2 + cellWidth/2 + 4,
+                        y + widthBorder + i * cellHeight - imgSize/2 + cellHeight/2 + 4,
+                        imgSize,
+                        imgSize
+                    );
 			}
 		}
 		
 		Point mousePosition = gridWindow.getMousePosition();
 
 		if(imageOnMouse != null && mousePosition != null) {
-			int xImg = Math.max(x, mousePosition.x - imgWidth/2);
-			xImg = Math.min(xImg, x + width - imgWidth);
-			int yImg = Math.max(y, mousePosition.y - imgHeight/2);
-			yImg = Math.min(yImg, y + height - imgHeight);
+			int xImg = Math.max(x, mousePosition.x - imgSize/2);
+			xImg = Math.min(xImg, x + width - imgSize);
+			int yImg = Math.max(y, mousePosition.y - imgSize/2);
+			yImg = Math.min(yImg, y + height - imgSize);
 			
-    		gridWindow.drawImage(imageOnMouse, xImg, yImg, imgWidth, imgHeight);
+    		gridWindow.drawImage(imageOnMouse, xImg, yImg, imgSize, imgSize);
     	}
 	}
 	

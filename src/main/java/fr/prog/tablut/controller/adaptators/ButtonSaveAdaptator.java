@@ -21,7 +21,6 @@ public class ButtonSaveAdaptator extends ActionAdaptator<GenericButton> {
 		if(e.getSource() == sideGame.getComponent(0)) 
 			Game.getInstance().getGameSaver().newSave();	
 		if(e.getSource() == sideGame.getComponent(1))
-			Game.getInstance().getGameSaver().saveTo();
-
+			Game.getInstance().getGameSaver().save();
 	}
 }

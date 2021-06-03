@@ -2,12 +2,17 @@ package fr.prog.tablut.view.components.generic;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 
 import fr.prog.tablut.model.window.WindowName;
@@ -28,6 +33,11 @@ public class GenericRoundedButton extends GenericButton {
     protected Rectangle2D textBounds;
     protected float labelX = 0;
     protected float labelY = 0;
+    protected Image image = null;
+    protected int imageWidth = 0;
+    protected int imageHeight = 0;
+    protected int imageX = 0;
+    protected int imageY = 0;
 
     /**
      * Defaults constructor.
@@ -197,6 +207,29 @@ public class GenericRoundedButton extends GenericButton {
         }
     }
 
+    public boolean setImage(String imageSrc, int x, int y, int width, int height) {
+        if(imageSrc != null) {
+			InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream("images/" + imageSrc);
+
+			try {
+				image = ImageIO.read(in);
+
+                imageX = x;
+                imageY = y;
+                imageWidth = width;
+                imageHeight = height;
+
+                return true;
+			}
+			catch(IOException e) {
+				e.printStackTrace();
+                return false;
+			}
+		}
+
+        return false;
+    }
+
     public void paint(Graphics g) {
         // Don't draw the button or border
         setContentAreaFilled(false);
@@ -226,5 +259,9 @@ public class GenericRoundedButton extends GenericButton {
         // text
         g2d.setColor(color);
         g2d.drawString(getText(), labelX, labelY);
+
+        if(image != null) {
+            g2d.drawImage(image, imageX, imageY, imageWidth, imageHeight, null);
+        }
     }
 }

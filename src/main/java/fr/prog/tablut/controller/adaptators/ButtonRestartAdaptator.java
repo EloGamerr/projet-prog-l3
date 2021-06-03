@@ -3,7 +3,6 @@ package fr.prog.tablut.controller.adaptators;
 import java.awt.event.ActionEvent;
 
 import fr.prog.tablut.controller.game.gameController.GameController;
-import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.view.components.generic.GenericButton;
 
 

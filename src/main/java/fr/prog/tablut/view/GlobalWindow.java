@@ -168,7 +168,8 @@ public class GlobalWindow extends Window {
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + dest);
 		}
-		
+        
+        currentPage.update();
 		currentPage.setVisible(true);
 		jFrame.setContentPane(currentPage);
 	}

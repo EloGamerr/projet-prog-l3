@@ -23,8 +23,11 @@ public class MoveButtons extends JLabel {
         setMinimumSize(d);
         GridBagConstraints lc = new GridBagConstraints();
         
-        GenericRoundedButton undo = new GenericRoundedButton("Undo", 100, 40);
-        GenericRoundedButton redo = new GenericRoundedButton("Redo", 100, 40);
+        GenericRoundedButton undo = new GenericRoundedButton("", 100, 40);
+        GenericRoundedButton redo = new GenericRoundedButton("", 100, 40);
+
+        undo.setImage("left_arrow.png", 35, 5, 30, 30);
+        redo.setImage("right_arrow.png", 35, 5, 30, 30);
 
         undo.addActionListener(new ButtonUndoRedoAdaptator(undo, this));
         redo.addActionListener(new ButtonUndoRedoAdaptator(redo, this));

@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-
+import java.awt.Insets;
 import java.io.File;
 import java.nio.file.Paths;
 
@@ -24,11 +24,13 @@ import fr.prog.tablut.view.components.generic.GenericRoundedPanel;
  */
 public class SavedGamesPanel extends JPanel {
 
-	protected final int width = 460;
-	protected final int height = 350;
-	protected final int btnHeight = 35;
-	protected int index_selected = 0;
-	protected GenericRoundedButton buttonToLightup;
+	private final int width = 460;
+	private final int height = 350;
+	private final int btnHeight = 35;
+	private int index_selected = 0;
+	private GenericRoundedButton buttonToLightup;
+    private final GenericRoundedPanel wrapperContainer;
+    private final JPanel wrapper;
 	
 	public GenericRoundedButton button_selected = null;
 	
@@ -52,7 +54,7 @@ public class SavedGamesPanel extends JPanel {
 
 		Dimension size = new Dimension(width, height);
 
-		GenericRoundedPanel wrapperContainer = new GenericRoundedPanel();
+		wrapperContainer = new GenericRoundedPanel();
 		wrapperContainer.setLayout(new BorderLayout());
 		wrapperContainer.setStyle("area");
 		
@@ -60,48 +62,10 @@ public class SavedGamesPanel extends JPanel {
 		wrapperContainer.setMaximumSize(size);
 		wrapperContainer.setMinimumSize(size);
 		
-		JPanel wrapper = new JPanel();
+		wrapper = new JPanel();
 		wrapper.setLayout(new GridBagLayout());
 		wrapper.setOpaque(false);
 		wrapper.setBorder(new EmptyBorder(5, 0, 5, 0));
-
-		GenericRoundedButton button;
-		GridBagConstraints c = new GridBagConstraints();
-
-		c.anchor = GridBagConstraints.NORTH;
-		c.gridx = 0;
-		c.weightx = 1;
-		c.weighty = 0;
-
-		int i = 1;
-
-		String savePath = Paths.get(savesPath, savePrefix + i + saveSuffix).toString();
-		File f = new File(savePath);
-
-		while(f.isFile()) {
-			c.gridy = i;
-			button = new GenericRoundedButton("Save n\u00B0" + i, width - 10, btnHeight);
-			button.setStyle("button.load");
-			button.addActionListener(new ButtonLoadAdaptator(button, i, this));
-			wrapper.add(button, c);
-			i++;
-			savePath = Paths.get(savesPath, savePrefix + i + saveSuffix).toString();
-			f = new File(savePath);
-		}
-
-		if(i == 1) {
-			// no save found
-			wrapper.add(new GenericLabel("No save found", 12));
-		}
-
-		else {
-			// align content to the top
-			JPanel emptyPanel = new JPanel();
-			emptyPanel.setOpaque(false);
-			c.gridy = i;
-			c.weighty = 1;
-			wrapper.add(emptyPanel, c);
-		}
 
 		wrapperContainer.add(wrapper, BorderLayout.NORTH);
 		add(wrapperContainer);
@@ -131,4 +95,52 @@ public class SavedGamesPanel extends JPanel {
 	public int getSelectedIndex() {
 		return index_selected;
 	}
+
+    public void updateContent() {
+        wrapper.removeAll();
+
+        GenericRoundedButton button;
+		GridBagConstraints c = new GridBagConstraints();
+
+		c.anchor = GridBagConstraints.NORTH;
+		c.gridx = 0;
+		c.weightx = 1;
+		c.weighty = 0;
+
+		int i = 1;
+        int k = 0;
+
+		String savePath = Paths.get(savesPath, savePrefix + i + saveSuffix).toString();
+		File f = new File(savePath);
+
+		while(f.isFile()) {
+            // for(k=0; k < 10; k++) {
+                c.gridy = i+k;
+                button = new GenericRoundedButton("Save n\u00B0" + i, width - 10, btnHeight);
+                button.setStyle("button.load");
+                button.addActionListener(new ButtonLoadAdaptator(button, i, this));
+                wrapper.add(button, c);
+            // }
+			i++;
+			savePath = Paths.get(savesPath, savePrefix + i + saveSuffix).toString();
+			f = new File(savePath);
+		}
+
+		if(i == 1) {
+			// no save found
+            c.weightx = 0;
+            GenericLabel label = new GenericLabel("No save found", 12);
+            label.setBorder(new EmptyBorder(height/2 - 20, 0, 0, 0));
+			wrapper.add(label);
+		}
+
+		else {
+			// align content to the top
+			JPanel emptyPanel = new JPanel();
+			emptyPanel.setOpaque(false);
+			c.gridy = i;
+			c.weighty = 1;
+			wrapper.add(emptyPanel, c);
+		}
+    }
 }

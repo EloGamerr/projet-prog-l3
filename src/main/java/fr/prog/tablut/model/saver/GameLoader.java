@@ -13,8 +13,6 @@ import java.util.Scanner;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import fr.prog.tablut.controller.game.HumanPlayer;
-import fr.prog.tablut.controller.game.ia.AIRandom;
 import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.Movement;

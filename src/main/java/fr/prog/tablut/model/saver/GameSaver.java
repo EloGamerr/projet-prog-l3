@@ -48,11 +48,11 @@ public class GameSaver {
 	// Main Functions
 	////////////////////////////////////////////////////
 
-	public void saveTo() {
-		System.out.println("saveTo");
-		if(!game.getCurrentSavePath().matches("")) 
+	public void save() {
+		if(game.getCurrentSavePath().matches(""))
+            newSave();
+        else
 			save_core(Paths.get(game.getCurrentSavePath()));
-			
 	}
 
 	private void writeInFile(Path path, List<String> items, OpenOption... options) {
@@ -69,7 +69,6 @@ public class GameSaver {
 	}
 
 	public void newSave() {
-		System.out.println("newSaveName");
 		save_core(Paths.get(newSaveName()));
 	}
 
