@@ -1,5 +1,6 @@
 package fr.prog.tablut.view.pages.newGame;
 
+import fr.prog.tablut.controller.adaptators.CreateGameAdaptator;
 import fr.prog.tablut.model.window.WindowConfig;
 import fr.prog.tablut.model.window.WindowName;
 import fr.prog.tablut.view.Page;
@@ -22,14 +23,20 @@ public class NewGamePage extends Page {
 
 		windowName = WindowName.NewGameWindow;
 
+		SelectionPlayer gameSettings = new SelectionPlayer();
+
+		BottomButtonPanel panel = new BottomButtonPanel(WindowName.HomeWindow, WindowName.GameWindow, "Jouer !");
+
+		panel.getButton2().setAction(new CreateGameAdaptator(panel.getButton2(), gameSettings));
+
 		NavPage page = new NavPage(
 			"Nouvelle partie",
-			"Choisissez les paramètres de partie qui vous conviennent puis cliquez sur confirmer",
-			new BottomButtonPanel(WindowName.HomeWindow, WindowName.GameWindow, "Jouer !")
+			"Choisissez les param\u00e8tres de partie qui vous conviennent puis cliquez sur confirmer",
+			panel
 		);
 		
 		// game settings
-		page.setContent(new SelectionPlayer());
+		page.setContent(gameSettings);
 
 		add(page);
 	}

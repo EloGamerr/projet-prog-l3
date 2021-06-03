@@ -1,21 +1,19 @@
 package fr.prog.tablut.controller.game.gameController;
 
+import java.awt.Point;
+
 import fr.prog.tablut.controller.game.HumanPlayer;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.structures.Couple;
 import fr.prog.tablut.view.pages.game.GamePage;
 
-import java.awt.*;
-
 public class GameControllerHuman {
-    private final Game game;
     private final GamePage gamePage;
     private Couple<Integer, Integer> selectedCell;
     private int lastRowHovered;
     private int lastColHovered;
     
-    public GameControllerHuman(Game game, GamePage gamePage) {
-        this.game = game;
+    public GameControllerHuman(GamePage gamePage) {
         this.gamePage = gamePage;
     }
 
@@ -23,14 +21,14 @@ public class GameControllerHuman {
 	 * @return True if we should repaint the window after the click
 	 */
     public boolean click(int row, int col) {
-        if(!game.isValid(row, col) || !(game.getPlayingPlayer() instanceof HumanPlayer))
+        if(!Game.getInstance().isValid(row, col) || !(Game.getInstance().getPlayingPlayer() instanceof HumanPlayer))
             return false;
 
-        HumanPlayer humanPlayer = (HumanPlayer) game.getPlayingPlayer();
+        HumanPlayer humanPlayer = (HumanPlayer) Game.getInstance().getPlayingPlayer();
 
         humanPlayer.updateState(row, col, gamePage, this);
 
-        return humanPlayer.play(game);
+        return humanPlayer.play(Game.getInstance());
     }
 
     public void undoSelect() {
@@ -42,7 +40,7 @@ public class GameControllerHuman {
     public void mouseMoved(Point mousePosition) {
         if(mousePosition != null) {
             if(this.selectedCell != null) {
-                gamePage.getGridWindow().updateImageOnMouse(game.getCellContent(selectedCell.getFirst(), selectedCell.getSecond()).getImage(), selectedCell);
+                gamePage.getGridWindow().updateImageOnMouse(Game.getInstance().getCellContent(selectedCell.getFirst(), selectedCell.getSecond()).getImage(), selectedCell);
             }
             else {
                 int colHovered = gamePage.getGridWindow().getColFromXCoord(mousePosition.x);

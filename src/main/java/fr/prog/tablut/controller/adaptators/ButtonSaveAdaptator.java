@@ -1,44 +1,26 @@
 package fr.prog.tablut.controller.adaptators;
 
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.ActionEvent;
 
 import fr.prog.tablut.model.game.Game;
 
-import fr.prog.tablut.model.saver.GameSaver;
+import fr.prog.tablut.view.components.generic.GenericButton;
 import fr.prog.tablut.view.pages.game.sides.GameInterfaceSide;
 
-public class ButtonSaveAdaptator implements MouseListener {
-	GameSaver save;
-	GameInterfaceSide leftSideGame;
+public class ButtonSaveAdaptator extends ActionAdaptator<GenericButton> {
+	GameInterfaceSide sideGame;
 	
-	public ButtonSaveAdaptator(Game game, GameInterfaceSide leftSideGame) {
-		save = game.getGameSaver();
-		this.leftSideGame = leftSideGame;
+	public ButtonSaveAdaptator(GenericButton button, GameInterfaceSide sideGame) {
+		super(button);
+		this.sideGame = sideGame;
 	}
 	
 	
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		if(e.getSource() == leftSideGame.getComponent(0)) {
-			save.saveNewFile();
-		
-		}
-		else if(e.getSource() == leftSideGame.getComponent(1)) {
-			save.saveToFile();
-		}
-			
+	public void process(ActionEvent e) {
+		if(e.getSource() == sideGame.getComponent(0)) 
+			Game.getInstance().getGameSaver().newSave();	
+		if(e.getSource() == sideGame.getComponent(1))
+			Game.getInstance().getGameSaver().save();
 	}
-	
-	@Override
-	public void mousePressed(MouseEvent e) {}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {}
-
-	@Override
-	public void mouseExited(MouseEvent e) {}
 }

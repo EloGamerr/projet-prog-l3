@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -16,6 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import fr.prog.tablut.model.game.Play;
+import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Game;
 
@@ -26,7 +28,7 @@ public class GameSaver {
 	private static final String savePrefix = "save-";
 	private static final String saveSuffix = ".sv";
 	private final Game game;
-	private String currentSavePath;
+	private String currentSavePath = "";
 	private final List<Game> saves = new ArrayList<>();
 
 	////////////////////////////////////////////////////
@@ -42,22 +44,37 @@ public class GameSaver {
 		this.currentSavePath = currentSavePath;
 	}
 
-	 ////////////////////////////////////////////////////
-	 // Main Functions
-	 ////////////////////////////////////////////////////
+	////////////////////////////////////////////////////
+	// Main Functions
+	////////////////////////////////////////////////////
 
-	public void saveNewFile() {
-		save_core(Paths.get(this.saveName()));
+	public void save() {
+		if(game.getCurrentSavePath().matches(""))
+            newSave();
+        else
+			save_core(Paths.get(game.getCurrentSavePath()));
 	}
 
-	public void saveToFile() {
-		String saveName = (this.game.getCurrentSavePath()=="")? this.saveName() : this.game.getCurrentSavePath();
-		save_core(Paths.get(saveName));
+	private void writeInFile(Path path, List<String> items, OpenOption... options) {
+		try {
+			Files.write(path, items, StandardCharsets.UTF_8, options);
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void writeInFile(Path path, String content, OpenOption... options) {
+		writeInFile(path, Collections.singletonList(content), options);
+	}
+
+	public void newSave() {
+		save_core(Paths.get(newSaveName()));
 	}
 
 	public void save_core(Path path) {
-		JSONObject jsonBoard = this.generateJSONBoard();
-		JSONArray jsonArrayParameters = this.generateJSONParameters();
+		JSONObject jsonBoard = generateJSONBoard();
+		JSONArray jsonArrayParameters = generateJSONParameters();
 		JSONObject jsonParameters = new JSONObject();
 
 		jsonParameters.put("parameters", jsonArrayParameters);
@@ -66,18 +83,18 @@ public class GameSaver {
 			Files.createDirectories(path.getParent());
 
 			if(!Files.exists(path)) {
-				Files.write(path, Collections.singletonList(jsonParameters.toString()), StandardCharsets.UTF_8, StandardOpenOption.CREATE);
-				Files.write(path, Collections.singletonList(jsonBoard.toString()), StandardCharsets.UTF_8, StandardOpenOption.APPEND);
+				writeInFile(path, jsonParameters.toString(), StandardOpenOption.CREATE);
+				writeInFile(path, jsonBoard.toString(), StandardOpenOption.APPEND);
 			}
 			else {
 				List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
 			    lines.set(0, jsonParameters.toString());
 			    lines.set(1, jsonBoard.toString());
-			    Files.write(path, lines, StandardCharsets.UTF_8);
+			    writeInFile(path, lines);
 			}
 
-			this.setCurrentSavePath(path.toString());
-			this.game.setCurrentSavePath(path.toString());
+			setCurrentSavePath(path.toString());
+			game.setCurrentSavePath(path.toString());
 
 		}
 		catch (IOException e) {
@@ -104,8 +121,8 @@ public class GameSaver {
 		JSONObject jsonDefender = new JSONObject();
 		JSONObject jsonAttacker = new JSONObject();
 
-		jsonDefender.put("defender", game.getDefender().toString());
-		jsonAttacker.put("attacker", game.getAttacker().toString());
+		jsonDefender.put("defender", PlayerTypeEnum.getFromPlayer(game.getDefender()).ordinal());
+		jsonAttacker.put("attacker", PlayerTypeEnum.getFromPlayer(game.getAttacker()).ordinal());
 		jsonWinner.put("winner",this.game.getWinner().toString());
 		jsonPlayingPlayer.put("playingPlayer", game.getPlayingPlayerEnum().toString());
 		jsonPlays.put("plays", savePlays().toString());
@@ -187,16 +204,19 @@ public class GameSaver {
 		return builder;
 	}
 
-	private String saveName() {
+	private String newSaveName() {
 		int index = 1;
 		String savePath = Paths.get(savesPath, savePrefix + index + saveSuffix).toString();
 		File f = new File(savePath);
 
 		while(f.isFile()) {
-		    savePath = Paths.get(savesPath, savePrefix + ++index + saveSuffix).toString();
+			
+			index++;
+		    savePath = Paths.get(savesPath, savePrefix + index + saveSuffix).toString();
 		    f = new File(savePath);
+		   
 		}
-		
+		System.out.println(savePath);
 		return savePath;
 	}
 
@@ -221,11 +241,11 @@ public class GameSaver {
 	////////////////////////////////////////////////////
 
 	public String getCurrentSavePath() {
-		return this.currentSavePath;
+		return currentSavePath;
 	}
 
 	public void setCurrentSavePath(String path) {
-		this.currentSavePath = path;
+		currentSavePath = path;
 	}
 
 	public List<Game> getSaves() {

@@ -2,12 +2,17 @@ package fr.prog.tablut.view.components.generic;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 
 import fr.prog.tablut.model.window.WindowName;
@@ -28,6 +33,11 @@ public class GenericRoundedButton extends GenericButton {
     protected Rectangle2D textBounds;
     protected float labelX = 0;
     protected float labelY = 0;
+    protected Image image = null;
+    protected int imageWidth = 0;
+    protected int imageHeight = 0;
+    protected int imageX = 0;
+    protected int imageY = 0;
 
     /**
      * Defaults constructor.
@@ -86,7 +96,7 @@ public class GenericRoundedButton extends GenericButton {
      * <p>Sets the font, the size, the colors</p>
      * @param text The button's text
      * @param width The button's width
-     * @param The button's height
+     * @param height The button's height
      */
     public GenericRoundedButton(String text, int width, int height) {
         super(text);
@@ -140,7 +150,7 @@ public class GenericRoundedButton extends GenericButton {
 
         // when mouse hovering it, could we apply the :hover style cause it exists or not
         // if it does not exist, then keep the normal style when hovering
-		canHoverStyle = GenericObjectStyle.getStyle().has(styleName);
+		canHoverStyle = GenericObjectStyle.getStyle().has(getStyle());
     }
 
     /**
@@ -188,10 +198,36 @@ public class GenericRoundedButton extends GenericButton {
      * @param style The style to apply
      */
     public void setStyle(String style) {
-        if(GenericObjectStyle.getStyle().has(style)) {
-            styleName = style;
-		    canHoverStyle = GenericObjectStyle.getStyle().has(styleName);
+        String oldStyle = getStyle();
+        
+        super.setStyle(style);
+
+        if(oldStyle != style) {
+            repaint();
         }
+    }
+
+    public boolean setImage(String imageSrc, int x, int y, int width, int height) {
+        if(imageSrc != null) {
+			InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream("images/" + imageSrc);
+
+			try {
+				image = ImageIO.read(in);
+
+                imageX = x;
+                imageY = y;
+                imageWidth = width;
+                imageHeight = height;
+
+                return true;
+			}
+			catch(IOException e) {
+				e.printStackTrace();
+                return false;
+			}
+		}
+
+        return false;
     }
 
     public void paint(Graphics g) {
@@ -208,7 +244,7 @@ public class GenericRoundedButton extends GenericButton {
         // This is needed on non-Mac so text is repainted correctly
         super.paint(g);
 
-        String currentStyle = styleName + ((hovering && canHoverStyle)? ":hover" : "");
+        String currentStyle = getStyle() + ((!getStyle().contains(":disabled") && hovering && canHoverStyle)? ":hover" : "");
 
         Color background = GenericObjectStyle.getProp(currentStyle, "background");
         Color borderColor = GenericObjectStyle.getProp(currentStyle, "borderColor");
@@ -223,5 +259,9 @@ public class GenericRoundedButton extends GenericButton {
         // text
         g2d.setColor(color);
         g2d.drawString(getText(), labelX, labelY);
+
+        if(image != null) {
+            g2d.drawImage(image, imageX, imageY, imageWidth, imageHeight, null);
+        }
     }
 }

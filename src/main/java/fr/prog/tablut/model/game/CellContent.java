@@ -9,11 +9,11 @@ import javax.imageio.ImageIO;
 
 public enum CellContent {
 	EMPTY(null),
-	ATTACK_TOWER("black_tower.png"),
-	DEFENSE_TOWER("white_tower.png"),
-	KING("king.png"),
-	GATE("door.png"),
-	KINGPLACE("king_place.png");
+	ATTACK_TOWER("chess/small/black_tower_small.png"),
+	DEFENSE_TOWER("chess/small/white_tower_small.png"),
+	KING("chess/small/king_small.png"),
+	GATE("chess/small/door_small.png"),
+	KINGPLACE("chess/small/king_place_small.png");
 	
 	Image image;
 

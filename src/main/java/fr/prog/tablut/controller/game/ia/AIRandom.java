@@ -16,6 +16,9 @@ public class AIRandom extends AIPlayer {
 
     @Override
     public boolean play(Game game) {
+    	if(!game.isPaused()) {
+    		
+  
         List<Couple<Integer, Integer>> accesibleCells;
         Couple<Integer, Integer> fromCell;
 
@@ -29,9 +32,12 @@ public class AIRandom extends AIPlayer {
 
         System.out.println("AI Play");
         Couple<Integer, Integer> toCell = accesibleCells.get(random.nextInt(accesibleCells.size()));
+        
         game.move(fromCell.getFirst(), fromCell.getSecond(), toCell.getFirst(), toCell.getSecond());
-
-        return true;
+      	return true;
+    	}
+    	else
+    		return false;
 
     }
     

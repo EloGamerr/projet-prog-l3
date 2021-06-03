@@ -10,7 +10,7 @@ import java.util.Map.Entry;
  * @see Color
  */
 public class ComponentStyle {
-    protected HashMap<String, Color> properties = new HashMap<>() {{
+    protected HashMap<String, Color> properties = new HashMap<String, Color>() {{
         put("background", new Color(255, 255, 255));
         put("borderColor", new Color(0, 0, 0));
         put("color", new Color(0, 0, 0));

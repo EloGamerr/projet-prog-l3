@@ -115,4 +115,12 @@ public class BottomButtonPanel extends JPanel {
         if(btn2 != null)
             btn2.setHref(href);
     }
+
+    public GenericRoundedButton getButton1() {
+        return btn1;
+    }
+
+    public GenericRoundedButton getButton2() {
+        return btn2;
+    }
 }

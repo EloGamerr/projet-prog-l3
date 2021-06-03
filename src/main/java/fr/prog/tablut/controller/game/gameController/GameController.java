@@ -8,16 +8,14 @@ import fr.prog.tablut.view.pages.game.GamePage;
 
 public class GameController {
 
-	private final Game game;
 	private final GamePage gamePage;
 	private final GameControllerAI gameControllerAI;
 	private final GameControllerHuman gameControllerHuman;
 
-	public GameController(Game game, GamePage gamePage) {
-		this.game = game;
+	public GameController(GamePage gamePage) {
 		this.gamePage = gamePage;
-		this.gameControllerAI = new GameControllerAI(game, 20);
-		this.gameControllerHuman = new GameControllerHuman(game, gamePage);
+		this.gameControllerAI = new GameControllerAI(20);
+		this.gameControllerHuman = new GameControllerHuman(gamePage);
 	}
 	
 	public void click(int row, int col) {
@@ -47,32 +45,26 @@ public class GameController {
 		}
 
 	}
-
-	public Game getGame() {
-		return game;
+	
+	public void restart() {
+		Game.getInstance().init_game(9, 9);
+		this.gamePage.repaint();
 	}
-
+	
+	
 	public GamePage getGameWindow() {
 		return gamePage;
 	}
 
 	public void undo() {
-		if(this.game.undo_move()) {
-			System.out.println("Undo");
+		if(Game.getInstance().undo_move()) {
 			this.gamePage.repaint();
-		}
-		else {
-			System.out.println("Can't Undo");
 		}
 	}
 
 	public void redo() {
-		if(this.game.redo_move()) {
-			System.out.println("Redo");
+		if(Game.getInstance().redo_move()) {
 			this.gamePage.repaint();
-		}
-		else {
-			System.out.println("Can't Redo");
 		}
 	}
 }

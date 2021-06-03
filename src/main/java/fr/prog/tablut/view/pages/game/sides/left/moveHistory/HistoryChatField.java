@@ -3,35 +3,26 @@ package fr.prog.tablut.view.pages.game.sides.left.moveHistory;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import fr.prog.tablut.model.game.Game;
-import fr.prog.tablut.model.game.Play;
 import fr.prog.tablut.model.game.Plays;
 import fr.prog.tablut.structures.Couple;
 
 public class HistoryChatField extends JPanel {
-    private Game game;
     private GridBagConstraints c;
     private List<labelField> allHistory = new ArrayList<labelField>();
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
-	public HistoryChatField(Game game, Dimension d) {
+	public HistoryChatField(Dimension d) {
         setOpaque(false);
         setLayout(new GridBagLayout());
-
-        this.game = game;
-
         c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
@@ -43,7 +34,7 @@ public class HistoryChatField extends JPanel {
         
 
         for(int i = 0; i < 5; i++) {
-        	addAction(new Couple(new Couple(1, 1), new Couple(2, 2)),game.getPlays());
+        	addAction(new Couple(new Couple(1, 1), new Couple(2, 2)), Game.getInstance().getPlays());
         }
     }
 

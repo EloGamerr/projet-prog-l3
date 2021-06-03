@@ -8,7 +8,6 @@ import javax.swing.JComboBox;
 import fr.prog.tablut.view.pages.newGame.SelectionPlayer;
 
 public class ComboBoxAdaptator implements ActionListener {
-	
 	private final SelectionPlayer selectionPlayer;
 	private final String side;
 	

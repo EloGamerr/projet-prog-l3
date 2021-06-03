@@ -10,11 +10,12 @@ import fr.prog.tablut.view.GlobalWindow;
  * --- MAIN ENTRY ---
  */
 public class Tablut implements Runnable {
-    String configFolder = "res/config/";
-    String configFile = null;
+    public static String configPath = "config/project.json";
+    private String configFile = null;
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Tablut("project.json"));
+        String config = (args.length > 0)? args[0] : configPath;
+        SwingUtilities.invokeLater(new Tablut(config));
     }
 
     /**
@@ -34,8 +35,7 @@ public class Tablut implements Runnable {
 
     public void run() {
         try {
-            String cfg = (configFile==null)? null : configFolder + configFile;
-            new GlobalWindow(cfg);
+            new GlobalWindow(configFile);
         }
         catch(ParseException e) {
             e.printStackTrace();

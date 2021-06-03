@@ -1,5 +1,6 @@
 package fr.prog.tablut.view.pages.load;
 
+import fr.prog.tablut.controller.adaptators.LoadSaveAdaptator;
 import fr.prog.tablut.model.window.WindowConfig;
 import fr.prog.tablut.model.window.WindowName;
 import fr.prog.tablut.view.Page;
@@ -14,6 +15,7 @@ import fr.prog.tablut.view.components.NavPage;
  */
 public class LoadSavesPage extends Page {
 	protected SavedGamesPanel panel;
+	protected BottomButtonPanel bottomPanel;
 
 	/**
 	 * Creates the load page.
@@ -24,14 +26,18 @@ public class LoadSavesPage extends Page {
 
 		windowName = WindowName.LoadWindow;
 
+		
+		bottomPanel = new BottomButtonPanel(WindowName.HomeWindow, WindowName.GameWindow, "Jouer !");
+		panel = new SavedGamesPanel(bottomPanel.getButton2());
+		bottomPanel.getButton2().setStyle("button.green:disabled");
+		bottomPanel.getButton2().setAction(new LoadSaveAdaptator(bottomPanel.getButton2(), panel));
+
 		NavPage page = new NavPage(
 			"Charger une partie",
-			"Choisissez une sauvegarde à charger",
-			new BottomButtonPanel(WindowName.HomeWindow, WindowName.GameWindow, "Jouer !")
+			"Choisissez une sauvegarde \u00e0 charger",
+			bottomPanel
 		);
 		
-		panel = new SavedGamesPanel();
-
 		// load games
 		page.setContent(panel);
 
@@ -41,4 +47,13 @@ public class LoadSavesPage extends Page {
 	public SavedGamesPanel getPanel() {
 		return panel;
 	}
+
+	public BottomButtonPanel getBottomPanel() {
+		return bottomPanel;
+	}
+
+    @Override
+    public void update() {
+        panel.updateContent();
+    }
 }

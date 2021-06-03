@@ -1,9 +1,17 @@
 package fr.prog.tablut.view.pages.game.sides.left.moveHistory;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
 
-import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JScrollBar;
+
 
 import fr.prog.tablut.model.game.Game;
 
@@ -14,17 +22,17 @@ public class MoveHistoryPanel extends JPanel {
     private int previousVisibleAmount;
 
     public MoveHistoryPanel() {
-        this(0, 0, null);
+        this(0, 0);
     }
 
-    public MoveHistoryPanel(int width, int height, Game game) {
+    public MoveHistoryPanel(int width, int height) {
         setOpaque(false);
 
         JLabel wrapper = new JLabel();
         wrapper.setOpaque(false);
         wrapper.setLayout(new BorderLayout());
 
-        historyChat = new HistoryChatField(game, new Dimension(width, height));
+        historyChat = new HistoryChatField(new Dimension(width, height));
         //historyChat.setOpaque(false);
         historyChat.setFont(new Font("Calibri", Font.PLAIN, 12));
 

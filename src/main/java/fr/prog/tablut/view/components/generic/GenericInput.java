@@ -18,8 +18,8 @@ import fr.prog.tablut.model.window.ComponentStyle;
  * A component that extends a JTextField, a basic text input
  * @see JTextField
  */
-public class GenericInput extends JTextField {
-    protected ComponentStyle style = new ComponentStyle();
+public class GenericInput extends JTextField implements GenericComponent {
+    protected String styleName = "input";
     protected int borderRadius = 10;
     protected Rectangle2D textBounds;
     protected float labelX = 0;
@@ -40,7 +40,6 @@ public class GenericInput extends JTextField {
      * Creates a text input of type JTextField, putting its value inside.
      * <p>Sets its style (size, background, color, ...).</p>
      * <p>Sets an action listener to update its draw depending to its value.</p>
-     * @param value
      */
     public GenericInput(String value) {
         super();
@@ -58,8 +57,8 @@ public class GenericInput extends JTextField {
         setPreferredSize(new Dimension(width, height));
         setOpaque(false);
         setBorder(new EmptyBorder(0, 0, 0, 0));
-        setStyle("input");
-        setForeground(style.get("color"));
+        setForeground(GenericObjectStyle.getProp(styleName, "color"));
+
         addActionListener(new InputAdaptator(this));
 
         FontRenderContext frc = new FontRenderContext(null, false, false);
@@ -76,7 +75,7 @@ public class GenericInput extends JTextField {
      */
     public void setStyle(String style) {
         if(GenericObjectStyle.getStyle().has(style))
-            this.style = GenericObjectStyle.getStyle().get(style);
+            this.styleName = style;
     }
 
     /**
@@ -91,6 +90,8 @@ public class GenericInput extends JTextField {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
+        ComponentStyle style = GenericObjectStyle.getStyle().get(styleName);
+
         // fill
         g2d.setColor(style.get("background"));
         g2d.fillRoundRect(1, 1, getWidth()-2, getHeight()-2, borderRadius, borderRadius);
@@ -104,4 +105,12 @@ public class GenericInput extends JTextField {
 
         revalidate();
     }
+
+    public String getStyle() {
+		return styleName;
+	}
+
+	public boolean isDisabled() {
+		return getStyle().endsWith(":disabled");
+	}
 }

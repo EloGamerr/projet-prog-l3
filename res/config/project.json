@@ -56,6 +56,12 @@
                     "background": [143, 214, 102],
                     "borderColor": [143, 214, 102],
                     "color": [221, 221, 221]
+                },
+
+                ":disabled": {
+                    "background": [92, 145, 62],
+                    "borderColor": [92, 145, 62],
+                    "color": [150, 150, 150]
                 }
             },
 
@@ -68,24 +74,12 @@
                     "background": [77, 86, 97],
                     "borderColor": [104, 115, 129],
                     "color": [255, 255, 255]
-                }
-            },
+                },
 
-            ".selected": {
-                "background": [84, 92, 101],
-                "borderColor": [48, 51, 54],
-                "color": [241, 241, 241]
-            },
-
-            ".menuIngame": {
-                "background": [48, 54, 62],
-                "borderColor": [0, 0, 0, 0],
-                "color": [221, 221, 221],
-
-                ":hover": {
-                    "background": [58, 65, 74],
-                    "borderColor": [0, 0, 0, 0],
-                    "color": [255, 255, 255]
+                ":selected": {
+                    "background": [84, 92, 101],
+                    "borderColor": [117, 122, 128],
+                    "color": [241, 241, 241]
                 }
             },
 
