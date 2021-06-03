@@ -36,7 +36,8 @@ public class GlobalWindow extends Window {
     private HelpPage helpPage;
     private NewGamePage newGamePage;
 	private JFrame jFrame;
-    public Page currentPage;
+    private Page currentPage;
+	private WindowName previousPageName;
 
 	/**
 	 * Creates the main window with given surface
@@ -78,7 +79,7 @@ public class GlobalWindow extends Window {
 		homePage = new HomePage(this.config);
 		currentPage = homePage;
 		loadPage = new LoadSavesPage(this.config);
-		helpPage = new HelpPage(this.config, this.currentPage);
+		helpPage = new HelpPage(this.config, previousPageName);
 		newGamePage = new NewGamePage(this.config);
 		
 		homePage.setVisible(true);
@@ -143,6 +144,8 @@ public class GlobalWindow extends Window {
 	 */
 	public void changeWindow(WindowName dest) {
 		currentPage.setVisible(false);
+		previousPageName = currentPage.name();
+		helpPage.setBackPage(previousPageName);
 
 		switch(dest) {
 			case GameWindow:
@@ -173,63 +176,64 @@ public class GlobalWindow extends Window {
 				throw new IllegalArgumentException("Unexpected value: " + dest);
 		}
 		
+		currentPage.update();
 		currentPage.setVisible(true);
 		jFrame.setContentPane(currentPage);
 	}
 	
-	 public GamePage getGamePage() {
-			return gamePage;
-		}
+	public GamePage getGamePage() {
+		return gamePage;
+	}
 
-		public HomePage getHomePage() {
-			return homePage;
-		}
+	public HomePage getHomePage() {
+		return homePage;
+	}
 
-		public LoadSavesPage getLoadPage() {
-			return loadPage;
-		}
+	public LoadSavesPage getLoadPage() {
+		return loadPage;
+	}
 
-		public HelpPage getHelpPage() {
-			return helpPage;
-		}
+	public HelpPage getHelpPage() {
+		return helpPage;
+	}
 
-		public NewGamePage getNewGamePage() {
-			return newGamePage;
-		}
+	public NewGamePage getNewGamePage() {
+		return newGamePage;
+	}
 
-		public Window getcurrentPage() {
-			return currentPage;
-		}
+	public Window getcurrentPage() {
+		return currentPage;
+	}
 
-		public JFrame getjFrame() {
-			return jFrame;
-		}
+	public JFrame getjFrame() {
+		return jFrame;
+	}
 
-		public void setGameWindow(GamePage gamePage) {
-			this.gamePage = gamePage;
-		}
+	public void setGameWindow(GamePage gamePage) {
+		this.gamePage = gamePage;
+	}
 
-		public void setHomePage(HomePage homePage) {
-			this.homePage = homePage;
-		}
+	public void setHomePage(HomePage homePage) {
+		this.homePage = homePage;
+	}
 
-		public void setLoadPage(LoadSavesPage loadPage) {
-			this.loadPage = loadPage;
-		}
+	public void setLoadPage(LoadSavesPage loadPage) {
+		this.loadPage = loadPage;
+	}
 
-		public void setHelpPage(HelpPage helpPage) {
-			this.helpPage = helpPage;
-		}
+	public void setHelpPage(HelpPage helpPage) {
+		this.helpPage = helpPage;
+	}
 
-		public void setNewGameWindow(NewGamePage newGamePage) {
-			this.newGamePage = newGamePage;
-		}
+	public void setNewGameWindow(NewGamePage newGamePage) {
+		this.newGamePage = newGamePage;
+	}
 
-		public void setcurrentPage(Page currentPage) {
-			this.currentPage = currentPage;
-		}
+	public void setcurrentPage(Page currentPage) {
+		this.currentPage = currentPage;
+	}
 
-		public void setjFrame(JFrame jFrame) {
-			this.jFrame = jFrame;
-		}
+	public void setjFrame(JFrame jFrame) {
+		this.jFrame = jFrame;
+	}
 }

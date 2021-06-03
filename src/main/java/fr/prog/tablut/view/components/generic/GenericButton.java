@@ -2,6 +2,7 @@ package fr.prog.tablut.view.components.generic;
 
 import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
@@ -21,6 +22,9 @@ public class GenericButton extends JButton {
     protected String styleName = "button";
 
     protected WindowName href = null;
+
+	protected ActionListener actionListenerHREF = null;
+	protected ActionListener actionListenerBase = null;
 	
 	/**
 	 * Default constructor.
@@ -76,6 +80,20 @@ public class GenericButton extends JButton {
 	 */
     public void setHref(WindowName href) {
         this.href = href;
-        addActionListener(new ButtonNavAdaptator(GenericObjectStyle.getGlobalWindow(), href));
+
+		if(actionListenerHREF != null)
+			removeActionListener(actionListenerHREF);
+		
+		actionListenerHREF = new ButtonNavAdaptator(GenericObjectStyle.getGlobalWindow(), href);
+
+        addActionListener(actionListenerHREF);
     }
+
+	public void setAction(ActionListener action) {
+		if(actionListenerBase != null) {
+			removeActionListener(actionListenerBase);
+		}
+
+		actionListenerBase = action;
+	}
 }

@@ -74,6 +74,7 @@ public class Game {
 	 * @return True if the pawn was moved, false otherwise
 	 */
 	public boolean move(int l, int c, int toL, int toC) {
+		System.out.println("Tour joué");
 		if(isWon() || !isValid(toL, toC) || (toL != l && toC != c))
 			return false;
 

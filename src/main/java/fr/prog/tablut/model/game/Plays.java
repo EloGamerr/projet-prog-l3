@@ -61,4 +61,8 @@ public class Plays {
 	public List<Play> getNextMovements() {
 		return plays.subList(currentMovement+1, plays.size());
 	}
+
+	public List<Play> getPlays() {
+		return this.plays;
+	}
 }

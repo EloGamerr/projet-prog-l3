@@ -125,4 +125,9 @@ public class GamePage extends Page {
     public LeftSideGame getLeftSide() {
         return leftSide;
     }
+
+    @Override
+    public void update() {
+        
+    }
 }

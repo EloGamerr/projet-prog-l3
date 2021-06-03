@@ -49,4 +49,8 @@ public class Page extends Window {
         
         super.paintComponent(graphics);
     }
+
+    public void update() {
+
+    }
 }

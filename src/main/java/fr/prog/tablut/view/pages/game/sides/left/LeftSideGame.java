@@ -13,7 +13,8 @@ public class LeftSideGame extends GameInterfaceSide {
 
         Dimension mbd = new Dimension(d.width, 40);
 
-        add(new MoveHistoryPanel(d.width - 10, d.height - mbd.height*2 - 25));
+        //add(new HistoryChatField(g, new Dimension(d.width - 10, d.height - mbd.height*2 - 25)));
+        add(new MoveHistoryPanel(d.width - 10, d.height - mbd.height*2 - 25, g));
         add(new MoveButtons(mbd));
     }
 }
