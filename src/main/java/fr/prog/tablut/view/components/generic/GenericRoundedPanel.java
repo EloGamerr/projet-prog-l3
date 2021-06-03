@@ -68,5 +68,6 @@ public class GenericRoundedPanel extends JPanel {
         g2d.drawRoundRect(1, 1, getWidth()-2, getHeight()-2, borderRadius, borderRadius);
 
         revalidate();
+        repaint();
     }
 }

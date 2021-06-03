@@ -18,8 +18,8 @@ public class ButtonUndoRedoAdaptator extends ActionAdaptator<GenericButton> {
 	public void process(ActionEvent e) {
 		if(e.getSource() == sideGame.getComponent(0)) 
 			sideGame.getGameController().undo();
-		if(e.getSource() == sideGame.getComponent(1))
+        
+		else if(e.getSource() == sideGame.getComponent(1))
 			sideGame.getGameController().redo();
-
 	}
 }

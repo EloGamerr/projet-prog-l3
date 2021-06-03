@@ -82,7 +82,6 @@ public class GenericInput extends JTextField implements GenericComponent {
      * Repaints the input
      */
     public void paintComponent(Graphics g) {
-        //TODO : issue - the real text is drawn behind
         //TODO : iisue - the carret isn't drawn
         Graphics2D g2d = (Graphics2D) g;
 
@@ -104,6 +103,7 @@ public class GenericInput extends JTextField implements GenericComponent {
         g2d.drawString(this.getText(), labelX - (float)getFont().getStringBounds(getText(), new FontRenderContext(null, false, false)).getWidth()/2, labelY);
 
         revalidate();
+        repaint();
     }
 
     public String getStyle() {

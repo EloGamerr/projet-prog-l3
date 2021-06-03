@@ -4,9 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -16,6 +16,7 @@ import fr.prog.tablut.view.components.generic.GenericButton;
 import fr.prog.tablut.view.components.generic.GenericLabel;
 import fr.prog.tablut.view.components.generic.GenericRoundedButton;
 import fr.prog.tablut.view.components.generic.GenericRoundedPanel;
+import fr.prog.tablut.view.components.generic.GenericScrollPane;
 
 /**
  * A component that regroups every saved games in a list and shows them.
@@ -65,7 +66,7 @@ public class SavedGamesPanel extends JPanel {
 		wrapper = new JPanel();
 		wrapper.setLayout(new GridBagLayout());
 		wrapper.setOpaque(false);
-		wrapper.setBorder(new EmptyBorder(5, 0, 5, 0));
+		wrapper.setBorder(new EmptyBorder(3, 0, 3, 0));
 
 		wrapperContainer.add(wrapper, BorderLayout.NORTH);
 		add(wrapperContainer);
@@ -79,7 +80,6 @@ public class SavedGamesPanel extends JPanel {
 	 * @param button the button that's been clicked on (a save)
 	 */
 	public void selected(GenericButton button, int index) {
-		//TODO : issue to fix : need to double-click to toggle the style
 		if(button_selected != null) {
 			button_selected.setStyle("button.load");
 		}
@@ -97,6 +97,20 @@ public class SavedGamesPanel extends JPanel {
 	}
 
     public void updateContent() {
+		int i = 1;
+        ArrayList<String> saves = new ArrayList<String>();
+		String savePath = Paths.get(savesPath, savePrefix + i + saveSuffix).toString();
+		File f = new File(savePath);
+
+        // recover saves
+		while(f.isFile()) {
+            saves.add("Partie " + i);
+			i++;
+			savePath = Paths.get(savesPath, savePrefix + i + saveSuffix).toString();
+			f = new File(savePath);
+		}
+
+
         wrapper.removeAll();
 
         GenericRoundedButton button;
@@ -106,41 +120,60 @@ public class SavedGamesPanel extends JPanel {
 		c.gridx = 0;
 		c.weightx = 1;
 		c.weighty = 0;
-
-		int i = 1;
-        int k = 0;
-
-		String savePath = Paths.get(savesPath, savePrefix + i + saveSuffix).toString();
-		File f = new File(savePath);
-
-		while(f.isFile()) {
-            // for(k=0; k < 10; k++) {
-                c.gridy = i+k;
-                button = new GenericRoundedButton("Save n\u00B0" + i, width - 10, btnHeight);
-                button.setStyle("button.load");
-                button.addActionListener(new ButtonLoadAdaptator(button, i, this));
-                wrapper.add(button, c);
-            // }
-			i++;
-			savePath = Paths.get(savesPath, savePrefix + i + saveSuffix).toString();
-			f = new File(savePath);
-		}
-
+        
+        // no save found
 		if(i == 1) {
-			// no save found
             c.weightx = 0;
-            GenericLabel label = new GenericLabel("No save found", 12);
+            GenericLabel label = new GenericLabel("Aucune partie sauvegardée", 12);
             label.setBorder(new EmptyBorder(height/2 - 20, 0, 0, 0));
 			wrapper.add(label);
 		}
-
+        
+        // list saves
 		else {
-			// align content to the top
-			JPanel emptyPanel = new JPanel();
-			emptyPanel.setOpaque(false);
-			c.gridy = i;
-			c.weighty = 1;
-			wrapper.add(emptyPanel, c);
+            // calculate if number of saves overflow the wrapper
+            // in that case, create a JScrollPane
+
+            JPanel wrapperInner = new JPanel();
+            GenericScrollPane scrollPane = new GenericScrollPane(wrapperInner);
+
+            final boolean isOverflowing = saves.size() * (btnHeight+2) >= height;
+            int btnWidth = width - 10;
+
+            if(isOverflowing) {
+		        wrapperInner.setLayout(new GridBagLayout());
+                wrapperInner.setOpaque(false);
+
+                scrollPane.setPreferredSize(new Dimension(width - 5, height - 5));
+                btnWidth -= 25;
+            }
+
+            
+            for(i=0; i < saves.size(); i++) {
+                c.gridy = i;
+
+                button = new GenericRoundedButton(saves.get(i), btnWidth, btnHeight);
+                button.setStyle("button.load");
+                button.addActionListener(new ButtonLoadAdaptator(button, i, this));
+
+                if(isOverflowing)
+                    wrapperInner.add(button, c);
+                else
+                    wrapper.add(button, c);
+            }
+            
+            if(isOverflowing) {
+                wrapper.add(scrollPane);
+            }
+            else {
+                // align content to the top
+                JPanel emptyPanel = new JPanel();
+                emptyPanel.setOpaque(false);
+                c.gridy = i;
+                c.weighty = 1;
+
+			    wrapper.add(emptyPanel, c);
+            }
 		}
     }
 }
