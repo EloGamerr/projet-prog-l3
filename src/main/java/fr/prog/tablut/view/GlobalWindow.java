@@ -149,6 +149,7 @@ public class GlobalWindow extends Window {
 				break;
 
 			case LoadWindow:
+				setLoadPage(new LoadSavesPage(config));
 				currentPage = loadPage;
 				break;
 

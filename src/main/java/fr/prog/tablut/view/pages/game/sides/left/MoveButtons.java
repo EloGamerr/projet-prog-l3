@@ -6,11 +6,15 @@ import java.awt.GridBagConstraints;
 
 import javax.swing.JLabel;
 
+import fr.prog.tablut.controller.adaptators.ButtonUndoRedoAdaptator;
+import fr.prog.tablut.controller.game.gameController.GameController;
 import fr.prog.tablut.view.components.generic.GenericRoundedButton;
 
 public class MoveButtons extends JLabel {
-    public MoveButtons(Dimension d) {
+	GameController gameController;
+    public MoveButtons(Dimension d, GameController gameController) {
         setOpaque(false);
+        this.gameController = gameController;
 
         setLayout(new GridBagLayout());
         setSize(d);
@@ -19,18 +23,21 @@ public class MoveButtons extends JLabel {
         setMinimumSize(d);
         GridBagConstraints lc = new GridBagConstraints();
         
-        GenericRoundedButton cancel = new GenericRoundedButton("Undo", 100, 40);
+        GenericRoundedButton undo = new GenericRoundedButton("Undo", 100, 40);
         GenericRoundedButton redo = new GenericRoundedButton("Redo", 100, 40);
 
-        // cancel.setStyle("button.menuIngame");
-        // redo.setStyle("button.menuIngame");
-
+        undo.addActionListener(new ButtonUndoRedoAdaptator(undo, this));
+        redo.addActionListener(new ButtonUndoRedoAdaptator(redo, this));
+        
         lc.gridy = 0;
 
         lc.gridx = 0;
-        add(cancel);
+        add(undo);
         
         lc.gridx = 1;
         add(redo);
     }
+	public GameController getGameController() {
+		return gameController;
+	}
 }

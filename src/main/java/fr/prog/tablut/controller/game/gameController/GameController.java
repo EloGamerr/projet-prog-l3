@@ -45,28 +45,26 @@ public class GameController {
 		}
 
 	}
-
+	
+	public void restart() {
+		Game.getInstance().init_game(9, 9);
+		this.gamePage.repaint();
+	}
+	
+	
 	public GamePage getGameWindow() {
 		return gamePage;
 	}
 
 	public void undo() {
 		if(Game.getInstance().undo_move()) {
-			System.out.println("Undo");
 			this.gamePage.repaint();
-		}
-		else {
-			System.out.println("Can't Undo");
 		}
 	}
 
 	public void redo() {
 		if(Game.getInstance().redo_move()) {
-			System.out.println("Redo");
 			this.gamePage.repaint();
-		}
-		else {
-			System.out.println("Can't Redo");
 		}
 	}
 }

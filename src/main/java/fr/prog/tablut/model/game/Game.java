@@ -29,10 +29,14 @@ public class Game {
 	private GameSaver gameSaver;
 	private String currentSavePath = "";
 	public GameLoader loader;
+
+	private boolean paused = false;
 	
 	////////////////////////////////////////////////////
 	// Constructor
 	////////////////////////////////////////////////////
+
+
 
 	public Game() {
 		this.middle = 4;
@@ -124,6 +128,7 @@ public class Game {
 	 * @return True if undo was done, false otherwise
 	 */
 	public boolean undo_move() {
+		
 		Play play = this.getPlays().undo_move();
 
 		if(play != null) {
@@ -132,7 +137,7 @@ public class Game {
 			}
 
 			this.playingPlayerEnum = this.getPlayingPlayerEnum().getOpponent();
-
+			setPaused(true);
 			return true;
 		}
 
@@ -162,7 +167,7 @@ public class Game {
 	/**
 	 * Initializing grid with pawns
 	 */
-	private void init_game(int rowAmount, int colAmount) {
+	public void init_game(int rowAmount, int colAmount) {
 		this.init_grid(rowAmount, colAmount);
 
 		init_king();
@@ -340,6 +345,10 @@ public class Game {
 		return hasStarted;
 	}
 	
+	public boolean isPaused() {
+		return paused ;
+	}
+	
 	////////////////////////////////////////////////////
 	// Getters & Setters
 	////////////////////////////////////////////////////
@@ -511,4 +520,10 @@ public class Game {
 	public void setCurrentSavePath(String currentSavePath) {
 		this.currentSavePath = currentSavePath;
 	}
+	
+	public void setPaused(boolean paused) {
+		this.paused = paused;
+	}
+
+	
 }

@@ -32,15 +32,16 @@ public class GamePage extends Page {
      */
     public GamePage(WindowConfig config) {
         super(config);
-
+        GameController gameController = new GameController(this);
+        
         windowName = WindowName.GameWindow;
 
         final int s = (int)(config.windowHeight / 1.2);
         final Dimension d = new Dimension((config.windowWidth - s)/2, config.windowHeight);
 
         centerSide = new CenterSideGame(config, new Dimension(s, s));
-        leftSide = new LeftSideGame(config, d);
-        rightSide = new RightSideGame(config, d);
+        leftSide = new LeftSideGame(config, gameController, d);
+        rightSide = new RightSideGame(config, d, gameController);
 
         setLayout(new GridBagLayout());
 
@@ -61,7 +62,7 @@ public class GamePage extends Page {
         c.gridx = 2;
         add(rightSide, c);
         
-        GameController gameController = new GameController(this);
+        
         GameMouseAdaptator gameMouseAdaptator = new GameMouseAdaptator(gameController, centerSide.getBoard());
         centerSide.getBoard().addMouseListener(gameMouseAdaptator);
         centerSide.getBoard().addMouseMotionListener(gameMouseAdaptator);

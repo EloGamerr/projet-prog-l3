@@ -6,22 +6,23 @@ import fr.prog.tablut.model.game.Game;
 
 import fr.prog.tablut.view.components.generic.GenericButton;
 import fr.prog.tablut.view.pages.game.sides.GameInterfaceSide;
+import fr.prog.tablut.view.pages.game.sides.left.MoveButtons;
 
-public class ButtonSaveAdaptator extends ActionAdaptator<GenericButton> {
-	GameInterfaceSide sideGame;
+public class ButtonUndoRedoAdaptator extends ActionAdaptator<GenericButton> {
+	MoveButtons sideGame;
 	
-	public ButtonSaveAdaptator(GenericButton button, GameInterfaceSide sideGame) {
+	public ButtonUndoRedoAdaptator(GenericButton button, MoveButtons moveButtons) {
 		super(button);
-		this.sideGame = sideGame;
+		this.sideGame = moveButtons;
 	}
 	
 	
 	@Override
 	public void process(ActionEvent e) {
 		if(e.getSource() == sideGame.getComponent(0)) 
-			Game.getInstance().getGameSaver().newSave();	
+			sideGame.getGameController().undo();
 		if(e.getSource() == sideGame.getComponent(1))
-			Game.getInstance().getGameSaver().saveTo();
+			sideGame.getGameController().redo();
 
 	}
 }
