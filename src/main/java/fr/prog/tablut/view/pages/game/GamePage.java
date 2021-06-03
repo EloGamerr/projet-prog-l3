@@ -128,6 +128,6 @@ public class GamePage extends Page {
 
     @Override
     public void update() {
-        
+
     }
 }
