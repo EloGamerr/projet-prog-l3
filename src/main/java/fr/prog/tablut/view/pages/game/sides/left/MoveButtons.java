@@ -22,15 +22,25 @@ public class MoveButtons extends JLabel {
         setMaximumSize(d);
         setMinimumSize(d);
         GridBagConstraints lc = new GridBagConstraints();
+
+        int btnWidth = 50;
+        int btnHeight = 40;
+        int imgSize = 50 * btnHeight / 100; // 50%, only modify the ratio
+        int imgX = btnWidth / 2 - imgSize / 2;
+        int imgY = btnHeight / 2 - imgSize / 2;
         
-        GenericRoundedButton undo = new GenericRoundedButton("", 100, 40);
-        GenericRoundedButton redo = new GenericRoundedButton("", 100, 40);
+        GenericRoundedButton undo = new GenericRoundedButton("", btnWidth, btnHeight);
+        GenericRoundedButton redo = new GenericRoundedButton("", btnWidth, btnHeight);
 
-        undo.setImage("left_arrow.png", 35, 5, 30, 30);
-        redo.setImage("right_arrow.png", 35, 5, 30, 30);
+        undo.setImage("left_arrow.png", imgX, imgY, imgSize, imgSize);
+        redo.setImage("right_arrow.png", imgX, imgY, imgSize, imgSize);
 
-        undo.addActionListener(new ButtonUndoRedoAdaptator(undo, this));
-        redo.addActionListener(new ButtonUndoRedoAdaptator(redo, this));
+        undo.setAction(new ButtonUndoRedoAdaptator(undo, this));
+        redo.setAction(new ButtonUndoRedoAdaptator(redo, this));
+
+        // disabled in early game : no move done
+        undo.setStyle("button:disabled");
+        redo.setStyle("button:disabled");
         
         lc.gridy = 0;
 
