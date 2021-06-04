@@ -39,7 +39,7 @@ public class RightSideGame extends GameInterfaceSide {
         saveToNewFile.setAction(new ButtonSaveAdaptator(saveToNewFile, this));
         
         pause.setAction(new ButtonPauseAdaptator(pause, this));
-        restart.setAction(new ButtonRestartAdaptator(pause, gameController));
+        restart.setAction(new ButtonRestartAdaptator(restart, gameController));
         
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
