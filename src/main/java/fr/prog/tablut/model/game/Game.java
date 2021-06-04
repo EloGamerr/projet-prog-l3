@@ -47,8 +47,11 @@ public class Game {
 		loader = new GameLoader(this);
 	}
 
+	public static void resetInstance() {
+		instance = null;
+	}
+
 	public static Game getInstance() {
-		
 		if(instance == null) {
 			instance = new Game();
 		}
@@ -69,6 +72,7 @@ public class Game {
 		init_game(9,9);
 		setWinner(PlayerEnum.NONE);
 		hasStarted = true;
+		paused = false;
 	}
 	
 	public void restart() {
@@ -77,6 +81,7 @@ public class Game {
 		init_game(9,9);
 		setWinner(PlayerEnum.NONE);
 		hasStarted = true;
+		paused = false;
 	}
 
 
