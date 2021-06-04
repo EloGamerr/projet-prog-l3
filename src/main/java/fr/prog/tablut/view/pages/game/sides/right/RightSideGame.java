@@ -6,11 +6,13 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import fr.prog.tablut.controller.adaptators.ButtonPauseAdaptator;
+import fr.prog.tablut.controller.adaptators.ButtonQuitGameAdaptator;
 import fr.prog.tablut.controller.adaptators.ButtonRestartAdaptator;
 import fr.prog.tablut.controller.adaptators.ButtonSaveAdaptator;
 import fr.prog.tablut.controller.game.gameController.GameController;
 import fr.prog.tablut.model.window.WindowConfig;
 import fr.prog.tablut.model.window.PageName;
+import fr.prog.tablut.view.components.generic.GenericObjectStyle;
 import fr.prog.tablut.view.components.generic.GenericRoundedButton;
 import fr.prog.tablut.view.pages.game.sides.GameInterfaceSide;
 
@@ -32,8 +34,8 @@ public class RightSideGame extends GameInterfaceSide {
         quit.setStyle("button.redHover");
 
         shortcuts.setHref(PageName.HelpPage);
-        quit.setHref(PageName.HomePage);
-        
+        quit.setHref(PageName.HomePage, new ButtonQuitGameAdaptator(quit, GenericObjectStyle.getGlobalWindow()));
+
         saveToNewFile.setAction(new ButtonSaveAdaptator(saveToNewFile, this));
         
         pause.setAction(new ButtonPauseAdaptator(pause, this));

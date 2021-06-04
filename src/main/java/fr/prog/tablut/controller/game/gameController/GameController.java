@@ -45,7 +45,7 @@ public class GameController {
 	private void postPlay() {
 		this.gamePage.getLeftSide().getMoveButtons().enableUndoButton(!Game.getInstance().getPlays().getPreviousMovements().isEmpty());
         this.gamePage.getLeftSide().getMoveButtons().enableRedoButton(!Game.getInstance().getPlays().getNextMovements().isEmpty());
-		this.gamePage.repaint();
+		this.gameControllerHuman.undoSelect(); // This method will also repaint the game
 	}
 
 	public void restart() {

@@ -21,58 +21,17 @@ public class HumanPlayer extends Player {
 
 
     public boolean play(Game game) {
-        switch(game.getPlayingPlayerEnum()) {
-            case ATTACKER:
-                if(gameControllerHuman.getSelectedCell() == null) {
-                    if(game.isAttackTower(row, col)) {
-                        gameControllerHuman.setSelectedCell(new Couple<Integer, Integer>(row, col));
-                        gameControllerHuman.mouseMoved(gamePage.getMousePosition());
-                    }
-                }
-
-                else if(game.move(gameControllerHuman.getSelectedCell().getFirst(), gameControllerHuman.getSelectedCell().getSecond(), row ,col)) {
-                    gameControllerHuman.setSelectedCell(null);
-                    gamePage.getGridWindow().clearImageOnMouse();
-                    return true;
-                }
-                else {
-                    if(game.move(gameControllerHuman.getSelectedCell().getFirst(), gameControllerHuman.getSelectedCell().getSecond(), row ,col)) {
-                        gameControllerHuman.setSelectedCell(null);
-                        gamePage.getGridWindow().clearImageOnMouse();
-                        return true;
-                    }
-
-                }
-                break;
-
-            case DEFENDER:
-                if(gameControllerHuman.getSelectedCell() == null) {
-                    if(game.isDefenseTower(row, col) || game.isTheKing(row, col)) {
-                        gameControllerHuman.setSelectedCell(new Couple<Integer, Integer>(row, col));
-                        gameControllerHuman.mouseMoved(gamePage.getMousePosition());
-                    }
-                }
-
-                else if(game.move(gameControllerHuman.getSelectedCell().getFirst(), gameControllerHuman.getSelectedCell().getSecond(), row ,col)) {
-                    gameControllerHuman.setSelectedCell(null);
-                    gamePage.getGridWindow().clearImageOnMouse();
-                    return true;
-                }
-    
-                else {
-                    if(game.move(gameControllerHuman.getSelectedCell().getFirst(), gameControllerHuman.getSelectedCell().getSecond(), row ,col)) {
-                        gameControllerHuman.setSelectedCell(null);
-                        gamePage.getGridWindow().clearImageOnMouse();
-                        return true;
-                    }
-                }
-                break;
-
-            default:
-                break;
+        if(gameControllerHuman.getSelectedCell() == null) {
+            if(game.canPlay(row, col)) {
+                gameControllerHuman.setSelectedCell(new Couple<Integer, Integer>(row, col));
+                gameControllerHuman.mouseMoved(gamePage.getMousePosition());
+            }
         }
-
-        return false;
+        else if(gameControllerHuman.getSelectedCell().getFirst() == row && gameControllerHuman.getSelectedCell().getSecond() == col) {
+            gameControllerHuman.undoSelect();
+        }
+        
+        return game.move(gameControllerHuman.getSelectedCell().getFirst(), gameControllerHuman.getSelectedCell().getSecond(), row ,col);
     }
     
 
