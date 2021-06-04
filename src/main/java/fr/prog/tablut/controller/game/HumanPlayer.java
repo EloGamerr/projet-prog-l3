@@ -27,11 +27,12 @@ public class HumanPlayer extends Player {
                 gameControllerHuman.mouseMoved(gamePage.getMousePosition());
             }
         }
-        else if(gameControllerHuman.getSelectedCell().getFirst() == row && gameControllerHuman.getSelectedCell().getSecond() == col) {
+        else if(gameControllerHuman.getSelectedCell().getFirst() == row && gameControllerHuman.getSelectedCell().getSecond() == col)
             gameControllerHuman.undoSelect();
-        }
+        else
+            return game.move(gameControllerHuman.getSelectedCell().getFirst(), gameControllerHuman.getSelectedCell().getSecond(), row ,col);
         
-        return game.move(gameControllerHuman.getSelectedCell().getFirst(), gameControllerHuman.getSelectedCell().getSecond(), row ,col);
+        return false;
     }
     
 
