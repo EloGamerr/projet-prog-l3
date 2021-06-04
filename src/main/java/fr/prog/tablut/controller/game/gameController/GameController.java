@@ -22,7 +22,7 @@ public class GameController {
 	
 	public void click(int row, int col) {
 		if(this.gameControllerHuman.click(row, col))
-			this.gamePage.repaint();
+			this.postPlay();
 	}
 
 	public void undoSelect() {
@@ -39,9 +39,15 @@ public class GameController {
 
 	public void tick() {
 		if(gameControllerAI.tick())
-			this.gamePage.repaint();
+			this.postPlay();
 	}
 	
+	private void postPlay() {
+		this.gamePage.getLeftSide().getMoveButtons().enableUndoButton(!Game.getInstance().getPlays().getPreviousMovements().isEmpty());
+        this.gamePage.getLeftSide().getMoveButtons().enableRedoButton(!Game.getInstance().getPlays().getNextMovements().isEmpty());
+		this.gamePage.repaint();
+	}
+
 	public void restart() {
 		Game.getInstance().restart();
 		this.gamePage.repaint();
@@ -52,16 +58,22 @@ public class GameController {
 		return gamePage;
 	}
 
-	public void undo() {
+	public boolean undo() {
 		if(Game.getInstance().undo_move()) {
-			this.gamePage.repaint();
+			this.postPlay();
+            return true;
 		}
+
+        return false;
 	}
 
-	public void redo() {
+	public boolean redo() {
 		if(Game.getInstance().redo_move()) {
-			this.gamePage.repaint();
+			this.postPlay();
+            return true;
 		}
+
+        return false;
 	}
 
 	public void save() {

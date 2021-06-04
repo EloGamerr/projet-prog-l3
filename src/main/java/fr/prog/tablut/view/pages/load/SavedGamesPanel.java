@@ -106,7 +106,7 @@ public class SavedGamesPanel extends JPanel {
         
         // no save found
 		if(saves.size() == 0) {
-            GenericLabel label = new GenericLabel("Aucune partie sauvegardée", 12);
+            GenericLabel label = new GenericLabel("Aucune partie sauvegard\u00e9e", 12);
             label.setBorder(new EmptyBorder(height/2 - 20, 0, 0, 0));
 			wrapper.add(label);
 		}
@@ -230,7 +230,7 @@ public class SavedGamesPanel extends JPanel {
         }
 
         if(n == 1) {
-            GenericLabel label = new GenericLabel("Aucune partie sauvegardée", 12);
+            GenericLabel label = new GenericLabel("Aucune partie sauvegard\u00e9e", 12);
             label.setBorder(new EmptyBorder(height/2 - 20, 0, 0, 0));
             wrapper.add(label);
         }

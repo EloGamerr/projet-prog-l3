@@ -9,10 +9,13 @@ import javax.swing.JLabel;
 import fr.prog.tablut.controller.adaptators.ButtonUndoRedoAdaptator;
 import fr.prog.tablut.controller.game.gameController.GameController;
 import fr.prog.tablut.view.components.generic.GenericRoundedButton;
+import fr.prog.tablut.view.pages.game.sides.right.RightSideGame;
 
 public class MoveButtons extends JLabel {
-	GameController gameController;
-    public MoveButtons(Dimension d, GameController gameController) {
+	private GameController gameController;
+    private GenericRoundedButton undo, redo;
+
+    public MoveButtons(Dimension d, GameController gameController, RightSideGame rightSide) {
         setOpaque(false);
         this.gameController = gameController;
 
@@ -29,14 +32,14 @@ public class MoveButtons extends JLabel {
         int imgX = btnWidth / 2 - imgSize / 2;
         int imgY = btnHeight / 2 - imgSize / 2;
         
-        GenericRoundedButton undo = new GenericRoundedButton("", btnWidth, btnHeight);
-        GenericRoundedButton redo = new GenericRoundedButton("", btnWidth, btnHeight);
+        undo = new GenericRoundedButton("", btnWidth, btnHeight);
+        redo = new GenericRoundedButton("", btnWidth, btnHeight);
 
         undo.setImage("left_arrow.png", imgX, imgY, imgSize, imgSize);
         redo.setImage("right_arrow.png", imgX, imgY, imgSize, imgSize);
 
-        undo.setAction(new ButtonUndoRedoAdaptator(undo, this));
-        redo.setAction(new ButtonUndoRedoAdaptator(redo, this));
+        undo.setAction(new ButtonUndoRedoAdaptator(undo, this, rightSide));
+        redo.setAction(new ButtonUndoRedoAdaptator(redo, this, rightSide));
 
         // disabled in early game : no move done
         undo.setStyle("button:disabled");
@@ -50,7 +53,23 @@ public class MoveButtons extends JLabel {
         lc.gridx = 1;
         add(redo);
     }
+
 	public GameController getGameController() {
 		return gameController;
 	}
+
+    public void enableUndoButton(boolean enable) {
+        enableButton(undo, enable);
+    }
+
+    public void enableRedoButton(boolean enable) {
+        enableButton(redo, enable);
+    }
+
+    private void enableButton(GenericRoundedButton button, boolean enable) {
+        String style = "button" + (enable? "" : ":disabled");
+
+        if(button.getStyle().replace(":hover", "") != style)
+            button.setStyle(style);
+    }
 }

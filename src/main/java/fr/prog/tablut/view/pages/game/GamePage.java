@@ -45,8 +45,8 @@ public class GamePage extends Page {
         final Dimension d = new Dimension((config.windowWidth - s)/2, config.windowHeight);
 
         centerSide = new CenterSideGame(config, new Dimension(s, s));
-        leftSide = new LeftSideGame(config, gameController, d);
         rightSide = new RightSideGame(config, d, gameController);
+        leftSide = new LeftSideGame(config, gameController, d, rightSide);
 
         setLayout(new GridBagLayout());
 

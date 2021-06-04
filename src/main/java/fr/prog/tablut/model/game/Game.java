@@ -150,15 +150,43 @@ public class Game {
 		Play play = this.getPlays().undo_move();
 
 		if(play != null) {
-			for(Map.Entry<Couple<Integer, Integer>, CellContent> entry : play.getModifiedOldCellContents().entrySet()) {
-				this.setContent(entry.getValue(), entry.getKey().getFirst(), entry.getKey().getSecond());
+			// Handle undo differently if it is Human VS AI
+			if(PlayerTypeEnum.getFromPlayer(this.getAttacker()).isAI() != PlayerTypeEnum.getFromPlayer(this.getDefender()).isAI()) {
+				// We can't undo when the AI is playing in a game Human VS AI
+				if(!PlayerTypeEnum.getFromPlayer(this.getPlayingPlayer()).isAI()) {
+					Play play2 = this.getPlays().undo_move();
+
+					// We undo twice if it's Human VS AI
+					for(Map.Entry<Couple<Integer, Integer>, CellContent> entry : play.getModifiedOldCellContents().entrySet()) {
+						this.setContent(entry.getValue(), entry.getKey().getFirst(), entry.getKey().getSecond());
+					}
+
+					if(play2 != null) {
+						for(Map.Entry<Couple<Integer, Integer>, CellContent> entry : play2.getModifiedOldCellContents().entrySet()) {
+							this.setContent(entry.getValue(), entry.getKey().getFirst(), entry.getKey().getSecond());
+						}
+					}
+					else {
+						this.playingPlayerEnum = this.getPlayingPlayerEnum().getOpponent();
+					}
+
+					return true;
+				}
+				else {
+					// Redo the move because the undo cannot be done
+					this.getPlays().redo_move();
+				}
 			}
+			else {
+				for(Map.Entry<Couple<Integer, Integer>, CellContent> entry : play.getModifiedOldCellContents().entrySet()) {
+					this.setContent(entry.getValue(), entry.getKey().getFirst(), entry.getKey().getSecond());
+				}
 
-			this.playingPlayerEnum = this.getPlayingPlayerEnum().getOpponent();
-			setPaused(true);
-			return true;
+				this.playingPlayerEnum = this.getPlayingPlayerEnum().getOpponent();
+				setPaused(true);
+				return true;
+			}
 		}
-
 
 		return false;
 	}
@@ -546,7 +574,12 @@ public class Game {
 	}
 	
 	public void setPaused(boolean paused) {
-		this.paused = paused;
+		boolean pause = PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker()).isAI() && PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender()).isAI();
+
+		if(pause)
+			pause = paused;
+
+		this.paused = pause;
 	}
 	
 	public void setNames(PlayerTypeEnum attacker, PlayerTypeEnum defender, String attackerName, String defenderName) {
