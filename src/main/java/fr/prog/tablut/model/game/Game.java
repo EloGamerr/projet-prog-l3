@@ -47,16 +47,16 @@ public class Game {
 		loader = new GameLoader(this);
 	}
 
-	public static void resetInstance() {
-		instance = null;
-	}
-
 	public static Game getInstance() {
 		if(instance == null) {
 			instance = new Game();
 		}
 
 		return instance;
+	}
+
+	public static void resetInstance() {
+		instance = null;
 	}
 
 	/**
@@ -318,11 +318,11 @@ public class Game {
 	}
 
 	public boolean canPlay(int l, int c) {
-		if(this.playingPlayerEnum == PlayerEnum.ATTACKER) {
-			return this.getCellContent(l, c) == CellContent.ATTACK_TOWER;
-		}
-		
-		return this.getCellContent(l, c) == CellContent.DEFENSE_TOWER || this.getCellContent(l, c) == CellContent.KING;
+		if(this.playingPlayerEnum == PlayerEnum.ATTACKER && this.getCellContent(l, c) != CellContent.ATTACK_TOWER) return false;
+
+		if(this.playingPlayerEnum == PlayerEnum.DEFENDER && this.getCellContent(l, c) != CellContent.DEFENSE_TOWER && this.getCellContent(l, c) != CellContent.KING) return false;
+
+		return this.canMove(l, c);
 	}
 	
 	/**
@@ -484,6 +484,36 @@ public class Game {
         }
 
 		return accessibleCells;
+	}
+
+	public boolean canMove(int fromL, int fromC) {
+		List<Couple<Integer, Integer>> accessibleCells = new ArrayList<>();
+
+		for(int toL = fromL-1 ; toL >= 0 ; toL--) {
+			if(cantAccess(fromL, fromC, toL, fromC , accessibleCells)) break;
+
+			if(!accessibleCells.isEmpty()) return true;
+		}
+
+		for(int toL = fromL+1 ; toL < rowAmount ; toL++) {
+			if(cantAccess(fromL, fromC, toL, fromC, accessibleCells)) break;
+
+			if(!accessibleCells.isEmpty()) return true;
+		}
+
+		for(int toC = fromC-1 ; toC >= 0 ; toC--) {
+			if(cantAccess(fromL, fromC, fromL, toC, accessibleCells)) break;
+
+			if(!accessibleCells.isEmpty()) return true;
+		}
+
+		for(int toC = fromC+1 ; toC < colAmount ; toC++) {
+			if(cantAccess(fromL, fromC, fromL, toC, accessibleCells)) break;
+
+			if(!accessibleCells.isEmpty()) return true;
+		}
+
+		return !accessibleCells.isEmpty();
 	}
 
 	/**
