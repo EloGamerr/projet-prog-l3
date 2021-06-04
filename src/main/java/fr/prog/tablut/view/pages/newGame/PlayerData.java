@@ -2,6 +2,7 @@ package fr.prog.tablut.view.pages.newGame;
 
 import javax.swing.JTextField;
 
+import fr.prog.tablut.controller.adaptators.InputAdaptator;
 import fr.prog.tablut.view.components.generic.GenericInput;
 
 /**
@@ -11,7 +12,7 @@ public class PlayerData {
 	public String name;
 	public String username;
 	public String type;
-	public JTextField usernameInput;
+	public GenericInput usernameInput;
 
 	/**
 	 * Default constructor.
@@ -32,10 +33,12 @@ public class PlayerData {
 		this.name = name;
 		this.username = username;
 		usernameInput = new GenericInput(this.username);
+
+        // verify text length
+        usernameInput.onKeyPress(new InputAdaptator(usernameInput));
 	}
 
 	public JTextField getUsernameInput() {
 		return usernameInput;
 	}
 }
-	
