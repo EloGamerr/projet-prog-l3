@@ -23,7 +23,6 @@ import org.json.JSONObject;
 import fr.prog.tablut.model.game.Play;
 import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 import fr.prog.tablut.structures.Couple;
-import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Game;
 
 
@@ -84,7 +83,6 @@ public class GameSaver {
 	}
 
 	public void save_core(Path path) {
-		JSONObject jsonBoard = generateJSONBoard();
 		JSONArray jsonArrayParameters = generateJSONParameters();
 		JSONObject jsonParameters = new JSONObject();
 
@@ -95,12 +93,10 @@ public class GameSaver {
 
 			if(!Files.exists(path)) {
 				writeInFile(path, jsonParameters.toString(), StandardOpenOption.CREATE);
-				writeInFile(path, jsonBoard.toString(), StandardOpenOption.APPEND);
 			}
 			else {
 				List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
 			    lines.set(0, jsonParameters.toString());
-			    lines.set(1, jsonBoard.toString());
 			    writeInFile(path, lines);
 			}
 
@@ -117,11 +113,6 @@ public class GameSaver {
 	 // JSON generators
 	 ////////////////////////////////////////////////////
 
-	public JSONObject generateJSONBoard() {
-		JSONObject jsonBoard = new JSONObject();
-		jsonBoard.put("board", saveBoard().toString());
-		return jsonBoard;
-	}
 
 	public JSONArray generateJSONParameters() {
 		JSONArray jsonParameters = new JSONArray();
@@ -157,32 +148,7 @@ public class GameSaver {
 	 // StringBuilder functions
 	 ////////////////////////////////////////////////////
 
-	public StringBuilder saveBoard() {
-		StringBuilder builder = new StringBuilder();
-		CellContent cell = null;
-
-		for(int l = 0; l < Game.getInstance().getRowAmout();l++) {
-			for(int c = 0; c < Game.getInstance().getColAmout();c++) {
-				cell = Game.getInstance().getCellContent(l, c);
-
-				switch(cell) {
-					case EMPTY: 		builder.append(SaverConstants.EMPTY); break;
-					case ATTACK_TOWER: 	builder.append(SaverConstants.ATTACK_TOWER); break;
-					case DEFENSE_TOWER: builder.append(SaverConstants.DEFENSE_TOWER); break;
-					case KING: 			builder.append(SaverConstants.KING); break;
-					case GATE: 			builder.append(SaverConstants.GATE); break;
-					case KINGPLACE: 	builder.append(SaverConstants.KINGPLACE); break;
-					default: break;
-				}
-
-				builder.append(SaverConstants.BLANK);
-			}
-
-			builder.append(SaverConstants.NEXT_LINE);
-		}
-
-		return builder;
-	}
+	
 
 
 	public StringBuilder savePlays() {
@@ -196,24 +162,12 @@ public class GameSaver {
 			builder.append(SaverConstants.BR_RIGHT);
 
 			builder.append(SaverConstants.BLANK);
-
+			
 			builder.append(SaverConstants.BR_LEFT);
-			builder.append(move.getMovement().toC);
-			builder.append(SaverConstants.COMMA);
 			builder.append(move.getMovement().toL);
-			builder.append(SaverConstants.BR_RIGHT);
-
-			builder.append(SaverConstants.BR_RIGHT);
-			builder.append(move.getMovement().fromL);
 			builder.append(SaverConstants.COMMA);
-			builder.append(move.getMovement().fromC);
-			builder.append(SaverConstants.BR_LEFT);
-
-			builder.append(SaverConstants.BR_RIGHT);
 			builder.append(move.getMovement().toC);
-			builder.append(SaverConstants.COMMA);
-			builder.append(move.getMovement().toL);
-			builder.append(SaverConstants.BR_LEFT);
+			builder.append(SaverConstants.BR_RIGHT);
 
 			builder.append(SaverConstants.NEXT_LINE);
 		}

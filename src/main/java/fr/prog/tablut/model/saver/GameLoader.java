@@ -7,16 +7,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.Movement;
-import fr.prog.tablut.model.game.Play;
 import fr.prog.tablut.model.game.player.PlayerEnum;
 import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 
@@ -70,8 +67,7 @@ public class GameLoader {
 		while(scanner.hasNextLine()) {
 			String lineContent = scanner.nextLine();
 
-			if((lineNumber == 0 && !loadParameters(lineContent))
-			|| (lineNumber != 0 && !loadBoard(lineContent)))
+			if(lineNumber == 0 && !loadParameters(lineContent))
 				return false;
 			
 			lineNumber++;
@@ -89,13 +85,12 @@ public class GameLoader {
 		try {
 			JSONObject jsonParameters = new JSONObject(line);
 			JSONArray array = jsonParameters.getJSONArray("parameters");
-
-			setDefender(new JSONObject(array.getString(0)).getInt("defender"));
-			setDefenderName(new JSONObject(array.getString(1)).getString("defenderName"));
-			setAttacker(new JSONObject(array.getString(2)).getInt("attacker"));
-			setAttackerName(new JSONObject(array.getString(3)).getString("attackerName"));
-			setWinner(new JSONObject(array.getString(4)).getString("winner"));
-			setPlayingPlayer(new JSONObject(array.getString(5)).getString("playingPlayer"));
+			
+			PlayerTypeEnum defender = getDefender(new JSONObject(array.getString(0)).getInt("defender"));
+			String defenderName = new JSONObject(array.getString(1)).getString("defenderName");
+			PlayerTypeEnum attacker = getDefender(new JSONObject(array.getString(2)).getInt("attacker"));
+			String attackerName = new JSONObject(array.getString(3)).getString("attackerName");
+			game.start(attacker, defender, attackerName,defenderName);
 			setPlays(new JSONObject(array.getString(6)).getString("plays"));
 
 		}
@@ -108,53 +103,7 @@ public class GameLoader {
 	}
 
 
-	public boolean loadBoard(String line) {
-		String board;
-
-	 	try {
-			board = new JSONObject(line).getString("board");
-		}
-		catch(NoSuchElementException | ParseException e) {
-			e.printStackTrace();
-			return false;
-		}
-
-
-
-    	int index = 0;
-    	int currColumn = 0;
-    	int currLine = 0;
-    	String val = "";
-
-    	while(index < board.length()) {
-    		if(board.charAt(index) == ' ') {
-    			if(val.matches(SaverConstants.ATTACK_TOWER))
-    				game.setContent(CellContent.ATTACK_TOWER, currLine, currColumn);
-    			else if(val.matches(SaverConstants.DEFENSE_TOWER))
-    				game.setContent(CellContent.DEFENSE_TOWER, currLine, currColumn);
-    			else if(val.matches(SaverConstants.GATE))
-    				game.setContent(CellContent.GATE, currLine, currColumn);
-    			else if(val.matches(SaverConstants.KING))
-    				game.setContent(CellContent.KING, currLine, currColumn);
-    			else if(val.matches(SaverConstants.KINGPLACE))
-    				game.setContent(CellContent.KINGPLACE, currLine, currColumn);
-
-    			val = "";
-    			currColumn++;
-    		}
-    		else if(board.charAt(index) == '\n'){
-    			currColumn = 0;
-    			currLine++;
-    		}
-    		else {
-    			val += board.charAt(index);
-    		}
-
-    		index++;
-    	}
-
-    	return true;
-	}
+	
 
 	////////////////////////////////////////////////////
 	// Setter and Getters
@@ -176,73 +125,71 @@ public class GameLoader {
 	}
 
 
-	public void setAttacker(int attacker) {
+	public PlayerTypeEnum getAttacker(int attacker) {
 		PlayerTypeEnum[] values = PlayerTypeEnum.values();
 
 		if(values.length == 0 || attacker < 0 || attacker >= values.length) {
 			game.setAttacker(PlayerTypeEnum.getDefaultPlayer());
-			return;
+			return null;
 		}
 
-		game.setAttacker(values[attacker].createPlayer());
+		return values[attacker];
 	}
 
-	public void setDefender(int defender) {
+	public PlayerTypeEnum getDefender(int defender) {
 		PlayerTypeEnum[] values = PlayerTypeEnum.values();
 
 		if(values.length == 0 || defender < 0 || defender >= values.length) {
 			game.setDefender(PlayerTypeEnum.getDefaultPlayer());
-			return;
+			return null;
 		}
 
-		game.setDefender(values[defender].createPlayer());
+		return values[defender];
 	}
 
 	public void setPlays(String playsString) {
 		String toOrFrom = SaverConstants.NEXT_LINE;
-		String lOrC = "";
+		String lOrC = SaverConstants.BR_LEFT;
         int index = 0;
         Movement movement = new Movement();
 
     	while(index < playsString.length()) {
     		switch(playsString.charAt(index)) {
+    		
     			case ' ':
     				toOrFrom = SaverConstants.BLANK;
     				break;
     			case '\n':
-    				game.getPlays().movements().add(new Play(movement));
+    				game.move(movement.fromL, movement.fromC, movement.toL,movement.toC);
     				toOrFrom = SaverConstants.NEXT_LINE;
     				break;
     			case '(':
-    				toOrFrom = SaverConstants.BR_LEFT;
+    				lOrC = SaverConstants.BR_LEFT;
     				break;
     			case ',':
-    				toOrFrom = SaverConstants.COMMA;
+    				lOrC = SaverConstants.COMMA;
     				break;
     			case ')':
     				break;
     			default:
-    				if(toOrFrom == SaverConstants.NEXT_LINE && lOrC == SaverConstants.BR_LEFT)
-    	    			movement.setFromL(playsString.charAt(index));
-    	    		else if(toOrFrom == SaverConstants.NEXT_LINE && lOrC == SaverConstants.COMMA)
-    	    			movement.setFromC(playsString.charAt(index));
-    	    		if(toOrFrom == SaverConstants.BLANK && lOrC == SaverConstants.BR_LEFT)
-    	    			movement.setToL(playsString.charAt(index));
-    	    		else if(toOrFrom == SaverConstants.BLANK && lOrC == SaverConstants.COMMA)
-    	    			movement.setToC(playsString.charAt(index));
-    				break;
+
+    				if(toOrFrom.equals(SaverConstants.NEXT_LINE) && lOrC.equals(SaverConstants.BR_LEFT)) {
+    	    			movement.setFromL(Character.getNumericValue(playsString.charAt(index)));
+    				break;}
+    	    		else if(toOrFrom == SaverConstants.NEXT_LINE && lOrC == SaverConstants.COMMA) {
+    	    			movement.setFromC(Character.getNumericValue(playsString.charAt(index)));
+    				break;}
+    	    		else if(toOrFrom == SaverConstants.BLANK && lOrC == SaverConstants.BR_LEFT) {
+    	    			movement.setToL(Character.getNumericValue(playsString.charAt(index)));
+    				break;}
+    	    		else if(toOrFrom == SaverConstants.BLANK && lOrC == SaverConstants.COMMA) {
+    	    			movement.setToC(Character.getNumericValue(playsString.charAt(index)));
+    				break;}
+    				
     		}
 
     		index++;
     	}
-	}
-	
-
-	private void setDefenderName(String string) {
-		game.setDefenderName(string);
-	}
-	private void setAttackerName(String string) {
-		game.setAttackerName(string);
 	}
 	
 	public String getCurrentSavePath() {

@@ -48,6 +48,7 @@ public class Game {
 	}
 
 	public static Game getInstance() {
+		
 		if(instance == null) {
 			instance = new Game();
 		}
@@ -59,12 +60,19 @@ public class Game {
 	 * Start a new game
 	 */
 	public void start(PlayerTypeEnum attacker, PlayerTypeEnum defender, String attackerName, String defenderName) {
-		
 		this.attacker = attacker.createPlayer();
 		this.defender = defender.createPlayer();
 		setNames(attacker, defender, attackerName, defenderName);
 		setPlayingPlayer(PlayerEnum.ATTACKER);
 		this.move = new PawnTaker(this);
+		this.plays = new Plays();
+		init_game(9,9);
+		setWinner(PlayerEnum.NONE);
+		hasStarted = true;
+	}
+	
+	public void restart() {
+		setPlayingPlayer(PlayerEnum.ATTACKER);
 		this.plays = new Plays();
 		init_game(9,9);
 		setWinner(PlayerEnum.NONE);
@@ -77,8 +85,6 @@ public class Game {
 	 * @param index_selected Save index (>= 0 and < amount of saves)
 	 */
 	public void load(int index_selected) {
-		init_grid(9, 9);
-		setPlayingPlayer(PlayerEnum.ATTACKER);
 		this.move = new PawnTaker(this);
 		this.plays = new Plays();
 		loader.loadData(index_selected);
@@ -147,6 +153,7 @@ public class Game {
 			setPaused(true);
 			return true;
 		}
+
 
 		return false;
 	}

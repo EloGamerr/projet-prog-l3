@@ -22,7 +22,8 @@ public class Plays {
 		Play play = new Play(new Movement(fromL, fromC, toL, toC));
 		plays.add(play);
 		currentMovement++;
-
+		System.out.println(currentMovement);
+		System.out.println(plays.get(0).getMovement().toString());
 		return play;
 	}
 
@@ -34,7 +35,7 @@ public class Plays {
 			return null;
 
 		currentMovement--;
-
+		System.out.println(plays.get(currentMovement+1).getMovement().toString());
 		return plays.get(currentMovement+1);
 	}
 

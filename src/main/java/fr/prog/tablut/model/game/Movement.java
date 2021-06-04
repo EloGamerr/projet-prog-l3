@@ -48,4 +48,7 @@ public class Movement {
 		this.toC = toC;
 	}
 
+	public String toString() {
+		return "("+fromL+","+fromC+")"+" ("+toL+","+toC+")";
+	}
 }

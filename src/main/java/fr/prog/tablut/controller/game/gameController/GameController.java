@@ -43,7 +43,7 @@ public class GameController {
 	}
 	
 	public void restart() {
-		Game.getInstance().init_game(9, 9);
+		Game.getInstance().restart();
 		this.gamePage.repaint();
 	}
 	
