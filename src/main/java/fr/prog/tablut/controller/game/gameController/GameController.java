@@ -50,16 +50,18 @@ public class GameController {
 
 	public void restart() {
 		Game.getInstance().restart();
+		this.gamePage.update();
 		this.gamePage.repaint();
 	}
 	
-	
+
 	public GamePage getGameWindow() {
 		return gamePage;
 	}
 
 	public boolean undo() {
 		if(Game.getInstance().undo_move()) {
+			this.gamePage.getRightSide().togglePauseButton(Game.getInstance().isPaused());
 			this.postPlay();
             return true;
 		}
@@ -69,6 +71,7 @@ public class GameController {
 
 	public boolean redo() {
 		if(Game.getInstance().redo_move()) {
+			this.gamePage.getRightSide().togglePauseButton(Game.getInstance().isPaused());
 			this.postPlay();
             return true;
 		}
@@ -87,5 +90,7 @@ public class GameController {
 			pause = !Game.getInstance().isPaused();
 
 		Game.getInstance().setPaused(pause);
+
+		this.gamePage.getRightSide().togglePauseButton(pause);
 	}
 }

@@ -204,6 +204,8 @@ public class Game {
 			}
 
 			this.playingPlayerEnum = this.getPlayingPlayerEnum().getOpponent();
+			if(PlayerTypeEnum.getFromPlayer(this.getAttacker()).isAI() && PlayerTypeEnum.getFromPlayer(this.getDefender()).isAI())
+				setPaused(true);
 
 			return true;
 		}

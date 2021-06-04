@@ -3,10 +3,9 @@ package fr.prog.tablut.view.pages.game;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Graphics;
 
 import javax.swing.Timer;
-
-import javax.swing.JFrame;
 
 import fr.prog.tablut.controller.game.gameAdaptator.GameKeyAdaptator;
 import fr.prog.tablut.controller.game.gameAdaptator.GameMouseAdaptator;
@@ -35,7 +34,7 @@ public class GamePage extends Page {
      * Creates the game's view manager
      * @param config The configuration to apply to the page
      */
-    public GamePage(WindowConfig config, JFrame jFrame) {
+    public GamePage(WindowConfig config) {
         super(config);
         GameController gameController = new GameController(this);
         
@@ -75,9 +74,16 @@ public class GamePage extends Page {
         Timer time = new Timer(50, new GameTimeAdaptator(gameController));
         time.start();
 
-        jFrame.addKeyListener(new GameKeyAdaptator(gameController));
+        addKeyListener(new GameKeyAdaptator(gameController));
+        setFocusable(true);
     }
-    
+
+    @Override
+    protected void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
+        requestFocusInWindow();
+    }
+
     /**
      * Returns the grid window object
      * @return The grid window
@@ -107,6 +113,16 @@ public class GamePage extends Page {
          boolean a = PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker()).isAI(),
             b = PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender()).isAI();
 
-        rightSide.enablePauseButton(a && b);
+         boolean enablePauseButton = a && b;
+
+        rightSide.enablePauseButton(enablePauseButton);
+
+        if(!enablePauseButton)
+            this.getRightSide().togglePauseButton(false);
+        else
+            this.getRightSide().togglePauseButton(Game.getInstance().isPaused());
+
+        this.getLeftSide().getMoveButtons().enableUndoButton(!Game.getInstance().getPlays().getPreviousMovements().isEmpty());
+        this.getLeftSide().getMoveButtons().enableRedoButton(!Game.getInstance().getPlays().getNextMovements().isEmpty());
     }
 }

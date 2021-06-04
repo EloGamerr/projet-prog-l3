@@ -63,10 +63,10 @@ public class GlobalWindow {
 		loader.loadCustomFont("Farro-Regular.ttf");
 		
 		jFrame = new JFrame(config.projectName);
-	
+
 		GenericObjectStyle.setGlobalWindow(this);
 		
-		gamePage = new GamePage(this.config, jFrame);
+		gamePage = new GamePage(this.config);
 		homePage = new HomePage(this.config);
 		currentPage = homePage;
 		previousPageName = currentPage.name();
