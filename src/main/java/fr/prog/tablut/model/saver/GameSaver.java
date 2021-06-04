@@ -220,6 +220,9 @@ public class GameSaver {
 	public ArrayList<Couple<String, Integer>> getSavesNames() {
         int i = 0;
 		File folder = new File(savesPath);
+		if(!folder.exists() || folder.isFile()) {
+			folder.mkdir();
+		}
         String[] files = folder.list();
         ArrayList<Couple<String, Integer>> saves = new ArrayList<Couple<String, Integer>>();
 
