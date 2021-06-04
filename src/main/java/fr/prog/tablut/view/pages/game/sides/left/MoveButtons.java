@@ -9,10 +9,11 @@ import javax.swing.JLabel;
 import fr.prog.tablut.controller.adaptators.ButtonUndoRedoAdaptator;
 import fr.prog.tablut.controller.game.gameController.GameController;
 import fr.prog.tablut.view.components.generic.GenericRoundedButton;
+import fr.prog.tablut.view.pages.game.sides.right.RightSideGame;
 
 public class MoveButtons extends JLabel {
 	GameController gameController;
-    public MoveButtons(Dimension d, GameController gameController) {
+    public MoveButtons(Dimension d, GameController gameController, RightSideGame rightSide) {
         setOpaque(false);
         this.gameController = gameController;
 
@@ -29,8 +30,8 @@ public class MoveButtons extends JLabel {
         undo.setImage("left_arrow.png", 35, 5, 30, 30);
         redo.setImage("right_arrow.png", 35, 5, 30, 30);
 
-        undo.addActionListener(new ButtonUndoRedoAdaptator(undo, this));
-        redo.addActionListener(new ButtonUndoRedoAdaptator(redo, this));
+        undo.addActionListener(new ButtonUndoRedoAdaptator(undo, this, rightSide));
+        redo.addActionListener(new ButtonUndoRedoAdaptator(redo, this, rightSide));
         
         lc.gridy = 0;
 
