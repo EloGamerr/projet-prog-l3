@@ -16,6 +16,7 @@ public class LoadSaveAdaptator extends ActionAdaptator<GenericButton> {
 
     @Override
     protected void process(ActionEvent e) {
+        // créé une instance
         Game.getInstance().load(savesPanel.getSelectedIndex());
     }
 }

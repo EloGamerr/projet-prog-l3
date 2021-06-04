@@ -75,6 +75,10 @@ public class GenericButton extends JButton implements GenericComponent {
         });
 	}
 
+	public WindowName getHref() {
+		return href;
+	}
+
 	/**
 	 * Sets the href location (the page to go to in the app)
 	 * when the user clicks on.

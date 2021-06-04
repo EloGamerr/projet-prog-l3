@@ -40,10 +40,6 @@ public class GameController {
 		if(gameControllerAI.tick())
 			this.gamePage.repaint();	
 
-		if(gameControllerAI.tick()) {
-			this.gamePage.repaint();
-		}
-
 	}
 	
 	public void restart() {

@@ -16,6 +16,7 @@ public class CreateGameAdaptator  extends ActionAdaptator<GenericButton> {
 	
 	@Override
 	public void process(ActionEvent e) {
+		// créé une instance
 		Game.getInstance().start(gameSettings.getPlayerType1(), gameSettings.getPlayerType2());
 	}
 }

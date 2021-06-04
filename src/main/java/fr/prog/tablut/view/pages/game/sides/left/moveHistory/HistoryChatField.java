@@ -1,20 +1,24 @@
 package fr.prog.tablut.view.pages.game.sides.left.moveHistory;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.Play;
 import fr.prog.tablut.model.game.Plays;
 import fr.prog.tablut.structures.Couple;
+import fr.prog.tablut.view.components.generic.GenericObjectStyle;
 
 public class HistoryChatField extends JPanel {
     private GridBagConstraints c;
@@ -34,13 +38,13 @@ public class HistoryChatField extends JPanel {
         this.setMinimumSize(d);
         
 
-        for(int i = 0; i < 5; i++) {
-        	addAction(new Couple(new Couple(1, 1), new Couple(2, 2)));
-        }
+        /* for(int i = 0; i < 5; i++) {
+        	addAction();
+        } */
     }
 
-    public void addAction(Couple<Couple<Integer, Integer>, Couple<Integer, Integer>> action) {
-        labelField newPlayerAction = new labelField(action, String.format("Action du joueur"));
+    public void addAction() {
+        labelField newPlayerAction = new labelField(String.format("Action du joueur"), this, c.gridy);
 
         // GenericObjectStyle.getProp("chat", "color");         // -- couleur orange du texte
         // GenericObjectStyle.getProp("chat.timing", "color");  // -- couleur blanche des minutes [3:24]
@@ -48,15 +52,50 @@ public class HistoryChatField extends JPanel {
         // GenericObjectStyle.getProp("chat.blue", "color");    // -- couleur bleue de "Défenseur"
         // GenericObjectStyle.getProp("chat.yellow", "color");  // -- couleur jaune d'un message système
 
-        newPlayerAction.addMouseListener(new MouseAdapter(){
+        allHistory.add(newPlayerAction);
+        this.add(newPlayerAction, this.c);
+        c.gridy++;
+
+    }
+
+
+	public void updateContent() {
+		System.out.println("Update content");
+	}
+
+	public void enteredChange(Integer pos) {
+		for(Integer i = pos; i < allHistory.size(); i++) {
+			labelField label = allHistory.get(i);
+			label.setForeground(Color.BLUE);
+		}
+	}
+
+	public void exitedChange(Integer pos) {
+		for(Integer i = pos; i < allHistory.size(); i++) {
+			labelField label = allHistory.get(i);
+			label.setForeground(GenericObjectStyle.getProp("chat", "color"));
+		}
+	}
+}
+
+class labelField extends JLabel{
+	
+    private GridBagConstraints c;
+	private CellContent[][] historyCell;
+    
+    private Integer position;
+    
+	public labelField(String name, HistoryChatField historyMain, Integer pos) {
+        this.setText(name);
+		this.setPosition(pos);
+		this.addMouseListener(new MouseAdapter(){
 			
 			//Utilisé quand le curseur n'est plus sur le text
 			//On va devoir remètre le plateau à son état normal
 			@Override
 			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
 				System.out.println("Curseur parti");
-				
+				historyMain.exitedChange(pos);
 			}
 			
 			@Override
@@ -65,8 +104,9 @@ public class HistoryChatField extends JPanel {
 			 * On va vouloir changer le plateau de jeu pour montrer l'historique
 			 */
 			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
 				System.out.println("Curseur dessus");
+				historyMain.enteredChange(pos);
+
 			}
 			/**
 			 * Utilisé quand on clique sur le text
@@ -74,7 +114,6 @@ public class HistoryChatField extends JPanel {
 			 */
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
 				System.out.println("Clik sur le bouton");
 				Plays test = Game.getInstance().getPlays();
 
@@ -88,31 +127,6 @@ public class HistoryChatField extends JPanel {
 				
 			}
 		});
-        
-        newPlayerAction.setPosition(c.gridy);
-        allHistory.add(newPlayerAction);
-        this.add(newPlayerAction, this.c);
-        c.gridy++;
-
-    }
-
-
-	public void updateContent() {
-		System.out.println("Update content");
-	}
-}
-
-class labelField extends JLabel{
-	
-	private Game game;
-    private GridBagConstraints c;
-    private Couple<Couple<Integer, Integer>, Couple<Integer, Integer>> action;
-    
-    private Integer position;
-    
-	public labelField(Couple<Couple<Integer, Integer>, Couple<Integer, Integer>> action, String name) {
-		this.action = action;
-        this.setText(name);
 	}
 	
 	public void setPosition(Integer num) {
