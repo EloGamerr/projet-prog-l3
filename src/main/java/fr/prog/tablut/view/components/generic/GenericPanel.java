@@ -22,9 +22,7 @@ public class GenericPanel extends JPanel {
     public GenericPanel(LayoutManager layout, Dimension d) {
         super();
         setOpaque(false);
-
-        if(layout != null)
-            setLayout(layout);
+        setLayout(layout);
 
         if(d != null) {
             setSize(d);

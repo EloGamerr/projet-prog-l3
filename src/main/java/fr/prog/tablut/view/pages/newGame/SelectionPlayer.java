@@ -19,8 +19,8 @@ import fr.prog.tablut.view.components.generic.GenericPanel;
  */
 public class SelectionPlayer extends GenericPanel {
     // TODO: passer les PlayerData dans le model
-	protected PlayerData attacker = new PlayerData("attacker", "Player 1");
-	protected PlayerData defender = new PlayerData("defender", "Player 2");
+	protected PlayerData attacker = new PlayerData("attacker", "Attaquant", "Player 1");
+	protected PlayerData defender = new PlayerData("defender", "D\u00e9fenseur", "Player 2");
 	protected GenericComboBox<PlayerTypeEnum> comboBox1;
 	protected GenericComboBox<PlayerTypeEnum> comboBox2;
 
@@ -62,7 +62,7 @@ public class SelectionPlayer extends GenericPanel {
 		
 		// side title (player's role)
 		c.gridy = 0;
-		GenericLabel label = new GenericLabel(p.name, 15);
+		GenericLabel label = new GenericLabel(p.realName, 15);
 		label.setBorder(new EmptyBorder(0, 0, 30, 0));
 		panel.add(label, c);
 		

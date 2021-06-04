@@ -5,6 +5,7 @@ import fr.prog.tablut.model.window.WindowConfig;
 import fr.prog.tablut.model.window.PageName;
 import fr.prog.tablut.view.Page;
 import fr.prog.tablut.view.components.BottomButtonPanel;
+import fr.prog.tablut.view.components.ImageComponent;
 import fr.prog.tablut.view.components.NavPage;
 
 /**
@@ -42,6 +43,18 @@ public class LoadSavesPage extends Page {
 		page.setContent(panel);
 
 		add(page);
+
+        
+        // setup background pannel
+        final int iconSize = 500;
+        ImageComponent blackTower = new ImageComponent("transparent_black_tower.png", -iconSize/2, config.windowHeight/2 - iconSize/2, iconSize, iconSize);
+        ImageComponent whiteTower = new ImageComponent("transparent_white_tower.png", config.windowWidth-iconSize/2, config.windowHeight/2 - iconSize/2, iconSize, iconSize);
+
+        blackTower.load();
+        whiteTower.load();
+
+        backgroundPanel.add(blackTower);
+        backgroundPanel.add(whiteTower);
 	}
 
 	public SavedGamesPanel getPanel() {

@@ -10,6 +10,7 @@ import fr.prog.tablut.view.components.generic.GenericInput;
  */
 public class PlayerData {
 	public String name;
+    public String realName;
 	public String username;
 	public String type;
 	public GenericInput usernameInput;
@@ -20,7 +21,7 @@ public class PlayerData {
 	 * @param name The player role's name
 	 */
 	public PlayerData(String name) {
-		this(name, "");
+		this(name, name, "");
 	}
 
 	/**
@@ -29,8 +30,9 @@ public class PlayerData {
 	 * @param name The player role's name
 	 * @param username The default player's username
 	 */
-	public PlayerData(String name, String username) {
+	public PlayerData(String name, String realName, String username) {
 		this.name = name;
+        this.realName = realName;
 		this.username = username;
 		usernameInput = new GenericInput(this.username);
 
