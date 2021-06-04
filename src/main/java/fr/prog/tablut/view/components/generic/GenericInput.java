@@ -1,12 +1,17 @@
 package fr.prog.tablut.view.components.generic;
 
 import java.awt.Dimension;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
 import java.awt.Font;
 import java.awt.font.FontRenderContext;
+import java.awt.geom.Line2D;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.RenderingHints;
+import java.awt.Shape;
 
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -19,11 +24,15 @@ import fr.prog.tablut.model.window.ComponentStyle;
  * @see JTextField
  */
 public class GenericInput extends JTextField implements GenericComponent {
-    protected String styleName = "input";
+    protected String styleName;
     protected int borderRadius = 10;
     protected Rectangle2D textBounds;
     protected float labelX = 0;
     protected float labelY = 0;
+    protected boolean hovering = false;
+    protected boolean canHoverStyle = false;
+    protected boolean canFocusStyle = false;
+    private FontRenderContext frc = new FontRenderContext(null, false, false);
 
     /**
      * Default constructor.
@@ -61,11 +70,50 @@ public class GenericInput extends JTextField implements GenericComponent {
 
         addActionListener(new InputAdaptator(this));
 
-        FontRenderContext frc = new FontRenderContext(null, false, false);
         textBounds = getFont().getStringBounds(getText(), frc);
 
         labelX = (float) width / 2;
         labelY = (float) getFont().getSize() + (float) (height - getFont().getSize()) / 2 - 1;
+
+        setStyle("input");
+
+        // hover listener
+		//TODO : move it in the controller
+        addMouseListener(new MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+				hovering = true;
+                revalidate();
+                repaint();
+            }
+        
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                hovering = false;
+                revalidate();
+                repaint();
+            }
+
+			public void mouseReleased(java.awt.event.MouseEvent evt) {
+				hovering = false;
+                revalidate();
+                repaint();
+			}
+        });
+
+        addFocusListener(new FocusListener() {
+            public void focusGained(java.awt.event.FocusEvent e) {
+                revalidate();
+                repaint();
+            }
+      
+            public void focusLost(java.awt.event.FocusEvent e) {
+                revalidate();
+                repaint();
+            }
+        });
+    }
+
+    public void onKeyPress(KeyListener action) {
+        addKeyListener(action);
     }
 
     /**
@@ -74,36 +122,58 @@ public class GenericInput extends JTextField implements GenericComponent {
      * @param style The style to apply
      */
     public void setStyle(String style) {
-        if(GenericObjectStyle.getStyle().has(style))
+        if(GenericObjectStyle.getStyle().has(style)) {
             this.styleName = style;
+            canHoverStyle = GenericObjectStyle.getStyle().has(style + ":hover");
+            canFocusStyle = GenericObjectStyle.getStyle().has(style + ":focus");
+        }
     }
 
     /**
      * Repaints the input
      */
     public void paintComponent(Graphics g) {
-        //TODO : iisue - the carret isn't drawn
+        //TODO : issue - the carret isn't drawn
         Graphics2D g2d = (Graphics2D) g;
 
         // Anti-aliased lines and text
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
-        ComponentStyle style = GenericObjectStyle.getStyle().get(styleName);
+        String sstyle = styleName;
+        
+        if      (hasFocus() && canFocusStyle)   sstyle += ":focus";
+        else if (hovering && canHoverStyle)     sstyle += ":hover";
+        
+        ComponentStyle style = GenericObjectStyle.getStyle().get(sstyle);
+
+        final float xLabel = labelX - (float)getFont().getStringBounds(getText(), frc).getWidth()/2;
 
         // fill
         g2d.setColor(style.get("background"));
         g2d.fillRoundRect(1, 1, getWidth()-2, getHeight()-2, borderRadius, borderRadius);
-        // stroke
+        
+        // stroke + caret
         g2d.setColor(style.get("borderColor"));
         g2d.drawRoundRect(1, 1, getWidth()-2, getHeight()-2, borderRadius, borderRadius);
-        // text
+
+        if(hasFocus()) {
+            final String caretSubstringPos = getText().substring(0, getCaretPosition());
+            final Rectangle2D subTextBounds = getFont().getStringBounds(caretSubstringPos, frc);
+
+            final double caretPosition = xLabel + subTextBounds.getWidth() + ((getCaretPosition() == getText().length())? 2.0 : 0.0);
+            final double caretHeight = (60.0 * (double)getHeight() / 100.0);
+
+            Shape l = new Line2D.Double(caretPosition, getHeight()/2 - caretHeight/2, caretPosition, getHeight()/2 + caretHeight/2);
+            g2d.draw(l);
+        }
+        
+            // text
         g2d.setColor(style.get("color"));
         g2d.setFont(new Font("Farro", Font.PLAIN, 12));
-        g2d.drawString(this.getText(), labelX - (float)getFont().getStringBounds(getText(), new FontRenderContext(null, false, false)).getWidth()/2, labelY);
+        g2d.drawString(this.getText(), xLabel, labelY);
 
-        revalidate();
-        repaint();
     }
 
     public String getStyle() {

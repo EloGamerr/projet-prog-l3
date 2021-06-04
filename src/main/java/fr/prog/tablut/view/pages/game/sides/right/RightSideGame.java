@@ -34,10 +34,10 @@ public class RightSideGame extends GameInterfaceSide {
         shortcuts.setHref(WindowName.HelpWindow);
         quit.setHref(WindowName.HomeWindow);
         
-        saveToNewFile.addActionListener(new ButtonSaveAdaptator(saveToNewFile, this));
+        saveToNewFile.setAction(new ButtonSaveAdaptator(saveToNewFile, this));
         
-        pause.addActionListener(new ButtonPauseAdaptator(pause, this));
-        restart.addActionListener(new ButtonRestartAdaptator(pause, gameController));
+        pause.setAction(new ButtonPauseAdaptator(pause, this));
+        restart.setAction(new ButtonRestartAdaptator(pause, gameController));
         
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();

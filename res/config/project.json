@@ -20,9 +20,21 @@
             "borderColor": [71, 79, 90]
         },
         "input": {
-            "background": [48, 54, 62],
-            "borderColor": [71, 79, 90],
-            "color": [241, 241, 241]
+            "background": [41, 46, 52],
+            "borderColor": [56, 62, 71],
+            "color": [163, 165, 167],
+
+            ":hover": {
+                "background": [48, 54, 62],
+                "borderColor": [71, 79, 90],
+                "color": [255, 255, 255]
+            },
+
+            ":focus": {
+                "background": [48, 54, 62],
+                "borderColor": [56, 109, 179],
+                "color": [255, 255, 255]
+            }
         },
         "button": {
             "background": [48, 54, 62],

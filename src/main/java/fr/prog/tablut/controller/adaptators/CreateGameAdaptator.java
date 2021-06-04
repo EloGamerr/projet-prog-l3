@@ -21,6 +21,9 @@ public class CreateGameAdaptator  extends ActionAdaptator<GenericButton> {
 		PlayerTypeEnum defender = gameSettings.getPlayerType2();
 		String attackerName = gameSettings.getAttaquant().getUsernameInput().getText();
 		String defenderName = gameSettings.getDefender().getUsernameInput().getText();
+
+        if(attackerName.replace(" ", "").length() == 0) attackerName = "Player 1";
+        if(defenderName.replace(" ", "").length() == 0) defenderName = "Player 2";
 		
 		Game.getInstance().start(attacker,defender, attackerName, defenderName);
 	}
