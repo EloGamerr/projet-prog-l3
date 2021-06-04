@@ -28,7 +28,7 @@ public class GameControllerHuman {
 
         humanPlayer.updateState(row, col, gamePage, this);
 
-        return humanPlayer.play(Game.getInstance());
+        return humanPlayer.play(Game.getInstance(), gamePage);
     }
 
     public void undoSelect() {

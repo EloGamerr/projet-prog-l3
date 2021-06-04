@@ -14,6 +14,7 @@ import fr.prog.tablut.controller.game.gameController.GameController;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 import fr.prog.tablut.model.window.WindowConfig;
+import fr.prog.tablut.structures.Couple;
 import fr.prog.tablut.model.window.PageName;
 import fr.prog.tablut.view.Page;
 import fr.prog.tablut.view.pages.game.sides.center.CenterSideGame;
@@ -71,7 +72,7 @@ public class GamePage extends Page {
         centerSide.getBoard().addMouseListener(gameMouseAdaptator);
         centerSide.getBoard().addMouseMotionListener(gameMouseAdaptator);
 
-        Timer time = new Timer(50, new GameTimeAdaptator(gameController));
+        Timer time = new Timer(1, new GameTimeAdaptator(gameController));
         time.start();
 
         addKeyListener(new GameKeyAdaptator(gameController));
@@ -125,4 +126,11 @@ public class GamePage extends Page {
         this.getLeftSide().getMoveButtons().enableUndoButton(!Game.getInstance().getPlays().getPreviousMovements().isEmpty());
         this.getLeftSide().getMoveButtons().enableRedoButton(!Game.getInstance().getPlays().getNextMovements().isEmpty());
     }
+	public void update_anim(int  toL, int toC, int fromL, int fromC) {
+		getGridWindow().update_anim(toL, toC, new Couple<Integer, Integer>(fromL, fromC));	
+	}
+    
+	public void stop_anim() {
+		getGridWindow().stop_anim();
+	}
 }

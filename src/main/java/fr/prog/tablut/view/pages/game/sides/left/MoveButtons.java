@@ -70,4 +70,5 @@ public class MoveButtons extends GenericPanel {
         if(button.getStyle().replace(":hover", "") != style)
             button.setStyle(style);
     }
+    
 }

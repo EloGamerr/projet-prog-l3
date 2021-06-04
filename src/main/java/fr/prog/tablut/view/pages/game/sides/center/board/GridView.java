@@ -16,6 +16,10 @@ public class GridView {
     private int x, y, height, width, cellWidth, cellHeight;
     private Image imageOnMouse;
     private Couple<Integer, Integer> selectedCell;
+    private Couple<Integer, Integer> animCell;
+    private Image animImage;
+    private int xAnim, yAnim;
+	private boolean anim = false;
 
 	public GridView(GridWindow gridWindow) {
 		this.gridWindow = gridWindow;
@@ -126,7 +130,7 @@ public class GridView {
 		for(int i = 0 ; i < game.getRowAmout() ; i++) {
 			for(int j = 0 ; j < game.getColAmout() ; j++) {
 				if(selectedCell != null && selectedCell.getFirst() == i && selectedCell.getSecond() == j) continue;
-				
+				if(anim && animCell != null && animCell.getFirst() == i && animCell.getSecond() == j) continue;
 				if(game.getCellContent(i, j).getImage() != null)
 					gridWindow.drawImage(
                         game.getCellContent(i, j).getImage(),
@@ -148,6 +152,10 @@ public class GridView {
 			
     		gridWindow.drawImage(imageOnMouse, xImg, yImg, imgSize, imgSize);
     	}
+		
+		if(anim) {
+			gridWindow.drawImage(animImage, xAnim , yAnim, imgSize, imgSize);
+		}
 	}
 	
 	public void updateImageOnMouse(Image image, Couple<Integer, Integer> selectedCell) {
@@ -175,4 +183,40 @@ public class GridView {
 	public int getRowFromYCoord(int y) {
 		return (y - widthBorder - getY()) / cellHeight();
 	}
+	
+	public int getXCoordFromCol(int c) {
+
+		return cellWidth()*c + getX() + widthBorder - cellWidth/4 + cellWidth/2 + 4;
+	}
+	
+	public int getYCoordFromRow(int l) {
+		return cellHeight()*l+ getY() + widthBorder - cellHeight/4  + cellHeight/2 + 4;
+	}
+
+
+	public void update_anim(int toL, int toC, Couple<Integer, Integer> couple) {
+		xAnim = toC;
+		yAnim = toL;
+		if(anim != true) {
+			anim = true;
+			animCell = couple;
+			animImage = Game.getInstance().getCellContent(animCell.getFirst(),animCell.getSecond()).getImage();
+		}
+	}
+
+	public void stop_anim() {
+		if(anim == true) {
+			anim = false;
+		}
+	}
+	
+	public boolean isInAnim() {
+		return anim;
+	}
+
+	public void setIsInAnim(boolean b) {
+		anim = b;
+		
+	}
+	
 }
