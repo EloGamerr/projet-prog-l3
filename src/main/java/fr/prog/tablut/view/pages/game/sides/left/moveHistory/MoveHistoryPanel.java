@@ -7,13 +7,14 @@ import java.awt.Font;
 import java.awt.Graphics;
 
 import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+
+import fr.prog.tablut.view.components.generic.GenericPanel;
+
 import javax.swing.JScrollPane;
 import javax.swing.JScrollBar;
 
 
-public class MoveHistoryPanel extends JPanel {
+public class MoveHistoryPanel extends GenericPanel {
     private final HistoryChat historyChat;
     private final JScrollPane scrollPane;
     private int previousHeight = -1;
@@ -24,11 +25,9 @@ public class MoveHistoryPanel extends JPanel {
     }
 
     public MoveHistoryPanel(int width, int height) {
-        setOpaque(false);
+        super();
 
-        JLabel wrapper = new JLabel();
-        wrapper.setOpaque(false);
-        wrapper.setLayout(new BorderLayout());
+        GenericPanel wrapper = new GenericPanel(new BorderLayout());
 
         historyChat = new HistoryChat();
         historyChat.setOpaque(false);

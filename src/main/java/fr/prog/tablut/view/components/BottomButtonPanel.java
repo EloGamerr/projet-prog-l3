@@ -4,23 +4,23 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import fr.prog.tablut.model.window.PageName;
+import fr.prog.tablut.view.components.generic.GenericPanel;
 import fr.prog.tablut.view.components.generic.GenericRoundedButton;
 
 /**
- * A component that places a JPanel of 1 or 2 buttons which will href to another page
+ * A component that places a GenericPanel of 1 or 2 buttons which will href to another page
  * <p>The second button has the button.green style</p>
- * @see JPanel
+ * @see GenericPanel
  * @see PageName
  * @see Page
  * @see GenericRoundedButton
  * @see Style
  * @see ComponentStyle
  */
-public class BottomButtonPanel extends JPanel {
+public class BottomButtonPanel extends GenericPanel {
     private GenericRoundedButton btn1 = null;
     private GenericRoundedButton btn2 = null;
 
@@ -83,7 +83,7 @@ public class BottomButtonPanel extends JPanel {
      * @param btnTextCancel The label of the first button
      */
     public BottomButtonPanel(PageName href1, PageName href2, String btnTextConfirm, String btnTextCancel) {
-        setOpaque(false);
+        super();
 		setLayout(new GridBagLayout());
 		setBorder(new EmptyBorder(10, 0, 10, 0));
 

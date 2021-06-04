@@ -27,7 +27,7 @@ public class HomePage extends Page {
 
 		windowName = PageName.HomePage;
 
-		setLayout(new GridBagLayout());
+		setPLayout(new GridBagLayout());
 		
 		title = new Title("TABLUT");
 		button_choice = new ButtonChoice();

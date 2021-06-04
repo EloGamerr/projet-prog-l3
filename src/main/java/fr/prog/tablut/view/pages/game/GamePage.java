@@ -48,7 +48,7 @@ public class GamePage extends Page {
         rightSide = new RightSideGame(config, d, gameController);
         leftSide = new LeftSideGame(config, gameController, d, rightSide);
 
-        setLayout(new GridBagLayout());
+        setPLayout(new GridBagLayout());
 
         GridBagConstraints c = new GridBagConstraints();
 

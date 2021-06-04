@@ -5,20 +5,19 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import javax.swing.JPanel;
+import fr.prog.tablut.view.components.generic.GenericPanel;
 
 /**
- * A component that is put in a the game's page, extending JPanel.
- * @see JPanel
+ * A component that is put in a the game's page, extending GenericPanel.
+ * @see GenericPanel
  */
-public abstract class GameInterfaceSide extends JPanel {
+public abstract class GameInterfaceSide extends GenericPanel {
     /**
      * Creates the game interface side of dimension d
      * @param d The dimension of the component
      */
     protected GameInterfaceSide(Dimension d) {
-        setOpaque(false);
-
+        super();
         setSize(d);
         setPreferredSize(d);
         setMaximumSize(d);

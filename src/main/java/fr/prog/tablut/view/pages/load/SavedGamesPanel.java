@@ -16,6 +16,7 @@ import fr.prog.tablut.model.saver.GameSaver;
 import fr.prog.tablut.structures.Couple;
 import fr.prog.tablut.view.components.generic.GenericButton;
 import fr.prog.tablut.view.components.generic.GenericLabel;
+import fr.prog.tablut.view.components.generic.GenericPanel;
 import fr.prog.tablut.view.components.generic.GenericRoundedButton;
 import fr.prog.tablut.view.components.generic.GenericRoundedPanel;
 import fr.prog.tablut.view.components.generic.GenericScrollPane;
@@ -23,18 +24,18 @@ import fr.prog.tablut.view.components.generic.TextAlignment;
 
 /**
  * A component that regroups every saved games in a list and shows them.
- * <p>Extends JPanel</p>
- * @see JPanel
+ * <p>Extends GenericPanel</p>
+ * @see GenericPanel
  */
-public class SavedGamesPanel extends JPanel {
+public class SavedGamesPanel extends GenericPanel {
 	private final int width = 460;
 	private final int height = 350;
 	private final int btnHeight = 35;
 	private int index_selected = 0;
 	private GenericRoundedButton buttonToLightup;
     private final GenericRoundedPanel wrapperContainer;
-    private final JPanel wrapper;
-    private JPanel wrapperInner = null;
+    private final GenericPanel wrapper;
+    private GenericPanel wrapperInner = null;
 	
 	public GenericRoundedButton button_selected = null;
 	
@@ -46,9 +47,8 @@ public class SavedGamesPanel extends JPanel {
 	 * @see ComponentStyle
 	 */
 	public SavedGamesPanel(GenericRoundedButton btnToLightup) {
-		setOpaque(false);
-		setBorder(new EmptyBorder(0, 0, 50, 0));
-		setLayout(new GridBagLayout());
+		super(new GridBagLayout());
+        setBorder(new EmptyBorder(0, 0, 50, 0));
 
 		buttonToLightup = btnToLightup;
 
@@ -62,9 +62,7 @@ public class SavedGamesPanel extends JPanel {
 		wrapperContainer.setMaximumSize(size);
 		wrapperContainer.setMinimumSize(size);
 		
-		wrapper = new JPanel();
-		wrapper.setLayout(new GridBagLayout());
-		wrapper.setOpaque(false);
+		wrapper = new GenericPanel(new GridBagLayout());
 		wrapper.setBorder(new EmptyBorder(3, 0, 3, 0));
 
 		wrapperContainer.add(wrapper, BorderLayout.NORTH);
@@ -79,9 +77,8 @@ public class SavedGamesPanel extends JPanel {
 	 * @param button the button that's been clicked on (a save)
 	 */
 	public void select(GenericButton button, int index) {
-		if(button_selected != null) {
+		if(button_selected != null)
 			button_selected.setStyle("button.load");
-		}
 		
 		button_selected = (GenericRoundedButton)button;
 		button_selected.setStyle("button.load:selected");
@@ -123,7 +120,7 @@ public class SavedGamesPanel extends JPanel {
             c.weightx = 1;
             c.weighty = 0;
 
-            wrapperInner = new JPanel();
+            wrapperInner = new GenericPanel(new GridBagLayout());
             GenericScrollPane scrollPane = new GenericScrollPane(wrapperInner);
             GenericRoundedButton buttonLoad;
             GenericRoundedButton buttonDelete;
@@ -132,9 +129,6 @@ public class SavedGamesPanel extends JPanel {
             int btnWidth = width - 10;
 
             if(isOverflowing) {
-		        wrapperInner.setLayout(new GridBagLayout());
-                wrapperInner.setOpaque(false);
-
                 scrollPane.setPreferredSize(new Dimension(width - 5, height - 5));
                 btnWidth -= 25;
             }
@@ -147,10 +141,8 @@ public class SavedGamesPanel extends JPanel {
                 c.gridy = i;
                 String saveName = saves.get(i).getFirst();
 
-                JPanel saveBtn = new JPanel();
-                saveBtn.setOpaque(false);
+                GenericPanel saveBtn = new GenericPanel(new GridBagLayout());
                 saveBtn.setPreferredSize(new Dimension(btnWidth, btnHeight));
-                saveBtn.setLayout(new GridBagLayout());
                 GridBagConstraints cs = new GridBagConstraints();
 
                 cs.gridx = 0;
@@ -182,8 +174,7 @@ public class SavedGamesPanel extends JPanel {
 
             else {
                 // align content to the top
-                JPanel emptyPanel = new JPanel();
-                emptyPanel.setOpaque(false);
+                GenericPanel emptyPanel = new GenericPanel();
                 c.gridy = saves.size();
                 c.weighty = 1;
 
@@ -211,14 +202,13 @@ public class SavedGamesPanel extends JPanel {
             int i;
             
             for(i=0; i < cpnts.length; i++) {
-                JPanel b = (JPanel)cpnts[i];
+                GenericPanel b = (GenericPanel)cpnts[i];
                 c.gridy = i;
                 wrapper.add(b, c);
             }
 
             // align content to the top
-            JPanel emptyPanel = new JPanel();
-            emptyPanel.setOpaque(false);
+            GenericPanel emptyPanel = new GenericPanel();
             c.gridy = i;
             c.weighty = 1;
 

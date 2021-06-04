@@ -4,20 +4,20 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import fr.prog.tablut.controller.adaptators.ComboBoxAdaptator;
 import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 import fr.prog.tablut.view.components.generic.GenericComboBox;
 import fr.prog.tablut.view.components.generic.GenericLabel;
+import fr.prog.tablut.view.components.generic.GenericPanel;
 
 /**
  * The settings form component to create a new game.
- * <p>Extends JPanel</p>
- * @see JPanel
+ * <p>Extends GenericPanel</p>
+ * @see GenericPanel
  */
-public class SelectionPlayer extends JPanel {
+public class SelectionPlayer extends GenericPanel {
     // TODO: passer les PlayerData dans le model
 	protected PlayerData attacker = new PlayerData("attacker", "Player 1");
 	protected PlayerData defender = new PlayerData("defender", "Player 2");
@@ -30,8 +30,7 @@ public class SelectionPlayer extends JPanel {
 	 * with their player's type and username.</p>
 	 */
 	public SelectionPlayer() {
-		setOpaque(false);
-		setLayout(new GridBagLayout());
+		super(new GridBagLayout());
 
 		GridBagConstraints c = new GridBagConstraints();
 
@@ -54,8 +53,7 @@ public class SelectionPlayer extends JPanel {
 		cc.gridx = n * 2;
 
 		// wrapper panel
-		JPanel panel = new JPanel();
-		panel.setOpaque(false);
+		GenericPanel panel = new GenericPanel();
 		panel.setLayout(new GridBagLayout());
 		panel.setBorder(new EmptyBorder(0, 100, 0, 100));
 		GridBagConstraints c = new GridBagConstraints();

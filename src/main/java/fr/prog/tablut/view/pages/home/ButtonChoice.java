@@ -6,24 +6,22 @@ import java.awt.Insets;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import javax.swing.JPanel;
-
 import fr.prog.tablut.model.window.PageName;
+import fr.prog.tablut.view.components.generic.GenericPanel;
 import fr.prog.tablut.view.components.generic.GenericRoundedButton;
 
 /**
  * The home panel that contains all buttons.
- * <p>Extends JPanel</p>
- * @see JPanel
+ * <p>Extends GenericPanel</p>
+ * @see GenericPanel
  */
-public class ButtonChoice extends JPanel {
+public class ButtonChoice extends GenericPanel {
 	/**
 	 * Default constructor.
 	 * <p>Creates a panel of home buttons.</p>
 	 */
 	public ButtonChoice() {
-		setOpaque(false);
-		setLayout(new GridBagLayout());
+		super(new GridBagLayout());
 
 		int bWidth, bHeight;
 		bWidth = 396;

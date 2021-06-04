@@ -1,24 +1,20 @@
 package fr.prog.tablut.view.components.generic;
 
-import javax.swing.JPanel;
-
 /**
- * A component that extends a JPanel just to put a label inside.
+ * A component that extends a GenericPanel just to put a label inside.
  * <p>It's to differenciate a label than a text.</p>
  * @see GenericLabel
- * @see JPanel
+ * @see GenericPanel
  */
-public class GenericText extends JPanel {
+public class GenericText extends GenericPanel {
     protected GenericLabel label;
-    protected int fontSize = 15;
 
     /**
      * Creates a GenericText with given text and the default text's font size.
      * @param text The text to set
      */
     public GenericText(String text) {
-        label = new GenericLabel(text, fontSize);
-        init();
+        this(text, 15);
     }
     
     /**
@@ -27,6 +23,7 @@ public class GenericText extends JPanel {
      * @param fontSize The font size to apply on the text
      */
     public GenericText(String text, int fontSize) {
+        super();
         label = new GenericLabel(text, fontSize);
         init();
     }
@@ -37,7 +34,6 @@ public class GenericText extends JPanel {
      */
     private void init() {
         add(label);
-		setOpaque(false);
     }
 
     /**

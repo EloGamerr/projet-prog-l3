@@ -29,7 +29,9 @@ public class HelpPage extends Page {
 		bbp = new BottomButtonPanel(pageBack, "Retour");
 
 		NavPage page = new NavPage(bbp);
-		page.setContent(new HelpTable());
+		
+        page.setContent(new HelpTable());
+
 		add(page);
 	}
 

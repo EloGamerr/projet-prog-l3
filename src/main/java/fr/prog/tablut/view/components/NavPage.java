@@ -10,18 +10,19 @@ import javax.swing.border.EmptyBorder;
 
 import fr.prog.tablut.view.components.generic.GenericLabel;
 import fr.prog.tablut.view.components.generic.GenericObjectStyle;
+import fr.prog.tablut.view.components.generic.GenericPanel;
 
 /**
- * A component extending JPanel that creates a page with header and footer.
+ * A component extending GenericPanel that creates a page with header and footer.
  * <p>The header has a title and can have a description.</p>
  * <p>The footer is a BottomButtonPanel with one or two buttons.</p>
  * <p>The content of the page is centered.</p>
- * @see JPanel
+ * @see GenericPanel
  * @see BottomButtonPanel
  * @see Title
  * @see GenericLabel
  */
-public class NavPage extends JPanel {
+public class NavPage extends GenericPanel {
     protected static Dimension maxDimension;
 
     /**
@@ -64,17 +65,20 @@ public class NavPage extends JPanel {
      * @param bottomPanel The BottomButtonPanel
      */
     public NavPage(String title, String description, BottomButtonPanel bottomPanel) {
-        setLayout(new BorderLayout());
-        setOpaque(false);
+        super(new BorderLayout());
+
+        setSize(maxDimension);
+        setPreferredSize(maxDimension);
+        setMaximumSize(maxDimension);
+        setMinimumSize(maxDimension);
 
         if(title != null) {
             Title Ttitle = new Title(title.toUpperCase(), 70);
 
-            JPanel gb = new JPanel(new GridBagLayout());
+            GenericPanel gb = new GenericPanel(new GridBagLayout());
             gb.setBorder(new EmptyBorder(50, 0, 0, 0));
-            gb.setOpaque(false);
 
-            Dimension gbSize = new Dimension((int)NavPage.maxDimension.getWidth(), 170);
+            Dimension gbSize = new Dimension((int)maxDimension.getWidth(), 170);
             gb.setPreferredSize(gbSize);
             gb.setMaximumSize(gbSize);
             gb.setMinimumSize(gbSize);

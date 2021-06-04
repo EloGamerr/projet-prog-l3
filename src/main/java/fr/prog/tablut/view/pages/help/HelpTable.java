@@ -5,21 +5,20 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
 
-import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import fr.prog.tablut.view.components.generic.GenericLabel;
 import fr.prog.tablut.view.components.generic.GenericObjectStyle;
+import fr.prog.tablut.view.components.generic.GenericPanel;
 
 /**
  * Creates a help table, with multiple rows and columns.
- * <p>Extends JPanel</p>
- * @see JPanel
+ * <p>Extends GenericPanel</p>
+ * @see GenericPanel
  */
-public class HelpTable extends JPanel {
+public class HelpTable extends GenericPanel {
 	public HelpTable() {
-		setOpaque(false);
-		setLayout(new BorderLayout());
+		super(new BorderLayout());
 
 		HTable table = new HTable(2);
 
@@ -94,8 +93,7 @@ class HTable {
 	 * @param tableContainer The container
 	 */
 	public void insertInto(HelpTable tableContainer) {
-		HelpTable table = tableContainer;
-		table.setLayout(new GridBagLayout());
+		GenericPanel table = new GenericPanel(new GridBagLayout());
 
 		GridBagConstraints gbc = new GridBagConstraints();
 
@@ -125,8 +123,6 @@ class HTable {
 			}
 		}
 
-		//TODO : fix why the container has huge size overflowing the window
-		// and then the table can't be seen at the top of it (BorderLayout.NORTH)
-		//tableContainer.add(table, BorderLayout.CENTER);
+		tableContainer.add(table, BorderLayout.CENTER);
 	}
 }

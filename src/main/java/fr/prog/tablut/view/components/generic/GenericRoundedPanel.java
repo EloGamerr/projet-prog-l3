@@ -4,24 +4,21 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
-import javax.swing.JPanel;
-
 import fr.prog.tablut.model.window.ComponentStyle;
 
 /**
- * A component extending a JPanel, to create a rounded JPanel
- * @see JPanel
+ * A component extending a GenericPanel, to create a rounded GenericPanel
+ * @see GenericPanel
  */
-public class GenericRoundedPanel extends JPanel {
+public class GenericRoundedPanel extends GenericPanel {
     protected ComponentStyle style = new ComponentStyle();
     protected int borderRadius = 10;
 
     /**
-     * Creates a JPanel, and make it translucent, to not see the default painting
+     * Creates a GenericPanel, and make it translucent, to not see the default painting
      */
     public GenericRoundedPanel() {
         super();
-        setOpaque(false);
     }
 
     /**

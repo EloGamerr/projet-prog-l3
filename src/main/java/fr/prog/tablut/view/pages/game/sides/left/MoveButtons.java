@@ -4,22 +4,20 @@ import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 
-import javax.swing.JLabel;
-
 import fr.prog.tablut.controller.adaptators.ButtonUndoRedoAdaptator;
 import fr.prog.tablut.controller.game.gameController.GameController;
+import fr.prog.tablut.view.components.generic.GenericPanel;
 import fr.prog.tablut.view.components.generic.GenericRoundedButton;
 import fr.prog.tablut.view.pages.game.sides.right.RightSideGame;
 
-public class MoveButtons extends JLabel {
+public class MoveButtons extends GenericPanel {
 	private GameController gameController;
     private GenericRoundedButton undo, redo;
 
     public MoveButtons(Dimension d, GameController gameController, RightSideGame rightSide) {
-        setOpaque(false);
+        super(new GridBagLayout());
         this.gameController = gameController;
 
-        setLayout(new GridBagLayout());
         setSize(d);
         setPreferredSize(d);
         setMaximumSize(d);

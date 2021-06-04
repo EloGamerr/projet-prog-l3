@@ -56,7 +56,7 @@ public class GlobalWindow {
 		}
 		
 		GenericObjectStyle.setStyle(config.getStyle());
-		NavPage.setDimension(new Dimension(config.windowWidth, config.windowHeight));
+		NavPage.setDimension(new Dimension(config.windowWidth, config.windowHeight - 25));
 
 
 		Loader loader = new Loader();
@@ -73,6 +73,7 @@ public class GlobalWindow {
 		helpPage = new HelpPage(this.config, this.previousPageName);
 		newGamePage = new NewGamePage(this.config);
 		loadPage = new LoadSavesPage(this.config);
+
 		
 		homePage.setVisible(true);
 		jFrame.setContentPane(homePage);
