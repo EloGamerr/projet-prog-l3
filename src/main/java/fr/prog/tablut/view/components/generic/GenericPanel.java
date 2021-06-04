@@ -1,6 +1,7 @@
 package fr.prog.tablut.view.components.generic;
 
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.LayoutManager;
 
 import javax.swing.JPanel;
@@ -11,7 +12,7 @@ import javax.swing.JPanel;
  */
 public class GenericPanel extends JPanel {
     public GenericPanel() {
-        this(null, null);
+        this(new FlowLayout(), null);
     }
 
     public GenericPanel(LayoutManager layout) {

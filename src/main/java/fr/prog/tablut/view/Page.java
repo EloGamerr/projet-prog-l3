@@ -1,7 +1,6 @@
 package fr.prog.tablut.view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.LayoutManager;
@@ -21,8 +20,9 @@ import fr.prog.tablut.model.window.PageName;
  */
 public class Page extends JPanel {
     protected PageName windowName = PageName.DefaultPage;
-    protected GenericPanel absolutePanel = new GenericPanel();
-    protected GenericPanel panel = new GenericPanel();
+    protected GenericPanel backgroundPanel;
+    protected GenericPanel foregroundPanel;
+    protected GenericPanel panel;
     
     /**
      * Default constructor.
@@ -50,20 +50,25 @@ public class Page extends JPanel {
         setVisible(false);
         setLayout(null);
 
-        Dimension d = new Dimension(width, height - 45);
+        Dimension d = new Dimension(width, height - 40);
         setSize(d);
         setPreferredSize(d);
         setMaximumSize(d);
         setMinimumSize(d);
 
-        absolutePanel = new GenericPanel(new BorderLayout(), d);
+        backgroundPanel = new GenericPanel(null, d);
+        foregroundPanel = new GenericPanel(null, d);
         panel = new GenericPanel(new BorderLayout(), d);
 
         panel.setLocation(0, 0);
-        absolutePanel.setLocation(0, 0);
+        backgroundPanel.setLocation(0, 0);
+        foregroundPanel.setLocation(0, 0);
 
+        foregroundPanel.setVisible(false);
+
+        super.add(foregroundPanel);
         super.add(panel);
-        super.add(absolutePanel);
+        super.add(backgroundPanel);
     }
 
     @Override
@@ -88,8 +93,12 @@ public class Page extends JPanel {
 		return windowName;
 	}
 
-    public GenericPanel getAbsPanel() {
-        return absolutePanel;
+    public GenericPanel getBGPanel() {
+        return backgroundPanel;
+    }
+
+    public GenericPanel getFGPanel() {
+        return foregroundPanel;
     }
 
     @Override
