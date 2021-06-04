@@ -7,14 +7,14 @@ import java.awt.Insets;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import fr.prog.tablut.model.window.WindowName;
+import fr.prog.tablut.model.window.PageName;
 import fr.prog.tablut.view.components.generic.GenericRoundedButton;
 
 /**
  * A component that places a JPanel of 1 or 2 buttons which will href to another page
  * <p>The second button has the button.green style</p>
  * @see JPanel
- * @see WindowName
+ * @see PageName
  * @see Page
  * @see GenericRoundedButton
  * @see Style
@@ -27,54 +27,54 @@ public class BottomButtonPanel extends JPanel {
     /**
      * Default constructor.
      * <p>Creates a button with text "Retour"</p>
-     * @see WindowName
+     * @see PageName
      * @param href1 The href location of the button
      */
-    public BottomButtonPanel(WindowName href1) {
+    public BottomButtonPanel(PageName href1) {
         this(href1, null, null, "Retour");
     }
 
     /**
      * Creates a button, having the given text
-     * @see WindowName
+     * @see PageName
      * @param href1 The href of the button
      * @param btnText The button label
      */
-    public BottomButtonPanel(WindowName href1, String btnText) {
+    public BottomButtonPanel(PageName href1, String btnText) {
         this(href1, null, null, btnText);
     }
 
     /**
      * Creates two buttons, the first with the text "Retour"
      * and the second with the text "Confirmer" and with button.green style.
-     * @see WindowName
+     * @see PageName
      * @see Style
      * @see ComponentStyle
      * @param href1 The href of the cancel button
      * @param href2 The href of the confirm button
      */
-    public BottomButtonPanel(WindowName href1, WindowName href2) {
+    public BottomButtonPanel(PageName href1, PageName href2) {
         this(href1, href2, "Confirmer", "Retour");
     }
 
     /**
      * Creates two buttons, with first having the text "Retour",
      * the second with given text, and button.green style.
-     * @see WindowName
+     * @see PageName
      * @see Style
      * @see ComponentStyle
      * @param href1 The href of the first button
      * @param href2 The href of the second button
      * @param btnTextConfirm The text of the second button
      */
-    public BottomButtonPanel(WindowName href1, WindowName href2, String btnTextConfirm) {
+    public BottomButtonPanel(PageName href1, PageName href2, String btnTextConfirm) {
         this(href1, href2, btnTextConfirm, "Retour");
     }
 
     /**
      * Creates two buttons, with given labels and href locations.
      * <p>The second button has button.green style.</p>
-     * @see WindowName
+     * @see PageName
      * @see Style
      * @see ComponentStyle
      * @param href1 The href of the first button
@@ -82,7 +82,7 @@ public class BottomButtonPanel extends JPanel {
      * @param btnTextConfirm The label of the second button
      * @param btnTextCancel The label of the first button
      */
-    public BottomButtonPanel(WindowName href1, WindowName href2, String btnTextConfirm, String btnTextCancel) {
+    public BottomButtonPanel(PageName href1, PageName href2, String btnTextConfirm, String btnTextCancel) {
         setOpaque(false);
 		setLayout(new GridBagLayout());
 		setBorder(new EmptyBorder(10, 0, 10, 0));
@@ -107,11 +107,11 @@ public class BottomButtonPanel extends JPanel {
         }
     }
 
-    public void setFirstButtonHref(WindowName href) {
+    public void setFirstButtonHref(PageName href) {
         btn1.setHref(href);
     }
 
-    public void setSecondButtonHref(WindowName href) {
+    public void setSecondButtonHref(PageName href) {
         if(btn2 != null)
             btn2.setHref(href);
     }

@@ -4,15 +4,19 @@ import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import javax.swing.JPanel;
+
 import fr.prog.tablut.model.window.WindowConfig;
+import fr.prog.tablut.model.window.PageName;
 
 /**
  * A page inside the app, in the main window
  * @see GlobalWindow
- * @see Window
  * @see JPanel
  */
-public class Page extends Window {
+public class Page extends JPanel {
+    protected PageName windowName = PageName.DefaultPage;
+    
     /**
      * Default constructor.
      * <p>A page is hidden by default.</p>
@@ -20,6 +24,7 @@ public class Page extends Window {
     public Page() {
         super();
         setVisible(false);
+        setLayout(new BorderLayout());
     }
 
     /**
@@ -35,6 +40,14 @@ public class Page extends Window {
         if(config.hasComp("window"))
             setBackground(config.getComp("window").get("background"));
     }
+
+    /**
+	 * Returns the name of the window (sub-window, aka tab)
+	 * @return The name of the window
+	 */
+	public PageName name() {
+		return windowName;
+	}
 
     @Override
     protected void paintComponent(Graphics graphics) {

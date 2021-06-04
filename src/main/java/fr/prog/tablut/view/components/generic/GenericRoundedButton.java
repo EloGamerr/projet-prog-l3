@@ -15,7 +15,7 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 
-import fr.prog.tablut.model.window.WindowName;
+import fr.prog.tablut.model.window.PageName;
 
 
 // Source : Adapted from http://www.bryanesmith.com/docs/rounded-jbuttons
@@ -109,11 +109,11 @@ public class GenericRoundedButton extends GenericButton {
     /**
      * <p>Initializes all stuff around the draw : the position of the text, the rectangle etc...</p>
      * <p>Sets the font, the size, the colors</p>
-     * @see WindowName
+     * @see PageName
      * @param text The button's text
      * @param href The button's href location (WidnowName)
      */
-    public GenericRoundedButton(String text, WindowName href) {
+    public GenericRoundedButton(String text, PageName href) {
         super(text);
         init(null);
         setHref(href);

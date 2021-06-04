@@ -8,7 +8,7 @@ import java.util.Map;
 
 import javax.swing.JPanel;
 
-import fr.prog.tablut.model.window.WindowName;
+import fr.prog.tablut.model.window.PageName;
 import fr.prog.tablut.view.components.generic.GenericRoundedButton;
 
 /**
@@ -30,10 +30,10 @@ public class ButtonChoice extends JPanel {
 		bHeight = 35;
 
 		// list of the buttons in the home page
-		LinkedHashMap<String, WindowName> buttons = new LinkedHashMap<String, WindowName>() {{
-			put("Nouvelle partie", WindowName.NewGameWindow);
-			put("Charger partie", WindowName.LoadWindow);
-			put("Raccourcis", WindowName.HelpWindow);
+		LinkedHashMap<String, PageName> buttons = new LinkedHashMap<String, PageName>() {{
+			put("Nouvelle partie", PageName.NewGamePage);
+			put("Charger partie", PageName.LoadPage);
+			put("Raccourcis", PageName.HelpPage);
 			put("Quitter", null);
 		}};
 
@@ -44,9 +44,9 @@ public class ButtonChoice extends JPanel {
 		int i = 1;
 
 		// create and add each buttons in the grid container
-		for(Map.Entry<String, WindowName> button : buttons.entrySet()) {
+		for(Map.Entry<String, PageName> button : buttons.entrySet()) {
             String label = button.getKey();
-            WindowName href = button.getValue();
+            PageName href = button.getValue();
 
 			GenericRoundedButton btn = new GenericRoundedButton(label, bWidth, bHeight);
 			btn.setStyle("button.home");

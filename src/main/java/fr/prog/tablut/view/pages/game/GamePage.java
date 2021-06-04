@@ -15,7 +15,7 @@ import fr.prog.tablut.controller.game.gameController.GameController;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 import fr.prog.tablut.model.window.WindowConfig;
-import fr.prog.tablut.model.window.WindowName;
+import fr.prog.tablut.model.window.PageName;
 import fr.prog.tablut.view.Page;
 import fr.prog.tablut.view.pages.game.sides.center.CenterSideGame;
 import fr.prog.tablut.view.pages.game.sides.center.board.GridWindow;
@@ -39,7 +39,7 @@ public class GamePage extends Page {
         super(config);
         GameController gameController = new GameController(this);
         
-        windowName = WindowName.GameWindow;
+        windowName = PageName.GamePage;
 
         final int s = (int)(config.windowHeight / 1.2);
         final Dimension d = new Dimension((config.windowWidth - s)/2, config.windowHeight);

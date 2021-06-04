@@ -1,7 +1,7 @@
 package fr.prog.tablut.view.pages.help;
 
 import fr.prog.tablut.model.window.WindowConfig;
-import fr.prog.tablut.model.window.WindowName;
+import fr.prog.tablut.model.window.PageName;
 import fr.prog.tablut.view.Page;
 import fr.prog.tablut.view.components.BottomButtonPanel;
 import fr.prog.tablut.view.components.NavPage;
@@ -21,10 +21,10 @@ public class HelpPage extends Page {
 	 * @param config The configuration to apply to the page
 	 * @param currentPage The previous page to go on when the user closes this page
 	 */
-	public HelpPage(WindowConfig config, WindowName pageBack) {
+	public HelpPage(WindowConfig config, PageName pageBack) {
 		super(config);
 
-		windowName = WindowName.HelpWindow;
+		windowName = PageName.HelpPage;
 
 		bbp = new BottomButtonPanel(pageBack, "Retour");
 
@@ -33,7 +33,7 @@ public class HelpPage extends Page {
 		add(page);
 	}
 
-	public void setBackPage(WindowName pageBack) {
+	public void setBackPage(PageName pageBack) {
 		bbp.setFirstButtonHref(pageBack);
 	}
 }

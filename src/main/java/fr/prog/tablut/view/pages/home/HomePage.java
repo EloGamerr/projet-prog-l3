@@ -5,7 +5,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import fr.prog.tablut.model.window.WindowConfig;
-import fr.prog.tablut.model.window.WindowName;
+import fr.prog.tablut.model.window.PageName;
 import fr.prog.tablut.view.Page;
 import fr.prog.tablut.view.components.Title;
 
@@ -25,7 +25,7 @@ public class HomePage extends Page {
 	public HomePage(WindowConfig config) {
 		super(config);
 
-		windowName = WindowName.HomeWindow;
+		windowName = PageName.HomePage;
 
 		setLayout(new GridBagLayout());
 		

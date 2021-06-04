@@ -2,15 +2,15 @@ package fr.prog.tablut.controller.adaptators;
 
 import java.awt.event.ActionEvent;
 
-import fr.prog.tablut.model.window.WindowName;
+import fr.prog.tablut.model.window.PageName;
 import fr.prog.tablut.view.GlobalWindow;
 import fr.prog.tablut.view.components.generic.GenericButton;
 
 public class ButtonNavAdaptator extends ActionAdaptator<GenericButton> {
-	private final WindowName dest;
+	private final PageName dest;
 	private final GlobalWindow globalWindow;
 	
-	public ButtonNavAdaptator(GenericButton button, GlobalWindow globalWindow, WindowName dest) {
+	public ButtonNavAdaptator(GenericButton button, GlobalWindow globalWindow, PageName dest) {
 		super(button);
 		this.globalWindow = globalWindow;
 		this.dest = dest;

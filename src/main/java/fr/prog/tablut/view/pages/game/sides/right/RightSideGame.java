@@ -10,7 +10,7 @@ import fr.prog.tablut.controller.adaptators.ButtonRestartAdaptator;
 import fr.prog.tablut.controller.adaptators.ButtonSaveAdaptator;
 import fr.prog.tablut.controller.game.gameController.GameController;
 import fr.prog.tablut.model.window.WindowConfig;
-import fr.prog.tablut.model.window.WindowName;
+import fr.prog.tablut.model.window.PageName;
 import fr.prog.tablut.view.components.generic.GenericRoundedButton;
 import fr.prog.tablut.view.pages.game.sides.GameInterfaceSide;
 
@@ -31,8 +31,8 @@ public class RightSideGame extends GameInterfaceSide {
         saveToNewFile.setStyle("button.greenHover");
         quit.setStyle("button.redHover");
 
-        shortcuts.setHref(WindowName.HelpWindow);
-        quit.setHref(WindowName.HomeWindow);
+        shortcuts.setHref(PageName.HelpPage);
+        quit.setHref(PageName.HomePage);
         
         saveToNewFile.setAction(new ButtonSaveAdaptator(saveToNewFile, this));
         

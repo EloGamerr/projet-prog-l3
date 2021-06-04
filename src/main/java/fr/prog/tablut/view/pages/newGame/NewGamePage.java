@@ -2,7 +2,7 @@ package fr.prog.tablut.view.pages.newGame;
 
 import fr.prog.tablut.controller.adaptators.CreateGameAdaptator;
 import fr.prog.tablut.model.window.WindowConfig;
-import fr.prog.tablut.model.window.WindowName;
+import fr.prog.tablut.model.window.PageName;
 import fr.prog.tablut.view.Page;
 import fr.prog.tablut.view.components.BottomButtonPanel;
 import fr.prog.tablut.view.components.NavPage;
@@ -21,11 +21,11 @@ public class NewGamePage extends Page {
 	public NewGamePage(WindowConfig config) {
 		super(config);
 
-		windowName = WindowName.NewGameWindow;
+		windowName = PageName.NewGamePage;
 
 		SelectionPlayer gameSettings = new SelectionPlayer();
 
-		BottomButtonPanel panel = new BottomButtonPanel(WindowName.HomeWindow, WindowName.GameWindow, "Jouer !");
+		BottomButtonPanel panel = new BottomButtonPanel(PageName.HomePage, PageName.GamePage, "Jouer !");
 
 		panel.getButton2().setAction(new CreateGameAdaptator(panel.getButton2(), gameSettings));
 

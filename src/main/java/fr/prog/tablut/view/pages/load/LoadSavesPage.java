@@ -2,7 +2,7 @@ package fr.prog.tablut.view.pages.load;
 
 import fr.prog.tablut.controller.adaptators.LoadSaveAdaptator;
 import fr.prog.tablut.model.window.WindowConfig;
-import fr.prog.tablut.model.window.WindowName;
+import fr.prog.tablut.model.window.PageName;
 import fr.prog.tablut.view.Page;
 import fr.prog.tablut.view.components.BottomButtonPanel;
 import fr.prog.tablut.view.components.NavPage;
@@ -24,10 +24,10 @@ public class LoadSavesPage extends Page {
 	public LoadSavesPage(WindowConfig config) {
 		super(config);
 
-		windowName = WindowName.LoadWindow;
+		windowName = PageName.LoadPage;
 
 		
-		bottomPanel = new BottomButtonPanel(WindowName.HomeWindow, WindowName.GameWindow, "Jouer !");
+		bottomPanel = new BottomButtonPanel(PageName.HomePage, PageName.GamePage, "Jouer !");
 		panel = new SavedGamesPanel(bottomPanel.getButton2());
 		bottomPanel.getButton2().setStyle("button.green:disabled");
 		bottomPanel.getButton2().setAction(new LoadSaveAdaptator(bottomPanel.getButton2(), panel));

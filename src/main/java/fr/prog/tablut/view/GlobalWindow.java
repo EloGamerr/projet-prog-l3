@@ -1,8 +1,6 @@
 package fr.prog.tablut.view;
 
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.text.ParseException;
 
 import javax.swing.JFrame;
@@ -12,7 +10,7 @@ import org.json.JSONObject;
 
 import fr.prog.tablut.model.Loader;
 import fr.prog.tablut.model.window.WindowConfig;
-import fr.prog.tablut.model.window.WindowName;
+import fr.prog.tablut.model.window.PageName;
 import fr.prog.tablut.view.components.NavPage;
 import fr.prog.tablut.view.components.generic.GenericObjectStyle;
 import fr.prog.tablut.view.pages.game.GamePage;
@@ -23,9 +21,8 @@ import fr.prog.tablut.view.pages.newGame.NewGamePage;
 
 /**
  * The main window of the application
- * @see Window
  */
-public class GlobalWindow extends Window {
+public class GlobalWindow {
 	protected WindowConfig config;
     private GamePage gamePage;
     private HomePage homePage;
@@ -34,7 +31,7 @@ public class GlobalWindow extends Window {
     private NewGamePage newGamePage;
 	private JFrame jFrame;
     private Page currentPage;
-	private WindowName previousPageName;
+	private PageName previousPageName;
 
 	/**
 	 * Creates the main window with given surface
@@ -58,7 +55,6 @@ public class GlobalWindow extends Window {
 			setConfig(configfilePath);
 		}
 		
-		setSize(config.windowWidth, config.windowHeight);
 		GenericObjectStyle.setStyle(config.getStyle());
 		NavPage.setDimension(new Dimension(config.windowWidth, config.windowHeight));
 
@@ -121,47 +117,34 @@ public class GlobalWindow extends Window {
 		this.config.setConfig(config);
 	}
 
-
-    @Override
-    protected void paintComponent(Graphics graphics) {
-        Graphics2D drawable = (Graphics2D) graphics;
-
-        int width = getSize().width;
-        int height = getSize().height;
-
-        drawable.clearRect(0, 0, width, height);
-        
-        super.paintComponent(graphics);
-    }
-
 	/**
 	 * Changes the visibility of the windows, depending of the window to display
 	 * @param dest The window's name
 	 */
-	public void changeWindow(WindowName dest) {
+	public void changeWindow(PageName dest) {
 		currentPage.setVisible(false);
 		previousPageName = currentPage.name();
 		helpPage.setBackPage(previousPageName);
 
 		switch(dest) {
-			case GameWindow:
+			case GamePage:
 				currentPage = gamePage;
 				break;
 
-			case LoadWindow:
+			case LoadPage:
 				setLoadPage(new LoadSavesPage(config));
 				currentPage = loadPage;
 				break;
 
-			case HomeWindow:
+			case HomePage:
 				currentPage = homePage;
 				break;
 
-			case HelpWindow:
+			case HelpPage:
 				currentPage = helpPage;
 				break;
 
-			case NewGameWindow:
+			case NewGamePage:
 				currentPage = newGamePage;
 				break;
 
@@ -170,7 +153,7 @@ public class GlobalWindow extends Window {
 		}
         
         // update page if previous wasn't the help one
-		if(previousPageName != WindowName.HelpWindow)
+		if(previousPageName != PageName.HelpPage)
             currentPage.update();
         
 		currentPage.setVisible(true);
@@ -197,7 +180,7 @@ public class GlobalWindow extends Window {
         return newGamePage;
     }
 
-    public Window getcurrentPage() {
+    public Page getcurrentPage() {
         return currentPage;
     }
 

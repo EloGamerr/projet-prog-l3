@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
 import fr.prog.tablut.controller.adaptators.ButtonNavAdaptator;
-import fr.prog.tablut.model.window.WindowName;
+import fr.prog.tablut.model.window.PageName;
 
 /**
  * A component that extends JButton, a basic button.
@@ -24,7 +24,7 @@ public class GenericButton extends JButton implements GenericComponent {
 
     protected String styleName = "button";
 
-    protected WindowName href = null;
+    protected PageName href = null;
 	
 	/**
 	 * Default constructor.
@@ -81,11 +81,11 @@ public class GenericButton extends JButton implements GenericComponent {
 	 * when the user clicks on.
 	 * @param href The page to go to
 	 */
-    public void setHref(WindowName href) {
+    public void setHref(PageName href) {
         setHref(href, new ButtonNavAdaptator(this, GenericObjectStyle.getGlobalWindow(), href));
     }
 
-	public void setHref(WindowName href, ActionListener action) {
+	public void setHref(PageName href, ActionListener action) {
 		this.href = href;
 		setHrefAction(action);
 	}
