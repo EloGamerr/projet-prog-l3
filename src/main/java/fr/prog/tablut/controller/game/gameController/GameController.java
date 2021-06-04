@@ -50,6 +50,7 @@ public class GameController {
 
 	public void restart() {
 		Game.getInstance().restart();
+		gamePage.getGridWindow().getGridView().setIsInAnim(false);
 		this.gamePage.update();
 		this.gamePage.repaint();
 	}
