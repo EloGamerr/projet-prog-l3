@@ -224,5 +224,8 @@ public class SavedGamesPanel extends GenericPanel {
             label.setBorder(new EmptyBorder(height/2 - 20, 0, 0, 0));
             wrapper.add(label);
         }
+
+        revalidate();
+        repaint();
     }
 }

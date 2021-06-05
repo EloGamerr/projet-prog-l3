@@ -181,11 +181,9 @@ public class GameSaver {
 		File f = new File(savePath);
 
 		while(f.isFile()) {
-			
 			index++;
 		    savePath = Paths.get(savesPath, savePrefix + index + saveSuffix).toString();
 		    f = new File(savePath);
-		   
 		}
 
 		System.out.println(savePath);
@@ -201,8 +199,31 @@ public class GameSaver {
 	}
 
 	public boolean delete(int index_game) {
-        File f = Paths.get(savesPath + "/" + savePrefix + index_game + saveSuffix).toFile();
-        return f.exists() && f.isFile() && f.delete();
+        Path p = Paths.get(savesPath + "/" + savePrefix + index_game + saveSuffix);
+        File f = p.toFile();
+
+        if(!f.exists() ||!f.isFile()) {
+            System.out.println("[Error] GameSaver::delete : File not found or not a file.");
+            return false;
+        }
+
+        if(!f.canWrite()) {
+            System.out.println("[Error] GameSaver::delete : Don't have rights on it.");
+            return false;
+        }
+
+        try {
+            if(!Files.deleteIfExists(p)) {
+                System.out.println("[Error] GameSaver::delete : Failed to delete save (Surely the buffer that's not closed).");
+                return false;
+            }
+        } catch(IOException e) {
+            System.out.println("[Error] GameSaver::delete : Failed to delete save.");
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
 	}
 
 	////////////////////////////////////////////////////

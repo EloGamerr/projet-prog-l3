@@ -78,7 +78,7 @@ public class SelectionPlayer extends GenericPanel {
 		// player's username
 		c.gridy = 2;
 		c.insets = new Insets(10, 0, 0, 0);
-		panel.add(p.usernameInput, c);
+		panel.add(p.getUsernameInput(), c);
 
 		add(panel);
 	}
@@ -89,7 +89,7 @@ public class SelectionPlayer extends GenericPanel {
 	 */
 	public void showInput(String side) {
 		PlayerData p = (side == "attacker")? attacker : defender;
-		p.usernameInput.setVisible(true);
+		p.getUsernameInput().enable();
 	}
 	
 	/**
@@ -98,7 +98,7 @@ public class SelectionPlayer extends GenericPanel {
 	 */
 	public void hideInput(String side) {
 		PlayerData p = (side == "attacker")? attacker : defender;
-		p.usernameInput.setVisible(false);
+		p.getUsernameInput().disable();
 	}
 
 	public PlayerTypeEnum getPlayerType1() {

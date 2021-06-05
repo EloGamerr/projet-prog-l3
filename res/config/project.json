@@ -34,6 +34,36 @@
                 "background": [48, 54, 62],
                 "borderColor": [56, 109, 179],
                 "color": [255, 255, 255]
+            },
+
+            ":disabled": {
+                "background": [53, 53, 53],
+                "borderColor": [63, 63, 63],
+                "color": [107, 107, 107]
+            }
+        },
+        "select": {
+            ".selected": {
+                "background": [41, 46, 52],
+                "borderColor": [56, 62, 71],
+                "color": [163, 165, 167],
+
+                ":hover": {
+                    "background": [48, 54, 62],
+                    "borderColor": [71, 79, 90],
+                    "color": [255, 255, 255]
+                }
+            },
+            ".item": {
+                "background": [48, 54, 62],
+                "borderColor": [48, 54, 62],
+                "color": [221, 221, 221],
+
+                ":hover": {
+                    "background": [71, 79, 90],
+                    "borderColor": [71, 79, 90],
+                    "color": [255, 255, 255]
+                }
             }
         },
         "button": {

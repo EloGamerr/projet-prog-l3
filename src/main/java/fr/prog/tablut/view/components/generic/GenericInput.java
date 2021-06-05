@@ -1,5 +1,6 @@
 package fr.prog.tablut.view.components.generic;
 
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyListener;
@@ -32,7 +33,11 @@ public class GenericInput extends JTextField implements GenericComponent {
     protected boolean hovering = false;
     protected boolean canHoverStyle = false;
     protected boolean canFocusStyle = false;
+    protected boolean canDisableStyle = false;
+    protected boolean isDisabled = false;
     private FontRenderContext frc = new FontRenderContext(null, false, false);
+    protected Cursor textCursor = new Cursor(Cursor.TEXT_CURSOR);
+    protected Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
 
     /**
      * Default constructor.
@@ -126,6 +131,25 @@ public class GenericInput extends JTextField implements GenericComponent {
             this.styleName = style;
             canHoverStyle = GenericObjectStyle.getStyle().has(style + ":hover");
             canFocusStyle = GenericObjectStyle.getStyle().has(style + ":focus");
+            canDisableStyle = GenericObjectStyle.getStyle().has(styleName + ":disabled");
+        }
+    }
+
+    @Override
+    public void enable() {
+        if(isDisabled) {
+            isDisabled = false;
+            canHoverStyle = GenericObjectStyle.getStyle().has(styleName + ":hover");
+            setCursor(this.textCursor);
+        }
+    }
+
+    @Override
+    public void disable() {
+        if(!isDisabled) {
+            isDisabled = true;
+            canHoverStyle = false;
+            setCursor(this.defaultCursor);
         }
     }
 
@@ -143,7 +167,8 @@ public class GenericInput extends JTextField implements GenericComponent {
 
         String sstyle = styleName;
         
-        if      (hasFocus() && canFocusStyle)   sstyle += ":focus";
+        if      (isDisabled && canDisableStyle) sstyle += ":disabled";
+        else if (hasFocus() && canFocusStyle)   sstyle += ":focus";
         else if (hovering && canHoverStyle)     sstyle += ":hover";
         
         ComponentStyle style = GenericObjectStyle.getStyle().get(sstyle);
