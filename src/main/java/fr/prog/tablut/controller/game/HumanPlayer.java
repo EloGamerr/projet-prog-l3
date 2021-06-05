@@ -20,7 +20,7 @@ public class HumanPlayer extends Player {
     }
 
 
-    public boolean play(Game game) {
+    public boolean play(Game game, GamePage gamePage) {
         if(gameControllerHuman.getSelectedCell() == null) {
             if(game.canPlay(row, col)) {
                 gameControllerHuman.setSelectedCell(new Couple<Integer, Integer>(row, col));

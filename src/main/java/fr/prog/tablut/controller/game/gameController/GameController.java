@@ -16,7 +16,7 @@ public class GameController {
 
 	public GameController(GamePage gamePage) {
 		this.gamePage = gamePage;
-		this.gameControllerAI = new GameControllerAI(20);
+		this.gameControllerAI = new GameControllerAI(1,gamePage);
 		this.gameControllerHuman = new GameControllerHuman(gamePage);
 	}
 	
@@ -50,6 +50,7 @@ public class GameController {
 
 	public void restart() {
 		Game.getInstance().restart();
+		gamePage.getGridWindow().getGridView().setIsInAnim(false);
 		this.gamePage.update();
 		this.gamePage.repaint();
 	}
@@ -60,6 +61,8 @@ public class GameController {
 	}
 
 	public boolean undo() {
+		if(gamePage.getGridWindow().getGridView().isInAnim())
+			return false;
 		if(Game.getInstance().undo_move()) {
 			this.gamePage.getRightSide().togglePauseButton(Game.getInstance().isPaused());
 			this.postPlay();
@@ -70,6 +73,8 @@ public class GameController {
 	}
 
 	public boolean redo() {
+		if(gamePage.getGridWindow().getGridView().isInAnim())
+			return false;
 		if(Game.getInstance().redo_move()) {
 			this.gamePage.getRightSide().togglePauseButton(Game.getInstance().isPaused());
 			this.postPlay();
@@ -85,12 +90,13 @@ public class GameController {
 
 	public void pause() {
 		boolean pause = PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker()).isAI() && PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender()).isAI();
-
+		
         if(pause)
 			pause = !Game.getInstance().isPaused();
-
+        
 		Game.getInstance().setPaused(pause);
-
+		this.gamePage.getGridWindow().getGridView().stop_anim();
 		this.gamePage.getRightSide().togglePauseButton(pause);
+		this.postPlay();
 	}
 }

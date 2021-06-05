@@ -80,4 +80,28 @@ public class GridWindow extends GameInterfaceSide {
 	public int getRowFromYCoord(int y) {
 		return gridView.getRowFromYCoord(y);
 	}
+	
+	public int getXCoordFromCol(int c) {
+		return gridView.getXCoordFromCol(c);
+	}
+	
+	public int getYCoordFromRow(int l) {
+		return gridView.getYCoordFromRow(l);
+	}
+
+
+	public void update_anim(int toL, int toC, Couple<Integer, Integer> couple) {
+		gridView.update_anim(toL, toC, couple);
+		repaint();
+	}
+
+	public void stop_anim() {
+		gridView.stop_anim();
+		
+	}
+
+	public GridView getGridView() {
+		return gridView;
+		
+	}
 }

@@ -8,6 +8,7 @@ import fr.prog.tablut.model.game.Movement;
 import fr.prog.tablut.model.game.player.Player;
 import fr.prog.tablut.model.game.player.PlayerEnum;
 import fr.prog.tablut.structures.Couple;
+import fr.prog.tablut.view.pages.game.GamePage;
 
 public class IA extends Player{
 	
@@ -22,7 +23,7 @@ public class IA extends Player{
 	}
 	
 	@Override
-	public boolean play(Game game) {
+	public boolean play(Game game, GamePage gamePage) {
 		try {
 			Movement m = joue(new Simulation(game.getGrid()), (game.getPlayingPlayerEnum() == PlayerEnum.DEFENDER), r).getFirst();
 			game.move(m.fromL, m.fromC, m.toL, m.toC);
