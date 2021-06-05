@@ -27,6 +27,7 @@ public class GridView {
 	private boolean anim = false;
     protected Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
     protected Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
+	private Point lastMousePosition;
 
 	public GridView(GridWindow gridWindow) {
 		this.gridWindow = gridWindow;
@@ -69,6 +70,9 @@ public class GridView {
 		gridWindow.fillRect(x + width - widthBorder, y, widthBorder + 2, height);
 
 		Point mousePosition = gridWindow.getMousePosition();
+
+		if(mousePosition != null)
+			lastMousePosition = mousePosition;
 
 		List<Couple<Integer, Integer>> accessibleCells = new ArrayList<>();
 
@@ -166,13 +170,11 @@ public class GridView {
 
 			}
 		}
-		
-		Point mousePosition = gridWindow.getMousePosition();
 
-		if(imageOnMouse != null && mousePosition != null) {
-			int xImg = Math.max(x, mousePosition.x - imgSize/2);
+		if(imageOnMouse != null && lastMousePosition != null) {
+			int xImg = Math.max(x, lastMousePosition.x - imgSize/2);
 			xImg = Math.min(xImg, x + width - imgSize);
-			int yImg = Math.max(y, mousePosition.y - imgSize/2);
+			int yImg = Math.max(y, lastMousePosition.y - imgSize/2);
 			yImg = Math.min(yImg, y + height - imgSize);
 			
     		gridWindow.drawImage(imageOnMouse, xImg, yImg, imgSize, imgSize);
