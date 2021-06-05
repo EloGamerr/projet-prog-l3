@@ -33,7 +33,7 @@ public class GridView {
 	}
 	
 	public int cellSize() {
-		return cellSize;
+		return Math.max(1, cellSize);
 	}
 	
 	public void draw() {
@@ -83,7 +83,7 @@ public class GridView {
 
 			drawCircles(accessibleCells);
 		}
-		else if(mousePosition != null && !game.isWon() && game.getPlayingPlayer() instanceof HumanPlayer) {
+		else if(mousePosition != null && game.getPlayingPlayer() instanceof HumanPlayer) {
 			int col = getColFromXCoord(mousePosition.x);
 			int row = getRowFromYCoord(mousePosition.y);
 
