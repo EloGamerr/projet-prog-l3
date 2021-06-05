@@ -196,7 +196,7 @@ public class GenericInput extends JTextField implements GenericComponent {
         
             // text
         g2d.setColor(style.get("color"));
-        g2d.setFont(new Font("Farro", Font.PLAIN, 12));
+        g2d.setFont(new Font("Farro-Regular", Font.PLAIN, 12));
         g2d.drawString(this.getText(), xLabel, labelY);
 
     }

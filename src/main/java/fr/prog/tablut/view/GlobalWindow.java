@@ -61,6 +61,7 @@ public class GlobalWindow {
 
 		Loader loader = new Loader();
 		loader.loadCustomFont("Farro-Regular.ttf");
+		loader.loadCustomFont("Farro-Light.ttf");
 		
 		jFrame = new JFrame(config.projectName);
 

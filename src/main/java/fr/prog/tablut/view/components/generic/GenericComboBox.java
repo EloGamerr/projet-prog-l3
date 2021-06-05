@@ -175,7 +175,7 @@ class GenericComboBoxRenderer<E> extends JLabel implements ListCellRenderer<E> {
 
     public GenericComboBoxRenderer() {
         setOpaque(true);
-        setFont(new Font("Arial", Font.PLAIN, 14));
+        setFont(new Font("Farro-Light", Font.PLAIN, 14));
         setBorder(new EmptyBorder(5, 5, 5, 5));
         hover(false);
     }
@@ -212,6 +212,7 @@ class GenericComboBoxEditor extends BasicComboBoxEditor {
             Rectangle2D textBounds = getFont().getStringBounds(text, frc);
     
             g2d.setColor(GenericObjectStyle.getProp("select.selected", "color"));
+            g2d.setFont(new Font("Farro-Light", Font.PLAIN, 12));
             g2d.drawString(text, 15, (int)(getHeight() - 3 - textBounds.getHeight()/2));
         }
     };

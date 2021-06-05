@@ -1,15 +1,18 @@
 package fr.prog.tablut.view.components;
 
+import java.awt.Font;
+
+import javax.swing.JLabel;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
 
-import fr.prog.tablut.view.components.generic.GenericText;
+import fr.prog.tablut.view.components.generic.GenericObjectStyle;
 
 /**
- * A component that extends GenericText, with title properties.
- * @see GenericText
+ * A component that extends JLabel, with title properties.
+ * @see JLabel
  */
-public class Title extends GenericText {
+public class Title extends JLabel {
     AbstractBorder border = new EmptyBorder(0, 0, 20, 0);
 
     /**
@@ -18,8 +21,7 @@ public class Title extends GenericText {
      * @param text The title's text
      */
     public Title(String text) {
-        super(text, 100);
-		setBorder(border);
+        this(text, 100);
     }
 
     /**
@@ -28,7 +30,9 @@ public class Title extends GenericText {
      * @param fontSize The title's font size
      */
     public Title(String text, int fontSize) {
-        super(text, fontSize);
+        super(text);
 		setBorder(border);
+        setFont(new Font("Farro", Font.BOLD, fontSize));
+        setForeground(GenericObjectStyle.getProp("title", "color"));
     }
 }

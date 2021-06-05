@@ -1,6 +1,7 @@
 package fr.prog.tablut.view.components.generic;
 
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.ActionListener;
 
@@ -53,6 +54,8 @@ public class GenericButton extends JButton implements GenericComponent {
 	private void init() {
 		// hover listener
         GenericButton me = this;
+
+        setFont(new Font("Farro-Light", Font.PLAIN, 12));
 
 		//TODO : move it in the controller
         addMouseListener(new MouseAdapter() {

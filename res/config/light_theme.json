@@ -1,0 +1,172 @@
+{
+    "project": {
+        "name": "Tablut"
+    },
+    "window": {
+        "background": [222, 219, 210],
+        "color": [68, 68, 68],
+        "width": 1280,
+        "height": 720
+    },
+    "components": {
+        "title": {
+            "color": [68, 68, 68]
+        },
+        "label": {
+            "color": [68, 68, 68]
+        },
+        "description": {
+            "color": [68, 68, 68]
+        },
+        "area": {
+            "background": [200, 195, 181],
+            "borderColor": [179, 172, 151]
+        },
+        "input": {
+            "background": [200, 195, 181],
+            "borderColor": [179, 172, 151],
+            "color": [68, 68, 68],
+
+            ":hover": {
+                "background": [210, 205, 191],
+                "borderColor": [179, 172, 151],
+                "color": [68, 68, 68]
+            },
+
+            ":focus": {
+                "background": [210, 205, 191],
+                "borderColor": [56, 109, 179],
+                "color": [68, 68, 68]
+            },
+
+            ":disabled": {
+                "background": [195, 195, 195],
+                "borderColor": [175, 175, 175],
+                "color": [127, 127, 127]
+            }
+        },
+        "select": {
+            ".selected": {
+                "background": [200, 195, 181],
+                "borderColor": [179, 172, 151],
+                "color": [68, 68, 68],
+
+                ":hover": {
+                    "background": [180, 175, 163],
+                    "borderColor": [179, 172, 151],
+                    "color": [68, 68, 68]
+                }
+            },
+            ".item": {
+                "background": [200, 195, 181],
+                "borderColor": [48, 54, 62],
+                "color": [68, 68, 68],
+
+                ":hover": {
+                    "background": [180, 175, 163],
+                    "borderColor": [179, 172, 151],
+                    "color": [68, 68, 68]
+                }
+            }
+        },
+        "button": {
+            "background": [200, 195, 181],
+            "borderColor": [200, 195, 181],
+            "color": [68, 68, 68],
+
+            ":hover": {
+                "background": [180, 175, 163],
+                "borderColor": [180, 175, 163],
+                "color": [68, 68, 68]
+            },
+
+            ":disabled": {
+                "background": [150, 145, 133],
+                "borderColor": [150, 145, 133],
+                "color": [170, 170, 170]
+            },
+
+            ".home": {
+                "background": [200, 195, 181],
+                "borderColor": [179, 172, 151],
+                "color": [68, 68, 68],
+
+                ":hover": {
+                    "background": [180, 175, 163],
+                    "borderColor": [179, 172, 151],
+                    "color": [68, 68, 68]
+                }
+            },
+
+            ".green": {
+                "background": [119, 178, 85],
+                "borderColor": [119, 178, 85],
+                "color": [230, 230, 230],
+
+                ":hover": {
+                    "background": [123, 194, 82],
+                    "borderColor": [123, 194, 82],
+                    "color": [230, 230, 230]
+                },
+
+                ":disabled": {
+                    "background": [92, 145, 62],
+                    "borderColor": [92, 145, 62],
+                    "color": [150, 150, 150]
+                }
+            },
+
+            ".load": {
+                "background": [185, 179, 160],
+                "borderColor": [179, 172, 151],
+                "color": [68, 68, 68],
+
+                ":hover": {
+                    "background": [166, 161, 144],
+                    "borderColor": [166, 161, 144],
+                    "color": [68, 68, 68]
+                },
+
+                ":selected": {
+                    "background": [166, 161, 144],
+                    "borderColor": [166, 161, 144],
+                    "color": [68, 68, 68]
+                }
+            },
+
+            ".redHover": {
+                "background": [200, 195, 181],
+                "borderColor": [200, 195, 181],
+                "color": [68, 68, 68],
+
+                ":hover": {
+                    "background": [220,41,30],
+                    "borderColor": [220,41,30],
+                    "color": [240, 240, 240]
+                }
+            },
+
+            ".greenHover": {
+                "background": [200, 195, 181],
+                "borderColor": [200, 195, 181],
+                "color": [68, 68, 68],
+
+                ":hover": {
+                    "background": [119, 178, 85],
+                    "borderColor": [119, 178, 85],
+                    "color": [240, 240, 240]
+                }
+            }
+        },
+        
+        "table": {
+            ".th": {
+                "color": [68, 68, 68]
+            },
+
+            ".td": {
+                "color": [125, 125, 125]
+            }
+        }
+    }
+}
