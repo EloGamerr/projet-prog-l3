@@ -35,12 +35,8 @@ public class GridWindow extends GameInterfaceSide {
 		return width;
 	}
 	
-	public int cellHeight() {
-		return gridView.cellHeight();
-	}
-	
-	public int cellWidth() {
-		return gridView.cellWidth();
+	public int cellSize() {
+		return gridView.cellSize();
 	}
 
 	public void setColor(Color color) {
@@ -67,6 +63,11 @@ public class GridWindow extends GameInterfaceSide {
 		gridView.updateImageOnMouse(image, selectedCell);
 		repaint();
 	}
+
+    public void updateCellHovering(Couple<Integer, Integer> hoveringCell) {
+        gridView.updateCellHovering(hoveringCell);
+        repaint();
+    }
 	
 	public void clearImageOnMouse() {
 		gridView.clearImageOnMouse();

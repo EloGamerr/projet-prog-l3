@@ -38,19 +38,24 @@ public class GameControllerHuman {
 
 
     public void mouseMoved(Point mousePosition) {
+        int colHovered = gamePage.getGridWindow().getColFromXCoord(mousePosition.x);
+        int rowHovered = gamePage.getGridWindow().getRowFromYCoord(mousePosition.y);
+
         if(mousePosition != null) {
             if(this.selectedCell != null) {
                 gamePage.getGridWindow().updateImageOnMouse(Game.getInstance().getCellContent(selectedCell.getFirst(), selectedCell.getSecond()).getImage(), selectedCell);
-            }
-            else {
-                int colHovered = gamePage.getGridWindow().getColFromXCoord(mousePosition.x);
-                int rowHovered = gamePage.getGridWindow().getRowFromYCoord(mousePosition.y);
 
-                if(lastRowHovered != rowHovered || lastColHovered != colHovered) {
-                    lastRowHovered = rowHovered;
-                    lastColHovered = colHovered;
-                    gamePage.repaint();
-                }
+                Couple<Integer, Integer> hoveringCell = null;
+                
+                if(colHovered < 9 && rowHovered < 9)
+                    hoveringCell = new Couple<Integer, Integer>(rowHovered, colHovered);
+
+                gamePage.getGridWindow().updateCellHovering(hoveringCell);
+            }
+            else if(lastRowHovered != rowHovered || lastColHovered != colHovered) {
+                lastRowHovered = rowHovered;
+                lastColHovered = colHovered;
+                gamePage.repaint();
             }
         }
     }

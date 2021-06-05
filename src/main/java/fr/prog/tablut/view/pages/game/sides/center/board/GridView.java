@@ -14,9 +14,10 @@ public class GridView {
 	private static final int widthSeperator = 6;
 	public static final int widthBorder = 25;
 	private final GridWindow gridWindow;
-    private int x, y, height, width, cellWidth, cellHeight;
+    private int x, y, height, width, cellSize;
     private Image imageOnMouse;
     private Couple<Integer, Integer> selectedCell;
+    private Couple<Integer, Integer> hoveringCell;
     private Couple<Integer, Integer> animCell;
     private Image animImage;
     private int xAnim, yAnim;
@@ -28,22 +29,17 @@ public class GridView {
 		this.gridWindow = gridWindow;
 	}
 	
-	public int cellHeight() {
-		return cellHeight;
-	}
-	
-	public int cellWidth() {
-		return cellWidth;
+	public int cellSize() {
+		return cellSize;
 	}
 	
 	public void draw() {
 		Game game = Game.getInstance();
 
-		cellWidth = (gridWindow.width() - widthBorder*2) / game.getColAmout();
-		cellHeight = (gridWindow.height() - widthBorder*2) / game.getRowAmout();
+		cellSize = (gridWindow.width() - widthBorder*2) / game.getColAmout();
 	
-		height = widthBorder*2 + game.getRowAmout() * cellHeight + widthSeperator;
-		width = widthBorder*2 + game.getColAmout() * cellWidth + widthSeperator;
+		height = widthBorder*2 + game.getRowAmout() * cellSize + widthSeperator;
+		width = widthBorder*2 + game.getColAmout() * cellSize + widthSeperator;
 		
 		x = gridWindow.getWidth()/2 - width/2; // getWidth() method returns the real width of the component
 		y = gridWindow.getHeight()/2 - height/2; // getHeight() method returns the real height of the component
@@ -73,7 +69,10 @@ public class GridView {
 
 		if(selectedCell != null) {
 			gridWindow.setColor(GameColors.CELL_SELECTION);
-			gridWindow.fillRect(x + widthBorder + selectedCell.getSecond() * cellWidth, y + widthBorder + selectedCell.getFirst() * cellHeight, cellWidth, cellHeight);
+			gridWindow.fillRect(x + widthBorder + selectedCell.getSecond() * cellSize, y + widthBorder + selectedCell.getFirst() * cellSize, cellSize, cellSize);
+
+            if(hoveringCell != null)
+                gridWindow.fillRect(x + widthBorder + hoveringCell.getSecond() * cellSize, y + widthBorder + hoveringCell.getFirst() * cellSize, cellSize, cellSize);
 		
 			drawCircles(selectedCell.getFirst(), selectedCell.getSecond());
 		}
@@ -85,7 +84,7 @@ public class GridView {
 			int row = getRowFromYCoord(mousePosition.y);
 			
 			if(game.isValid(row, col) && game.canPlay(row, col)) {
-				gridWindow.fillRect(x + widthBorder + col * cellWidth, y + widthBorder + row * cellHeight, cellWidth, cellHeight);
+				gridWindow.fillRect(x + widthBorder + col * cellSize, y + widthBorder + row * cellSize, cellSize, cellSize);
 				drawCircles(row, col);
                 gridWindow.setCursor(handCursor);
 			}
@@ -97,23 +96,23 @@ public class GridView {
 		gridWindow.setColor(GameColors.CELL_BORDER);
 
 		for(int i = 0 ; i <= game.getRowAmout() ; i++) {
-			gridWindow.drawLine(x + widthBorder, y + widthBorder + i * cellHeight, x + width - widthBorder, y + widthBorder + i * cellHeight);
-			gridWindow.drawLine(x + widthBorder, y + widthBorder + i * cellHeight + widthSeperator + 1, x + width - widthBorder, y + widthBorder + i * cellHeight + widthSeperator + 1);
+			gridWindow.drawLine(x + widthBorder, y + widthBorder + i * cellSize, x + width - widthBorder, y + widthBorder + i * cellSize);
+			gridWindow.drawLine(x + widthBorder, y + widthBorder + i * cellSize + widthSeperator + 1, x + width - widthBorder, y + widthBorder + i * cellSize + widthSeperator + 1);
 		}
 
 		for(int j = 0 ; j <= game.getColAmout() ; j++) {
-			gridWindow.drawLine(x + widthBorder + j * cellWidth, y + widthBorder, x + widthBorder + j * cellWidth, y + height - widthBorder);
-			gridWindow.drawLine(x + widthBorder + j * cellWidth + widthSeperator + 1, y + widthBorder, x + widthBorder + j * cellWidth + widthSeperator + 1, y + height - widthBorder);
+			gridWindow.drawLine(x + widthBorder + j * cellSize, y + widthBorder, x + widthBorder + j * cellSize, y + height - widthBorder);
+			gridWindow.drawLine(x + widthBorder + j * cellSize + widthSeperator + 1, y + widthBorder, x + widthBorder + j * cellSize + widthSeperator + 1, y + height - widthBorder);
 		}
 		
 		gridWindow.setColor(GameColors.CELL_SEPARATOR);
 
 		for(int i = 0 ; i <= game.getRowAmout() ; i++) {
-			gridWindow.fillRect(x + widthBorder + 1, y + widthBorder + i * cellHeight + 1, width - widthBorder*2, widthSeperator);
+			gridWindow.fillRect(x + widthBorder + 1, y + widthBorder + i * cellSize + 1, width - widthBorder*2, widthSeperator);
 		}
 
 		for(int j = 0 ; j <= game.getColAmout() ; j++) {
-			gridWindow.fillRect(x + widthBorder + j * cellWidth + 1, y + widthBorder + 1, widthSeperator, height - widthBorder*2);
+			gridWindow.fillRect(x + widthBorder + j * cellSize + 1, y + widthBorder + 1, widthSeperator, height - widthBorder*2);
 		}
 	}
 	
@@ -121,18 +120,17 @@ public class GridView {
 		List<Couple<Integer, Integer>> accessibleCells = Game.getInstance().getAccessibleCells(row, col);
 		
 		gridWindow.setColor(GameColors.CIRCLE);
-		int circleWidth = cellWidth/3;
-		int circleHeight = cellHeight/3;
+		int circleRadius = cellSize/3;
 
 		for(Couple<Integer, Integer> accessibleCell : accessibleCells) {
-			gridWindow.fillOval(x + widthBorder + accessibleCell.getSecond() * cellWidth + cellWidth/2 - circleWidth/2 + 3, y + widthBorder + accessibleCell.getFirst() * cellHeight + cellHeight/2 - circleHeight/2 + 3, circleWidth, circleHeight);
+			gridWindow.fillOval(x + widthBorder + accessibleCell.getSecond() * cellSize + cellSize/2 - circleRadius/2 + 3, y + widthBorder + accessibleCell.getFirst() * cellSize + cellSize/2 - circleRadius/2 + 3, circleRadius, circleRadius);
 		}
 	}
 	
 	private void drawPawns() {
 		Game game = Game.getInstance();
 
-		int imgSize = cellWidth/2;
+		int imgSize = cellSize/2;
 
 		for(int i = 0 ; i < game.getRowAmout() ; i++) {
 			for(int j = 0 ; j < game.getColAmout() ; j++) {
@@ -141,8 +139,8 @@ public class GridView {
 				if(game.getCellContent(i, j).getImage() != null)
 					gridWindow.drawImage(
                         game.getCellContent(i, j).getImage(),
-                        x + widthBorder + j * cellWidth - imgSize/2 + cellWidth/2 + 4,
-                        y + widthBorder + i * cellHeight - imgSize/2 + cellHeight/2 + 4,
+                        x + widthBorder + j * cellSize - imgSize/2 + cellSize/2 + 4,
+                        y + widthBorder + i * cellSize - imgSize/2 + cellSize/2 + 4,
                         imgSize,
                         imgSize
                     );
@@ -169,6 +167,10 @@ public class GridView {
 		imageOnMouse = image;
 		this.selectedCell = selectedCell;
 	}
+
+    public void updateCellHovering(Couple<Integer, Integer> hoveringCell) {
+        this.hoveringCell = hoveringCell;
+    }
 	
 	public void clearImageOnMouse() {
 		imageOnMouse = null;
@@ -184,20 +186,20 @@ public class GridView {
 	}
 	
 	public int getColFromXCoord(int x) {
-		return (x - widthBorder - getX()) / cellWidth();
+		return (x - widthBorder - getX()) / cellSize();
 	}
 	
 	public int getRowFromYCoord(int y) {
-		return (y - widthBorder - getY()) / cellHeight();
+		return (y - widthBorder - getY()) / cellSize();
 	}
 	
 	public int getXCoordFromCol(int c) {
 
-		return cellWidth()*c + getX() + widthBorder - cellWidth/4 + cellWidth/2 + 4;
+		return cellSize()*c + getX() + widthBorder - cellSize/4 + cellSize/2 + 4;
 	}
 	
 	public int getYCoordFromRow(int l) {
-		return cellHeight()*l+ getY() + widthBorder - cellHeight/4  + cellHeight/2 + 4;
+		return cellSize()*l+ getY() + widthBorder - cellSize/4  + cellSize/2 + 4;
 	}
 
 
