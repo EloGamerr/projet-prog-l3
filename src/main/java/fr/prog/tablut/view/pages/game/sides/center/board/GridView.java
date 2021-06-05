@@ -22,6 +22,7 @@ public class GridView {
     private Couple<Integer, Integer> selectedCell;
     private Couple<Integer, Integer> hoveringCell;
     private Couple<Integer, Integer> animCell;
+    private Couple<Integer, Integer> animFinalCell;
     private Image animImage;
     private int xAnim, yAnim;
 	private boolean anim = false;
@@ -70,7 +71,17 @@ public class GridView {
 
 		Point mousePosition = gridWindow.getMousePosition();
 
+
 		List<Couple<Integer, Integer>> accessibleCells = new ArrayList<>();
+
+
+		if(isInAnim()) {
+			gridWindow.setColor(GameColors.FROM_CELL);
+			gridWindow.fillRect(x + widthBorder + animCell.getSecond() * cellSize, y + widthBorder + animCell.getFirst() * cellSize, cellSize, cellSize);
+			gridWindow.setColor(GameColors.TO_CELL);
+			gridWindow.fillRect(x + widthBorder + animFinalCell.getSecond() * cellSize, y + widthBorder + animFinalCell.getFirst() * cellSize, cellSize, cellSize);
+		}
+		
 
 		if(selectedCell != null) {
 			accessibleCells = Game.getInstance().getAccessibleCells(selectedCell.getFirst(), selectedCell.getSecond());
@@ -91,6 +102,10 @@ public class GridView {
 
 			if(game.isValid(row, col) && game.canMove(row, col)) {
 				accessibleCells = Game.getInstance().getAccessibleCells(row, col);
+
+
+			
+			if(game.isValid(row, col) && game.canMove(row, col)) {
 
 				gridWindow.fillRect(x + widthBorder + col * cellSize, y + widthBorder + row * cellSize, cellSize, cellSize);
 				drawCircles(accessibleCells);
@@ -122,7 +137,7 @@ public class GridView {
 		for(int j = 0 ; j <= game.getColAmout() ; j++) {
 			gridWindow.fillRect(x + widthBorder + j * cellSize + 1, y + widthBorder + 1, widthSeperator, height - widthBorder*2);
 		}
-
+		}
 		return accessibleCells;
 	}
 	
@@ -151,6 +166,7 @@ public class GridView {
 				if(selectedCell != null && selectedCell.getFirst() == i && selectedCell.getSecond() == j) continue;
 				if(anim && animCell != null && animCell.getFirst() == i && animCell.getSecond() == j) continue;
 				if(game.getCellContent(i, j).getImage() != null) {
+
 					gridWindow.drawImage(
 							game.getCellContent(i, j).getImage(),
 							x + widthBorder + j * cellSize - imgSize/2 + cellSize/2 + 4,
@@ -163,6 +179,12 @@ public class GridView {
 						drawCircle(j, i, 3*cellSize/5, new Color(0, 187, 19));
 					}
 				}
+
+			if(game.getCellContent(i, j) == CellContent.GATE && accessibleCells.contains(new Couple<>(i, j))) {
+				drawCircle(j, i, 3*cellSize/5, new Color(0, 187, 19));
+			}
+		
+
 
 			}
 		}
@@ -223,12 +245,13 @@ public class GridView {
 	}
 
 
-	public void update_anim(int toL, int toC, Couple<Integer, Integer> couple) {
+	public void update_anim(int toL, int toC, Couple<Integer, Integer> fromCell, Couple<Integer, Integer> toCell) {
 		xAnim = toC;
 		yAnim = toL;
 		if(anim != true) {
 			anim = true;
-			animCell = couple;
+			animCell = fromCell;
+			animFinalCell = toCell;
 			animImage = Game.getInstance().getCellContent(animCell.getFirst(),animCell.getSecond()).getImage();
 		}
 	}

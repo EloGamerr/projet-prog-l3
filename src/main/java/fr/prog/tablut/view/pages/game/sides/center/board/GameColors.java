@@ -11,9 +11,6 @@ public class GameColors {
 	public static final Color CELL_SELECTION = new Color(156, 146, 124);
 	public static final Color CIRCLE = new Color(106, 139, 171);
 	public static final Color WIN_CIRCLE = new Color(106, 200, 171);
-<<<<<<< Updated upstream
-=======
 	public static final Color FROM_CELL = new Color(156, 146, 124);
 	public static final Color TO_CELL = new Color(156, 146, 124);
->>>>>>> Stashed changes
 }
