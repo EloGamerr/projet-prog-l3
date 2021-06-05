@@ -22,7 +22,7 @@ public class GameControllerAI {
     @Deprecated
     public boolean tick() {
     	// TODO
-        if(Game.getInstance().getPlayingPlayer() instanceof AIPlayer && !Game.getInstance().isPaused()) {
+        if(!Game.getInstance().isWon() && Game.getInstance().getPlayingPlayer() instanceof AIPlayer && !Game.getInstance().isPaused()) {
             if(timer-- <= 0) {
                 boolean shouldRepaint = Game.getInstance().getPlayingPlayer().play(Game.getInstance(),gamePage);
                 timer = speed;

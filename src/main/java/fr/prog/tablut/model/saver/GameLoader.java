@@ -66,12 +66,14 @@ public class GameLoader {
 
 		while(scanner.hasNextLine()) {
 			String lineContent = scanner.nextLine();
-
-			if(lineNumber == 0 && !loadParameters(lineContent))
-				return false;
 			
+			if(lineNumber == 0 && !loadParameters(lineContent)) {
+				scanner.close();
+				return false;
+			}
 			lineNumber++;
 		}
+		scanner.close();
 
 		return true;
 	}

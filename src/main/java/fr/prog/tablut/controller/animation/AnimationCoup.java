@@ -3,6 +3,7 @@ package fr.prog.tablut.controller.animation;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.Movement;
 import fr.prog.tablut.model.game.Play;
+import fr.prog.tablut.structures.Couple;
 import fr.prog.tablut.view.pages.game.GamePage;
 import fr.prog.tablut.view.pages.game.sides.center.board.GridWindow;
 
@@ -31,7 +32,7 @@ public class AnimationCoup {
         int dC =  (int) (gridWindow.getXCoordFromCol(mov.fromC) - ((gridWindow.getXCoordFromCol(mov.fromC) - gridWindow.getXCoordFromCol(mov.toC))*(progres)));
         int dL =  (int) (gridWindow.getYCoordFromRow(mov.fromL) - ((gridWindow.getYCoordFromRow(mov.fromL) - gridWindow.getYCoordFromRow(mov.toL))*(progres)));
         
-        view.update_anim(dL, dC, mov.fromL, mov.fromC);
+        view.update_anim(dL, dC, new Couple<Integer, Integer>(mov.fromL, mov.fromC),new Couple<Integer, Integer>(mov.toL, mov.toC));
 	}
 
 	public void stop_anim() {

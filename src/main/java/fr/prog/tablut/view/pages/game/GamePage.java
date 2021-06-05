@@ -126,8 +126,8 @@ public class GamePage extends Page {
         this.getLeftSide().getMoveButtons().enableUndoButton(!Game.getInstance().getPlays().getPreviousMovements().isEmpty());
         this.getLeftSide().getMoveButtons().enableRedoButton(!Game.getInstance().getPlays().getNextMovements().isEmpty());
     }
-	public void update_anim(int  toL, int toC, int fromL, int fromC) {
-		getGridWindow().update_anim(toL, toC, new Couple<Integer, Integer>(fromL, fromC));	
+	public void update_anim(int  toL, int toC, Couple<Integer, Integer> fromCell, Couple<Integer, Integer> toCell) {
+		getGridWindow().update_anim(toL, toC, fromCell, toCell);	
 	}
     
 	public void stop_anim() {

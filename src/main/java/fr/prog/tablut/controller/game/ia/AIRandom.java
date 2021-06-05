@@ -29,25 +29,25 @@ public class AIRandom extends AIPlayer {
     	
     	if(!isInAnim) {
     		List<Couple<Integer, Integer>> accesibleCells;
-        	do {
-        		List<Couple<Integer, Integer>> ownedCells = this.getOwnedCells();
+        		do {
+        			List<Couple<Integer, Integer>> ownedCells = this.getOwnedCells();
 
-            	fromCell = ownedCells.get(random.nextInt(ownedCells.size()));
+            		fromCell = ownedCells.get(random.nextInt(ownedCells.size()));
 
-            	accesibleCells = game.getAccessibleCells(fromCell.getFirst(), fromCell.getSecond());
-        	} while(accesibleCells.isEmpty());
+            		accesibleCells = game.getAccessibleCells(fromCell.getFirst(), fromCell.getSecond());
+        		} while(accesibleCells.isEmpty());
         
-        	toCell = accesibleCells.get(random.nextInt(accesibleCells.size()));
+        		toCell = accesibleCells.get(random.nextInt(accesibleCells.size()));
         	
-        	anim =  new AnimationCoup(new Play(new Movement(fromCell.getFirst(), fromCell.getSecond(), toCell.getFirst(), toCell.getSecond())), gamePage);
-        	anim.startAnim();
+        		anim =  new AnimationCoup(new Play(new Movement(fromCell.getFirst(), fromCell.getSecond(), toCell.getFirst(), toCell.getSecond())), gamePage);
+        		anim.startAnim();
         	
-        	return true;
-    	}
-    	else if(isInAnim) {
-    		anim.check_anim();
-    		return true;
-    	}
+        		return true;
+    		}
+    		else if(isInAnim) {
+    			anim.check_anim();
+    			return true;
+    		}
 		return false;
     	
     	

@@ -91,8 +91,8 @@ public class GridWindow extends GameInterfaceSide {
 	}
 
 
-	public void update_anim(int toL, int toC, Couple<Integer, Integer> couple) {
-		gridView.update_anim(toL, toC, couple);
+	public void update_anim(int toL, int toC, Couple<Integer, Integer> fromCell, Couple<Integer, Integer> toCell) {
+		gridView.update_anim(toL, toC, fromCell, toCell);
 		repaint();
 	}
 
