@@ -59,4 +59,11 @@ public class Plays {
 	public List<Play> getNextMovements() {
 		return plays.subList(currentMovement+1, plays.size());
 	}
+
+	public Play getPreviousMovement() {
+		if(currentMovement >= 0)
+			return plays.get(currentMovement);
+
+		return null;
+	}
 }
