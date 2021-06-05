@@ -83,7 +83,7 @@ public class GridView {
 			int col = getColFromXCoord(mousePosition.x);
 			int row = getRowFromYCoord(mousePosition.y);
 			
-			if(game.isValid(row, col) && game.canPlay(row, col)) {
+			if(game.isValid(row, col) && game.canMove(row, col)) {
 				gridWindow.fillRect(x + widthBorder + col * cellSize, y + widthBorder + row * cellSize, cellSize, cellSize);
 				drawCircles(row, col);
                 gridWindow.setCursor(handCursor);

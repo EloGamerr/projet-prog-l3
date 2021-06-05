@@ -22,7 +22,7 @@ public class HumanPlayer extends Player {
 
     public boolean play(Game game, GamePage gamePage) {
         if(gameControllerHuman.getSelectedCell() == null) {
-            if(game.canPlay(row, col)) {
+            if(game.canMove(row, col)) {
                 gameControllerHuman.setSelectedCell(new Couple<Integer, Integer>(row, col));
                 gameControllerHuman.mouseMoved(gamePage.getMousePosition());
             }

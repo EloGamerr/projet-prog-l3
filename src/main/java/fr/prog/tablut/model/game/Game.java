@@ -105,18 +105,9 @@ public class Game {
 	 * @return True if the pawn was moved, false otherwise
 	 */
 	public boolean move(int l, int c, int toL, int toC) {
-		if(isWon() || !isValid(toL, toC) || (toL != l && toC != c))
-			return false;
+		if(!canMove(l, c, toL, toC)) return false;
 
 		CellContent fromCellContent = getGrid()[l][c];
-
-		if(fromCellContent == CellContent.EMPTY || fromCellContent == CellContent.GATE)
-			return false;
-
-		List<Couple<Integer, Integer>> accessibleCells = getAccessibleCells(l, c);
-
-		if(!accessibleCells.contains(new Couple<>(toL, toC)))
-			return false;
 
 		Play play = plays.move(l, c, toL, toC);
 
@@ -138,6 +129,26 @@ public class Game {
 		setWinner(checkWin(previousToCellContent, fromCellContent));
 		playingPlayerEnum = playingPlayerEnum.getOpponent();
 		
+		return true;
+	}
+
+	public boolean canMove(int l, int c, int toL, int toC) {
+		if(isWon() || !isValid(toL, toC) || (toL != l && toC != c))
+			return false;
+
+		CellContent fromCellContent = getGrid()[l][c];
+
+		if(fromCellContent == CellContent.EMPTY || fromCellContent == CellContent.GATE)
+			return false;
+
+		if(!isPlayingPlayerOwningCell(l, c))
+			return false;
+
+		List<Couple<Integer, Integer>> accessibleCells = getAccessibleCells(l, c);
+
+		if(!accessibleCells.contains(new Couple<>(toL, toC)))
+			return false;
+
 		return true;
 	}
 
@@ -319,14 +330,68 @@ public class Game {
 		return false;
 	}
 
-	public boolean canPlay(int l, int c) {
+	/**
+	 * This method calculate if a pawn can move from a cell,
+	 * don't use this method if you know the end cell of the move,
+	 * use canMove(int l, int c, int toL, int toC) instead
+	 * @return True if the cell has an empty cell on her row or on her column
+	 * and if the cell content is owned by the playingPlayerEnum
+	 */
+	public boolean canMove(int l, int c) {
+		if(!isPlayingPlayerOwningCell(l, c)) return false;
+
+		return this.isNotBlocked(l, c);
+	}
+
+	/**
+	 *
+	 * @return True if the cell content is owned by the playingPlayerEnum
+	 */
+	public boolean isPlayingPlayerOwningCell(int l, int c) {
 		if(this.playingPlayerEnum == PlayerEnum.ATTACKER && this.getCellContent(l, c) != CellContent.ATTACK_TOWER) return false;
 
 		if(this.playingPlayerEnum == PlayerEnum.DEFENDER && this.getCellContent(l, c) != CellContent.DEFENSE_TOWER && this.getCellContent(l, c) != CellContent.KING) return false;
 
-		return this.canMove(l, c);
+		return true;
 	}
-	
+
+	/**
+	 * This method is a variant of the getAccessibleCells() method, but it has
+	 * better performances (in the case where the pawn on the cell is not blocked)
+	 * and the return is only a boolean. Use this method only
+	 * if you don't need the list of the accessible cells
+	 * @return True if the cell has an empty cell on her row or on her column
+	 */
+	public boolean isNotBlocked(int fromL, int fromC) {
+		List<Couple<Integer, Integer>> accessibleCells = new ArrayList<>();
+
+		for(int toL = fromL-1 ; toL >= 0 ; toL--) {
+			if(cantAccess(fromL, fromC, toL, fromC , accessibleCells)) break;
+
+			if(!accessibleCells.isEmpty()) return true;
+		}
+
+		for(int toL = fromL+1 ; toL < rowAmount ; toL++) {
+			if(cantAccess(fromL, fromC, toL, fromC, accessibleCells)) break;
+
+			if(!accessibleCells.isEmpty()) return true;
+		}
+
+		for(int toC = fromC-1 ; toC >= 0 ; toC--) {
+			if(cantAccess(fromL, fromC, fromL, toC, accessibleCells)) break;
+
+			if(!accessibleCells.isEmpty()) return true;
+		}
+
+		for(int toC = fromC+1 ; toC < colAmount ; toC++) {
+			if(cantAccess(fromL, fromC, fromL, toC, accessibleCells)) break;
+
+			if(!accessibleCells.isEmpty()) return true;
+		}
+
+		return !accessibleCells.isEmpty();
+	}
+
 	/**
 	 * We first check if someone already won, if not, then we check the following rules :
 	 * <p>
@@ -486,36 +551,6 @@ public class Game {
         }
 
 		return accessibleCells;
-	}
-
-	public boolean canMove(int fromL, int fromC) {
-		List<Couple<Integer, Integer>> accessibleCells = new ArrayList<>();
-
-		for(int toL = fromL-1 ; toL >= 0 ; toL--) {
-			if(cantAccess(fromL, fromC, toL, fromC , accessibleCells)) break;
-
-			if(!accessibleCells.isEmpty()) return true;
-		}
-
-		for(int toL = fromL+1 ; toL < rowAmount ; toL++) {
-			if(cantAccess(fromL, fromC, toL, fromC, accessibleCells)) break;
-
-			if(!accessibleCells.isEmpty()) return true;
-		}
-
-		for(int toC = fromC-1 ; toC >= 0 ; toC--) {
-			if(cantAccess(fromL, fromC, fromL, toC, accessibleCells)) break;
-
-			if(!accessibleCells.isEmpty()) return true;
-		}
-
-		for(int toC = fromC+1 ; toC < colAmount ; toC++) {
-			if(cantAccess(fromL, fromC, fromL, toC, accessibleCells)) break;
-
-			if(!accessibleCells.isEmpty()) return true;
-		}
-
-		return !accessibleCells.isEmpty();
 	}
 
 	/**

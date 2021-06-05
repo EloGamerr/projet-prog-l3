@@ -51,6 +51,7 @@ public class AnimationCoup {
 	}
 	
 	public void startAnim() {
-		update_anim();
+		if(Game.getInstance().canMove(mov.fromL, mov.fromC, mov.toL, mov.toC))
+			update_anim();
 	}
 }
