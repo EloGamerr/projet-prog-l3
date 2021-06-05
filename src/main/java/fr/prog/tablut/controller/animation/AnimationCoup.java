@@ -8,9 +8,9 @@ import fr.prog.tablut.view.pages.game.sides.center.board.GridWindow;
 
 public class AnimationCoup {
 	Movement mov;
-	double progres, vitesseAnim;
 	GamePage view;
 	GridWindow gridWindow;
+	double progres, vitesseAnim;
 	boolean isInAnim;
 	
 	public AnimationCoup(Play c, GamePage  gamePage) {
@@ -24,19 +24,19 @@ public class AnimationCoup {
 
 	public void update_anim() {
 		progres += vitesseAnim;
-		if (progres > 1) {
-			progres = 1;
-		}
-			
-			int dC =  (int) (gridWindow.getXCoordFromCol(mov.fromC) - ((gridWindow.getXCoordFromCol(mov.fromC) - gridWindow.getXCoordFromCol(mov.toC))*(progres)));
-			int dL =  (int) (gridWindow.getYCoordFromRow(mov.fromL) - ((gridWindow.getYCoordFromRow(mov.fromL) - gridWindow.getYCoordFromRow(mov.toL))*(progres)));
-			view.update_anim(dL, dC, mov.fromL, mov.fromC);
 		
+        if(progres > 1)
+			progres = 1;
+			
+        int dC =  (int) (gridWindow.getXCoordFromCol(mov.fromC) - ((gridWindow.getXCoordFromCol(mov.fromC) - gridWindow.getXCoordFromCol(mov.toC))*(progres)));
+        int dL =  (int) (gridWindow.getYCoordFromRow(mov.fromL) - ((gridWindow.getYCoordFromRow(mov.fromL) - gridWindow.getYCoordFromRow(mov.toL))*(progres)));
+        
+        view.update_anim(dL, dC, mov.fromL, mov.fromC);
 	}
 
 	public void stop_anim() {
-			Game.getInstance().move(mov.fromL, mov.fromC, mov.toL, mov.toC);
-			view.stop_anim();
+        Game.getInstance().move(mov.fromL, mov.fromC, mov.toL, mov.toC);
+        view.stop_anim();
 	}
 
 	public boolean isOver() {

@@ -1,5 +1,6 @@
 package fr.prog.tablut.view.pages.game.sides.center.board;
 
+import java.awt.Cursor;
 import java.awt.Image;
 import java.awt.Point;
 
@@ -20,6 +21,8 @@ public class GridView {
     private Image animImage;
     private int xAnim, yAnim;
 	private boolean anim = false;
+    protected Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
+    protected Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
 
 	public GridView(GridWindow gridWindow) {
 		this.gridWindow = gridWindow;
@@ -84,7 +87,11 @@ public class GridView {
 			if(game.isValid(row, col) && game.canPlay(row, col)) {
 				gridWindow.fillRect(x + widthBorder + col * cellWidth, y + widthBorder + row * cellHeight, cellWidth, cellHeight);
 				drawCircles(row, col);
+                gridWindow.setCursor(handCursor);
 			}
+            else {
+                gridWindow.setCursor(defaultCursor);
+            }
 		}
 		
 		gridWindow.setColor(GameColors.CELL_BORDER);
