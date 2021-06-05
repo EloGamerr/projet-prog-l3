@@ -272,8 +272,13 @@ public class GameSaver {
 		if(scanner == null)
 			throw new RuntimeException();
         
-		if(scanner.hasNextLine()) 
-			return getData(scanner.nextLine(), f, i);
+        if(scanner.hasNextLine()) {
+            String nextLine = scanner.nextLine();
+            scanner.close();
+            return getData(nextLine, f, i);
+        }
+
+        scanner.close();
 
 		return "Erreur de lecture";
 	}
