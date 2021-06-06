@@ -134,7 +134,7 @@ class ArrowButton extends GenericRoundedButton {
     protected ArrowButton() {
         super();
         setName("ComboBox.arrowButton");
-        setImage("select-arrow.png", size/4, size/4, size/2, size/2);
+        setImage("theme/select-arrow.png", size/4, size/4, size/2, size/2);
 
         setBorder(new EmptyBorder(0, 0, 0, 0));
         setOpaque(false);

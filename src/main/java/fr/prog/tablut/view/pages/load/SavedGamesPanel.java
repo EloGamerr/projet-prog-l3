@@ -155,7 +155,7 @@ public class SavedGamesPanel extends GenericPanel {
 
                 buttonDelete = new GenericRoundedButton("", btnHeight, btnHeight);
                 buttonDelete.setStyle("button.load");
-                buttonDelete.setImage("cross.png", 10, 10, btnHeight - 20, btnHeight - 20);
+                buttonDelete.setImage("theme/cross.png", 10, 10, btnHeight - 20, btnHeight - 20);
                 buttonDelete.addActionListener(new ButtonDeleteSaveAdaptator(buttonDelete, saves.get(i).getSecond(), saveBtn, this));
 
                 saveBtn.add(buttonLoad, cs);

@@ -164,7 +164,10 @@ public class GridView {
 					);
 
 					if(game.getCellContent(i, j) == CellContent.GATE && accessibleCells.contains(new Couple<>(i, j))) {
-						drawCircle(j, i, 3*cellSize/5, new Color(0, 187, 19));
+                        gridWindow.setColor(new Color(200, 52, 47));
+                        gridWindow.strokeWidth(2);
+					    gridWindow.drawRect(x + widthBorder + j * cellSize + widthSeperator + 1, y + widthBorder + i * cellSize + widthSeperator + 1, cellSize - widthSeperator - 1, cellSize - widthSeperator - 1);
+                        gridWindow.strokeWidth(1);
 					}
 				}
 
