@@ -14,6 +14,7 @@ import javax.swing.JScrollBar;
 
 
 import fr.prog.tablut.model.game.Game;
+import fr.prog.tablut.view.pages.game.GamePage;
 
 public class MoveHistoryPanel extends JPanel {
     private final HistoryChatField historyChat;
@@ -22,17 +23,18 @@ public class MoveHistoryPanel extends JPanel {
     private int previousVisibleAmount;
 
     public MoveHistoryPanel() {
-        this(0, 0);
+        this(0, 0, null);
     }
 
-    public MoveHistoryPanel(int width, int height) {
+    public MoveHistoryPanel(int width, int height, GamePage gamePage) {
         setOpaque(false);
 
         JLabel wrapper = new JLabel();
         wrapper.setOpaque(false);
         wrapper.setLayout(new BorderLayout());
 
-        historyChat = new HistoryChatField(new Dimension(width, height));
+        historyChat = new HistoryChatField(new Dimension(width, height), gamePage, this);
+        HistoryChatField.setInstance(historyChat);
         //historyChat.setOpaque(false);
         historyChat.setFont(new Font("Calibri", Font.PLAIN, 12));
 

@@ -11,6 +11,7 @@ import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 import fr.prog.tablut.model.saver.GameLoader;
 import fr.prog.tablut.model.saver.GameSaver;
 import fr.prog.tablut.structures.Couple;
+import fr.prog.tablut.view.pages.game.sides.left.moveHistory.HistoryChatField;
 
 public class Game {
 	private static Game instance = null;
@@ -91,7 +92,6 @@ public class Game {
 	 * @return True if the pawn was moved, false otherwise
 	 */
 	public boolean move(int l, int c, int toL, int toC) {
-		System.out.println("Tour joué");
 		if(isWon() || !isValid(toL, toC) || (toL != l && toC != c))
 			return false;
 
@@ -124,6 +124,8 @@ public class Game {
 		
 		setWinner(checkWin(previousToCellContent, fromCellContent));
 		playingPlayerEnum = playingPlayerEnum.getOpponent();
+
+		HistoryChatField.getInstance().addAction();
 		
 		return true;
 	}

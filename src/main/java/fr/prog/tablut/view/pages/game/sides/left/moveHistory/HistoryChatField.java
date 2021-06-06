@@ -6,9 +6,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -19,18 +19,26 @@ import fr.prog.tablut.model.game.Play;
 import fr.prog.tablut.model.game.Plays;
 import fr.prog.tablut.structures.Couple;
 import fr.prog.tablut.view.components.generic.GenericObjectStyle;
+import fr.prog.tablut.view.pages.game.GamePage;
 
 public class HistoryChatField extends JPanel {
     private GridBagConstraints c;
+	CellContent[][] savedGrid;
+	CellContent[][] currentWorkingGrid;
     private List<labelField> allHistory = new ArrayList<labelField>();
+	private final GamePage gamePage;
+	private static HistoryChatField instance;
+	private final MoveHistoryPanel moveHistoryPanel;
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
-	public HistoryChatField(Dimension d) {
+	public HistoryChatField(Dimension d, GamePage gamePage, MoveHistoryPanel moveHistoryPanel) {
         setOpaque(false);
         setLayout(new GridBagLayout());
         c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
+		this.gamePage = gamePage;
+		this.moveHistoryPanel = moveHistoryPanel;
 
         this.setSize(d);
         this.setPreferredSize(d);
@@ -43,8 +51,24 @@ public class HistoryChatField extends JPanel {
         } */
     }
 
+	public static HistoryChatField getInstance() {
+		return instance;
+	}
+
+	public static void setInstance(HistoryChatField instanceOf) {
+		instance = instanceOf;
+	}
+
     public void addAction() {
+		this.savedGrid = getCurrentBoard();
+
+		System.out.println("Saved grid :");
+
+		this.printBoard(this.savedGrid);
+
         labelField newPlayerAction = new labelField(String.format("Action du joueur"), this, c.gridy);
+
+		newPlayerAction.setForeground(GenericObjectStyle.getProp("chat", "color"));
 
         // GenericObjectStyle.getProp("chat", "color");         // -- couleur orange du texte
         // GenericObjectStyle.getProp("chat.timing", "color");  // -- couleur blanche des minutes [3:24]
@@ -55,26 +79,95 @@ public class HistoryChatField extends JPanel {
         allHistory.add(newPlayerAction);
         this.add(newPlayerAction, this.c);
         c.gridy++;
+		//gamePage.repaint();
+
+		this.moveHistoryPanel.revalidate();
+		this.moveHistoryPanel.repaint();
 
     }
 
 
 	public void updateContent() {
-		System.out.println("Update content");
 	}
 
+
 	public void enteredChange(Integer pos) {
-		for(Integer i = pos; i < allHistory.size(); i++) {
+
+		List<Play> allPlays = Game.getInstance().getPlays().movements();
+		CellContent[][] currentGrid = getCurrentBoard();
+		for(Integer i = allHistory.size() - 1; i >= pos; i--) {
 			labelField label = allHistory.get(i);
+			Play currentPlay = allPlays.get(i);
+
+			for(Map.Entry<Couple<Integer, Integer>, CellContent> m : currentPlay.getModifiedOldCellContents().entrySet()) {
+				currentGrid[m.getKey().getFirst()][m.getKey().getSecond()] = m.getValue();
+			}
 			label.setForeground(Color.BLUE);
 		}
+
+		Game.getInstance().setGrid(currentGrid);
+		this.gamePage.revalidate();
+		this.gamePage.repaint();
 	}
 
 	public void exitedChange(Integer pos) {
-		for(Integer i = pos; i < allHistory.size(); i++) {
+		for(Integer i = allHistory.size() - 1; i >= pos; i--) {
 			labelField label = allHistory.get(i);
 			label.setForeground(GenericObjectStyle.getProp("chat", "color"));
 		}
+		System.out.println("Grid envoyé à la game : ");
+		this.printBoard(savedGrid);
+		Game.getInstance().setGrid(savedGrid);
+		this.gamePage.revalidate();
+		this.gamePage.repaint();
+	}
+
+	public void clickChange(Integer pos) {
+		for(Integer i = pos; i < allHistory.size(); i++) {
+			this.remove(allHistory.get(i));
+			allHistory.remove(i);
+		}
+
+		Game.getInstance().setGrid(currentWorkingGrid);
+		this.gamePage.revalidate();
+		this.gamePage.repaint();
+
+	}
+
+	private CellContent[][] getCurrentBoard() {
+		return Game.getInstance().getGrid();
+	}
+
+	private void printBoard(CellContent[][] grid) {
+		for (CellContent[] linCellContents : grid) {
+			System.out.print("|");
+			for (CellContent cellContent : linCellContents) {
+				switch (cellContent) {
+					case EMPTY:
+						System.out.print("   |");
+						break;
+					case ATTACK_TOWER: 
+						System.out.print(" N |");
+						break;
+					case DEFENSE_TOWER:
+						System.out.print(" B |");
+						break;
+					case KING:
+						System.out.print(" K |");
+						break;
+					case GATE:
+						System.out.print(" X |");
+						break;
+					case KINGPLACE:
+						System.out.print(" P |");
+						break;
+					default:
+						break;
+				}
+			}
+			System.out.println("");
+		}
+		System.out.flush();
 	}
 }
 
@@ -94,7 +187,6 @@ class labelField extends JLabel{
 			//On va devoir remètre le plateau à son état normal
 			@Override
 			public void mouseExited(MouseEvent e) {
-				System.out.println("Curseur parti");
 				historyMain.exitedChange(pos);
 			}
 			
@@ -104,9 +196,7 @@ class labelField extends JLabel{
 			 * On va vouloir changer le plateau de jeu pour montrer l'historique
 			 */
 			public void mouseEntered(MouseEvent e) {
-				System.out.println("Curseur dessus");
 				historyMain.enteredChange(pos);
-
 			}
 			/**
 			 * Utilisé quand on clique sur le text
@@ -114,16 +204,7 @@ class labelField extends JLabel{
 			 */
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("Clik sur le bouton");
-				Plays test = Game.getInstance().getPlays();
-
-				if(test == null){
-					System.out.println("Pas de donnée");
-				}
-
-				else {
-					System.out.println("Des données !");
-				}
+				historyMain.clickChange(pos);
 				
 			}
 		});
