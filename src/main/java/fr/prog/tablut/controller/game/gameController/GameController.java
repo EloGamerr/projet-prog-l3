@@ -5,7 +5,6 @@ import java.awt.Point;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 import fr.prog.tablut.model.saver.GameSaver;
-import fr.prog.tablut.structures.Couple;
 import fr.prog.tablut.view.pages.game.GamePage;
 
 public class GameController {
@@ -33,7 +32,7 @@ public class GameController {
 		gameControllerHuman.mouseMoved(mousePosition);
 	}
 
-	public Couple<Integer, Integer> getSelectedCell() {
+	public Point getSelectedCell() {
 		return gameControllerHuman.getSelectedCell();
 	}
 
@@ -43,20 +42,19 @@ public class GameController {
 	}
 	
 	private void postPlay() {
-		gamePage.enableUndoButton(!Game.getInstance().getPlays().getPreviousMovements().isEmpty());
-		gamePage.enableUndoButton(!Game.getInstance().getPlays().getNextMovements().isEmpty());
+		gamePage.enableUndoButton(!Game.getInstance().hasPreviousMove());
+		gamePage.enableUndoButton(!Game.getInstance().hasNextMove());
 		gameControllerHuman.undoSelect(); 
 	}
 
 	public void restart() {
 		Game.getInstance().restart();
-		gamePage.setIsInAnim(false);
 		gamePage.update();
 		gamePage.repaint();
 	}
 	
 
-	public GamePage getGameWindow() {
+	public GamePage getGamePage() {
 		return gamePage;
 	}
 

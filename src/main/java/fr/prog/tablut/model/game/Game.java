@@ -1,5 +1,7 @@
 package fr.prog.tablut.model.game;
 
+import java.awt.Point;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -111,18 +113,18 @@ public class Game {
 
 		Play play = plays.move(l, c, toL, toC);
 
-		play.putModifiedOldCellContent(new Couple<>(l, c), getCellContent(l, c));
+		play.putModifiedOldCellContent(new Point(c, l), getCellContent(l, c));
 		setContent(CellContent.EMPTY, l, c);
-		play.putModifiedNewCellContent(new Couple<>(l, c), CellContent.EMPTY);
+		play.putModifiedNewCellContent(new Point(c, l), CellContent.EMPTY);
 		
 		l = toL;
 		c = toC;
 		
 		CellContent previousToCellContent = getCellContent(l, c);
 
-		play.putModifiedOldCellContent(new Couple<>(l, c), previousToCellContent);
+		play.putModifiedOldCellContent(new Point(c, l), previousToCellContent);
 		setContent(fromCellContent, l, c);
-		play.putModifiedNewCellContent(new Couple<>(l, c), fromCellContent);
+		play.putModifiedNewCellContent(new Point(c, l), fromCellContent);
 		
 		move.clearTakedPawns(l, c, play);
 		
@@ -144,9 +146,9 @@ public class Game {
 		if(!isPlayingPlayerOwningCell(l, c))
 			return false;
 
-		List<Couple<Integer, Integer>> accessibleCells = getAccessibleCells(l, c);
+		List<Point> accessibleCells = getAccessibleCells(l, c);
 
-		if(!accessibleCells.contains(new Couple<>(toL, toC)))
+		if(!accessibleCells.contains(new Point(toC, toL)))
 			return false;
 
 		return true;
@@ -168,13 +170,13 @@ public class Game {
 					Play play2 = this.getPlays().undo_move();
 
 					// We undo twice if it's Human VS AI
-					for(Map.Entry<Couple<Integer, Integer>, CellContent> entry : play.getModifiedOldCellContents().entrySet()) {
-						this.setContent(entry.getValue(), entry.getKey().getFirst(), entry.getKey().getSecond());
+					for(Map.Entry<Point, CellContent> entry : play.getModifiedOldCellContents().entrySet()) {
+						this.setContent(entry.getValue(), entry.getKey().y, entry.getKey().x);
 					}
 
 					if(play2 != null) {
-						for(Map.Entry<Couple<Integer, Integer>, CellContent> entry : play2.getModifiedOldCellContents().entrySet()) {
-							this.setContent(entry.getValue(), entry.getKey().getFirst(), entry.getKey().getSecond());
+						for(Map.Entry<Point, CellContent> entry : play2.getModifiedOldCellContents().entrySet()) {
+							this.setContent(entry.getValue(), entry.getKey().y, entry.getKey().x);
 						}
 					}
 					else {
@@ -189,8 +191,8 @@ public class Game {
 				}
 			}
 			else {
-				for(Map.Entry<Couple<Integer, Integer>, CellContent> entry : play.getModifiedOldCellContents().entrySet()) {
-					this.setContent(entry.getValue(), entry.getKey().getFirst(), entry.getKey().getSecond());
+				for(Map.Entry<Point, CellContent> entry : play.getModifiedOldCellContents().entrySet()) {
+					this.setContent(entry.getValue(), entry.getKey().y, entry.getKey().x);
 				}
 
 				this.playingPlayerEnum = this.getPlayingPlayerEnum().getOpponent();
@@ -210,8 +212,8 @@ public class Game {
 		Play play = this.getPlays().redo_move();
 
 		if(play != null) {
-			for(Map.Entry<Couple<Integer, Integer>, CellContent> entry : play.getModifiedNewCellContents().entrySet()) {
-				this.setContent(entry.getValue(), entry.getKey().getFirst(), entry.getKey().getSecond());
+			for(Map.Entry<Point, CellContent> entry : play.getModifiedNewCellContents().entrySet()) {
+				this.setContent(entry.getValue(), entry.getKey().y, entry.getKey().x);
 			}
 
 			this.playingPlayerEnum = this.getPlayingPlayerEnum().getOpponent();
@@ -223,6 +225,14 @@ public class Game {
 
 		return false;
 	}
+
+    public boolean hasPreviousMove() {
+        return getPlays().getPreviousMovements().isEmpty();
+    }
+
+    public boolean hasNextMove() {
+        return getPlays().getNextMovements().isEmpty();
+    }
 
 	/**
 	 * Initializing grid with pawns
@@ -310,13 +320,13 @@ public class Game {
 	 * - Pawns can't go on a cell which is already occupied
 	 * @return True if the pawn can't access to the cell, otherwise, a couple of the cell coord is added to the param accessibleCells and false is returned
 	 */
-	private boolean cantAccess(int fromL, int fromC, int toL, int toC, List<Couple<Integer, Integer>> accessibleCells) {
+	private boolean cantAccess(int fromL, int fromC, int toL, int toC, List<Point> accessibleCells) {
 		CellContent fromCellContent = getGrid()[fromL][fromC];
 		CellContent toCellContent = getGrid()[toL][toC];
 		
-		if(toCellContent == CellContent.GATE || (isTheKingPlace(toC, toL) && toCellContent == CellContent.EMPTY)) {
+		if(toCellContent == CellContent.GATE || (isTheKingPlace(toL, toC) && toCellContent == CellContent.EMPTY)) {
 			if(fromCellContent == CellContent.KING) {
-				accessibleCells.add(new Couple<Integer, Integer>(toL, toC));
+				accessibleCells.add(new Point(toC, toL));
 			}
 
 			return false;
@@ -325,7 +335,7 @@ public class Game {
 		if(toCellContent != CellContent.EMPTY)
 			return true;
 		
-		accessibleCells.add(new Couple<Integer, Integer>(toL, toC));
+		accessibleCells.add(new Point(toC, toL));
 		
 		return false;
 	}
@@ -366,7 +376,7 @@ public class Game {
 	 * @return True if the cell has an empty cell on her row or on her column
 	 */
 	public boolean isNotBlocked(int fromL, int fromC) {
-		List<Couple<Integer, Integer>> accessibleCells = new ArrayList<>();
+		List<Point> accessibleCells = new ArrayList<>();
 
 		for(int toL = fromL-1 ; toL >= 0 ; toL--) {
 			if(cantAccess(fromL, fromC, toL, fromC , accessibleCells)) break;
@@ -534,8 +544,8 @@ public class Game {
 		return this.getGrid()[l][c];
 	}
 	
-	public List<Couple<Integer, Integer>> getAccessibleCells(int fromL, int fromC) {
-		List<Couple<Integer, Integer>> accessibleCells = new ArrayList<>();
+	public List<Point> getAccessibleCells(int fromL, int fromC) {
+		List<Point> accessibleCells = new ArrayList<>();
 
 		for(int toL = fromL-1 ; toL >= 0 ; toL--) {
             if(cantAccess(fromL, fromC, toL, fromC , accessibleCells)) break;
@@ -560,13 +570,13 @@ public class Game {
 	 * @param cellContent CellContent to search
 	 * @return All cells of the grid that are equals to the param cellContent
 	 */
-	public List<Couple<Integer, Integer>> getCellContentWhereEquals(CellContent cellContent) {
-		List<Couple<Integer, Integer>> cells = new ArrayList<>();
+	public List<Point> getCellContentWhereEquals(CellContent cellContent) {
+		List<Point> cells = new ArrayList<>();
 
 		for(int i = 0 ; i < grid.length ; i++) {
 			for(int j = 0 ; j < grid[i].length ; j++) {
 				if(grid[i][j] == cellContent) {
-					cells.add(new Couple<>(i, j));
+					cells.add(new Point(j, i));
 				}
 			}
 		}
@@ -586,19 +596,19 @@ public class Game {
 		}
 
 		if(getGrid()[l][c] == CellContent.ATTACK_TOWER) {
-			attacker.getOwnedCells().remove(new Couple<>(l, c));
+			attacker.getOwnedCells().remove(new Point(c, l));
 		}
 
 		else if(getGrid()[l][c] == CellContent.DEFENSE_TOWER || getGrid()[l][c] == CellContent.KING) {
-			defender.getOwnedCells().remove(new Couple<>(l, c));
+			defender.getOwnedCells().remove(new Point(c, l));
 		}
 		
 		if(cellContent == CellContent.ATTACK_TOWER) {
-			attacker.getOwnedCells().add(new Couple<>(l, c));
+			attacker.getOwnedCells().add(new Point(c, l));
 		}
 		
 		else if(cellContent == CellContent.DEFENSE_TOWER || cellContent == CellContent.KING) {
-			defender.getOwnedCells().add(new Couple<>(l, c));
+			defender.getOwnedCells().add(new Point(c, l));
 		}
 	
 		getGrid()[l][c] = cellContent;
@@ -672,7 +682,4 @@ public class Game {
 	public void setAttackerName(String attackerName) {
 		this.attackerName = attackerName;	
 	}
-
-	
-	
 }

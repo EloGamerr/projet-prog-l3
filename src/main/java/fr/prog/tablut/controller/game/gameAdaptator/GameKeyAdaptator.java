@@ -23,7 +23,7 @@ public class GameKeyAdaptator extends KeyAdapter {
             return;
         }
 
-        if(!gameController.getGameWindow().isVisible())
+        if(!gameController.getGamePage().isVisible())
             return;
 
         if(this.ctrlPressed) {

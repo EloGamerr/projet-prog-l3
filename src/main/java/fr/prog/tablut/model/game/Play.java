@@ -1,13 +1,13 @@
 package fr.prog.tablut.model.game;
 
-import fr.prog.tablut.structures.Couple;
+import java.awt.Point;
 
 import java.util.HashMap;
 
 public class Play {
     private final Movement movement;
-    private final HashMap<Couple<Integer, Integer>, CellContent> modifiedOldCellContents;
-    private final HashMap<Couple<Integer, Integer>, CellContent> modifiedNewCellContents;
+    private final HashMap<Point, CellContent> modifiedOldCellContents;
+    private final HashMap<Point, CellContent> modifiedNewCellContents;
 
     public Play(Movement movement) {
         this.movement = movement;
@@ -19,7 +19,7 @@ public class Play {
         return movement;
     }
 
-    public void putModifiedOldCellContent(Couple<Integer, Integer> cell, CellContent cellContent) {
+    public void putModifiedOldCellContent(Point cell, CellContent cellContent) {
         modifiedOldCellContents.put(cell, cellContent);
     }
 
@@ -27,11 +27,11 @@ public class Play {
      *
      * @return each cell which has been modified after the move, the value of the entry corresponds to the cell content before the play
      */
-    public HashMap<Couple<Integer, Integer>, CellContent> getModifiedOldCellContents() {
+    public HashMap<Point, CellContent> getModifiedOldCellContents() {
         return modifiedOldCellContents;
     }
 
-    public void putModifiedNewCellContent(Couple<Integer, Integer> cell, CellContent cellContent) {
+    public void putModifiedNewCellContent(Point cell, CellContent cellContent) {
         modifiedNewCellContents.put(cell, cellContent);
     }
 
@@ -39,7 +39,7 @@ public class Play {
      *
      * @return each cell which has been modified after the move, the value of the entry corresponds to the cell content after the play
      */
-    public HashMap<Couple<Integer, Integer>, CellContent> getModifiedNewCellContents() {
+    public HashMap<Point, CellContent> getModifiedNewCellContents() {
         return modifiedNewCellContents;
     }
 }

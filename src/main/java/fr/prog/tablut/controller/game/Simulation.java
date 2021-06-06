@@ -1,5 +1,7 @@
 package fr.prog.tablut.controller.game;
 
+import java.awt.Point;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,9 +11,9 @@ import fr.prog.tablut.structures.Couple;
 public class Simulation {
 
 	private CellContent[][] grid;
-	private List<Couple<Integer, Integer>> whiteCells = new ArrayList<>();
-	private List<Couple<Integer, Integer>> blackCells = new ArrayList<>();
-	private Couple<Integer, Integer> king;
+	private List<Point> whiteCells = new ArrayList<>();
+	private List<Point> blackCells = new ArrayList<>();
+	private Point king;
 
 	public Simulation(CellContent[][] grid) {
 		this.grid = grid;
@@ -20,13 +22,13 @@ public class Simulation {
 			for (int c = 0; c < 9; c++) {
 
 				if (grid[l][c] == CellContent.ATTACK_TOWER) {
-					blackCells.add(new Couple<Integer, Integer>(l, c));
+					blackCells.add(new Point(c, l));
 				}
 				else if (grid[l][c] == CellContent.DEFENSE_TOWER) {
-					whiteCells.add(new Couple<Integer, Integer>(l, c));
+					whiteCells.add(new Point(c, l));
 				}
 				else if (grid[l][c] == CellContent.KING) {
-					king = new Couple<Integer, Integer>(l, c);
+					king = new Point(c, l);
 					whiteCells.add(king);
 				}
 
@@ -43,102 +45,102 @@ public class Simulation {
 	 * 
 	 * @return La liste de tout les coup jouables en fonction des pions
 	 */
-	private List<Couple<Couple<Integer, Integer>, List<Couple<Integer, Integer>>>> coupJouable() {
-		List<Couple<Couple<Integer, Integer>, List<Couple<Integer, Integer>>>> allPosibility = new ArrayList<Couple<Couple<Integer, Integer>, List<Couple<Integer, Integer>>>>();
+	private List<Couple<Point, List<Point>>> coupJouable() {
+		List<Couple<Point, List<Point>>> allPosibility = new ArrayList<Couple<Point, List<Point>>>();
 
-		for (Couple<Integer, Integer> pion : whiteCells) {
-			List<Couple<Integer, Integer>> listPossibility = new ArrayList<Couple<Integer, Integer>>();
+		for (Point pion : whiteCells) {
+			List<Point> listPossibility = new ArrayList<Point>();
 
 			// Parcourir toutes les cases possibles sur 4 directions pour trouver les coups
 			// possibles
 
 			// Liste de toutes les possibilitées pour les pions blancs
 			// Parcours a droite du pion
-			for (int i = pion.getFirst(); i < 8; i++) {
-				if (grid[i][pion.getSecond()] != CellContent.EMPTY) {
+			for (int i = pion.y; i < 8; i++) {
+				if (grid[i][pion.x] != CellContent.EMPTY) {
 					break;
 				}
 
-				listPossibility.add(new Couple<Integer, Integer>(i, pion.getSecond()));
+				listPossibility.add(new Point(pion.x, i));
 			}
 
 			// Parcours en haut du pion
-			for (int i = pion.getSecond(); i < 8; i++) {
-				if (grid[pion.getFirst()][i] != CellContent.EMPTY) {
+			for (int i = pion.x; i < 8; i++) {
+				if (grid[pion.y][i] != CellContent.EMPTY) {
 					break;
 				}
 
-				listPossibility.add(new Couple<Integer, Integer>(i, pion.getSecond()));
+				listPossibility.add(new Point(pion.x, i));
 			}
 
 			// Parcours a gauche du pion
-			for (int i = pion.getFirst(); i > 8; i--) {
-				if (grid[i][pion.getSecond()] != CellContent.EMPTY) {
+			for (int i = pion.y; i > 8; i--) {
+				if (grid[i][pion.x] != CellContent.EMPTY) {
 					break;
 				}
 
-				listPossibility.add(new Couple<Integer, Integer>(i, pion.getSecond()));
+				listPossibility.add(new Point(pion.x, i));
 			}
 
 			// Parcours en bas du pion
-			for (int i = pion.getSecond(); i > 8; i--) {
-				if (grid[pion.getFirst()][i] != CellContent.EMPTY) {
+			for (int i = pion.x; i > 8; i--) {
+				if (grid[pion.y][i] != CellContent.EMPTY) {
 					break;
 				}
 
-				listPossibility.add(new Couple<Integer, Integer>(i, pion.getSecond()));
+				listPossibility.add(new Point(pion.x, i));
 			}
 
-			Couple<Couple<Integer, Integer>, List<Couple<Integer, Integer>>> possibility = new Couple<Couple<Integer, Integer>, List<Couple<Integer, Integer>>>(pion, listPossibility);
+			Couple<Point, List<Point>> possibility = new Couple<Point, List<Point>>(pion, listPossibility);
 
 			allPosibility.add(possibility);
 		}
 
 		// Liste de toutes les possibilitée pour les pions noirs
-		for (Couple<Integer, Integer> pion : blackCells) {
-			List<Couple<Integer, Integer>> listPossibility = new ArrayList<Couple<Integer, Integer>>();
+		for (Point pion : blackCells) {
+			List<Point> listPossibility = new ArrayList<Point>();
 
 			// Parcourir toutes les cases possibles sur 4 directions pour trouver les coups
 			// possibles
 
 			// Liste de toutes les possibilitées pour les pions blancs
 			// Parcours a droite du pion
-			for (int i = pion.getFirst(); i < 8; i++) {
-				if (grid[i][pion.getSecond()] != CellContent.EMPTY) {
+			for (int i = pion.y; i < 8; i++) {
+				if (grid[i][pion.x] != CellContent.EMPTY) {
 					break;
 				}
 
-				listPossibility.add(new Couple<Integer, Integer>(i, pion.getSecond()));
+				listPossibility.add(new Point(pion.x, i));
 			}
 
 			// Parcours en haut du pion
-			for (int i = pion.getSecond(); i < 8; i++) {
-				if (grid[pion.getFirst()][i] != CellContent.EMPTY) {
+			for (int i = pion.x; i < 8; i++) {
+				if (grid[pion.y][i] != CellContent.EMPTY) {
 					break;
 				}
 
-				listPossibility.add(new Couple<Integer, Integer>(i, pion.getSecond()));
+				listPossibility.add(new Point(pion.x, i));
 			}
 
 			// Parcours a gauche du pion
-			for (int i = pion.getFirst(); i > 8; i--) {
-				if (grid[i][pion.getSecond()] != CellContent.EMPTY) {
+			for (int i = pion.y; i > 8; i--) {
+				if (grid[i][pion.x] != CellContent.EMPTY) {
 					break;
 				}
 
-				listPossibility.add(new Couple<Integer, Integer>(i, pion.getSecond()));
+				listPossibility.add(new Point(pion.x, i));
 			}
 
 			// Parcours en bas du pion
-			for (int i = pion.getSecond(); i > 8; i--) {
-				if (grid[pion.getFirst()][i] != CellContent.EMPTY) {
+			for (int i = pion.x; i > 8; i--) {
+				if (grid[pion.y][i] != CellContent.EMPTY) {
 					break;
 				}
 
-				listPossibility.add(new Couple<Integer, Integer>(i, pion.getSecond()));
+				listPossibility.add(new Point(pion.x, i));
 			}
 
-			Couple<Couple<Integer, Integer>, List<Couple<Integer, Integer>>> possibility = new Couple<Couple<Integer, Integer>, List<Couple<Integer, Integer>>>(pion, listPossibility);
+			Couple<Point, List<Point>> possibility = new Couple<Point, List<Point>>(pion, listPossibility);
 
 			allPosibility.add(possibility);
 		}

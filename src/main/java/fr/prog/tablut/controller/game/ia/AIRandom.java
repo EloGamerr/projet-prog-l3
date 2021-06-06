@@ -1,10 +1,11 @@
 package fr.prog.tablut.controller.game.ia;
 
+import java.awt.Point;
+
 import fr.prog.tablut.controller.animation.AnimationCoup;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.Movement;
 import fr.prog.tablut.model.game.Play;
-import fr.prog.tablut.structures.Couple;
 import fr.prog.tablut.view.pages.game.GamePage;
 
 import java.util.List;
@@ -16,8 +17,8 @@ import java.util.Random;
 public class AIRandom extends AIPlayer {
     private Random random;
     AnimationCoup anim;
-    Couple<Integer, Integer> fromCell = new Couple<Integer, Integer>(null, null);
-    Couple<Integer, Integer> toCell = new Couple<Integer, Integer>(null, null);
+    Point fromCell = new Point(0, 0);
+    Point toCell = new Point(0, 0);
     boolean isInAnim;
     public AIRandom() {
         this.random = new Random();
@@ -25,25 +26,26 @@ public class AIRandom extends AIPlayer {
 
     @Override
     public boolean play(Game game, GamePage gamePage) {
-    	isInAnim = false;//gamePage.getGridWindow().getGridView().isInAnim();
+    	isInAnim = gamePage.isInAnim();
     	
         if(isInAnim) {
     		anim.check_anim();
     		return true;
     	}
     	else {
-    		List<Couple<Integer, Integer>> accesibleCells;
+    		List<Point> accesibleCells;
+
         	do {
-        		List<Couple<Integer, Integer>> ownedCells = this.getOwnedCells();
+        		List<Point> ownedCells = this.getOwnedCells();
 
             	fromCell = ownedCells.get(random.nextInt(ownedCells.size()));
 
-            	accesibleCells = game.getAccessibleCells(fromCell.getFirst(), fromCell.getSecond());
+            	accesibleCells = game.getAccessibleCells(fromCell.y, fromCell.x);
         	} while(accesibleCells.isEmpty());
         
         	toCell = accesibleCells.get(random.nextInt(accesibleCells.size()));
         	
-        	anim =  new AnimationCoup(new Play(new Movement(fromCell.getFirst(), fromCell.getSecond(), toCell.getFirst(), toCell.getSecond())), gamePage);
+        	anim =  new AnimationCoup(new Play(new Movement(fromCell.y, fromCell.x, toCell.y, toCell.x)), gamePage);
         	anim.startAnim();
         	
         	return true;

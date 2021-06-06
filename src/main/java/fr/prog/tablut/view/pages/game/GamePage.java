@@ -1,6 +1,8 @@
 package fr.prog.tablut.view.pages.game;
 
 import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Image;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Graphics;
@@ -14,7 +16,6 @@ import fr.prog.tablut.controller.game.gameController.GameController;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 import fr.prog.tablut.model.window.WindowConfig;
-import fr.prog.tablut.structures.Couple;
 import fr.prog.tablut.model.window.PageName;
 import fr.prog.tablut.view.Page;
 import fr.prog.tablut.view.pages.game.sides.center.CenterSideGame;
@@ -68,7 +69,7 @@ public class GamePage extends Page {
         add(rightSide, c);
         
         
-        GameMouseAdaptator gameMouseAdaptator = new GameMouseAdaptator(gameController, centerSide.getBoard());
+        GameMouseAdaptator gameMouseAdaptator = new GameMouseAdaptator(gameController, this);
         centerSide.getBoard().addMouseListener(gameMouseAdaptator);
         centerSide.getBoard().addMouseMotionListener(gameMouseAdaptator);
 
@@ -85,11 +86,29 @@ public class GamePage extends Page {
         requestFocusInWindow();
     }
 
+    @Override
+    public void update() {
+         boolean a = PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker()).isAI(),
+            b = PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender()).isAI();
+
+         boolean enablePauseButton = a && b;
+
+        rightSide.enablePauseButton(enablePauseButton);
+
+        if(!enablePauseButton)
+            this.getRightSide().togglePauseButton(false);
+        else
+            this.getRightSide().togglePauseButton(Game.getInstance().isPaused());
+
+        enableUndoButton(!Game.getInstance().hasPreviousMove());
+        enableRedoButton(!Game.getInstance().hasNextMove());
+    }
+
     /**
      * Returns the grid window object
      * @return The grid window
      */
-    public BoardInterface getGridWindow() {
+    public BoardInterface getBoardInterface() {
         return centerSide.getBoard();
     }
 
@@ -109,38 +128,48 @@ public class GamePage extends Page {
         return leftSide;
     }
 
-    @Override
-    public void update() {
-         boolean a = PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker()).isAI(),
-            b = PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender()).isAI();
+    public int getColFromXCoord(int x) {
+        return getBoardInterface().getColFromXCoord(x);
+    }
 
-         boolean enablePauseButton = a && b;
+    public int getRowFromYCoord(int y) {
+        return getBoardInterface().getRowFromYCoord(y);
+    }
 
-        rightSide.enablePauseButton(enablePauseButton);
+    public int getXCoordFromCol(int x) {
+        return getBoardInterface().getXCoordFromCol(x);
+    }
 
-        if(!enablePauseButton)
-            this.getRightSide().togglePauseButton(false);
-        else
-            this.getRightSide().togglePauseButton(Game.getInstance().isPaused());
+    public int getYCoordFromRow(int y) {
+        return getBoardInterface().getYCoordFromRow(y);
+    }
 
-        this.getLeftSide().getMoveButtons().enableUndoButton(!Game.getInstance().getPlays().getPreviousMovements().isEmpty());
-        this.getLeftSide().getMoveButtons().enableRedoButton(!Game.getInstance().getPlays().getNextMovements().isEmpty());
+    public void clearImageOnMouse() {
+
+    }
+
+    public void updateImageOnMouse(Image img, Point selectedCell) {
+
+    }
+
+    public void updateCellHovering(Point hoveringCell) {
+
     }
 
 	public void update_anim(int  toL, int toC, int fromL, int fromC) {
-		//getGridWindow().update_anim(toL, toC, new Couple<Integer, Integer>(fromL, fromC));	
+		//getGridWindow().update_anim(toL, toC, new Point(fromL, fromC));	
 	}
     
 	public void stop_anim() {
-		//getGridWindow().stop_anim();
+		//centerSide.stop_anim();
 	}
 
-    public void setIsInAnim(boolean b) {
+    public void setIsInAnim(boolean state) {
         
     }
 
     public boolean isInAnim() {
-        return false; // TODO
+        return centerSide.getBoard().getBoardData().animatedCell == null;
     }
 
     public void togglePauseButton(boolean isPaused) {

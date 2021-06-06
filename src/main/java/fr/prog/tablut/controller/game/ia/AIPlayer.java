@@ -1,12 +1,13 @@
 package fr.prog.tablut.controller.game.ia;
 
+import java.awt.Point;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.player.Player;
 import fr.prog.tablut.model.game.player.PlayerEnum;
-import fr.prog.tablut.structures.Couple;
 import fr.prog.tablut.structures.Possibility;
 
 @Deprecated
@@ -17,38 +18,38 @@ public abstract class AIPlayer extends Player {
 	 * @param ownedCells : Les cases utilis�es par le joueur dont on simule le coup
 	 * @return La liste des possibilit�es
 	 */
-	protected List<Possibility> getPossibilities(CellContent[][] grid, List<Couple<Integer, Integer>> ownedCells) {
+	protected List<Possibility> getPossibilities(CellContent[][] grid, List<Point> ownedCells) {
 		List<Possibility> listPossibilities = new ArrayList<>();
 		
-		for(Couple<Integer, Integer> cell : ownedCells) {
+		for(Point cell : ownedCells) {
 			//Remplacer ownedCell par les cases de player
 			
-			int L = cell.getFirst();
-			int C = cell.getSecond();
+			int L = cell.y;
+			int C = cell.x;
 
 			for(int toL = L-1 ; toL >= 0 ; toL--) {
 				if(grid[toL][C] != CellContent.EMPTY)
 					break;
-				listPossibilities.add(new Possibility(cell, new Couple<Integer, Integer>(toL, C)));
+				listPossibilities.add(new Possibility(cell, new Point(C, toL)));
 			}
 				
 			
 			for(int toL = L+1 ; toL < grid.length ; toL++) {
 				if(grid[toL][C] != CellContent.EMPTY)
 					break;
-				listPossibilities.add(new Possibility(cell, new Couple<Integer, Integer>(toL, C)));
+				listPossibilities.add(new Possibility(cell, new Point(C, toL)));
 			}
 			
 			for(int toC = C-1 ; toC >= 0 ; toC--) {
 				if(grid[L][toC] != CellContent.EMPTY)
 					break;
-				listPossibilities.add(new Possibility(cell, new Couple<Integer, Integer>(L, toC)));
+				listPossibilities.add(new Possibility(cell, new Point(toC, L)));
 			}
 			
 			for(int toC = C+1 ; toC < grid[0].length ; toC++) {
 				if(grid[L][toC] != CellContent.EMPTY) 
 					break;
-				listPossibilities.add(new Possibility(cell, new Couple<Integer, Integer>(L, toC)));
+				listPossibilities.add(new Possibility(cell, new Point(toC, L)));
 			}
 		}
 		

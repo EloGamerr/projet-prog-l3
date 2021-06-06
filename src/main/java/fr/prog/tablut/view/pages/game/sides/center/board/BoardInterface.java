@@ -1,19 +1,26 @@
 package fr.prog.tablut.view.pages.game.sides.center.board;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
+import fr.prog.tablut.controller.game.HumanPlayer;
+import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.view.pages.game.sides.GameInterfaceSide;
 import fr.prog.tablut.view.pages.game.sides.center.board.designers.*;
 
 public class BoardInterface extends GameInterfaceSide {
-	private final Designer boardDesigner, piecesDesigner, indicatorsDesigner;
+	private final BoardDesigner boardDesigner;
+    private final PiecesDesigner piecesDesigner;
+    private final IndicatorsDesigner indicatorsDesigner;
     private BoardDrawer boardDrawer;
+    private BoardData boardData;
 	
     public BoardInterface(int size) {
         super(new Dimension(size, size));
 
+        boardData = new BoardData();
         boardDrawer = new BoardDrawer();
 
         // initialize the board drawer's data
@@ -35,10 +42,58 @@ public class BoardInterface extends GameInterfaceSide {
         boardDrawer.setGraphics(g2d);
         boardDrawer.setBoardDimension(Math.min(getWidth(), getHeight()));
         boardDrawer.setPosition(getWidth()/2 - boardDrawer.getSize()/2, getHeight()/2 - boardDrawer.getSize()/2);
+
+        Game game = Game.getInstance();
+
+        boardData.lastMousePosition = boardData.mousePosition;
+        boardData.mousePosition = getMousePosition();
+
+        if(boardData.mousePosition == null) {
+            boardData.hoveringCell = null;
+        } else {
+            boardData.hoveringCell = new Point(getColFromXCoord(boardData.mousePosition.x), getRowFromYCoord(boardData.mousePosition.y));
+        }
+
+        if(boardData.selectedCell != null) {
+			boardData.accessibleCells = Game.getInstance().getAccessibleCells(boardData.selectedCell.y, boardData.selectedCell.x);
+        }
+
+        else if(boardData.mousePosition != null && game.getPlayingPlayer() instanceof HumanPlayer) {
+			int col = getColFromXCoord(boardData.mousePosition.x);
+			int row = getRowFromYCoord(boardData.mousePosition.y);
+
+			if(game.isValid(row, col) && game.canMove(row, col)) {
+				boardData.accessibleCells = game.getAccessibleCells(row, col);
+                boardData.hoveringPossibleMoveCell = new Point(col, row);
+            }
+            else {
+                boardData.hoveringPossibleMoveCell = null;
+            }
+        }
     	
         // draw board layers
-        boardDesigner.draw();
-    	piecesDesigner.draw();
-    	indicatorsDesigner.draw();
+        boardDesigner.draw(boardData);
+    	indicatorsDesigner.draw(boardData);
+    	piecesDesigner.draw(boardData);
+    }
+
+    public BoardData getBoardData() {
+        return boardData;
+    }
+
+    public int getColFromXCoord(int x) {
+        return (int)((x - boardDrawer.getRealX(0)) / boardDrawer.getCellSize());   
+    }
+
+    public int getRowFromYCoord(int y) {
+        return (int)((y - boardDrawer.getRealY(0)) / boardDrawer.getCellSize());
+    }
+
+    public int getXCoordFromCol(int x) {
+        return boardDrawer.getRealX(0) + boardDrawer.getCellSize() * x;
+    }
+
+    public int getYCoordFromRow(int y) {
+        return boardDrawer.getRealY(0) + boardDrawer.getCellSize() * y;
     }
 }

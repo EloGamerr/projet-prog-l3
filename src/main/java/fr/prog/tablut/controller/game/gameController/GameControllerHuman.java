@@ -4,12 +4,11 @@ import java.awt.Point;
 
 import fr.prog.tablut.controller.game.HumanPlayer;
 import fr.prog.tablut.model.game.Game;
-import fr.prog.tablut.structures.Couple;
 import fr.prog.tablut.view.pages.game.GamePage;
 
 public class GameControllerHuman {
     private final GamePage gamePage;
-    private Couple<Integer, Integer> selectedCell;
+    private Point selectedCell;
     private int lastRowHovered;
     private int lastColHovered;
     
@@ -33,24 +32,24 @@ public class GameControllerHuman {
 
     public void undoSelect() {
         selectedCell = null;
-        //gamePage.getGridWindow().clearImageOnMouse();
+        gamePage.clearImageOnMouse();
     }
 
 
     public void mouseMoved(Point mousePosition) {
-        int colHovered = 0;//gamePage.getGridWindow().getColFromXCoord(mousePosition.x);
-        int rowHovered = 0;//gamePage.getGridWindow().getRowFromYCoord(mousePosition.y);
+        int colHovered = gamePage.getColFromXCoord(mousePosition.x);
+        int rowHovered = gamePage.getRowFromYCoord(mousePosition.y);
 
         if(mousePosition != null) {
-            if(this.selectedCell != null) {
-                //gamePage.getGridWindow().updateImageOnMouse(Game.getInstance().getCellContent(selectedCell.getFirst(), selectedCell.getSecond()).getImage(), selectedCell);
+            if(selectedCell != null) {
+                gamePage.updateImageOnMouse(Game.getInstance().getCellContent(selectedCell.y, selectedCell.x).getImage(), selectedCell);
 
-                Couple<Integer, Integer> hoveringCell = null;
+                Point hoveringCell = null;
                 
                 if(colHovered < 9 && rowHovered < 9)
-                    hoveringCell = new Couple<Integer, Integer>(rowHovered, colHovered);
+                    hoveringCell = new Point(colHovered, rowHovered);
 
-                //gamePage.getGridWindow().updateCellHovering(hoveringCell);
+                gamePage.updateCellHovering(hoveringCell);
             }
             else if(lastRowHovered != rowHovered || lastColHovered != colHovered) {
                 lastRowHovered = rowHovered;
@@ -60,11 +59,11 @@ public class GameControllerHuman {
         }
     }
 
-    public Couple<Integer, Integer> getSelectedCell() {
+    public Point getSelectedCell() {
         return selectedCell;
     }
 
-    public void setSelectedCell(Couple<Integer, Integer> selectedCell) {
+    public void setSelectedCell(Point selectedCell) {
         this.selectedCell = selectedCell;
     }
 }

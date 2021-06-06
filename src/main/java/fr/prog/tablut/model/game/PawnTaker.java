@@ -1,11 +1,14 @@
 package fr.prog.tablut.model.game;
 
+import java.awt.Point;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import fr.prog.tablut.structures.Couple;
 
 public class PawnTaker {
-	private List<Couple<Integer, Integer>> visited = new ArrayList<>();
+	private List<Point> visited = new ArrayList<>();
 	private Game game;
 	
 	
@@ -24,7 +27,7 @@ public class PawnTaker {
 	
 	public void clearTakedPawns(int l, int c, Play play) {
 		if(game.isAttackTower(l, c))
-			attack(l,c, play );
+			attack(l,c, play);
 
 		if(game.isDefenseTower(l, c))
 			defense(l,c, play);
@@ -44,9 +47,9 @@ public class PawnTaker {
 	public void attack_core(int l, int c, int dl, int dc, Play play){
 		if(game.isDefenseTower(l, c)){ // Si la case contient une tour d�fensive
 			if(isAttTowerHelper(l+dl, c+dc)) { // Si deux cases plus loin nous avons un alli� de circonstance pour l'attaque
-				play.putModifiedOldCellContent(new Couple<>(l, c), game.getCellContent(l, c));
+				play.putModifiedOldCellContent(new Point(c, l), game.getCellContent(l, c));
 				game.setContent(CellContent.EMPTY,l,c); // on enleve le pion ennemi
-				play.putModifiedNewCellContent(new Couple<>(l, c), CellContent.EMPTY);
+				play.putModifiedNewCellContent(new Point(c, l), CellContent.EMPTY);
 			}
 			else 
 				testSurround(l, c, play);  // Sinon on v�rifie que le coup jou�  bloque totalement le pion ennemi
@@ -69,9 +72,9 @@ public class PawnTaker {
 	public void defense_core(int l, int c, int dl, int dc, Play play){
 		if(game.isAttackTower(l, c)){
 			if(isDefTowerHelper(l+dl, c+dc)) { // Si deux cases plus loin nous avons un alli� de circonstance pour la d�fense
-				play.putModifiedOldCellContent(new Couple<>(l, c), game.getCellContent(l, c));
+				play.putModifiedOldCellContent(new Point(c, l), game.getCellContent(l, c));
 				game.setContent(CellContent.EMPTY,l,c); // on enleve le pion ennemi
-				play.putModifiedNewCellContent(new Couple<>(l, c), CellContent.EMPTY);
+				play.putModifiedNewCellContent(new Point(c, l), CellContent.EMPTY);
 			}
 			else  testSurround(l, c, play); // Sinon on v�rifie que le coup jou�  bloque totalement le pion ennemi		
 		}
@@ -83,15 +86,15 @@ public class PawnTaker {
 	
 	
 	public void testSurround(int l, int c, Play play) {
-		if(isSurrounded(new Couple<Integer, Integer>(l, c),l,c)) { // Si le pion est encercl�
-			play.putModifiedOldCellContent(new Couple<>(l, c), game.getCellContent(l, c));
+		if(isSurrounded(new Point(c, l),l,c)) { // Si le pion est encercl�
+			play.putModifiedOldCellContent(new Point(c, l), game.getCellContent(l, c));
 			game.setContent(CellContent.EMPTY,l,c); // On enl�ve le pion
-			play.putModifiedNewCellContent(new Couple<>(l, c), CellContent.EMPTY);
+			play.putModifiedNewCellContent(new Point(c, l), CellContent.EMPTY);
 			
 			if(!visited.isEmpty()) {
-				for(Couple<Integer, Integer> cell : visited) {
-					play.putModifiedOldCellContent(cell, game.getCellContent(cell.getFirst(), cell.getSecond()));
-					game.setContent(CellContent.EMPTY,cell.getFirst(),cell.getSecond()); // // Et on enl�ve les pions encercl�s avec le pr�c�dent
+				for(Point cell : visited) {
+					play.putModifiedOldCellContent(cell, game.getCellContent(cell.y, cell.x));
+					game.setContent(CellContent.EMPTY,cell.y,cell.x); // // Et on enl�ve les pions encercl�s avec le pr�c�dent
 					play.putModifiedOldCellContent(cell, CellContent.EMPTY);
 				}
 			}
@@ -100,11 +103,11 @@ public class PawnTaker {
 		visited.clear();
 	}
 	
-	public boolean isSurrounded(Couple<Integer, Integer> c, int i, int j) {
-		List<Couple<Integer, Integer>> allyCells = new ArrayList<>();
+	public boolean isSurrounded(Point c, int i, int j) {
+		List<Point> allyCells = new ArrayList<>();
 		boolean surrounded = true;
 		int counter_obstacle = 0;
-		Couple<Integer , List<Couple<Integer, Integer>>> var = new Couple<Integer, List<Couple<Integer, Integer>>>(counter_obstacle, allyCells);
+		Couple<Integer , List<Point>> var = new Couple<Integer, List<Point>>(counter_obstacle, allyCells);
 		
 		switch(game.getGrid()[i][j]) {
 			case DEFENSE_TOWER:
@@ -133,12 +136,12 @@ public class PawnTaker {
 					visited.add(c);
 				}
 				
-				for(Couple<Integer, Integer> cell : visited) {
+				for(Point cell : visited) {
 					allyCells.remove(cell);
 				}
 				
-				for(Couple<Integer, Integer> cell : allyCells) {
-					if(!isSurrounded(new Couple<Integer, Integer>(cell.getFirst(), cell.getSecond()),cell.getFirst(),cell.getSecond())) {
+				for(Point cell : allyCells) {
+					if(!isSurrounded(new Point(cell.x, cell.y), cell.y, cell.x)) {
 						surrounded = false;
 					}
 				}
@@ -157,7 +160,7 @@ public class PawnTaker {
 	// Check content functions
 	////////////////////////////////////////////////////
 	
-	public Couple<Integer, List<Couple<Integer, Integer>>> checkneighbour_attack(List<Couple<Integer, Integer>> allyCells, int counter_obstacle, int i, int j) {
+	public Couple<Integer, List<Point>> checkneighbour_attack(List<Point> allyCells, int counter_obstacle, int i, int j) {
 		if(!game.isValid(i, j))
 			counter_obstacle++;
 
@@ -165,14 +168,14 @@ public class PawnTaker {
 			counter_obstacle++;
 
 		else if(game.isAttackTower(i,j)) {
-			allyCells.add(new Couple<Integer, Integer>(i, j));
+			allyCells.add(new Point(i, j));
 			counter_obstacle++;
 		}
 
-		return new Couple<Integer, List<Couple<Integer, Integer>>>(counter_obstacle, allyCells);
+		return new Couple<Integer, List<Point>>(counter_obstacle, allyCells);
 	}
 
-	public Couple<Integer, List<Couple<Integer, Integer>>> checkneighbour_defense(List<Couple<Integer, Integer>> allyCells, int counter_obstacle, int i, int j) {
+	public Couple<Integer, List<Point>> checkneighbour_defense(List<Point> allyCells, int counter_obstacle, int i, int j) {
 		if(!game.isValid(i, j))
 			counter_obstacle++;
 
@@ -180,11 +183,11 @@ public class PawnTaker {
 			counter_obstacle++;	
 
 		else if(isDefenseAlly(i, j)) {
-			allyCells.add(new Couple<Integer, Integer>(i, j));
+			allyCells.add(new Point(i, j));
 			counter_obstacle++;
 		}
 
-		return new Couple<Integer, List<Couple<Integer, Integer>>>(counter_obstacle, allyCells);
+		return new Couple<Integer, List<Point>>(counter_obstacle, allyCells);
 	}
 	
 	public boolean isDefTowerHelper(int i, int j) {

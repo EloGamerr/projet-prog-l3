@@ -2,6 +2,7 @@ package fr.prog.tablut.view.pages.game.sides.center.board.designers;
 
 import java.awt.Font;
 
+import fr.prog.tablut.view.pages.game.sides.center.board.BoardData;
 import fr.prog.tablut.view.pages.game.sides.center.board.BoardDrawer;
 import fr.prog.tablut.view.pages.game.sides.center.board.GameColors;
 
@@ -11,7 +12,7 @@ public class BoardDesigner extends Designer {
     }
 
     @Override
-    public void draw() {
+    public void draw(BoardData data) {
         int bw = g.getBorderWidth();
         int cellSize = g.getCellSize();
         int cellNumber = g.getCellNumber();

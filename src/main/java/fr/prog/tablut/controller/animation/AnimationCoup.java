@@ -4,21 +4,18 @@ import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.Movement;
 import fr.prog.tablut.model.game.Play;
 import fr.prog.tablut.view.pages.game.GamePage;
-import fr.prog.tablut.view.pages.game.sides.center.board.BoardInterface;
 
 public class AnimationCoup {
 	Movement mov;
 	GamePage view;
-	BoardInterface gridWindow;
 	double progres, vitesseAnim;
 	boolean isInAnim;
 	
-	public AnimationCoup(Play c, GamePage  gamePage) {
+	public AnimationCoup(Play c, GamePage gamePage) {
 		vitesseAnim = 0.05;
 		this.view = gamePage;
-		this.gridWindow = view.getGridWindow();
 		mov = c.getMovement();
-		isInAnim = false;//gamePage.getGridWindow().getGridView().isInAnim();
+		isInAnim = gamePage.isInAnim();
 	}
 
 
@@ -27,10 +24,16 @@ public class AnimationCoup {
 		
         if(progres > 1)
 			progres = 1;
-			
-        int dC =  0;//(int) (gridWindow.getXCoordFromCol(mov.fromC) - ((gridWindow.getXCoordFromCol(mov.fromC) - gridWindow.getXCoordFromCol(mov.toC))*(progres)));
-        int dL =  0;//(int) (gridWindow.getYCoordFromRow(mov.fromL) - ((gridWindow.getYCoordFromRow(mov.fromL) - gridWindow.getYCoordFromRow(mov.toL))*(progres)));
+
+        int fromC = view.getXCoordFromCol(mov.fromC);
+        int fromL = view.getYCoordFromRow(mov.fromL);
+        int toC = view.getXCoordFromCol(mov.toC);
+        int toL = view.getYCoordFromRow(mov.toL);
         
+			
+        int dC =  (int)(fromC - (fromC - toC) * progres);
+        int dL =  (int)(fromL - (fromL - toL) * progres);
+
         view.update_anim(dL, dC, mov.fromL, mov.fromC);
 	}
 

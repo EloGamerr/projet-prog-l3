@@ -74,7 +74,22 @@ public class BoardDrawer {
     }
 
 
+    // G2D SETTERS
+    public void strokeWidth(int width) {
+        g2d.setStroke(new BasicStroke(width));
+    }
+    
+    public void setFont(Font font) {
+        g2d.setFont(font);
+    }
 
+    public void setCursor(String cursor) {
+        /* if(cursor == "hand") g2d.setCursor(handCursor);
+        else g2d.setCursor(defaultCursor); */
+    }
+
+
+    // RECT
     public void fillRectCoords(int x, int y, int width, int height) {
         g2d.fillRect(x, y, width, height);
     }
@@ -83,6 +98,7 @@ public class BoardDrawer {
         g2d.drawRect(x, y, width, height);
     }
 
+    // CIRCLE
     public void fillCircleCoords(int x, int y, int r) {
         g2d.fillOval(x, y, r, r);
     }
@@ -91,18 +107,17 @@ public class BoardDrawer {
         g2d.drawOval(x, y, r, r);
     }
 
+    // LINE
     public void line(int x1, int y1, int x2, int y2) {
         g2d.drawLine(x1, y1, x2, y2);
     }
 
-    public void strokeWidth(int width) {
-        g2d.setStroke(new BasicStroke(width));
-    }
-
+    // IMAGE
     public void drawImageCoords(Image img, int x, int y, int width, int height, Color bgColor) {
         g2d.drawImage(img, x, y, width, height, bgColor, null);
     }
 
+    // STRING
     public void drawString(String str, int x, int y) {
         g2d.drawString(str, x, y);
     }
@@ -111,25 +126,10 @@ public class BoardDrawer {
         g2d.drawString(str, x, y);
     }
 
-    public void setFont(Font font) {
-        g2d.setFont(font);
-    }
 
-
+    // FILL RECT / SQUARE
     public void fillRect(int x, int y, int width, int height) {
-        fillRectCoords(getRealX(x), getRealY(y), width, height);
-    }
-
-    public void strokeRect(int x, int y, int width, int height) {
-        strokeRectCoords(getRealX(x), getRealY(y), width, height);
-    }
-
-    public void fillCircle(int x, int y, int r) {
-        fillCircleCoords(getRealX(x), getRealY(y), r);
-    }
-
-    public void strokeCircle(int x, int y, int r) {
-        strokeCircleCoords(getRealX(x), getRealY(y), r);
+        fillRectCoords(getRealX(x) + widthSeparator/2, getRealY(y) + widthSeparator/2, width - widthSeparator, height - widthSeparator);
     }
 
     public void fillSquare(int x, int y) {
@@ -138,6 +138,16 @@ public class BoardDrawer {
 
     public void fillSquare(int x, int y, int size) {
         fillRect(x, y, size, size);
+    }
+
+    public void fillSquareCoords(int x, int y, int size) {
+        fillRectCoords(x, y, size, size);
+    }
+
+
+    // STROKE RECT / SQUARE
+    public void strokeRect(int x, int y, int width, int height) {
+        strokeRectCoords(getRealX(x) + widthSeparator/2, getRealY(y) + widthSeparator/2, width - widthSeparator, height - widthSeparator);
     }
 
     public void strokeSquare(int x, int y) {
@@ -152,6 +162,17 @@ public class BoardDrawer {
         strokeRectCoords(x, y, size, size);
     }
 
+    // FILL / STROKE CIRCLE
+    public void fillCircle(int x, int y, int r) {
+        fillCircleCoords(getRealX(x), getRealY(y), r);
+    }
+
+    public void strokeCircle(int x, int y, int r) {
+        strokeCircleCoords(getRealX(x), getRealY(y), r);
+    }
+
+
+    // IMAGE
     public void drawImage(Image img, int x, int y, int width, int height, Color bgColor) {
         drawImageCoords(img, getRealX(x), getRealY(y), width, height, bgColor);
     }
