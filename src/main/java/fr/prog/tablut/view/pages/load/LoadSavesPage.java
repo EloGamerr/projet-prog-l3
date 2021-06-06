@@ -47,8 +47,8 @@ public class LoadSavesPage extends Page {
         
         // setup background pannel
         final int iconSize = 500;
-        ImageComponent blackTower = new ImageComponent("transparent_black_tower.png", -iconSize/2, config.windowHeight/2 - iconSize/2, iconSize, iconSize);
-        ImageComponent whiteTower = new ImageComponent("transparent_white_tower.png", config.windowWidth-iconSize/2, config.windowHeight/2 - iconSize/2, iconSize, iconSize);
+        ImageComponent blackTower = new ImageComponent("theme/transparent_black_tower.png", -iconSize/2, config.windowHeight/2 - iconSize/2, iconSize, iconSize);
+        ImageComponent whiteTower = new ImageComponent("theme/transparent_white_tower.png", config.windowWidth-iconSize/2, config.windowHeight/2 - iconSize/2, iconSize, iconSize);
 
         blackTower.load();
         whiteTower.load();

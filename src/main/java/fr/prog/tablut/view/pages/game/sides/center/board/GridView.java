@@ -28,13 +28,14 @@ public class GridView {
 	private boolean anim = false;
     protected Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
     protected Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
+	private Point lastMousePosition;
 
 	public GridView(GridWindow gridWindow) {
 		this.gridWindow = gridWindow;
 	}
 	
 	public int cellSize() {
-		return cellSize;
+		return Math.max(1, cellSize);
 	}
 	
 	public void draw() {
@@ -71,6 +72,11 @@ public class GridView {
 
 		Point mousePosition = gridWindow.getMousePosition();
 
+<<<<<<< HEAD
+=======
+		if(mousePosition != null)
+			lastMousePosition = mousePosition;
+>>>>>>> master
 
 		List<Couple<Integer, Integer>> accessibleCells = new ArrayList<>();
 
@@ -94,7 +100,7 @@ public class GridView {
 
 			drawCircles(accessibleCells);
 		}
-		else if(mousePosition != null && !game.isWon() && game.getPlayingPlayer() instanceof HumanPlayer) {
+		else if(mousePosition != null && game.getPlayingPlayer() instanceof HumanPlayer) {
 			int col = getColFromXCoord(mousePosition.x);
 			int row = getRowFromYCoord(mousePosition.y);
 
@@ -176,7 +182,10 @@ public class GridView {
 					);
 
 					if(game.getCellContent(i, j) == CellContent.GATE && accessibleCells.contains(new Couple<>(i, j))) {
-						drawCircle(j, i, 3*cellSize/5, new Color(0, 187, 19));
+                        gridWindow.setColor(new Color(200, 52, 47));
+                        gridWindow.strokeWidth(2);
+					    gridWindow.drawRect(x + widthBorder + j * cellSize + widthSeperator + 1, y + widthBorder + i * cellSize + widthSeperator + 1, cellSize - widthSeperator - 1, cellSize - widthSeperator - 1);
+                        gridWindow.strokeWidth(1);
 					}
 				}
 
@@ -188,13 +197,11 @@ public class GridView {
 
 			}
 		}
-		
-		Point mousePosition = gridWindow.getMousePosition();
 
-		if(imageOnMouse != null && mousePosition != null) {
-			int xImg = Math.max(x, mousePosition.x - imgSize/2);
+		if(imageOnMouse != null && lastMousePosition != null) {
+			int xImg = Math.max(x, lastMousePosition.x - imgSize/2);
 			xImg = Math.min(xImg, x + width - imgSize);
-			int yImg = Math.max(y, mousePosition.y - imgSize/2);
+			int yImg = Math.max(y, lastMousePosition.y - imgSize/2);
 			yImg = Math.min(yImg, y + height - imgSize);
 			
     		gridWindow.drawImage(imageOnMouse, xImg, yImg, imgSize, imgSize);

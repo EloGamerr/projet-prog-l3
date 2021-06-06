@@ -338,6 +338,9 @@ public class Game {
 	 * and if the cell content is owned by the playingPlayerEnum
 	 */
 	public boolean canMove(int l, int c) {
+		if(isWon())
+			return false;
+
 		if(!isPlayingPlayerOwningCell(l, c)) return false;
 
 		return this.isNotBlocked(l, c);

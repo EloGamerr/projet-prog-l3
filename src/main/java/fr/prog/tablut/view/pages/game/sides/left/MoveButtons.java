@@ -33,8 +33,8 @@ public class MoveButtons extends GenericPanel {
         undo = new GenericRoundedButton("", btnWidth, btnHeight);
         redo = new GenericRoundedButton("", btnWidth, btnHeight);
 
-        undo.setImage("left_arrow.png", imgX, imgY, imgSize, imgSize);
-        redo.setImage("right_arrow.png", imgX, imgY, imgSize, imgSize);
+        undo.setImage("theme/left_arrow.png", imgX, imgY, imgSize, imgSize);
+        redo.setImage("theme/right_arrow.png", imgX, imgY, imgSize, imgSize);
 
         undo.setAction(new ButtonUndoRedoAdaptator(undo, this, rightSide));
         redo.setAction(new ButtonUndoRedoAdaptator(redo, this, rightSide));

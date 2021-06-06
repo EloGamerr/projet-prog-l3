@@ -1,5 +1,6 @@
 package fr.prog.tablut.view.pages.game.sides.center.board;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Dimension;
@@ -47,9 +48,17 @@ public class GridWindow extends GameInterfaceSide {
 		drawable.drawLine(x1, y1, x2, y2);
 	}
 
+    public void drawRect(int x, int y, int width, int height) {
+		drawable.drawRect(x, y, width, height);
+	}
+
 	public void fillRect(int x, int y, int width, int height) {
 		drawable.fillRect(x, y, width, height);
 	}
+
+    public void strokeWidth(int width) {
+        drawable.setStroke(new BasicStroke(width));
+    }
 	
 	public void fillOval(int x, int y, int width, int height) {
 		drawable.fillOval(x, y, width, height);
