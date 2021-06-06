@@ -18,7 +18,7 @@ import fr.prog.tablut.structures.Couple;
 import fr.prog.tablut.model.window.PageName;
 import fr.prog.tablut.view.Page;
 import fr.prog.tablut.view.pages.game.sides.center.CenterSideGame;
-import fr.prog.tablut.view.pages.game.sides.center.board.GridWindow;
+import fr.prog.tablut.view.pages.game.sides.center.board.BoardInterface;
 import fr.prog.tablut.view.pages.game.sides.left.LeftSideGame;
 import fr.prog.tablut.view.pages.game.sides.right.RightSideGame;
 
@@ -89,7 +89,7 @@ public class GamePage extends Page {
      * Returns the grid window object
      * @return The grid window
      */
-    public GridWindow getGridWindow() {
+    public BoardInterface getGridWindow() {
         return centerSide.getBoard();
     }
 
@@ -126,11 +126,32 @@ public class GamePage extends Page {
         this.getLeftSide().getMoveButtons().enableUndoButton(!Game.getInstance().getPlays().getPreviousMovements().isEmpty());
         this.getLeftSide().getMoveButtons().enableRedoButton(!Game.getInstance().getPlays().getNextMovements().isEmpty());
     }
+
 	public void update_anim(int  toL, int toC, int fromL, int fromC) {
-		getGridWindow().update_anim(toL, toC, new Couple<Integer, Integer>(fromL, fromC));	
+		//getGridWindow().update_anim(toL, toC, new Couple<Integer, Integer>(fromL, fromC));	
 	}
     
 	public void stop_anim() {
-		getGridWindow().stop_anim();
+		//getGridWindow().stop_anim();
 	}
+
+    public void setIsInAnim(boolean b) {
+        
+    }
+
+    public boolean isInAnim() {
+        return false; // TODO
+    }
+
+    public void togglePauseButton(boolean isPaused) {
+        rightSide.togglePauseButton(isPaused);
+    }
+
+    public void enableUndoButton(boolean enable) {
+        leftSide.getMoveButtons().enableUndoButton(enable);
+    }
+
+    public void enableRedoButton(boolean enable) {
+        leftSide.getMoveButtons().enableRedoButton(enable);
+    }
 }

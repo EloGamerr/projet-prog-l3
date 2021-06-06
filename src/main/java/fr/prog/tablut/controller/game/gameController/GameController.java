@@ -21,38 +21,38 @@ public class GameController {
 	}
 	
 	public void click(int row, int col) {
-		if(this.gameControllerHuman.click(row, col))
-			this.postPlay();
+		if(gameControllerHuman.click(row, col))
+			postPlay();
 	}
 
 	public void undoSelect() {
-		this.gameControllerHuman.undoSelect();
+		gameControllerHuman.undoSelect();
 	}
 
 	public void mouseMoved(Point mousePosition) {
-		this.gameControllerHuman.mouseMoved(mousePosition);
+		gameControllerHuman.mouseMoved(mousePosition);
 	}
 
 	public Couple<Integer, Integer> getSelectedCell() {
-		return this.gameControllerHuman.getSelectedCell();
+		return gameControllerHuman.getSelectedCell();
 	}
 
 	public void tick() {
 		if(gameControllerAI.tick())
-			this.postPlay();
+			postPlay();
 	}
 	
 	private void postPlay() {
-		this.gamePage.getLeftSide().getMoveButtons().enableUndoButton(!Game.getInstance().getPlays().getPreviousMovements().isEmpty());
-        this.gamePage.getLeftSide().getMoveButtons().enableRedoButton(!Game.getInstance().getPlays().getNextMovements().isEmpty());
-		this.gameControllerHuman.undoSelect(); // This method will also repaint the game
+		gamePage.enableUndoButton(!Game.getInstance().getPlays().getPreviousMovements().isEmpty());
+		gamePage.enableUndoButton(!Game.getInstance().getPlays().getNextMovements().isEmpty());
+		gameControllerHuman.undoSelect(); 
 	}
 
 	public void restart() {
 		Game.getInstance().restart();
-		gamePage.getGridWindow().getGridView().setIsInAnim(false);
-		this.gamePage.update();
-		this.gamePage.repaint();
+		gamePage.setIsInAnim(false);
+		gamePage.update();
+		gamePage.repaint();
 	}
 	
 
@@ -61,11 +61,12 @@ public class GameController {
 	}
 
 	public boolean undo() {
-		if(gamePage.getGridWindow().getGridView().isInAnim())
+		if(gamePage.isInAnim())
 			return false;
+
 		if(Game.getInstance().undo_move()) {
-			this.gamePage.getRightSide().togglePauseButton(Game.getInstance().isPaused());
-			this.postPlay();
+			gamePage.togglePauseButton(Game.getInstance().isPaused());
+			postPlay();
             return true;
 		}
 
@@ -73,11 +74,12 @@ public class GameController {
 	}
 
 	public boolean redo() {
-		if(gamePage.getGridWindow().getGridView().isInAnim())
+		if(gamePage.isInAnim())
 			return false;
+            
 		if(Game.getInstance().redo_move()) {
-			this.gamePage.getRightSide().togglePauseButton(Game.getInstance().isPaused());
-			this.postPlay();
+			gamePage.togglePauseButton(Game.getInstance().isPaused());
+			postPlay();
             return true;
 		}
 
@@ -95,8 +97,8 @@ public class GameController {
 			pause = !Game.getInstance().isPaused();
         
 		Game.getInstance().setPaused(pause);
-		this.gamePage.getGridWindow().getGridView().stop_anim();
-		this.gamePage.getRightSide().togglePauseButton(pause);
-		this.postPlay();
+		gamePage.stop_anim();
+		gamePage.togglePauseButton(true);
+		postPlay();
 	}
 }

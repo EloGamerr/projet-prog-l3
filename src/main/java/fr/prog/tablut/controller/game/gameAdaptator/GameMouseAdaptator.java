@@ -4,13 +4,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import fr.prog.tablut.controller.game.gameController.GameController;
-import fr.prog.tablut.view.pages.game.sides.center.board.GridWindow;
+import fr.prog.tablut.view.pages.game.sides.center.board.BoardInterface;
 
 public class GameMouseAdaptator extends MouseAdapter {
-	private final GridWindow gridWindow;
+	private final BoardInterface gridWindow;
 	private final GameController gameController;
 	
-	public GameMouseAdaptator(GameController gameController, GridWindow gridWindow) {
+	public GameMouseAdaptator(GameController gameController, BoardInterface gridWindow) {
 		this.gameController = gameController;
 		this.gridWindow = gridWindow;
 	}
@@ -21,8 +21,8 @@ public class GameMouseAdaptator extends MouseAdapter {
 			return;
 
 		if(e.getButton() == MouseEvent.BUTTON1) {
-			int	l = gridWindow.getRowFromYCoord(e.getY());
-			int c = gridWindow.getColFromXCoord(e.getX());
+			int	l = 0;//gridWindow.getRowFromYCoord(e.getY());
+			int c = 0;//gridWindow.getColFromXCoord(e.getX());
 			gameController.click(l, c);
 		}
 

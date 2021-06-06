@@ -20,7 +20,7 @@ public class ButtonQuitGameAdaptator extends ActionAdaptator<GenericButton> {
 
         if(value != null && (int) value == 0) {
             Game.resetInstance();
-            globalWindow.getGamePage().getGridWindow().getGridView().setIsInAnim(false);
+            globalWindow.getGamePage().setIsInAnim(false);
             globalWindow.changeWindow(entity.getHref());
         }
     }

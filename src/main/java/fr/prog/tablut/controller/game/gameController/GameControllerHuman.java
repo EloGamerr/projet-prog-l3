@@ -33,24 +33,24 @@ public class GameControllerHuman {
 
     public void undoSelect() {
         selectedCell = null;
-        gamePage.getGridWindow().clearImageOnMouse();
+        //gamePage.getGridWindow().clearImageOnMouse();
     }
 
 
     public void mouseMoved(Point mousePosition) {
-        int colHovered = gamePage.getGridWindow().getColFromXCoord(mousePosition.x);
-        int rowHovered = gamePage.getGridWindow().getRowFromYCoord(mousePosition.y);
+        int colHovered = 0;//gamePage.getGridWindow().getColFromXCoord(mousePosition.x);
+        int rowHovered = 0;//gamePage.getGridWindow().getRowFromYCoord(mousePosition.y);
 
         if(mousePosition != null) {
             if(this.selectedCell != null) {
-                gamePage.getGridWindow().updateImageOnMouse(Game.getInstance().getCellContent(selectedCell.getFirst(), selectedCell.getSecond()).getImage(), selectedCell);
+                //gamePage.getGridWindow().updateImageOnMouse(Game.getInstance().getCellContent(selectedCell.getFirst(), selectedCell.getSecond()).getImage(), selectedCell);
 
                 Couple<Integer, Integer> hoveringCell = null;
                 
                 if(colHovered < 9 && rowHovered < 9)
                     hoveringCell = new Couple<Integer, Integer>(rowHovered, colHovered);
 
-                gamePage.getGridWindow().updateCellHovering(hoveringCell);
+                //gamePage.getGridWindow().updateCellHovering(hoveringCell);
             }
             else if(lastRowHovered != rowHovered || lastColHovered != colHovered) {
                 lastRowHovered = rowHovered;

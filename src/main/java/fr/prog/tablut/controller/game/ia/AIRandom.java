@@ -25,9 +25,13 @@ public class AIRandom extends AIPlayer {
 
     @Override
     public boolean play(Game game, GamePage gamePage) {
-    	isInAnim = gamePage.getGridWindow().getGridView().isInAnim();
+    	isInAnim = false;//gamePage.getGridWindow().getGridView().isInAnim();
     	
-    	if(!isInAnim) {
+        if(isInAnim) {
+    		anim.check_anim();
+    		return true;
+    	}
+    	else {
     		List<Couple<Integer, Integer>> accesibleCells;
         	do {
         		List<Couple<Integer, Integer>> ownedCells = this.getOwnedCells();
@@ -44,13 +48,6 @@ public class AIRandom extends AIPlayer {
         	
         	return true;
     	}
-    	else if(isInAnim) {
-    		anim.check_anim();
-    		return true;
-    	}
-		return false;
-    	
-    	
     }
     
     
