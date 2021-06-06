@@ -72,11 +72,11 @@ public class GridView {
 
 		Point mousePosition = gridWindow.getMousePosition();
 
-<<<<<<< HEAD
-=======
+
+
 		if(mousePosition != null)
 			lastMousePosition = mousePosition;
->>>>>>> master
+
 
 		List<Couple<Integer, Integer>> accessibleCells = new ArrayList<>();
 
