@@ -13,7 +13,10 @@ import java.util.List;
  * This class is mostly used to keep methods that are used in the
  * the game state evaluation function used by Minimax
  */
-public class MyTools {
+public class AIMedium extends AIMinMax {
+    public AIMedium(PlayerEnum playerEnum) {
+        super(playerEnum);
+    }
 
     /**
      * The evaluation function for the board state. Although several
@@ -21,7 +24,7 @@ public class MyTools {
      * for the different variables, the evaluation function below turned out to
      * work best. An analysis of evaluation functions is included in the report.
      */
-    public static double evaluation(Simulation boardState, PlayerEnum playerEnum) {
+    public double evaluation(Simulation boardState, PlayerEnum playerEnum) {
         PlayerEnum opponent = playerEnum.getOpponent();
         double oppPieceValue = (double) boardState.getPlayer(opponent).getOwnedCells().size();
         double yourPieceValue = (double) boardState.getPlayer(playerEnum).getOwnedCells().size();
@@ -73,7 +76,7 @@ public class MyTools {
      * Given a game state, this method returns a value used in board state evaluation
      * which represents the number of enemy pieces surrounding the Swede king.
      */
-    public static double enemyPiecesAroundKing(Simulation boardState) {
+    public double enemyPiecesAroundKing(Simulation boardState) {
         double numPieces = 0.0;
         
         // Top left corner
@@ -106,7 +109,7 @@ public class MyTools {
      * These locations were determined to be useful for the Muscovites in
      * maintaining an advantage during the game.
      */
-    public static double piecesAroundCorners(Simulation boardState) {
+    public double piecesAroundCorners(Simulation boardState) {
         double value = 0.0;
 
         // Top left corner
@@ -139,7 +142,7 @@ public class MyTools {
      * value if we are withing 1-2 moves to more than one corner.
      *
      */
-    public static double kingMovesToCornerValue(Simulation boardState) {
+    public double kingMovesToCornerValue(Simulation boardState) {
         Couple<Integer, Integer> kingPosition = new Couple<>(boardState.getKingL(), boardState.getKingC());
 
         // Retrieves all legal moves for the king based on its current position
@@ -174,11 +177,11 @@ public class MyTools {
         return moveDistanceValue;
     }
 
-    public static boolean isCorner(Couple<Integer, Integer> c) {
+    public boolean isCorner(Couple<Integer, Integer> c) {
         return isCorner(c.getFirst(), c.getSecond());
     }
 
-    public static boolean isCorner(int i, int j) { // Very efficient way to check if something is a corner.
+    public boolean isCorner(int i, int j) { // Very efficient way to check if something is a corner.
         if (i * j != 0)
             return i == 8 && j == 8;
         return i + j == 8 || i + j == 0;
@@ -194,7 +197,7 @@ public class MyTools {
      * This method projects a move onto the board state and recursively goes to the following move, but does
      * not actually process the move in order to be more efficient (time and memory-wise).
      */
-    public static int calcMinMovesToCorner(Simulation boardState, Couple<Integer, Integer> corner, int moveCt, Couple<Integer, Integer>kingPosition) {
+    public int calcMinMovesToCorner(Simulation boardState, Couple<Integer, Integer> corner, int moveCt, Couple<Integer, Integer>kingPosition) {
         // Termination condition - either we're in a corner or it takes too many moves and thus becomes irrelevant
         if (moveCt == 3 || isCorner(kingPosition)) {
             return moveCt;
@@ -226,7 +229,7 @@ public class MyTools {
         return min;
     }
 
-    private static int distance(Couple<Integer, Integer> c1, Couple<Integer, Integer> c2) {
+    private int distance(Couple<Integer, Integer> c1, Couple<Integer, Integer> c2) {
         return Math.abs(c1.getFirst() - c2.getFirst()) + Math.abs(c1.getSecond() - c2.getSecond());
     }
 
@@ -234,7 +237,7 @@ public class MyTools {
      * Modified the getLegalMovesForPosition() method from Simulation.java,
      * adjusted because the original was not permitting me to retrieve king moves.
      */
-    public static ArrayList<Movement> getLegalKingMovesForPosition(Couple<Integer, Integer>start, Simulation boardState) {
+    public ArrayList<Movement> getLegalKingMovesForPosition(Couple<Integer, Integer>start, Simulation boardState) {
         ArrayList<Movement> legalMoves = new ArrayList<>();
 
         // Iterate along 4 directions.
@@ -260,7 +263,7 @@ public class MyTools {
      * Added the getLegalCoordsInDirection() method from Simulation.java,
      * because it is required by getLegalKingMovesForPosition() (above) but the original is private.
      */
-    private static List<Couple<Integer, Integer>> getLegalCoordsInDirection(Couple<Integer, Integer>start, int x, int y, Simulation boardState) {
+    private List<Couple<Integer, Integer>> getLegalCoordsInDirection(Couple<Integer, Integer>start, int x, int y, Simulation boardState) {
         ArrayList<Couple<Integer, Integer>> coords = new ArrayList<>();
         assert (!(x != 0 && y != 0));
         int startPos = (x != 0) ? start.getFirst() : start.getSecond(); // starting at x or y

@@ -8,7 +8,6 @@ import java.text.ParseException;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import fr.prog.tablut.controller.game.ia.IAMedium;
 import fr.prog.tablut.model.game.player.PlayerEnum;
 import org.json.JSONObject;
 
@@ -152,7 +151,7 @@ public class GlobalWindow extends Window {
 				if(currentPage == loadPage)
 					gamePage.getGame().load(loadPage.getPanel().getSelectedIndex());
 				else
-					gamePage.getGame().start(new HumanPlayer(PlayerEnum.ATTACKER), new IAMedium(PlayerEnum.DEFENDER));
+					gamePage.getGame().start(new HumanPlayer(PlayerEnum.ATTACKER), new AIRandom(PlayerEnum.DEFENDER));
 				break;
 
 			case LoadWindow:
