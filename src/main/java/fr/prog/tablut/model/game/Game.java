@@ -275,15 +275,17 @@ public class Game {
 	 */
 	private PlayerEnum checkWin(CellContent previousToCellContent, CellContent toCellContent) {
 		if(this.getWinner() != PlayerEnum.NONE) return winner;
-		
+
 		// If the king has been killed
-		if(!isTheKing(kingL,kingC))
+		if(!isTheKing(kingL,kingC)) {
 			return playingPlayerEnum;
+		}
 
 		// If the king is on a gate
-		else if(previousToCellContent == CellContent.GATE && toCellContent == CellContent.KING)
+		else if(previousToCellContent == CellContent.GATE && toCellContent == CellContent.KING) {
 			return playingPlayerEnum;
-		
+		}
+
 		return PlayerEnum.NONE;
 	}
 	
@@ -361,7 +363,15 @@ public class Game {
 	public int getKingC() {
 		return kingC;
 	}
-	
+
+	public void setKingL(int kingL) {
+		this.kingL = kingL;
+	}
+
+	public void setKingC(int kingC) {
+		this.kingC = kingC;
+	}
+
 	public Player getAttacker() {
 		return attacker;
 	}

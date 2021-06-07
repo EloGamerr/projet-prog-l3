@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 import fr.prog.tablut.controller.game.ia.IAMedium;
+import fr.prog.tablut.model.game.player.PlayerEnum;
 import org.json.JSONObject;
 
 import fr.prog.tablut.controller.game.HumanPlayer;
@@ -151,7 +152,7 @@ public class GlobalWindow extends Window {
 				if(currentPage == loadPage)
 					gamePage.getGame().load(loadPage.getPanel().getSelectedIndex());
 				else
-					gamePage.getGame().start(new HumanPlayer(), new IAMedium());
+					gamePage.getGame().start(new HumanPlayer(PlayerEnum.ATTACKER), new IAMedium(PlayerEnum.DEFENDER));
 				break;
 
 			case LoadWindow:

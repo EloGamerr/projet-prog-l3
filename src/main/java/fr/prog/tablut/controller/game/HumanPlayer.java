@@ -3,6 +3,7 @@ package fr.prog.tablut.controller.game;
 import fr.prog.tablut.controller.game.gameController.GameControllerHuman;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.player.Player;
+import fr.prog.tablut.model.game.player.PlayerEnum;
 import fr.prog.tablut.structures.Couple;
 import fr.prog.tablut.view.pages.game.GamePage;
 
@@ -11,7 +12,11 @@ public class HumanPlayer extends Player {
     private int col;
     private GamePage gamePage;
     private GameControllerHuman gameControllerHuman;
-    
+
+    public HumanPlayer(PlayerEnum playerEnum) {
+        super(playerEnum);
+    }
+
     public void updateState(int row, int col, GamePage gamePage, GameControllerHuman gameControllerHuman) {
         this.row = row;
         this.col = col;

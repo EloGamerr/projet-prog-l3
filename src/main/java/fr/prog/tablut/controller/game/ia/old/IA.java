@@ -15,8 +15,9 @@ public class IA extends Player{
 	private Elagage e;
 	private int r;
 
-	public IA(Heuristique h, Elagage e, int r) {
-	    this.h = h;
+	public IA(Heuristique h, Elagage e, int r, PlayerEnum playerEnum) {
+		super(playerEnum);
+		this.h = h;
 	    this.e = e;
 	    this.r = r;
 	}

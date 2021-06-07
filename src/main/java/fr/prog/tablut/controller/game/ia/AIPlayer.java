@@ -9,7 +9,11 @@ import fr.prog.tablut.model.game.player.PlayerEnum;
 import fr.prog.tablut.structures.Couple;
 import fr.prog.tablut.structures.Possibility;
 
-public abstract class AIPlayer extends Player {	
+public abstract class AIPlayer extends Player {
+	public AIPlayer(PlayerEnum playerEnum) {
+		super(playerEnum);
+	}
+
 	/**
 	 * 
 	 * @param grid : le tableau du jeu

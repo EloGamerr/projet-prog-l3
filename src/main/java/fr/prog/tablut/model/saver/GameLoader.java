@@ -174,16 +174,16 @@ public class GameLoader {
 
 	public void setAttacker(String attacker) {
 		switch(attacker) {
-			case "AIRandom": 	game.setAttacker(new AIRandom()); break;
-			case "HumanPlayer": game.setDefender(new HumanPlayer()); break;
+			case "AIRandom": 	game.setAttacker(new AIRandom(PlayerEnum.ATTACKER)); break;
+			case "HumanPlayer": game.setDefender(new HumanPlayer(PlayerEnum.DEFENDER)); break;
 			default: break;
 		}
 	}
 
 	public void setDefender(String defender) {
 		switch(defender) {
-			case "AIRandom": 	game.setAttacker(new AIRandom()); break;
-			case "HumanPlayer": game.setDefender(new HumanPlayer()); break;
+			case "AIRandom": 	game.setAttacker(new AIRandom(PlayerEnum.ATTACKER)); break;
+			case "HumanPlayer": game.setDefender(new HumanPlayer(PlayerEnum.DEFENDER)); break;
 			default: break;
 		}
 	}

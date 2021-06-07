@@ -38,7 +38,7 @@ public class MyTools {
          * The Muscovites care more about the piece count difference as the game progresses and less about
          * the king's proximity to a corner.
          */
-        double evaluationValue = 80.0;
+        double evaluationValue = 0.0;
         if (playerEnum == PlayerEnum.DEFENDER) {
             /*
              * The Swedes evaluation function becomes more aggressive as the game progresses in terms of:

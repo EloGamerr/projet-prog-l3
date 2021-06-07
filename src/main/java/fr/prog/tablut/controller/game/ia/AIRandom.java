@@ -1,6 +1,7 @@
 package fr.prog.tablut.controller.game.ia;
 
 import fr.prog.tablut.model.game.Game;
+import fr.prog.tablut.model.game.player.PlayerEnum;
 import fr.prog.tablut.structures.Couple;
 
 import java.util.List;
@@ -10,7 +11,8 @@ import java.util.Random;
 public class AIRandom extends AIPlayer {
     private Random random;
 
-    public AIRandom() {
+    public AIRandom(PlayerEnum playerEnum) {
+        super(playerEnum);
         this.random = new Random();
     }
 

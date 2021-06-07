@@ -1,5 +1,6 @@
 package fr.prog.tablut.controller.game.ia;
 
+import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.Movement;
 import fr.prog.tablut.model.game.player.PlayerEnum;
@@ -8,6 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IAMedium extends AIPlayer {
+	public IAMedium(PlayerEnum playerEnum) {
+		super(playerEnum);
+	}
+
 	@Override
 	public String toString() {
 		return "AIMedium";
@@ -48,16 +53,16 @@ public class IAMedium extends AIPlayer {
 		for (Movement curMove: moves) {
 
 			// Evaluating a move to depth 3 takes up to 60ms in most cases, thus if we reach 1940ms, return the best move found thus far
-			if (System.currentTimeMillis() - moveStartTime > 1940) {
+			/*if (System.currentTimeMillis() - moveStartTime > 1940) {
 				return moves.get(getHighestValueMove(moveValue));
-			}
+			}*/
 
 			// Clone the board state and apply the move to obtain the new game state and evaluate it using minimax
 			Simulation clonedBoardState = (Simulation) boardState.clone();
 			clonedBoardState.move(curMove.fromL, curMove.fromC, curMove.toL, curMove.toC); // apply the operator o and obtain the new game state s.
 
 			// Shortcut which exits if we find a winning move.
-			if (clonedBoardState.getWinner() == PlayerEnum.DEFENDER) {
+			if (clonedBoardState.getWinner() == this.getPlayerEnum()) {
 				return curMove;
 			}
 
@@ -98,24 +103,27 @@ public class IAMedium extends AIPlayer {
 		// if isTerminal(s), return Utility(s) based on board state
 		if (boardState.isWon()) {
 			PlayerEnum winner = boardState.getWinner();
-			if (winner == PlayerEnum.DEFENDER) {
+			if (winner == this.getPlayerEnum()) {
 				return 50000;
-			} else if (winner == PlayerEnum.DEFENDER.getOpponent()) {
+			} else if (winner == this.getPlayerEnum().getOpponent()) {
 				return -50000;
 			} else {
 				// In the case of a draw we return 0 because we'll have reached 100 moves and all other leaves will either be win, loss, or draw
 				return 0;
 			}
 		} else if (depth == maxDepth) { // If we've reached the maximum decided depth, evaluate and return this value
-			return MyTools.evaluation(boardState, PlayerEnum.DEFENDER);
+
+			//System.out.println("test3");
+			return MyTools.evaluation(boardState, this.getPlayerEnum());
 		} else { // Otherwise, continue to generate and explore the search tree
 			List<Simulation> successors = getSuccessors(boardState);
 
-			if (PlayerEnum.DEFENDER == boardState.getPlayingPlayerEnum()) { // if Max player is to move in s, return maxs’ Value(s’).
+			if (this.getPlayerEnum() == boardState.getPlayingPlayerEnum()) { // if Max player is to move in s, return maxs’ Value(s’).
 				for (Simulation sucState: successors) { // for each state s’ in Successors(s)
 					// let ? = max { ?, MinValues(s’,?,?) }.
 					alpha = Math.max(alpha, minimaxValue(sucState, alpha, beta, depth + 1, maxDepth)); // let Value(s’) = MinimaxValue(s’)
 					if (alpha >= beta) { // if ? ? ?, return ?.
+						//System.out.println("test");
 						return beta;
 					}
 				}
@@ -127,6 +135,7 @@ public class IAMedium extends AIPlayer {
 					// let ? = min { ?, MinValues(s’,?,?) }.
 					beta = Math.min(beta, minimaxValue(sucState, alpha, beta, depth + 1, maxDepth)); // let Value(s’) = MinimaxValue(s’)
 					if (alpha >= beta) { // if ? ? ?, return ?.
+						//System.out.println("test2 " + alpha + " " + beta);
 						return alpha;
 					}
 				}
@@ -134,6 +143,38 @@ public class IAMedium extends AIPlayer {
 				return beta; //return ?.
 			}
 		}
+	}
+
+	private void printBoard(CellContent[][] grid) {
+		for (CellContent[] linCellContents : grid) {
+			System.out.print("|");
+			for (CellContent cellContent : linCellContents) {
+				switch (cellContent) {
+					case EMPTY:
+						System.out.print("   |");
+						break;
+					case ATTACK_TOWER:
+						System.out.print(" N |");
+						break;
+					case DEFENSE_TOWER:
+						System.out.print(" B |");
+						break;
+					case KING:
+						System.out.print(" K |");
+						break;
+					case GATE:
+						System.out.print(" X |");
+						break;
+					case KINGPLACE:
+						System.out.print(" P |");
+						break;
+					default:
+						break;
+				}
+			}
+			System.out.println("");
+		}
+		System.out.flush();
 	}
 
 	/**
@@ -159,7 +200,7 @@ public class IAMedium extends AIPlayer {
 	 */
 	public double basicEvaluation(Simulation boardState) {
 		// Calculate the difference between the player's pieces and the opponent's pieces
-		double pieceDifference = (double) (boardState.getPlayer(PlayerEnum.DEFENDER).getOwnedCells().size() - boardState.getPlayer(PlayerEnum.DEFENDER.getOpponent()).getOwnedCells().size());
+		double pieceDifference = (double) (boardState.getPlayer(this.getPlayerEnum()).getOwnedCells().size() - boardState.getPlayer(this.getPlayerEnum().getOpponent()).getOwnedCells().size());
 
 		return pieceDifference;
 	}
