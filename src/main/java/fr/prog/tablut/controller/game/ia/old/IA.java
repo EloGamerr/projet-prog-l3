@@ -1,8 +1,8 @@
-package fr.prog.tablut.controller.game.ia;
+package fr.prog.tablut.controller.game.ia.old;
 
-import fr.prog.tablut.controller.game.Elagage;
-import fr.prog.tablut.controller.game.Simulation;
-import fr.prog.tablut.controller.game.ia.Heuristique.Heuristique;
+import fr.prog.tablut.controller.game.ia.old.Elagage;
+import fr.prog.tablut.controller.game.ia.old.Simulation;
+import fr.prog.tablut.controller.game.ia.old.Heuristique.Heuristique;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.Movement;
 import fr.prog.tablut.model.game.player.Player;

@@ -1,4 +1,4 @@
-package fr.prog.tablut.controller.game.ia.Heuristique;
+package fr.prog.tablut.controller.game.ia.old.Heuristique;
 
 import java.util.Random;
 

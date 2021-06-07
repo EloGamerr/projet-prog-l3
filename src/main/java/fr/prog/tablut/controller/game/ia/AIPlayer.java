@@ -9,7 +9,6 @@ import fr.prog.tablut.model.game.player.PlayerEnum;
 import fr.prog.tablut.structures.Couple;
 import fr.prog.tablut.structures.Possibility;
 
-@Deprecated
 public abstract class AIPlayer extends Player {	
 	/**
 	 * 

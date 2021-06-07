@@ -236,23 +236,23 @@ public class Game {
 	 * - Pawns can't go on a cell which is already occupied
 	 * @return True if the pawn can't access to the cell, otherwise, a couple of the cell coord is added to the param accessibleCells and false is returned
 	 */
-	private boolean cantAccess(int fromL, int fromC, int toL, int toC, List<Couple<Integer, Integer>> accessibleCells) {
+	private boolean cantAccess(int fromL, int fromC, int toL, int toC, List<Movement> moves) {
 		CellContent fromCellContent = getGrid()[fromL][fromC];
 		CellContent toCellContent = getGrid()[toL][toC];
-		
+
 		if(toCellContent == CellContent.GATE || (isTheKingPlace(toC, toL) && toCellContent == CellContent.EMPTY)) {
 			if(fromCellContent == CellContent.KING) {
-				accessibleCells.add(new Couple<Integer, Integer>(toL, toC));
+				moves.add(new Movement(fromL, fromC, toL, toC));
 			}
 
 			return false;
 		}
-		
+
 		if(toCellContent != CellContent.EMPTY)
 			return true;
-		
-		accessibleCells.add(new Couple<Integer, Integer>(toL, toC));
-		
+
+		moves.add(new Movement(fromL, fromC, toL, toC));
+
 		return false;
 	}
 
@@ -341,7 +341,7 @@ public class Game {
 	public PlayerEnum getWinner() {
 		return winner;
 	}
-	
+
 	public int getRowAmout() {
 		return this.rowAmount;
 	}
@@ -373,7 +373,11 @@ public class Game {
 	public Player getPlayingPlayer() {
 		return this.getPlayingPlayerEnum() == PlayerEnum.ATTACKER ? attacker : defender;
 	}
-	
+
+	public Player getPlayer(PlayerEnum playerEnum) {
+		return playerEnum == PlayerEnum.ATTACKER ? attacker : defender;
+	}
+
 	public Plays getPlays() {
 		return plays;
 	}
@@ -397,23 +401,47 @@ public class Game {
 	public List<Couple<Integer, Integer>> getAccessibleCells(int fromL, int fromC) {
 		List<Couple<Integer, Integer>> accessibleCells = new ArrayList<>();
 
-		for(int toL = fromL-1 ; toL >= 0 ; toL--) {
-            if(cantAccess(fromL, fromC, toL, fromC , accessibleCells)) break;
-        }
-
-        for(int toL = fromL+1 ; toL < rowAmount ; toL++) {
-            if(cantAccess(fromL, fromC, toL, fromC, accessibleCells)) break;
-        }
-
-        for(int toC = fromC-1 ; toC >= 0 ; toC--) {
-            if(cantAccess(fromL, fromC, fromL, toC, accessibleCells)) break;
-        }
-		
-        for(int toC = fromC+1 ; toC < colAmount ; toC++) {
-            if(cantAccess(fromL, fromC, fromL, toC, accessibleCells)) break;
-        }
+		for(Movement movement : getAllPossibleMovesForPosition(fromL, fromC)) {
+			accessibleCells.add(new Couple<>(movement.toL, movement.toC));
+		}
 
 		return accessibleCells;
+	}
+
+	public List<Movement> getAllPossibleMoves() {
+		return getAllPossibleMoves(getPlayingPlayer());
+	}
+
+	public List<Movement> getAllPossibleMoves(Player player) {
+		List<Movement> moves = new ArrayList<>();
+
+		for(Couple<Integer, Integer> cell : player.getOwnedCells()) {
+			moves.addAll(this.getAllPossibleMovesForPosition(cell.getFirst(), cell.getSecond()));
+		}
+
+		return moves;
+	}
+
+	public List<Movement> getAllPossibleMovesForPosition(int fromL, int fromC) {
+		List<Movement> moves = new ArrayList<>();
+
+		for(int toL = fromL-1 ; toL >= 0 ; toL--) {
+			if(cantAccess(fromL, fromC, toL, fromC , moves)) break;
+		}
+
+		for(int toL = fromL+1 ; toL < rowAmount ; toL++) {
+			if(cantAccess(fromL, fromC, toL, fromC, moves)) break;
+		}
+
+		for(int toC = fromC-1 ; toC >= 0 ; toC--) {
+			if(cantAccess(fromL, fromC, fromL, toC, moves)) break;
+		}
+
+		for(int toC = fromC+1 ; toC < colAmount ; toC++) {
+			if(cantAccess(fromL, fromC, fromL, toC, moves)) break;
+		}
+
+		return moves;
 	}
 
 	/**

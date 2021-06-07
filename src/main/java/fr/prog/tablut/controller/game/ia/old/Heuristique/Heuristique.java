@@ -1,4 +1,4 @@
-package fr.prog.tablut.controller.game.ia.Heuristique;
+package fr.prog.tablut.controller.game.ia.old.Heuristique;
 
 import fr.prog.tablut.model.game.CellContent;
 
