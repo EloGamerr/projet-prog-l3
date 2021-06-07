@@ -92,7 +92,7 @@ public class GamePage extends Page {
         centerSide.getBoard().addMouseListener(gameMouseAdaptator);
         centerSide.getBoard().addMouseMotionListener(gameMouseAdaptator);
 
-        Timer time = new Timer(1, new GameTimeAdaptator(gameController));
+        Timer time = new Timer(10, new GameTimeAdaptator(gameController));
         time.start();
 
         addKeyListener(new GameKeyAdaptator(gameController));

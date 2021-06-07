@@ -1,10 +1,19 @@
 package fr.prog.tablut.view.pages.help;
 
+import java.awt.BorderLayout;
+
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
 import fr.prog.tablut.model.window.WindowConfig;
 import fr.prog.tablut.model.window.PageName;
 import fr.prog.tablut.view.Page;
 import fr.prog.tablut.view.components.BottomButtonPanel;
 import fr.prog.tablut.view.components.NavPage;
+import fr.prog.tablut.view.components.generic.GenericLabel;
+import fr.prog.tablut.view.components.generic.GenericObjectStyle;
+import fr.prog.tablut.view.components.generic.GenericPanel;
 
 /**
  * The Help page. Extends Page class.
@@ -13,6 +22,7 @@ import fr.prog.tablut.view.components.NavPage;
  */
 public class HelpPage extends Page {
 	BottomButtonPanel bbp;
+    GenericPanel rules;
 
 	/**
 	 * Creates a help page.
@@ -26,11 +36,18 @@ public class HelpPage extends Page {
 
 		windowName = PageName.HelpPage;
 
+        createRules();
+
 		bbp = new BottomButtonPanel(pageBack, "Retour");
 
 		NavPage page = new NavPage(bbp);
+
+        GenericPanel pageContent = new GenericPanel(new BorderLayout());
 		
-        page.setContent(new HelpTable());
+        pageContent.add(rules, BorderLayout.NORTH);
+        pageContent.add(new HelpTable(), BorderLayout.CENTER);
+
+        page.setContent(pageContent);
 
 		add(page);
 	}
@@ -38,4 +55,20 @@ public class HelpPage extends Page {
 	public void setBackPage(PageName pageBack) {
 		bbp.setFirstButtonHref(pageBack);
 	}
+
+    private void createRules() {
+        rules = new GenericPanel();
+
+        GenericLabel text = new GenericLabel(
+            "<html>"
+            + "<p>Il y a 2 camps : l'attaquant, et le défenseur.</p><br>"
+            + "<p>- Le défenseur doit faire échapper son roi dans un coin du plateau,</p>"
+            + "<p>- l'attaquant doit capturer le roi en l'entourant avec 4 de ses pièces.</p><br>"
+            + "<p>Chaque camp peut détruire une pièce en l'entourant de deux pièces.</p>" +
+            "</html>"
+        , 12);
+
+        rules.setBorder(new EmptyBorder(80, 0, 0, 0));
+        rules.add(text);
+    }
 }
