@@ -211,15 +211,44 @@ public class Game {
 		Play play = this.getPlays().redo_move();
 
 		if(play != null) {
-			for(Map.Entry<Point, CellContent> entry : play.getModifiedNewCellContents().entrySet()) {
-				this.setContent(entry.getValue(), entry.getKey().x, entry.getKey().y);
+			// Handle redo differently if it is Human VS AI
+			if(PlayerTypeEnum.getFromPlayer(this.getAttacker()).isAI() != PlayerTypeEnum.getFromPlayer(this.getDefender()).isAI()) {
+				// We can't redo when the AI is playing in a game Human VS AI
+				if(!PlayerTypeEnum.getFromPlayer(this.getPlayingPlayer()).isAI()) {
+					Play play2 = this.getPlays().redo_move();
+
+					// We redo twice if it's Human VS AI
+					for(Map.Entry<Point, CellContent> entry : play.getModifiedNewCellContents().entrySet()) {
+						this.setContent(entry.getValue(), entry.getKey().x, entry.getKey().y);
+					}
+
+					if(play2 != null) {
+						for(Map.Entry<Point, CellContent> entry : play2.getModifiedNewCellContents().entrySet()) {
+							this.setContent(entry.getValue(), entry.getKey().x, entry.getKey().y);
+						}
+					}
+					else {
+						this.playingPlayerEnum = this.getPlayingPlayerEnum().getOpponent();
+					}
+
+					return true;
+				}
+				else {
+					// Undo the move because the redo cannot be done
+					this.getPlays().undo_move();
+				}
+			}
+			else {
+				for(Map.Entry<Point, CellContent> entry : play.getModifiedNewCellContents().entrySet()) {
+					this.setContent(entry.getValue(), entry.getKey().x, entry.getKey().y);
+				}
+
+				this.playingPlayerEnum = this.getPlayingPlayerEnum().getOpponent();
+				if(PlayerTypeEnum.getFromPlayer(this.getAttacker()).isAI() && PlayerTypeEnum.getFromPlayer(this.getDefender()).isAI())
+					setPaused(true);
+				return true;
 			}
 
-			this.playingPlayerEnum = this.getPlayingPlayerEnum().getOpponent();
-			if(PlayerTypeEnum.getFromPlayer(this.getAttacker()).isAI() && PlayerTypeEnum.getFromPlayer(this.getDefender()).isAI())
-				setPaused(true);
-
-			return true;
 		}
 
 		return false;
