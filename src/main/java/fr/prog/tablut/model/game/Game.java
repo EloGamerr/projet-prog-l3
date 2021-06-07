@@ -11,6 +11,7 @@ import fr.prog.tablut.model.game.player.Player;
 import fr.prog.tablut.model.game.player.PlayerEnum;
 import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 import fr.prog.tablut.model.saver.GameLoader;
+import fr.prog.tablut.structures.Couple;
 
 public class Game {
 	private static Game instance = null;
@@ -65,8 +66,8 @@ public class Game {
 	 * Start a new game
 	 */
 	public void start(PlayerTypeEnum attacker, PlayerTypeEnum defender, String attackerName, String defenderName) {
-		this.attacker = attacker.createPlayer();
-		this.defender = defender.createPlayer();
+		this.attacker = attacker.createPlayer(PlayerEnum.ATTACKER);
+		this.defender = defender.createPlayer(PlayerEnum.DEFENDER);
 		setNames(attacker, defender, attackerName, defenderName);
 		setPlayingPlayer(PlayerEnum.ATTACKER);
 		this.move = new PawnTaker(this);
@@ -351,23 +352,23 @@ public class Game {
 	 * - Pawns can't go on a cell which is already occupied
 	 * @return True if the pawn can't access to the cell, otherwise, a couple of the cell coord is added to the param accessibleCells and false is returned
 	 */
-	private boolean cantAccess(int fromC, int fromL, int toC, int toL, List<Point> accessibleCells) {
-		CellContent fromCellContent = getGrid()[fromC][fromL];
-		CellContent toCellContent = getGrid()[toC][toL];
-		
+	private boolean cantAccess(int fromL, int fromC, int toL, int toC, List<Movement> moves) {
+		CellContent fromCellContent = getGrid()[fromL][fromC];
+		CellContent toCellContent = getGrid()[toL][toC];
+
 		if(toCellContent == CellContent.GATE || (isTheKingPlace(toC, toL) && toCellContent == CellContent.EMPTY)) {
 			if(fromCellContent == CellContent.KING) {
-				accessibleCells.add(new Point(toC, toL));
+				moves.add(new Movement(fromL, fromC, toL, toC));
 			}
 
 			return false;
 		}
-		
+
 		if(toCellContent != CellContent.EMPTY)
 			return true;
-		
-		accessibleCells.add(new Point(toC, toL));
-		
+
+		moves.add(new Movement(fromL, fromC, toL, toC));
+
 		return false;
 	}
 
@@ -407,7 +408,7 @@ public class Game {
 	 * @return True if the cell has an empty cell on her row or on her column
 	 */
 	public boolean isNotBlocked(int fromC, int fromL) {
-		List<Point> accessibleCells = new ArrayList<>();
+		List<Movement> accessibleCells = new ArrayList<>();
 
 		for(int toL = fromL-1 ; toL >= 0 ; toL--) {
 			if(cantAccess(fromC, fromL, fromC, toL , accessibleCells)) break;
@@ -545,7 +546,11 @@ public class Game {
 	public Player getPlayingPlayer() {
 		return this.getPlayingPlayerEnum() == PlayerEnum.ATTACKER ? attacker : defender;
 	}
-	
+
+	public Player getPlayer(PlayerEnum playerEnum) {
+		return playerEnum == PlayerEnum.ATTACKER ? attacker : defender;
+	}
+
 	public Plays getPlays() {
 		return plays;
 	}
@@ -576,31 +581,58 @@ public class Game {
 		return attackerName;
 	}
 
-	
 	public CellContent getCellContent(int c, int l) {
 		return this.getGrid()[c][l];
 	}
-	
-	public List<Point> getAccessibleCells(int fromC, int fromL) {
+
+	/**
+	 * This method will be removed in future commits
+	 */
+	@Deprecated
+	public List<Point> getAccessibleCells(int fromL, int fromC) {
 		List<Point> accessibleCells = new ArrayList<>();
 
-		for(int toL = fromL-1 ; toL >= 0 ; toL--) {
-            if(cantAccess(fromC, fromL, fromC, toL , accessibleCells)) break;
-        }
-
-        for(int toL = fromL+1 ; toL < rowAmount ; toL++) {
-            if(cantAccess(fromC, fromL, fromC, toL, accessibleCells)) break;
-        }
-
-        for(int toC = fromC-1 ; toC >= 0 ; toC--) {
-            if(cantAccess(fromC, fromL, toC, fromL, accessibleCells)) break;
-        }
-		
-        for(int toC = fromC+1 ; toC < colAmount ; toC++) {
-            if(cantAccess(fromC, fromL, toC, fromL, accessibleCells)) break;
-        }
+		for(Movement movement : getAllPossibleMovesForPosition(fromL, fromC)) {
+			accessibleCells.add(new Point(movement.toL, movement.toC));
+		}
 
 		return accessibleCells;
+	}
+
+	public List<Movement> getAllPossibleMoves() {
+		return getAllPossibleMoves(getPlayingPlayer());
+	}
+
+	public List<Movement> getAllPossibleMoves(Player player) {
+		List<Movement> moves = new ArrayList<>();
+
+		for(Point cell : player.getOwnedCells()) {
+			moves.addAll(this.getAllPossibleMovesForPosition(cell.x, cell.y));
+		}
+
+		return moves;
+	}
+
+	public List<Movement> getAllPossibleMovesForPosition(int fromL, int fromC) {
+		List<Movement> moves = new ArrayList<>();
+
+		for(int toL = fromL-1 ; toL >= 0 ; toL--) {
+			if(cantAccess(fromL, fromC, toL, fromC , moves)) break;
+		}
+
+		for(int toL = fromL+1 ; toL < rowAmount ; toL++) {
+			if(cantAccess(fromL, fromC, toL, fromC, moves)) break;
+		}
+
+		for(int toC = fromC-1 ; toC >= 0 ; toC--) {
+			if(cantAccess(fromL, fromC, fromL, toC, moves)) break;
+		}
+
+		for(int toC = fromC+1 ; toC < colAmount ; toC++) {
+			if(cantAccess(fromL, fromC, fromL, toC, moves)) break;
+		}
+
+		return moves;
 	}
 
 	/**
@@ -700,13 +732,13 @@ public class Game {
 	}
 	
 	public void setNames(PlayerTypeEnum attacker, PlayerTypeEnum defender, String attackerName, String defenderName) {
-		if(attacker.equals(PlayerTypeEnum.EASY_AI))
-			setAttackerName(PlayerTypeEnum.EASY_AI.toString());
+		if(attacker.isAI())
+			setAttackerName(attacker.toString());
 		else
 			setAttackerName(attackerName);
-			
-		if(defender == PlayerTypeEnum.EASY_AI)
-			setDefenderName(PlayerTypeEnum.EASY_AI.toString());
+
+		if(defender.isAI())
+			setDefenderName(defender.toString());
 		else
 			setDefenderName(defenderName);
 	}
@@ -725,5 +757,13 @@ public class Game {
 
 	public int getDuration() {
 		return (int) (System.currentTimeMillis()-getStartTime());
+	}
+
+	public void setKingL(int kingL) {
+		this.kingL = kingL;
+	}
+
+	public void setKingC(int kingC) {
+		this.kingC = kingC;
 	}
 }

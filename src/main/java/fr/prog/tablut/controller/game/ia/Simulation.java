@@ -1,17 +1,16 @@
 package fr.prog.tablut.controller.game.ia;
 
-import fr.prog.tablut.controller.game.HumanPlayer;
 import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.player.Player;
-import fr.prog.tablut.model.game.player.PlayerEnum;
+import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 
 public class Simulation extends Game implements Cloneable {
 
     public Simulation(Game game) {
         super();
 
-        this.start(new HumanPlayer(PlayerEnum.ATTACKER), new HumanPlayer(PlayerEnum.DEFENDER));
+        this.start(PlayerTypeEnum.HUMAN, PlayerTypeEnum.HUMAN, "", "");
         this.setGrid(copyGrid(game.getGrid()));
         this.setPlayingPlayer(game.getPlayingPlayerEnum());
         this.setWinner(game.getWinner());

@@ -12,12 +12,11 @@ public class AnimationCoup {
 	GamePage view;
 	double progres, vitesseAnim;
 	
-	public AnimationCoup(Play c, GamePage gamePage) {
+	public AnimationCoup(Movement movement, GamePage gamePage) {
 		vitesseAnim = 0.05;
 		this.view = gamePage;
-		mov = c.getMovement();
+		mov = movement;
 	}
-
 
 	public void update_anim() {
 		progres += vitesseAnim;

@@ -19,9 +19,4 @@ public class AIEasy extends AIMinMax {
         // Plus la différence est grande, meilleur est le coup
         return difference;
     }
-
-     @Override
-    public String toString() {
-    	return "AIEasy";
-    }
 }

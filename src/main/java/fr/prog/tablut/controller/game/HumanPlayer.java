@@ -5,13 +5,18 @@ import java.awt.Point;
 import fr.prog.tablut.controller.game.gameController.GameControllerHuman;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.player.Player;
+import fr.prog.tablut.model.game.player.PlayerEnum;
 import fr.prog.tablut.view.pages.game.GamePage;
 
 public class HumanPlayer extends Player {
     private int row;
     private int col;
     private GameControllerHuman gameControllerHuman;
-    
+
+    public HumanPlayer(PlayerEnum playerEnum) {
+        super(playerEnum);
+    }
+
     public void updateState(int col, int row, GameControllerHuman gameControllerHuman) {
         this.row = row;
         this.col = col;
@@ -33,10 +38,4 @@ public class HumanPlayer extends Player {
         
         return false;
     }
-    
-
-    public String toString() {
-    	return "HumanPlayer";
-    }
-    
 }

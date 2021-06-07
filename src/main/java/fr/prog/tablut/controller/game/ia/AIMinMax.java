@@ -4,7 +4,9 @@ import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.Movement;
 import fr.prog.tablut.model.game.player.PlayerEnum;
+import fr.prog.tablut.view.pages.game.GamePage;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,10 +16,12 @@ public abstract class AIMinMax extends AIPlayer {
     }
 
     @Override
-    public boolean play(Game game) {
-        Simulation simulation = new Simulation(game);
-        Movement movement = getBestMovement(simulation);
-        game.move(movement.getFromL(), movement.getFromC(), movement.getToL(), movement.getToC());
+    public boolean play(Game game, GamePage gamePage) {
+        if(super.play(game, gamePage)) {
+            Simulation simulation = new Simulation(game);
+            Movement movement = getBestMovement(simulation);
+            updateAnim(new Point(movement.fromC, movement.fromL), new Point(movement.toC, movement.toL), gamePage);
+        }
 
         return true;
     }
@@ -129,42 +133,6 @@ public abstract class AIMinMax extends AIPlayer {
         Simulation newSimulation = (Simulation) simulation.clone(); // On clone la simulation pour ne pas perdre celle passée en paramètre
         newSimulation.move(movement.fromL, movement.fromC, movement.toL, movement.toC); // Obtention du nouvel état de la simulation copiée
         return newSimulation;
-    }
-
-    /**
-     * Debug method, will be removed in future commits
-     */
-    @Deprecated
-    private void printBoard(CellContent[][] grid) {
-        for (CellContent[] linCellContents : grid) {
-            System.out.print("|");
-            for (CellContent cellContent : linCellContents) {
-                switch (cellContent) {
-                    case EMPTY:
-                        System.out.print("   |");
-                        break;
-                    case ATTACK_TOWER:
-                        System.out.print(" N |");
-                        break;
-                    case DEFENSE_TOWER:
-                        System.out.print(" B |");
-                        break;
-                    case KING:
-                        System.out.print(" K |");
-                        break;
-                    case GATE:
-                        System.out.print(" X |");
-                        break;
-                    case KINGPLACE:
-                        System.out.print(" P |");
-                        break;
-                    default:
-                        break;
-                }
-            }
-            System.out.println("");
-        }
-        System.out.flush();
     }
 
     public abstract double evaluation(Simulation simulation, PlayerEnum playerEnum);

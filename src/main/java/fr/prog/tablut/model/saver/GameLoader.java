@@ -131,7 +131,7 @@ public class GameLoader {
 		PlayerTypeEnum[] values = PlayerTypeEnum.values();
 
 		if(values.length == 0 || attacker < 0 || attacker >= values.length) {
-			game.setAttacker(PlayerTypeEnum.getDefaultPlayer());
+			game.setAttacker(PlayerTypeEnum.getDefaultPlayer(PlayerEnum.ATTACKER));
 			return null;
 		}
 
@@ -142,7 +142,7 @@ public class GameLoader {
 		PlayerTypeEnum[] values = PlayerTypeEnum.values();
 
 		if(values.length == 0 || defender < 0 || defender >= values.length) {
-			game.setDefender(PlayerTypeEnum.getDefaultPlayer());
+			game.setDefender(PlayerTypeEnum.getDefaultPlayer(PlayerEnum.DEFENDER));
 			return null;
 		}
 

@@ -3,9 +3,8 @@ package fr.prog.tablut.controller.game.ia;
 import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Movement;
 import fr.prog.tablut.model.game.player.PlayerEnum;
-import fr.prog.tablut.structures.Couple;
 
-import java.util.ArrayList;
+import java.awt.Point;
 import java.util.Arrays;
 import java.util.List;
 
@@ -135,10 +134,10 @@ public class AIMedium extends AIMinMax {
       * @return 
       */
     public double kingMovesToCornerValue(Simulation simulation) {
-        Couple<Integer, Integer> kingPosition = new Couple<>(simulation.getKingL(), simulation.getKingC());
+        Point kingPosition = new Point(simulation.getKingC(), simulation.getKingL());
 
         // Retrieves all legal moves for the king based on its current position
-        List<Movement> kingMoves = simulation.getAllPossibleMovesForPosition(kingPosition.getFirst(), kingPosition.getSecond());
+        List<Movement> kingMoves = simulation.getAllPossibleMovesForPosition(kingPosition.x, kingPosition.y);
 
         double moveDistanceValue = 0.0;
         if (!kingMoves.isEmpty()) { // Si le roi ne peut pas bouger pas besoin  de faire le reste
@@ -148,7 +147,7 @@ public class AIMedium extends AIMinMax {
 
             // Calcul du nombre de coup minimal pour chaques coins
             int cornerIdx = 0;
-            for (Couple<Integer, Integer> corner : Arrays.asList(new Couple<>(0, 0), new Couple<>(0, 8), new Couple<>(8, 0), new Couple<>(8, 8))) {
+            for (Point corner : Arrays.asList(new Point(0, 0), new Point(0, 8), new Point(8, 0), new Point(8, 8))) {
                 distances[cornerIdx] = calcMinMovesToCorner(simulation, corner, 1, kingPosition);
                 cornerIdx++;
             }
@@ -170,11 +169,11 @@ public class AIMedium extends AIMinMax {
     }
     /**
      * 
-     * @param c la position de la case
+     * @param p la position de la case
      * @return si la case est un angl
      */
-    public boolean isCorner(Couple<Integer, Integer> c) {
-        return isCorner(c.getFirst(), c.getSecond());
+    public boolean isCorner(Point p) {
+        return isCorner(p.x, p.y);
     }
 
     public boolean isCorner(int i, int j) {
@@ -203,14 +202,14 @@ public class AIMedium extends AIMinMax {
       * @param kingPosition
       * @return
       */
-    public int calcMinMovesToCorner(Simulation simulation, Couple<Integer, Integer> corner, int moveCt, Couple<Integer, Integer>kingPosition) {
+    public int calcMinMovesToCorner(Simulation simulation, Point corner, int moveCt, Point kingPosition) {
         // Termination condition - either we're in a corner or it takes too many moves and thus becomes irrelevant
         // Si on est déjà dans un coin ou on essaye de regarder à plus de deux coup on arrète
         if (moveCt == 3 || isCorner(kingPosition)) {
             return moveCt;
         }
 
-        List<Movement> kingMoves = simulation.getAllPossibleMovesForPosition(kingPosition.getFirst(), kingPosition.getSecond());
+        List<Movement> kingMoves = simulation.getAllPossibleMovesForPosition(kingPosition.x, kingPosition.y);
 
         // We'll store the counts for each move here
         // Création d'un tableau qui permetra de stocker les nombres de coup pour chaques déplacement
@@ -221,8 +220,8 @@ public class AIMedium extends AIMinMax {
         int moveIdx = 0;
         for (Movement move : kingMoves) {
             // If move brings you closer to the corner, attempt it
-            if (distance(new Couple<>(move.getFromL(), move.getFromC()), corner) > distance(new Couple<>(move.getToL(), move.getToC()), corner)) {
-                moveCounts[moveIdx++] = calcMinMovesToCorner(simulation, corner, moveCt + 1, new Couple<>(move.getToL(), move.getToC()));
+            if (distance(new Point(move.getFromL(), move.getFromC()), corner) > distance(new Point(move.getToL(), move.getToC()), corner)) {
+                moveCounts[moveIdx++] = calcMinMovesToCorner(simulation, corner, moveCt + 1, new Point(move.getToL(), move.getToC()));
             }
         }
 
@@ -242,16 +241,11 @@ public class AIMedium extends AIMinMax {
 
     /**
      * 
-     * @param c1 Emplacement de la première case
-     * @param c2 Emplacement de la deuxième case
+     * @param p1 Emplacement de la première case
+     * @param p2 Emplacement de la deuxième case
      * @return la distance entre les deux cases sous forme d'entier
      */
-    private int distance(Couple<Integer, Integer> c1, Couple<Integer, Integer> c2) {
-        return Math.abs(c1.getFirst() - c2.getFirst()) + Math.abs(c1.getSecond() - c2.getSecond());
-    }
-
-     @Override
-    public String toString() {
-    	return "AIMedium";
+    private int distance(Point p1, Point p2) {
+        return Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y);
     }
 }
