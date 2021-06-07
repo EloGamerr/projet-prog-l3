@@ -71,7 +71,7 @@ public class IAMedium extends AIPlayer {
 			}
 
 			// start with alpha & beta = -10K/10K and initial depth 1
-			moveValue[curMoveIdx] = minimaxValue(clonedBoardState, -10000, 10000, 1, maxDepth); // Value[o] = MinimaxValue(s)
+			moveValue[curMoveIdx] = minimaxValue(clonedBoardState, Integer.MIN_VALUE, Integer.MAX_VALUE, 1, maxDepth); // Value[o] = MinimaxValue(s)
 			curMoveIdx++;
 		}
 
@@ -114,13 +114,11 @@ public class IAMedium extends AIPlayer {
 		if (boardState.isWon()) {
 			PlayerEnum winner = boardState.getWinner();
 			if (winner == this.getPlayerEnum()) {
-				return 50000;
+				return Integer.MAX_VALUE;
 			} else if (winner == this.getPlayerEnum().getOpponent()) {
-				return -50000;
-			} else {
-				// In the case of a draw we return 0 because we'll have reached 100 moves and all other leaves will either be win, loss, or draw
-				return 0;
+				return Integer.MIN_VALUE;
 			}
+			return 0; // Should not happened
 		} else if (depth == maxDepth) { // If we've reached the maximum decided depth, evaluate and return this value
 
 			//System.out.println("test3");
