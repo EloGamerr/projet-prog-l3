@@ -22,8 +22,8 @@ public class CreateGameAdaptator  extends ActionAdaptator<GenericButton> {
 		String attackerName = gameSettings.getAttaquant().getUsernameInput().getText();
 		String defenderName = gameSettings.getDefender().getUsernameInput().getText();
 
-        if(attackerName.replace(" ", "").length() == 0) attackerName = "Player 1";
-        if(defenderName.replace(" ", "").length() == 0) defenderName = "Player 2";
+        if(attackerName.replace(" ", "").length() == 0) attackerName = "Joueur 1";
+        if(defenderName.replace(" ", "").length() == 0) defenderName = "Joueur 2";
 		
 		Game.getInstance().start(attacker,defender, attackerName, defenderName);
 	}

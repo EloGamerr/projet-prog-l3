@@ -139,7 +139,7 @@ public class GamePage extends Page {
         //
 
         // NAV PAGE
-        winnerPage = new NavPage("Player 1", "a gagn\u00e9", bottomButton);
+        winnerPage = new NavPage("Joueur 1", "a gagn\u00e9", bottomButton);
         winnerPage.setSize(winnerPage.getWidth(), getHeight());
         winnerPage.getTitle().setForeground(GenericObjectStyle.getProp("title.light", "color"));
         winnerPage.getDescription().setForeground(GenericObjectStyle.getProp("label.light", "color"));
