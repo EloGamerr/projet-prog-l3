@@ -20,8 +20,10 @@ public class GameController {
 	}
 	
 	public void click(int col, int row) {
-		if(gameControllerHuman.click(col, row))
+		if(gameControllerHuman.click(col, row)) {
 			postPlay();
+			checkEnd();
+		}
 	}
 
 	public void undoSelect() {
@@ -37,14 +39,22 @@ public class GameController {
 	}
 
 	public void tick() {
-		if(gameControllerAI.tick())
+		if(gameControllerAI.tick()) {
 			postPlay();
+			checkEnd();
+		}
 	}
 	
 	private void postPlay() {
 		gamePage.enableRedoButton(Game.getInstance().hasNextMove());
 		gamePage.enableUndoButton(Game.getInstance().hasPreviousMove());
 		gameControllerHuman.undoSelect(); 
+	}
+
+	private void checkEnd() {
+		if(Game.getInstance().isWon()) {
+			gamePage.announceWinner();
+		}
 	}
 
 	public void restart() {

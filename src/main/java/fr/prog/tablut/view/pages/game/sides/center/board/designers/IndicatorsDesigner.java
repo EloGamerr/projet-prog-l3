@@ -1,6 +1,11 @@
 package fr.prog.tablut.view.pages.game.sides.center.board.designers;
 
+import java.awt.Image;
 import java.awt.Point;
+
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import java.util.List;
 
@@ -11,8 +16,17 @@ import fr.prog.tablut.view.pages.game.sides.center.board.BoardDrawer;
 import fr.prog.tablut.view.pages.game.sides.center.board.GameColors;
 
 public class IndicatorsDesigner extends Designer {
+    private Image throne = null;
+
     public IndicatorsDesigner(BoardDrawer bd) {
         super(bd);
+
+        try {
+            throne = ImageIO.read(ClassLoader.getSystemClassLoader().getResourceAsStream("images/chess/small/throne_small.png"));
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -27,6 +41,8 @@ public class IndicatorsDesigner extends Designer {
         final int x = g.getRealX(0);
         final int y = g.getRealY(0);
 
+
+        g.drawImage(throne, 4, 4, cellSize/2, cellSize/2, true);
         
         if(data.isAnim) {
         	g.setColor(GameColors.FROM_CELL);

@@ -25,6 +25,10 @@ import fr.prog.tablut.view.components.generic.GenericPanel;
 public class NavPage extends GenericPanel {
     protected static Dimension maxDimension;
 
+    private Title title = null;
+    private GenericLabel description = null;
+    private BottomButtonPanel bottomPanel = null;
+
     /**
      * Static method that stores the dimension that the instances of NavPage should take.
      * <p>Normally only called by GlobalWindow once, at initialization or when resizing the window.</p>
@@ -73,7 +77,7 @@ public class NavPage extends GenericPanel {
         setMinimumSize(maxDimension);
 
         if(title != null) {
-            Title Ttitle = new Title(title.toUpperCase(), 70);
+            this.title = new Title(title.toUpperCase(), 70);
 
             GenericPanel gb = new GenericPanel(new GridBagLayout());
             gb.setBorder(new EmptyBorder(50, 0, 0, 0));
@@ -89,18 +93,20 @@ public class NavPage extends GenericPanel {
             gbc.anchor = GridBagConstraints.CENTER;
             gbc.gridy = 1;
 
-            gb.add(Ttitle, gbc);
+            gb.add(this.title, gbc);
 
             // description
             if(description != null) {
-                GenericLabel desc = new GenericLabel(description, 14);
-                desc.setForeground(GenericObjectStyle.getProp("description", "color"));
+                this.description = new GenericLabel(description, 14);
+                this.description.setForeground(GenericObjectStyle.getProp("description", "color"));
                 gbc.gridy = 2;
-                gb.add(desc, gbc);
+                gb.add(this.description, gbc);
             }
 
             add(gb, BorderLayout.NORTH);
         }
+
+        this.bottomPanel = bottomPanel;
 
         // bottom button panel
 		add(bottomPanel, BorderLayout.SOUTH);
@@ -113,5 +119,17 @@ public class NavPage extends GenericPanel {
      */
     public void setContent(JPanel content) {
         add(content, BorderLayout.CENTER);
+    }
+
+    public Title getTitle() {
+        return title;
+    }
+
+    public GenericLabel getDescription() {
+        return description;
+    }
+
+    public BottomButtonPanel getBottomPanel() {
+        return bottomPanel;
     }
 }

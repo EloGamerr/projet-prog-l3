@@ -83,8 +83,7 @@ public class BottomButtonPanel extends GenericPanel {
      * @param btnTextCancel The label of the first button
      */
     public BottomButtonPanel(PageName href1, PageName href2, String btnTextConfirm, String btnTextCancel) {
-        super();
-		setLayout(new GridBagLayout());
+        super(new GridBagLayout());
 		setBorder(new EmptyBorder(10, 0, 10, 0));
 
 		GridBagConstraints c = new GridBagConstraints();

@@ -12,8 +12,7 @@ public enum CellContent {
 	ATTACK_TOWER("chess/small/black_tower_small.png"),
 	DEFENSE_TOWER("chess/small/white_tower_small.png"),
 	KING("chess/small/king_small.png"),
-	GATE("chess/small/door_small.png"),
-	KINGPLACE("chess/small/king_place_small.png");
+	GATE("chess/small/door_small.png");
 	
 	Image image;
 

@@ -71,6 +71,14 @@ public class Page extends JPanel {
         super.add(backgroundPanel);
     }
 
+    public GenericPanel getForegroundPanel() {
+        return foregroundPanel;
+    }
+
+    public GenericPanel getBackgroundPanel() {
+        return backgroundPanel;
+    }
+
     @Override
     public Component add(Component component) {
         return panel.add(component);

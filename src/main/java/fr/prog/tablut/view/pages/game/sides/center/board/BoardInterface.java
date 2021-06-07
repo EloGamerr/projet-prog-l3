@@ -50,18 +50,15 @@ public class BoardInterface extends GameInterfaceSide {
         boardData.lastMousePosition = boardData.mousePosition;
         boardData.mousePosition = getMousePosition();
 
-        if(boardData.mousePosition == null) {
+        if(boardData.mousePosition == null)
             boardData.hoveringCell = null;
-        } else {
+        else
             boardData.hoveringCell = new Point(getColFromXCoord(boardData.mousePosition.x),getRowFromYCoord(boardData.mousePosition.y));
-        }
         
 
-
-        if(boardData.selectedCell != null) {
+        if(boardData.selectedCell != null)
 			boardData.accessibleCells = Game.getInstance().getAccessibleCells(boardData.selectedCell.x, boardData.selectedCell.y);
-        }
-
+        
         else if(boardData.mousePosition != null && game.getPlayingPlayer() instanceof HumanPlayer) {
 			int col = getColFromXCoord(boardData.mousePosition.x);
 			int row = getRowFromYCoord(boardData.mousePosition.y);
@@ -70,9 +67,8 @@ public class BoardInterface extends GameInterfaceSide {
 				boardData.accessibleCells = game.getAccessibleCells(col, row);
                 boardData.hoveringPossibleMoveCell = new Point(col, row);
             }
-            else {
+            else
                 boardData.hoveringPossibleMoveCell = null;
-            }
         }
     	
         
