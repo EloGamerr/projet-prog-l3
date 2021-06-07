@@ -44,7 +44,7 @@ public class HelpPage extends Page {
 
         GenericPanel pageContent = new GenericPanel(new BorderLayout());
 		
-        pageContent.add(rules, BorderLayout.NORTH);
+        // pageContent.add(rules, BorderLayout.NORTH);
         pageContent.add(new HelpTable(), BorderLayout.CENTER);
 
         page.setContent(pageContent);
@@ -62,9 +62,10 @@ public class HelpPage extends Page {
         GenericLabel text = new GenericLabel(
             "<html>"
             + "<p>Il y a 2 camps : l'attaquant, et le défenseur.</p><br>"
-            + "<p>- Le défenseur doit faire échapper son roi dans un coin du plateau,</p>"
+            + "<p>- Le défenseur doit faire échapper son roi dans un coin du plateau,</p><br>"
             + "<p>- l'attaquant doit capturer le roi en l'entourant avec 4 de ses pièces.</p><br>"
-            + "<p>Chaque camp peut détruire une pièce en l'entourant de deux pièces.</p>" +
+            + "<p>Chaque camp peut détruire une pièce en l'entourant de deux pièces.</p><br>"
+            + "<p>Une pièce peut se déplacer horizontalement ou verticalement.</p>" +
             "</html>"
         , 12);
 
