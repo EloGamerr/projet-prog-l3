@@ -11,7 +11,6 @@ import fr.prog.tablut.model.game.player.Player;
 import fr.prog.tablut.model.game.player.PlayerEnum;
 import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 import fr.prog.tablut.model.saver.GameLoader;
-import fr.prog.tablut.structures.Couple;
 
 public class Game {
 	private static Game instance = null;
@@ -352,13 +351,13 @@ public class Game {
 	 * - Pawns can't go on a cell which is already occupied
 	 * @return True if the pawn can't access to the cell, otherwise, a couple of the cell coord is added to the param accessibleCells and false is returned
 	 */
-	private boolean cantAccess(int fromL, int fromC, int toL, int toC, List<Movement> moves) {
-		CellContent fromCellContent = getGrid()[fromL][fromC];
-		CellContent toCellContent = getGrid()[toL][toC];
+	private boolean cantAccess(int fromC, int fromL, int toC, int toL, List<Movement> moves) {
+		CellContent fromCellContent = getGrid()[fromC][fromL];
+		CellContent toCellContent = getGrid()[toC][toL];
 
 		if(toCellContent == CellContent.GATE || (isTheKingPlace(toC, toL) && toCellContent == CellContent.EMPTY)) {
 			if(fromCellContent == CellContent.KING) {
-				moves.add(new Movement(fromL, fromC, toL, toC));
+				moves.add(new Movement(fromC, fromL, toC, toL));
 			}
 
 			return false;
@@ -367,7 +366,7 @@ public class Game {
 		if(toCellContent != CellContent.EMPTY)
 			return true;
 
-		moves.add(new Movement(fromL, fromC, toL, toC));
+		moves.add(new Movement(fromC, fromL, toC, toL));
 
 		return false;
 	}
@@ -589,11 +588,11 @@ public class Game {
 	 * This method will be removed in future commits
 	 */
 	@Deprecated
-	public List<Point> getAccessibleCells(int fromL, int fromC) {
+	public List<Point> getAccessibleCells(int fromC, int fromL) {
 		List<Point> accessibleCells = new ArrayList<>();
 
-		for(Movement movement : getAllPossibleMovesForPosition(fromL, fromC)) {
-			accessibleCells.add(new Point(movement.toL, movement.toC));
+		for(Movement movement : getAllPossibleMovesForPosition(fromC, fromL)) {
+			accessibleCells.add(new Point(movement.toC, movement.toL));
 		}
 
 		return accessibleCells;
@@ -613,23 +612,23 @@ public class Game {
 		return moves;
 	}
 
-	public List<Movement> getAllPossibleMovesForPosition(int fromL, int fromC) {
+	public List<Movement> getAllPossibleMovesForPosition(int fromC, int fromL) {
 		List<Movement> moves = new ArrayList<>();
 
 		for(int toL = fromL-1 ; toL >= 0 ; toL--) {
-			if(cantAccess(fromL, fromC, toL, fromC , moves)) break;
+			if(cantAccess(fromC, fromL, fromC,  toL, moves)) break;
 		}
 
 		for(int toL = fromL+1 ; toL < rowAmount ; toL++) {
-			if(cantAccess(fromL, fromC, toL, fromC, moves)) break;
+			if(cantAccess(fromC, fromL, fromC, toL, moves)) break;
 		}
 
 		for(int toC = fromC-1 ; toC >= 0 ; toC--) {
-			if(cantAccess(fromL, fromC, fromL, toC, moves)) break;
+			if(cantAccess(fromC, fromL, toC, fromL, moves)) break;
 		}
 
 		for(int toC = fromC+1 ; toC < colAmount ; toC++) {
-			if(cantAccess(fromL, fromC, fromL, toC, moves)) break;
+			if(cantAccess(fromC, fromL, toC, fromL, moves)) break;
 		}
 
 		return moves;
