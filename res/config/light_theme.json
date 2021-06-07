@@ -107,20 +107,20 @@
             },
 
             ".green": {
-                "background": [119, 178, 85],
-                "borderColor": [119, 178, 85],
-                "color": [230, 230, 230],
+                "background": [46, 160, 67],
+                "borderColor": [63, 185, 80],
+                "color": [255, 255, 255],
 
                 ":hover": {
-                    "background": [123, 194, 82],
-                    "borderColor": [123, 194, 82],
-                    "color": [230, 230, 230]
+                    "background": [56, 170, 77],
+                    "borderColor": [73, 195, 90],
+                    "color": [255, 255, 255]
                 },
 
                 ":disabled": {
-                    "background": [92, 145, 62],
-                    "borderColor": [92, 145, 62],
-                    "color": [150, 150, 150]
+                    "background": [77, 117, 85],
+                    "borderColor": [77, 117, 85],
+                    "color": [150, 154, 150]
                 }
             },
 
@@ -148,9 +148,9 @@
                 "color": [68, 68, 68],
 
                 ":hover": {
-                    "background": [220,41,30],
-                    "borderColor": [220,41,30],
-                    "color": [240, 240, 240]
+                    "background": [218, 54, 51],
+                    "borderColor": [248, 81, 73],
+                    "color": [255, 255, 255]
                 }
             },
 
@@ -160,9 +160,9 @@
                 "color": [68, 68, 68],
 
                 ":hover": {
-                    "background": [119, 178, 85],
-                    "borderColor": [119, 178, 85],
-                    "color": [240, 240, 240]
+                    "background": [56, 170, 77],
+                    "borderColor": [73, 195, 90],
+                    "color": [255, 255, 255]
                 }
             },
 

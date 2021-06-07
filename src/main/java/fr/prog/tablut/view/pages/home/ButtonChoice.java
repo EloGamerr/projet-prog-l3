@@ -31,7 +31,7 @@ public class ButtonChoice extends GenericPanel {
 		LinkedHashMap<String, PageName> buttons = new LinkedHashMap<String, PageName>() {{
 			put("Nouvelle partie", PageName.NewGamePage);
 			put("Charger partie", PageName.LoadPage);
-			put("R\u00e8gles / Raccourcis", PageName.HelpPage);
+			put("Raccourcis", PageName.HelpPage);
 			put("Quitter", null);
 		}};
 
