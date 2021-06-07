@@ -66,11 +66,6 @@ public class IAMedium extends AIPlayer {
 		int curMoveIdx = 0;
 		for (Movement curMove: moves) {
 
-			// Evaluating a move to depth 3 takes up to 60ms in most cases, thus if we reach 1940ms, return the best move found thus far
-			/*if (System.currentTimeMillis() - moveStartTime > 1940) {
-				return moves.get(getHighestValueMove(moveValue));
-			}*/
-
 			// Clone the board state and apply the move to obtain the new game state and evaluate it using minimax
 			Simulation clonedBoardState = (Simulation) boardState.clone();
 			clonedBoardState.move(curMove.fromL, curMove.fromC, curMove.toL, curMove.toC); // apply the operator o and obtain the new game state s.
