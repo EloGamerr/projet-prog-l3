@@ -7,10 +7,14 @@ import fr.prog.tablut.model.game.player.PlayerEnum;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class IAMedium extends AIPlayer {
+	Random random;
 	public IAMedium(PlayerEnum playerEnum) {
 		super(playerEnum);
+
+		random = new Random();
 	}
 
 	@Override
@@ -72,20 +76,26 @@ public class IAMedium extends AIPlayer {
 		}
 
 		//return the operator with the highest value Value[o] by finding its index in the moves list
-		return moves.get(getHighestValueMove(moveValue));
+		List<Integer> highestValueMoves = getHighestValueMoves(moveValue);
+		return moves.get(highestValueMoves.get(random.nextInt(highestValueMoves.size())));
 	}
 
 	/**
 	 * Helper method to iterate through the moveValue array and return
 	 * the index of the highest valued move.
 	 */
-	public int getHighestValueMove(double [] moveValue) {
+	public List<Integer> getHighestValueMoves(double [] moveValue) {
 		double maxValue = moveValue[0];
-		int maxIdx = 0;
+		List<Integer> maxIdx = new ArrayList<>();
+		maxIdx.add(0);
 		for(int i = 1; i < moveValue.length; i++) {
 			if (moveValue[i] > maxValue) {
+				maxIdx.clear();
 				maxValue = moveValue[i];
-				maxIdx = i;
+				maxIdx.add(i);
+			}
+			else if(moveValue[i] == maxValue) {
+				maxIdx.add(i);
 			}
 		}
 		return maxIdx;
