@@ -56,6 +56,25 @@ public class ImageComponent extends GenericPanel {
         }
     }
 
+    public ImageComponent(Image img, Point p, Dimension d) {
+        if(img != null) {
+            this.img = img;
+            this.src = img.getSource().toString();
+            loaded = true;
+        }
+
+        if(p != null) {
+            setLocation(p);
+        }
+
+        if(d != null) {
+            super.setSize(d);
+            super.setPreferredSize(d);
+            super.setMaximumSize(d);
+            super.setMinimumSize(d);
+        }
+    }
+
     public void load() {
         if(!hasLoaded()) {
             try {

@@ -25,8 +25,7 @@ public class BoardInterface extends GameInterfaceSide {
         boardDrawer = new BoardDrawer();
 
         // initialize the board drawer's data
-        boardDrawer.setBoardDimension(size);
-        boardDrawer.setPosition(getWidth()/2 - size/2, getHeight()/2 - size/2);
+        updateBoardDrawer();
         boardDrawer.setContainer(this);
 
         // organize layers
@@ -42,8 +41,7 @@ public class BoardInterface extends GameInterfaceSide {
 
         // update board drawer's data in the case the container changed its size
         boardDrawer.setGraphics(g2d);
-        boardDrawer.setBoardDimension(Math.min(getWidth(), getHeight()));
-        boardDrawer.setPosition(getWidth()/2 - boardDrawer.getSize()/2, getHeight()/2 - boardDrawer.getSize()/2);
+        updateBoardDrawer();
 
         Game game = Game.getInstance();
 
@@ -76,7 +74,11 @@ public class BoardInterface extends GameInterfaceSide {
         boardDesigner.draw(boardData);
     	indicatorsDesigner.draw(boardData);
     	piecesDesigner.draw(boardData);
-    	
+    }
+
+    private void updateBoardDrawer() {
+        boardDrawer.setBoardDimension(Math.min(getWidth(), getHeight()));
+        boardDrawer.setPosition(getWidth()/2 - boardDrawer.getSize()/2, getHeight()/2 - boardDrawer.getSize()/2);
     }
 
     public BoardData getBoardData() {

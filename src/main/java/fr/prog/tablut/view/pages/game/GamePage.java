@@ -120,6 +120,8 @@ public class GamePage extends Page {
             this.getRightSide().togglePauseButton(false);
         else
             this.getRightSide().togglePauseButton(Game.getInstance().isPaused());
+
+        centerSide.updateTurnOf();
     }
 
     private void initWinnerPanel(GameController gc) {
@@ -196,6 +198,12 @@ public class GamePage extends Page {
         foregroundPanel.add(blackT);
         foregroundPanel.add(whiteBT);
         foregroundPanel.add(whiteT);
+    }
+
+    public void updateTurn() {
+        enableRedoButton(Game.getInstance().hasNextMove());
+		enableUndoButton(Game.getInstance().hasPreviousMove());
+        centerSide.updateTurnOf();
     }
 
     public void announceWinner() {

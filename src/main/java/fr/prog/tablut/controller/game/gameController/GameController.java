@@ -46,9 +46,8 @@ public class GameController {
 	}
 	
 	private void postPlay() {
-		gamePage.enableRedoButton(Game.getInstance().hasNextMove());
-		gamePage.enableUndoButton(Game.getInstance().hasPreviousMove());
-		gameControllerHuman.undoSelect(); 
+        gamePage.updateTurn();
+		gameControllerHuman.undoSelect();
 	}
 
 	private void checkEnd() {
