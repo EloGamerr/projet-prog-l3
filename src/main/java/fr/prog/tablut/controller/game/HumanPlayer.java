@@ -10,13 +10,11 @@ import fr.prog.tablut.view.pages.game.GamePage;
 public class HumanPlayer extends Player {
     private int row;
     private int col;
-    private GamePage gamePage;
     private GameControllerHuman gameControllerHuman;
     
-    public void updateState(int col, int row, GamePage gamePage, GameControllerHuman gameControllerHuman) {
+    public void updateState(int col, int row, GameControllerHuman gameControllerHuman) {
         this.row = row;
         this.col = col;
-        this.gamePage = gamePage;
         this.gameControllerHuman = gameControllerHuman;
     }
 

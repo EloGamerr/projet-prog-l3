@@ -11,7 +11,6 @@ import fr.prog.tablut.model.game.player.Player;
 import fr.prog.tablut.model.game.player.PlayerEnum;
 import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 import fr.prog.tablut.model.saver.GameLoader;
-import fr.prog.tablut.structures.Couple;
 
 public class Game {
 	private static Game instance = null;

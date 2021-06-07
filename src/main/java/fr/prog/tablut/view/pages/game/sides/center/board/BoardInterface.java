@@ -17,10 +17,8 @@ public class BoardInterface extends GameInterfaceSide {
     private final IndicatorsDesigner indicatorsDesigner;
     private BoardDrawer boardDrawer;
     private BoardData boardData;
-	private int x, y;
+    
     public BoardInterface(int size) {
-    	
-    	
         super(new Dimension(size, size));
 
         boardData = new BoardData();
@@ -29,6 +27,7 @@ public class BoardInterface extends GameInterfaceSide {
         // initialize the board drawer's data
         boardDrawer.setBoardDimension(size);
         boardDrawer.setPosition(getWidth()/2 - size/2, getHeight()/2 - size/2);
+        boardDrawer.setContainer(this);
 
         // organize layers
     	boardDesigner = new BoardDesigner(boardDrawer);

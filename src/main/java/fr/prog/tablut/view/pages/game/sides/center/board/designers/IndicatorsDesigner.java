@@ -4,6 +4,7 @@ import java.awt.Point;
 
 import java.util.List;
 
+import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.view.pages.game.sides.center.board.BoardData;
 import fr.prog.tablut.view.pages.game.sides.center.board.BoardDrawer;
@@ -44,14 +45,6 @@ public class IndicatorsDesigner extends Designer {
 				g.fillRect(x + widthBorder + hoveringCell.x * cellSize, y + widthBorder + hoveringCell.y * cellSize, cellSize, cellSize);
 
 			drawAccessibleCells(accessibleCells);
-
-            // door hovering - if selected cell is the king and near from a door
-            /* if(cell == CellContent.GATE && accessibleCells.contains(new Couple<>(i, j))) {
-                g.setColor(GameColors.GATE_FRAME_COLOR);
-                g.strokeWidth(2);
-                g.strokeSquare(j, i);
-                g.strokeWidth(1);
-            } */
 		}
 
         // The player hovers pieces
@@ -78,9 +71,22 @@ public class IndicatorsDesigner extends Designer {
         int cx, cy;
 
 		for(Point accessibleCell : accessibleCells) {
-            cx = g.getRealX(accessibleCell.x) - r/2 + cellSize/2;
-            cy = g.getRealY(accessibleCell.y) - r/2 + cellSize/2;
-		    g.fillCircleCoords(cx, cy, r);
+            CellContent cell = Game.getInstance().getCellContent(accessibleCell.y, accessibleCell.x);
+
+            // door hovering - if selected/hovering cell is the king and can access a door
+            if(cell == CellContent.GATE) {
+                g.setColor(GameColors.GATE_FRAME_COLOR);
+                g.strokeWidth(2);
+                g.strokeSquare(accessibleCell.x, accessibleCell.y);
+                g.strokeWidth(1);
+                g.setColor(GameColors.CIRCLE);
+            }
+
+            else {
+                cx = g.getRealX(accessibleCell.x) - r/2 + cellSize/2;
+                cy = g.getRealY(accessibleCell.y) - r/2 + cellSize/2;
+                g.fillCircleCoords(cx, cy, r);
+            }
 		}
     }
 }

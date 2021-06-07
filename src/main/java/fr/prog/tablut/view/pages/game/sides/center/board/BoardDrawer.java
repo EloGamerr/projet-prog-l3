@@ -5,6 +5,9 @@ import java.awt.Cursor;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
+
+import javax.swing.JPanel;
+
 import java.awt.Graphics2D;
 
 public class BoardDrawer {
@@ -17,6 +20,7 @@ public class BoardDrawer {
 	private int widthBorder = 25;
 
     private Graphics2D g2d;
+    private JPanel container;
 
     private Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
     private Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
@@ -35,6 +39,10 @@ public class BoardDrawer {
     public void setPosition(int x, int y) {
         leftX = x;
         leftY = y;
+    }
+
+    public void setContainer(JPanel container) {
+        this.container = container;
     }
     
     public void setColor(Color color) {
@@ -84,8 +92,8 @@ public class BoardDrawer {
     }
 
     public void setCursor(String cursor) {
-        /* if(cursor == "hand") g2d.setCursor(handCursor);
-        else g2d.setCursor(defaultCursor); */
+        if(cursor == "hand") container.setCursor(handCursor);
+        else container.setCursor(defaultCursor);
     }
 
 

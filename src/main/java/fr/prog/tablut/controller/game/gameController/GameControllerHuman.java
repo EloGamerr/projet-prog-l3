@@ -25,7 +25,7 @@ public class GameControllerHuman {
 
         HumanPlayer humanPlayer = (HumanPlayer) Game.getInstance().getPlayingPlayer();
 
-        humanPlayer.updateState(col, row, gamePage, this);
+        humanPlayer.updateState(col, row, this);
 
         return humanPlayer.play(Game.getInstance(), gamePage);
     }
