@@ -20,6 +20,7 @@ public class AIRandom extends AIPlayer {
     Point fromCell = null;
     Point toCell = null;
     boolean isInAnim;
+    
     public AIRandom() {
         this.random = new Random();
     }
@@ -37,28 +38,22 @@ public class AIRandom extends AIPlayer {
 
         	do {
         		List<Point> ownedCells = this.getOwnedCells();
-
             	fromCell = ownedCells.get(random.nextInt(ownedCells.size()));
-
             	accesibleCells = game.getAccessibleCells(fromCell.x,fromCell.y);
         	} while(accesibleCells.isEmpty());
-        
+
         	toCell = accesibleCells.get(random.nextInt(accesibleCells.size()));
-        	
-        	anim =  new AnimationCoup(new Play(new Movement(fromCell.x,fromCell.y, toCell.x, toCell.y)), gamePage);
+        	anim = new AnimationCoup(new Play(new Movement(fromCell.x,fromCell.y, toCell.x, toCell.y)), gamePage);
+
         	anim.startAnim();
         	
         	return true;
     	}
     }
     
-    
-    
-    
     @Override
     public String toString() {
     	return "AIRandom";
     }
-
 }
 

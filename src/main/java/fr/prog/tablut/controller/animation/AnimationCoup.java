@@ -30,7 +30,6 @@ public class AnimationCoup {
         int toC = view.getXCoordFromCol(mov.toC);
         int toL = view.getYCoordFromRow(mov.toL);
         
-			
         int dC =  (int)(fromC - (fromC - toC) * progres);
         int dL =  (int)(fromL - (fromL - toL) * progres);
 

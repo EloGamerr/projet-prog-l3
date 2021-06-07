@@ -74,6 +74,7 @@ public class GameLoader {
 			lineNumber++;
 		}
 		scanner.close();
+
 		return true;
 	}
 	
