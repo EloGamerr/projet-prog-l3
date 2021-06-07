@@ -10,7 +10,7 @@ import fr.prog.tablut.view.GlobalWindow;
  * --- MAIN ENTRY ---
  */
 public class Tablut implements Runnable {
-    public static String configPath = "config/dark_theme.json";
+    public static String configPath = "config/light_theme.json";
     private String configFile = null;
 
     public static void main(String[] args) {

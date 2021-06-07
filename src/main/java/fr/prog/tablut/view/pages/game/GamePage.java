@@ -130,6 +130,8 @@ public class GamePage extends Page {
         // BOTTOM BUTTON PANEL
         BottomButtonPanel bottomButton = new BottomButtonPanel(PageName.HomePage, PageName.GamePage, "Rejouer", "Quitter");
 
+        bottomButton.getButton1().setStyle("button.dark");
+
         bottomButton.getButton2().setAction(new ButtonRestartAdaptator((GenericButton)bottomButton.getButton2(), gc, true, this));
         bottomButton.getButton1().setHref(PageName.HomePage, new ButtonQuitGameAdaptator(bottomButton.getButton1(), GenericObjectStyle.getGlobalWindow()));
         //
@@ -137,12 +139,17 @@ public class GamePage extends Page {
         // NAV PAGE
         winnerPage = new NavPage("Player 1", "a gagn\u00e9", bottomButton);
         winnerPage.setSize(winnerPage.getWidth(), getHeight());
+        winnerPage.getTitle().setForeground(GenericObjectStyle.getProp("title.light", "color"));
+        winnerPage.getDescription().setForeground(GenericObjectStyle.getProp("label.light", "color"));
         
         // PAGE MIDDLE CONTENT
         GenericPanel p = new GenericPanel(new GridBagLayout());
         
         winnerDescLabel = new GenericLabel("L'attaquant n'a pas réussi à encercler le Roi", 16);
+        winnerDescLabel.setForeground(GenericObjectStyle.getProp("label.light", "color"));
         GenericRoundedButton replay = new GenericRoundedButton("Revoir le match", 170, 40);
+
+        replay.setStyle("button.dark");
 
         replay.setAction(new ActionListener() {
             @Override

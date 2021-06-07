@@ -10,10 +10,18 @@
     },
     "components": {
         "title": {
-            "color": [221, 221, 221]
+            "color": [221, 221, 221],
+            
+            ".light": {
+                "color": [221, 221, 221]
+            }
         },
         "label": {
-            "color": [221, 221, 221]
+            "color": [221, 221, 221],
+
+            ".light": {
+                "color": [221, 221, 221]
+            }
         },
         "description": {
             "color": [136, 136, 136]
@@ -155,6 +163,18 @@
                     "background": [119, 178, 85],
                     "borderColor": [119, 178, 85],
                     "color": [221, 221, 221]
+                }
+            },
+            
+            ".dark": {
+                "background": [48, 54, 62],
+                "borderColor": [48, 54, 62],
+                "color": [221, 221, 221],
+
+                ":hover": {
+                    "background": [58, 65, 74],
+                    "borderColor": [58, 65, 74],
+                    "color": [255, 255, 255]
                 }
             }
         },
