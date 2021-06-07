@@ -154,7 +154,7 @@ public class GameSaver {
 	public StringBuilder savePlays() {
 		StringBuilder builder = new StringBuilder();
 
-		for(Play move : Game.getInstance().getPlays().movements()) {
+		for(Play move : Game.getInstance().getPlays().getPlays()) {
 			builder.append(SaverConstants.BR_LEFT);
 			builder.append(move.getMovement().fromL);
 			builder.append(SaverConstants.COMMA);

@@ -36,6 +36,7 @@ public class Game {
 
 
 	private boolean paused = false;
+	private long startTime;
 	
 	////////////////////////////////////////////////////
 	// Constructor
@@ -74,6 +75,7 @@ public class Game {
 		setWinner(PlayerEnum.NONE);
 		hasStarted = true;
 		paused = false;
+		this.startTime = System.currentTimeMillis();
 	}
 	
 	public void restart() {
@@ -95,6 +97,7 @@ public class Game {
 		this.plays = new Plays();
 		loader.loadData(index_selected);
 		hasStarted = true;
+		this.startTime = System.currentTimeMillis();
 	}
 
 	/**
@@ -253,7 +256,7 @@ public class Game {
 		for(int i = 0 ; i < rowAmount; i++) {
 			Arrays.fill(getGrid()[i], CellContent.EMPTY);
 		}
-		
+
 		this.rowAmount = rowAmount;
 		this.colAmount = colAmount;
 	}
@@ -517,11 +520,17 @@ public class Game {
 	public Plays getPlays() {
 		return plays;
 	}
+
+	public Movement getLastPlay() {
+        if(plays.getPlays().size() > 0)
+		    return plays.getPlays().get(plays.getPlays().size() - 1).getMovement();
+        return null;
+	}
 	
 	public CellContent[][] getGrid() {
 		return grid;
 	}
-	
+
 	public String getCurrentSavePath() {
 		return currentSavePath;
 	}
@@ -647,7 +656,7 @@ public class Game {
 	public void setGrid(CellContent[][] grid) {
 		this.grid = grid;
 	}
-	
+
 	public void setCurrentSavePath(String currentSavePath) {
 		this.currentSavePath = currentSavePath;
 	}
@@ -670,7 +679,6 @@ public class Game {
 		if(defender == PlayerTypeEnum.EASY_AI)
 			setDefenderName(PlayerTypeEnum.EASY_AI.toString());
 		else
-
 			setDefenderName(defenderName);
 	}
 	
@@ -680,5 +688,13 @@ public class Game {
 
 	public void setAttackerName(String attackerName) {
 		this.attackerName = attackerName;	
+    }
+
+	public long getStartTime() {
+		return startTime;
+	}
+
+	public int getDuration() {
+		return (int) (System.currentTimeMillis()-getStartTime());
 	}
 }

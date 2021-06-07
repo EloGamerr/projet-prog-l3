@@ -3,6 +3,7 @@ package fr.prog.tablut.controller.game.gameController;
 import java.awt.Point;
 
 import fr.prog.tablut.model.game.Game;
+import fr.prog.tablut.model.game.MoveType;
 import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 import fr.prog.tablut.model.saver.GameSaver;
 import fr.prog.tablut.view.pages.game.GamePage;
@@ -21,7 +22,7 @@ public class GameController {
 	
 	public void click(int col, int row) {
 		if(gameControllerHuman.click(col, row)) {
-			postPlay();
+			postPlay(MoveType.MOVE);
 			checkEnd();
 		}
 	}
@@ -40,13 +41,13 @@ public class GameController {
 
 	public void tick() {
 		if(gameControllerAI.tick()) {
-			postPlay();
+			postPlay(MoveType.MOVE);
 			checkEnd();
 		}
 	}
 	
-	private void postPlay() {
-        gamePage.updateTurn();
+	private void postPlay(MoveType moveType) {
+        gamePage.updateTurn(moveType);
 		gameControllerHuman.undoSelect();
 	}
 
@@ -59,7 +60,7 @@ public class GameController {
 	public void restart() {
 		Game.getInstance().restart();
 		gamePage.update();
-		postPlay();
+		postPlay(MoveType.RESTART);
 		gamePage.repaint();
 	}
 	
@@ -74,7 +75,7 @@ public class GameController {
 
 		if(Game.getInstance().undo_move()) {
 			gamePage.togglePauseButton(Game.getInstance().isPaused());
-			postPlay();
+			postPlay(MoveType.UNDO);
             return true;
 		}
 
@@ -88,7 +89,7 @@ public class GameController {
 		if(Game.getInstance().redo_move()) {
 			Game.getInstance().setPaused(true);
 			gamePage.togglePauseButton(Game.getInstance().isPaused());
-			postPlay();
+			postPlay(MoveType.REDO);
             return true;
 		}
 
@@ -108,6 +109,6 @@ public class GameController {
 		Game.getInstance().setPaused(pause);
 		gamePage.stop_anim();
 		gamePage.togglePauseButton(true);
-		postPlay();
+		postPlay(MoveType.PAUSE);
 	}
 }

@@ -17,39 +17,55 @@ public class PiecesDesigner extends Designer {
         Game game = Game.getInstance();
 		int imgSize = (int)(g.getCellSize() / 2);
 
-        // draw all static pieces
-        for(int i = 0; i < game.getColAmout(); i++) {
-			for(int j = 0; j < game.getRowAmout(); j++) {
-                // don't draw the animated pieces
-                if(
-                    (data.selectedCell != null && data.selectedCell.x == i && data.selectedCell.y == j) ||
-                    (data.isAnim && data.animatedCell != null && data.animatedCell.x == i && data.animatedCell.y == j)
-                )
-                    continue;
-
-                CellContent cell = game.getCellContent(i, j);
-                Image img = cell.getImage();
-
-                if(img != null) {
-                    g.drawImage(img, i, j, imgSize, imgSize, true);
+        // draw preview grid
+        if(data.previewGrid != null) {
+            for(int i=0; i < data.previewGrid.length; i++) {
+                for(int j=0; j < data.previewGrid[i].length; j++) {
+                    CellContent cell = data.previewGrid[j][i];
+                    
+                    if(cell != null && cell.getImage() != null) {
+                        g.drawImage(cell.getImage(), i, j, imgSize, imgSize, true);
+                    }
                 }
             }
         }
 
-        // draw the piece in the mouse
-        if(data.imageOnMouse != null && data.lastMousePosition != null) {
-            int x = g.getRealX(0);
-            int y = g.getRealY(0);
+        // draw normal current grid
+        else {
+            // draw all static pieces
+            for(int i = 0; i < game.getColAmout(); i++) {
+                for(int j = 0; j < game.getRowAmout(); j++) {
+                    // don't draw the animated pieces
+                    if(
+                        (data.selectedCell != null && data.selectedCell.x == i && data.selectedCell.y == j) ||
+                        (data.isAnim && data.animatedCell != null && data.animatedCell.x == i && data.animatedCell.y == j)
+                    )
+                        continue;
 
-			int xImg = Math.min(Math.max(x, data.lastMousePosition.x - imgSize/2), x + g.getSize() - imgSize);
-			int yImg = Math.min(Math.max(y, data.lastMousePosition.y - imgSize/2), y + g.getSize() - imgSize);
-			
-    		g.drawImageCoords(data.imageOnMouse, xImg, yImg, imgSize, imgSize, null);
-    	}
-		
-        // draw the animated piece
-		if(data.isAnim) {
-			g.drawImageCoords(data.animatedImage, data.animPosition.x + imgSize/2, data.animPosition.y + imgSize/2, imgSize, imgSize, null);
-		}
+                    CellContent cell = game.getCellContent(i, j);
+                    Image img = cell.getImage();
+
+                    if(img != null) {
+                        g.drawImage(img, i, j, imgSize, imgSize, true);
+                    }
+                }
+            }
+
+            // draw the piece in the mouse
+            if(data.imageOnMouse != null && data.lastMousePosition != null) {
+                int x = g.getRealX(0);
+                int y = g.getRealY(0);
+
+                int xImg = Math.min(Math.max(x, data.lastMousePosition.x - imgSize/2), x + g.getSize() - imgSize);
+                int yImg = Math.min(Math.max(y, data.lastMousePosition.y - imgSize/2), y + g.getSize() - imgSize);
+                
+                g.drawImageCoords(data.imageOnMouse, xImg, yImg, imgSize, imgSize, null);
+            }
+            
+            // draw the animated piece
+            if(data.isAnim) {
+                g.drawImageCoords(data.animatedImage, data.animPosition.x + imgSize/2, data.animPosition.y + imgSize/2, imgSize, imgSize, null);
+            }
+        }
     }
 }

@@ -2,11 +2,11 @@ package fr.prog.tablut.controller.adaptators;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.JOptionPane;
+
 import fr.prog.tablut.controller.game.gameController.GameController;
 import fr.prog.tablut.view.components.generic.GenericButton;
 import fr.prog.tablut.view.pages.game.GamePage;
-
-import javax.swing.*;
 
 
 public class ButtonRestartAdaptator extends ActionAdaptator<GenericButton> {

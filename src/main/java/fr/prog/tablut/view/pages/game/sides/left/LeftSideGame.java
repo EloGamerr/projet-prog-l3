@@ -4,23 +4,24 @@ import java.awt.Dimension;
 
 import fr.prog.tablut.controller.game.gameController.GameController;
 import fr.prog.tablut.model.window.WindowConfig;
+import fr.prog.tablut.view.pages.game.GamePage;
 import fr.prog.tablut.view.pages.game.sides.GameInterfaceSide;
 import fr.prog.tablut.view.pages.game.sides.left.moveHistory.MoveHistoryPanel;
 import fr.prog.tablut.view.pages.game.sides.right.RightSideGame;
 
 public class LeftSideGame extends GameInterfaceSide {
+    private final MoveHistoryPanel historyPanel;
     private final MoveButtons buttons;
-    private final MoveHistoryPanel moveHistoryPanel;
 
-    public LeftSideGame(WindowConfig config, GameController gameController, Dimension d, RightSideGame rightSide) {
+    public LeftSideGame(WindowConfig config, GameController gameController, Dimension d, GamePage gamePage, RightSideGame rightSide) {
         super(d);
 
         Dimension mbd = new Dimension(d.width, 40);
 
         buttons = new MoveButtons(mbd,gameController, rightSide);
-        moveHistoryPanel = new MoveHistoryPanel(d.width - 10, d.height - mbd.height*2 - 25);
+        historyPanel = new MoveHistoryPanel(d.width - 10, d.height - mbd.height*2 - 25, gamePage);
 
-        add(moveHistoryPanel);
+        add(historyPanel);
         add(buttons);
     }
 
@@ -29,6 +30,14 @@ public class LeftSideGame extends GameInterfaceSide {
     }
 
     public MoveHistoryPanel getMoveHistoryPanel() {
-        return moveHistoryPanel;
+        return historyPanel;
+    }
+
+    public void update() {
+        clearChat();
+    }
+
+    public void clearChat() {
+        historyPanel.clearChat();
     }
 }

@@ -48,10 +48,6 @@ public class Plays {
 		return plays.get(currentMovement);
 	}
 
-	public List<Play> movements() {
-		return plays;
-	}
-
 	public List<Play> getPreviousMovements() {
 		return plays.subList(0, currentMovement+1);
 	}
@@ -65,5 +61,13 @@ public class Plays {
 			return plays.get(currentMovement);
 
 		return null;
+    }
+    
+	public List<Play> getPlays() {
+		return plays;
+	}
+
+	public int getCurrentMovement() {
+		return currentMovement;
 	}
 }

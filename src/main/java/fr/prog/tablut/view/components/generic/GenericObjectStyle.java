@@ -14,6 +14,10 @@ import fr.prog.tablut.view.GlobalWindow;
 public abstract class GenericObjectStyle {
     protected static Style styleRef;
 	protected static GlobalWindow globalWindow;
+
+    private GenericObjectStyle() {
+
+    }
     
     /**
      * Sets the stylesheet reference

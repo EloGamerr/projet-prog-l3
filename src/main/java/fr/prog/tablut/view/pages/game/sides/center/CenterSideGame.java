@@ -17,7 +17,7 @@ import fr.prog.tablut.view.pages.game.sides.GameInterfaceSide;
 import fr.prog.tablut.view.pages.game.sides.center.board.BoardInterface;
 
 public class CenterSideGame extends GameInterfaceSide {
-    protected BoardInterface gridWindow;
+    protected BoardInterface boardInterface;
     protected GenericPanel turnOf;
 
     public CenterSideGame(WindowConfig config, Dimension d) {
@@ -25,16 +25,16 @@ public class CenterSideGame extends GameInterfaceSide {
 
         setLayout(new BorderLayout());
 
-        gridWindow = new BoardInterface(d.height);
+        boardInterface = new BoardInterface(d.height);
 
         initTurnOf();
 
-        add(gridWindow, BorderLayout.CENTER);
+        add(boardInterface, BorderLayout.CENTER);
         add(turnOf, BorderLayout.SOUTH);
     }
 
     public BoardInterface getBoard() {
-        return gridWindow;
+        return boardInterface;
     }
 
     private void initTurnOf() {
@@ -77,5 +77,9 @@ public class CenterSideGame extends GameInterfaceSide {
 
             turnOf.add(labelTurnOfName);
         }
+    }
+    
+    public void setPreviewGrid(CellContent[][] grid) {
+        boardInterface.setPreviewGrid(grid);
     }
 }

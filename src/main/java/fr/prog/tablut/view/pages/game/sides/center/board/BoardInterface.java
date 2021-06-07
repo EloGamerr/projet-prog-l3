@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 
 import fr.prog.tablut.controller.game.HumanPlayer;
+import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.view.pages.game.sides.GameInterfaceSide;
 import fr.prog.tablut.view.pages.game.sides.center.board.designers.*;
@@ -48,12 +49,14 @@ public class BoardInterface extends GameInterfaceSide {
         boardData.lastMousePosition = boardData.mousePosition;
         boardData.mousePosition = getMousePosition();
 
-        if(boardData.mousePosition == null)
-            boardData.hoveringCell = null;
-        else
-            boardData.hoveringCell = new Point(getColFromXCoord(boardData.mousePosition.x),getRowFromYCoord(boardData.mousePosition.y));
-        
+        if(boardData.previewGrid != null)
+            boardData.mousePosition = null;
 
+        boardData.hoveringCell = (boardData.mousePosition != null)?
+            boardData.hoveringCell = new Point(getColFromXCoord(boardData.mousePosition.x),getRowFromYCoord(boardData.mousePosition.y)) :
+            null;
+            
+            
         if(boardData.selectedCell != null)
 			boardData.accessibleCells = Game.getInstance().getAccessibleCells(boardData.selectedCell.x, boardData.selectedCell.y);
         
@@ -67,7 +70,8 @@ public class BoardInterface extends GameInterfaceSide {
             }
             else
                 boardData.hoveringPossibleMoveCell = null;
-        }
+        } else
+            boardData.hoveringPossibleMoveCell = null;
     	
         
         // draw board layers
@@ -138,4 +142,8 @@ public class BoardInterface extends GameInterfaceSide {
 		boardData.imageOnMouse = null;
 		boardData.selectedCell = null;
 	}
+
+    public void setPreviewGrid(CellContent[][] grid) {
+        boardData.previewGrid = grid;
+    }
 }

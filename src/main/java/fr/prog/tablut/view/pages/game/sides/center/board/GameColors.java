@@ -9,7 +9,8 @@ public class GameColors {
 	public static final Color CELL_SEPARATOR = new Color(120, 120, 120);
 	public static final Color CELL_BORDER = new Color(26, 29, 33);
 	public static final Color CELL_SELECTION = new Color(156, 146, 124);
-	public static final Color CIRCLE = new Color(106, 139, 171);
+	public static final Color CIRCLE = new Color(156, 146, 124);
+    public static final Color HOVERING_CIRCLE = new Color(106, 139, 171);
 	public static final Color WIN_CIRCLE = new Color(106, 200, 171);
     public static final Color GATE_FRAME_COLOR = new Color(200, 52, 47);
     public static final Color LETTERS_NUMBERS_COLOR = new Color(68, 68, 68);

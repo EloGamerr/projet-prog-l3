@@ -5,6 +5,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.prog.tablut.model.game.CellContent;
+
 public class BoardData {
     public Point selectedCell = null;
     public Point animatedCell = null;
@@ -18,4 +20,5 @@ public class BoardData {
     public Image imageOnMouse = null;
     public List<Point> accessibleCells = new ArrayList<>();
 	public boolean isAnim = false;
+    public CellContent[][] previewGrid = null;
 }

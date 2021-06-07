@@ -1,5 +1,6 @@
 package fr.prog.tablut.view.pages.game.sides.center.board.designers;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Point;
 
@@ -43,7 +44,8 @@ public class IndicatorsDesigner extends Designer {
 
 
         g.drawImage(throne, 4, 4, cellSize/2, cellSize/2, true);
-        
+
+
         if(data.isAnim) {
         	g.setColor(GameColors.FROM_CELL);
         	g.fillSquare(data.animatedCell.x, data.animatedCell.y);
@@ -55,19 +57,21 @@ public class IndicatorsDesigner extends Designer {
         // the player has a piece on his hand : draw all possible moves
         if(!data.isAnim && data.selectedCell != null) {
 			g.setColor(GameColors.CELL_SELECTION);
-			g.fillRect(x + widthBorder + selectedCell.x * cellSize, y + widthBorder + selectedCell.y * cellSize, cellSize, cellSize);
+			g.fillSquare(selectedCell.x, selectedCell.y);
 
             if(hoveringCell != null && Game.getInstance().canMove(selectedCell.y, selectedCell.x, hoveringCell.y, hoveringCell.x))
 				g.fillRect(x + widthBorder + hoveringCell.x * cellSize, y + widthBorder + hoveringCell.y * cellSize, cellSize, cellSize);
 
-			drawAccessibleCells(accessibleCells);
+            
+
+			drawAccessibleCells(accessibleCells, data.hoveringCell);
 		}
 
         // The player hovers pieces
         else if(!data.isAnim && hoveringPossibleMoveCell != null) {
             g.setColor(GameColors.CELL_SELECTION);
             g.fillSquare(hoveringPossibleMoveCell.x, hoveringPossibleMoveCell.y);
-            drawAccessibleCells(accessibleCells);
+            drawAccessibleCells(accessibleCells, null);
             g.setCursor("hand");
         }
 
@@ -78,7 +82,7 @@ public class IndicatorsDesigner extends Designer {
     }
 
     // draw a symbol on a cell indicating that the current piece can move on that cell
-    private void drawAccessibleCells(List<Point> accessibleCells) {
+    private void drawAccessibleCells(List<Point> accessibleCells, Point hoveringCell) {
         int cellSize = g.getCellSize();
         final int r = cellSize / 3;
 
@@ -101,6 +105,16 @@ public class IndicatorsDesigner extends Designer {
             else {
                 cx = g.getRealX(accessibleCell.x) - r/2 + cellSize/2;
                 cy = g.getRealY(accessibleCell.y) - r/2 + cellSize/2;
+
+                if(hoveringCell != null && (accessibleCell.x == hoveringCell.x && accessibleCell.y == hoveringCell.y)) {
+                    g.setColor(GameColors.HOVERING_CIRCLE);
+                    g.strokeSquare(accessibleCell.x, accessibleCell.y);
+                }
+
+                else {
+                    g.setColor(GameColors.CIRCLE);
+                }
+                
                 g.fillCircleCoords(cx, cy, r);
             }
 		}

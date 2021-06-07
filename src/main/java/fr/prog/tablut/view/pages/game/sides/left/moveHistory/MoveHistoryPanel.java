@@ -1,7 +1,6 @@
 package fr.prog.tablut.view.pages.game.sides.left.moveHistory;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -11,31 +10,33 @@ import javax.swing.border.EmptyBorder;
 import fr.prog.tablut.view.components.generic.GenericPanel;
 
 import javax.swing.JScrollPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 
 
-public class MoveHistoryPanel extends GenericPanel {
-    private final HistoryChat historyChat;
+import fr.prog.tablut.view.pages.game.GamePage;
+
+public class MoveHistoryPanel extends JPanel {
+    private final HistoryChatField historyChat;
     private final JScrollPane scrollPane;
     private int previousHeight = -1;
     private int previousVisibleAmount;
 
     public MoveHistoryPanel() {
-        this(0, 0);
+        this(0, 0, null);
     }
 
-    public MoveHistoryPanel(int width, int height) {
-        super();
+    public MoveHistoryPanel(int width, int height, GamePage gamePage) {
+        setOpaque(false);
 
         GenericPanel wrapper = new GenericPanel(new BorderLayout());
 
-        historyChat = new HistoryChat();
-        historyChat.setOpaque(false);
-        historyChat.setEditable(false);
+        historyChat = new HistoryChatField(new Dimension(width, height), gamePage, this);
+
         historyChat.setFont(new Font("Calibri", Font.PLAIN, 12));
 
         setBorder(new EmptyBorder(20, 0, 0, 0));
-
+        
         scrollPane = new JScrollPane(historyChat);
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
@@ -56,33 +57,19 @@ public class MoveHistoryPanel extends GenericPanel {
             wrapper.setMaximumSize(d);
             wrapper.setMinimumSize(d);
         }
-
-        for(int i = 0 ; i < 5 ; i++) {
-            append((i % 2 == 0 ? "L'attaquant " : "Le d\u00e9fenseur ") + i + " ", i % 2 == 0 ? new Color(193, 69, 69) : new Color(87, 158, 189), "a boug\u00e9 le pion en E5 vers A1");
-        }
-    }
-
-    protected void append(String player, Color playerColor, String text) {
-        historyChat.append(player, playerColor, text);
-
-        JScrollBar jScrollBar = scrollPane.getVerticalScrollBar();
-        if(jScrollBar.getValue() + jScrollBar.getVisibleAmount() == jScrollBar.getMaximum()) {
-            previousVisibleAmount = 0; // Push scrollBar to the bottom
-            revalidate();
-            repaint();
-        }
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-        int newHeight = historyChat.getLinesNumber() * 14 + 50;//getHeight() - 30;//getParent().getSize().height - 26;
+        // TODO: fix scrollbar
+        /* int newHeight = historyChat.getMovesNumber() * 20 + 50;//getHeight() - 30;//getParent().getSize().height - 26;
 
         if(previousHeight != newHeight) {
             scrollPane.setPreferredSize(new Dimension(getWidth(), newHeight));
             scrollPane.setSize(new Dimension(getWidth(), newHeight));
             revalidate(); // Update layout because scrollPane changed
             previousHeight = newHeight;
-        }
+        } */
 
         JScrollBar jScrollBar = scrollPane.getVerticalScrollBar();
         // If visible amount of the scrollbar changed, so we have to change value to avoid some problems with scrollbar.
@@ -93,5 +80,21 @@ public class MoveHistoryPanel extends GenericPanel {
         }
 
         super.paintComponent(g);
+    }
+
+    public void addAction() {
+        historyChat.addAction();
+    }
+
+    public void undo() {
+        historyChat.undo();
+    }
+
+    public void redo() {
+        historyChat.redo();
+    }
+
+    public void clearChat() {
+        historyChat.clear();
     }
 }

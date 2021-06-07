@@ -19,7 +19,9 @@ import fr.prog.tablut.controller.game.gameAdaptator.GameKeyAdaptator;
 import fr.prog.tablut.controller.game.gameAdaptator.GameMouseAdaptator;
 import fr.prog.tablut.controller.game.gameAdaptator.GameTimeAdaptator;
 import fr.prog.tablut.controller.game.gameController.GameController;
+import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Game;
+import fr.prog.tablut.model.game.MoveType;
 import fr.prog.tablut.model.game.player.PlayerEnum;
 import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 import fr.prog.tablut.model.window.WindowConfig;
@@ -50,6 +52,8 @@ public class GamePage extends Page {
     private GenericLabel winnerDescLabel;
     private NavPage winnerPage;
     private ImageComponent blackBT, blackT, whiteBT, whiteT;
+    
+    private PlayerEnum lastPlayer = null;
 
     /**
      * Creates the game's view manager
@@ -66,7 +70,7 @@ public class GamePage extends Page {
 
         centerSide = new CenterSideGame(config, new Dimension(s, s));
         rightSide = new RightSideGame(config, d, gameController);
-        leftSide = new LeftSideGame(config, gameController, d, rightSide);
+        leftSide = new LeftSideGame(config, gameController, d, this, rightSide);
 
         setPLayout(new GridBagLayout());
 
@@ -122,6 +126,7 @@ public class GamePage extends Page {
             this.getRightSide().togglePauseButton(Game.getInstance().isPaused());
 
         centerSide.updateTurnOf();
+        leftSide.update();
     }
 
     private void initWinnerPanel(GameController gc) {
@@ -200,10 +205,22 @@ public class GamePage extends Page {
         foregroundPanel.add(whiteT);
     }
 
-    public void updateTurn() {
+    public void updateTurn(MoveType movetype) {
         enableRedoButton(Game.getInstance().hasNextMove());
 		enableUndoButton(Game.getInstance().hasPreviousMove());
         centerSide.updateTurnOf();
+
+        if((lastPlayer == null || lastPlayer != Game.getInstance().getPlayingPlayerEnum()) && Game.getInstance().getLastPlay() != null) {
+            lastPlayer = Game.getInstance().getPlayingPlayerEnum();
+
+            switch(movetype) {
+                case MOVE: leftSide.getMoveHistoryPanel().addAction(); break;
+                case UNDO: leftSide.getMoveHistoryPanel().undo(); break;
+                case REDO: leftSide.getMoveHistoryPanel().redo(); break;
+                case RESTART: leftSide.getMoveHistoryPanel().clearChat(); break;
+                default: break;
+            }
+        }
     }
 
     public void announceWinner() {
@@ -240,6 +257,11 @@ public class GamePage extends Page {
 
         // display the page
         foregroundPanel.setVisible(true);
+    }
+    
+    public void refresh() {
+        revalidate();
+		repaint();
     }
 
     /**
@@ -326,5 +348,13 @@ public class GamePage extends Page {
 
     public void enableRedoButton(boolean enable) {
         leftSide.getMoveButtons().enableRedoButton(enable);
+    }
+
+    public void setPreviewGrid(CellContent[][] grid) {
+        centerSide.setPreviewGrid(grid);
+    }
+
+    public void clearChat() {
+        leftSide.clearChat();
     }
 }

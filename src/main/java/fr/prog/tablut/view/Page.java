@@ -122,6 +122,5 @@ public class Page extends JPanel {
     }
 
     public void update() {
-        
     }
 }

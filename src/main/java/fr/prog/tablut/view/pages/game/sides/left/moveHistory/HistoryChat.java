@@ -26,7 +26,6 @@ public class HistoryChat extends JTextPane {
         else 			sb.append("0");
 
         sb.append(color.getRGB());
-
         return sb.toString();
     }
 
