@@ -120,4 +120,8 @@ public class GamePage extends Page {
     public CellContent[][] getGrid() {
         return this.getGridWindow().getGridView().getGrid();
     }
+
+    public void clearChat() {
+        leftSide.clearChat();
+    }
 }

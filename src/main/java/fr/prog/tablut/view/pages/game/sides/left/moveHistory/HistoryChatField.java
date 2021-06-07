@@ -1,11 +1,14 @@
 package fr.prog.tablut.view.pages.game.sides.left.moveHistory;
 
+import java.awt.ComponentOrientation;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,21 +28,24 @@ import fr.prog.tablut.view.components.generic.GenericObjectStyle;
 import fr.prog.tablut.view.pages.game.GamePage;
 
 public class HistoryChatField extends JPanel {
-    private GridBagConstraints c;
-    private List<labelField> allHistory = new ArrayList<labelField>();
-	private final GamePage gamePage;
 	private static HistoryChatField instance;
+
+	private final GamePage gamePage;
 	private final MoveHistoryPanel moveHistoryPanel;
+    private GridBagConstraints c;
+    private List<LabelField> allHistory = new ArrayList<LabelField>();
 	private Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
     private Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
     
-    @SuppressWarnings({ "unchecked", "rawtypes" })
 	public HistoryChatField(Dimension d, GamePage gamePage, MoveHistoryPanel moveHistoryPanel) {
         setOpaque(false);
         setLayout(new GridBagLayout());
+
         c = new GridBagConstraints();
+
         c.gridx = 0;
         c.gridy = 0;
+
 		this.gamePage = gamePage;
 		this.moveHistoryPanel = moveHistoryPanel;
 
@@ -58,10 +64,17 @@ public class HistoryChatField extends JPanel {
 	}
 
     public void addAction() {
-        labelField newPlayerAction = new labelField(Game.getInstance().getPlayingPlayerEnum(), Game.getInstance().getLastPlay(), this, c.gridy);
+        // update the view's size
+        LabelField.setDimension(new Dimension(getWidth(), 20));
 
+        // new action's label in the chat
+        LabelField newPlayerAction = new LabelField(false, null, this, c.gridy);
+
+        // default text's color
 		newPlayerAction.setForeground(GenericObjectStyle.getProp("chat", "color"));
 
+        // erase next moves if these exist
+        // TODO: issue
 		if(allHistory.size() >= c.gridy) {
 			for(Integer i = allHistory.size() - 1; i >= c.gridy; i--) {
 				remove(allHistory.get(i));
@@ -69,30 +82,29 @@ public class HistoryChatField extends JPanel {
 			}
 		}
 
+        // add action to the chat
         allHistory.add(newPlayerAction);
 
         add(newPlayerAction, c);
 		
+        // number of moves displayed
         c.gridy++;
 
+        // refresh the view
 		moveHistoryPanel.revalidate();
 		moveHistoryPanel.repaint();
     }
 
-	public void updateContent() {
-
-	}
-
 	public void undo() {
-		System.out.println("Undo move");
-		labelField currentLabel = allHistory.get(--c.gridy);
-		currentLabel.setForeground(GenericObjectStyle.getProp("chat.yellow", "color"));
+		LabelField currentLabel = allHistory.get(--c.gridy);
+        currentLabel.setActive(true);
+        currentLabel.hover(true);
 	}
 
 	public void redo() {
-		System.out.println("Redo move");
-		labelField currentLabel = allHistory.get(c.gridy++);
-		currentLabel.setForeground(GenericObjectStyle.getProp("chat", "color"));
+		LabelField currentLabel = allHistory.get(c.gridy++);
+        currentLabel.setActive(false);
+        currentLabel.hover(false);
 	}
 
 	public void enteredChange(Integer pos) {
@@ -103,18 +115,19 @@ public class HistoryChatField extends JPanel {
 		CellContent[][] currentGrid = copyGrid(Game.getInstance().getGrid());
 
 		if(pos <= plays.getCurrentMovement()) {
-			for(int i = plays.getCurrentMovement() ; i >= pos ; i--) {
-				labelField label = allHistory.get(i);
+			for(int i=plays.getCurrentMovement(); i >= pos; i--) {
+				LabelField label = allHistory.get(i);
 				Play currentPlay = allPlays.get(i);
 
 				for(Map.Entry<Couple<Integer, Integer>, CellContent> m : currentPlay.getModifiedOldCellContents().entrySet()) {
 					currentGrid[m.getKey().getFirst()][m.getKey().getSecond()] = m.getValue();
 				}
-				label.setForeground(GenericObjectStyle.getProp("chat.yellow", "color"));
+
+                label.hover(true);
 			}
 		}
 		else {
-			for(int i = plays.getCurrentMovement()+1 ; i < pos ; i++) {
+			for(int i=plays.getCurrentMovement()+1; i < pos; i++) {
 				Play currentPlay = allPlays.get(i);
 
 				for(Map.Entry<Couple<Integer, Integer>, CellContent> m : currentPlay.getModifiedNewCellContents().entrySet()) {
@@ -131,8 +144,8 @@ public class HistoryChatField extends JPanel {
 	public void exitedChange(Integer pos) {
 		setCursor(defaultCursor);
 
-		for(Integer i = c.gridy - 1; i >= pos; i--) {
-			labelField label = allHistory.get(i);
+		for(Integer i=c.gridy-1; i >= pos; i--) {
+			LabelField label = allHistory.get(i);
 
 			if(!label.isActive())
 				label.hover(false);
@@ -146,15 +159,15 @@ public class HistoryChatField extends JPanel {
 		Plays plays = Game.getInstance().getPlays();
 
 		if(pos <= plays.getCurrentMovement()) {
-			for(int i = plays.getCurrentMovement() ; i >= pos ; i--) {
+			for(int i = plays.getCurrentMovement(); i >= pos; i--) {
 				Game.getInstance().undo_move();
-				c.gridy --;
+				c.gridy--;
 				allHistory.get(i).setActive(true);
 				allHistory.get(i).hover(true);
 			}
 		}
 		else {
-			for(int i = plays.getCurrentMovement()+1 ; i < pos; i++) {
+			for(int i=plays.getCurrentMovement()+1; i < pos; i++) {
 				Game.getInstance().redo_move();
 				c.gridy++;
 			}
@@ -166,38 +179,37 @@ public class HistoryChatField extends JPanel {
 	private CellContent[][] copyGrid(CellContent[][] grid) {
 		if (grid == null)
 			return null;
+        
 		CellContent[][] newGrid = new CellContent[grid.length][];
-		for (int i = 0; i < grid.length; i++) {
+
+		for(int i=0; i < grid.length; i++) {
 			newGrid[i] = grid[i].clone();
 		}
+
 		return newGrid;
 	}
 
-	private void printBoard(CellContent[][] grid) {
-		for (CellContent[] linCellContents : grid) {
+    public void clear() {
+        removeAll();
+        c.gridy = 0;
+    }
+
+    public int getMovesNumber() {
+        return c.gridy;
+    }
+
+    private void printBoard(CellContent[][] grid) {
+		for(CellContent[] linCellContents : grid) {
 			System.out.print("|");
-			for (CellContent cellContent : linCellContents) {
-				switch (cellContent) {
-					case EMPTY:
-						System.out.print("   |");
-						break;
-					case ATTACK_TOWER: 
-						System.out.print(" N |");
-						break;
-					case DEFENSE_TOWER:
-						System.out.print(" B |");
-						break;
-					case KING:
-						System.out.print(" K |");
-						break;
-					case GATE:
-						System.out.print(" X |");
-						break;
-					case KINGPLACE:
-						System.out.print(" P |");
-						break;
-					default:
-						break;
+			for(CellContent cellContent : linCellContents) {
+				switch(cellContent) {
+					case EMPTY: System.out.print("   |"); break;
+					case ATTACK_TOWER: System.out.print(" N |"); break;
+					case DEFENSE_TOWER: System.out.print(" B |"); break;
+					case KING: System.out.print(" K |"); break;
+					case GATE: System.out.print(" X |"); break;
+					case KINGPLACE: System.out.print(" P |"); break;
+					default: break;
 				}
 			}
 			System.out.println("");
@@ -206,28 +218,50 @@ public class HistoryChatField extends JPanel {
 	}
 }
 
-class labelField extends JLabel {
-    
+class LabelField extends JLabel {
+    protected static Dimension size = new Dimension(0, 0);
+
     private Integer position;
 	private boolean active = false;
 	private boolean systemMessage = false;
 	private GenericLabel timing, player, sentence;
+
+    public static void setDimension(Dimension d) {
+        LabelField.size = d;
+    }
     
-	public labelField(PlayerEnum p, Movement movement, HistoryChatField historyMain, Integer pos) {
-		int pp = p==PlayerEnum.ATTACKER? 1 : p==PlayerEnum.DEFENDER? 2 : 0;
+	public LabelField(boolean isSystem, String systemMessage, HistoryChatField historyMain, Integer pos) {
+        setLayout(new FlowLayout(FlowLayout.LEFT));
+        setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        setSize(LabelField.size);
+        setPreferredSize(LabelField.size);
+        setMaximumSize(LabelField.size);
+        setMinimumSize(LabelField.size);
 		
-		// player move message
-		if(pp > 0) {
+        this.systemMessage = isSystem;
+
+        // system message
+		if(this.systemMessage) {
+            setText("[System] ...");
+            setForeground(GenericObjectStyle.getProp("chat.yellow", "color"));
+        }
+        // player move message
+		else {
+            PlayerEnum p = Game.getInstance().getPlayingPlayerEnum();
+            Movement lastMove = Game.getInstance().getLastPlay();
+
+            int pp = p==PlayerEnum.ATTACKER? 2 : p==PlayerEnum.DEFENDER? 1 : 0;
+
 			timing = new GenericLabel("[" + formatTime(Game.getInstance().getDuration()) + "]", 12);
 			timing.setForeground(GenericObjectStyle.getProp("chat.timing", "color"));
 
 			player = new GenericLabel(pp==1? "L'attaquant" : "Le D\u00e9fenseur", 12);
 			player.setForeground(GenericObjectStyle.getProp("chat." + (pp==1? "red" : "blue"), "color"));
 
-			String text = " a joué ";
-			text += getColName(movement.getFromC()) + getRowName(movement.getFromL()); // from
+			String text = " a jou\u00e9 ";
+			text += getColName(lastMove.getFromC()) + getRowName(lastMove.getFromL()); // from
 			text += " en ";
-			text += getColName(movement.getToC()) + getRowName(movement.getToL()); // to
+			text += getColName(lastMove.getToC()) + getRowName(lastMove.getToL()); // to
 
 			sentence = new GenericLabel(text, 12);
 			sentence.setForeground(GenericObjectStyle.getProp("chat", "color"));
@@ -235,46 +269,39 @@ class labelField extends JLabel {
 			add(timing);
 			add(player);
 			add(sentence);
-		}
 
-		// system message
-		else {
-			setText("[System] ...");
-			systemMessage = true;
-		}
-
-
-		setPosition(pos);
-
-		if(!systemMessage) {
-			addMouseListener(new MouseAdapter() {
-				
-				//Utilisé quand le curseur n'est plus sur le text
-				//On va devoir remètre le plateau à son état normal
+            addMouseListener(new MouseAdapter() {
+				/**
+                 * Triggered when mouse's over
+				 * Replace the current board's context
+                 */
 				@Override
 				public void mouseExited(MouseEvent e) {
 					historyMain.exitedChange(pos);
 				}
 				
-				@Override
 				/**
-				* Utilisé quand le surseur survole le text
-				* On va vouloir changer le plateau de jeu pour montrer l'historique
-				*/
+				 * Triggered when mouse's hovering the chat
+                 * Changes the board's context to hovered movement
+				 */
+				@Override
 				public void mouseEntered(MouseEvent e) {
 					historyMain.enteredChange(pos);
 				}
+
 				/**
-				* Utilisé quand on clique sur le text
-				* On va vouloir charger un des coups et donc revenir en arrière
-				*/
+				 * Triggered when player selected an older move
+                 * Change board's context and confirm it
+				 */
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					historyMain.clickChange(pos);
-					
 				}
 			});
 		}
+
+
+		setPosition(pos);
 	}
 
 	public GenericLabel getTiming() {
@@ -290,57 +317,26 @@ class labelField extends JLabel {
 	}
 
 	private String formatTime(int time) {
-		return "00:00";
+        int ms = time % 1000;
+        time = (time - ms) / 1000;
+        int secs = time % 60;
+        time = (time - secs) / 60;
+        int mins = time % 60;
+        int hrs = (time - mins) / 60;
+
+        String h = (hrs > 9? "":"0") + hrs,
+            m = (mins > 9? "":"0") + mins,
+            s = (secs > 9? "":"0") + secs;
+
+        return ((hrs == 0)? "" : h + ":") + m + ":" + s;
 	}
 	
 	private String getColName(int c) {
-		switch(c) {
-			case 0:
-				return "A";
-			case 1:
-				return "B";
-			case 2:
-				return "C";
-			case 3:
-				return "D";
-			case 4:
-				return "E";
-			case 5:
-				return "F";
-			case 6:
-				return "G";
-			case 7:
-				return "H";
-			case 8:
-				return "I";
-			default:
-				return null;
-		}
+        return Character.toString((char)(65 + c));
 	}
 
 	private String getRowName(int l) {
-		switch(l) {
-			case 0:
-				return "1";
-			case 1:
-				return "2";
-			case 2:
-				return "3";
-			case 3:
-				return "4";
-			case 4:
-				return "5";
-			case 5:
-				return "6";
-			case 6:
-				return "7";
-			case 7:
-				return "8";
-			case 8:
-				return "9";
-			default:
-				return null;
-		}
+        return "" + (l+1);
 	}
 
 	public void setPosition(Integer num) {

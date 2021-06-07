@@ -1,7 +1,6 @@
 package fr.prog.tablut.view.pages.game.sides.left.moveHistory;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -13,7 +12,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JScrollBar;
 
 
-import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.view.pages.game.GamePage;
 
 public class MoveHistoryPanel extends JPanel {
@@ -60,27 +58,12 @@ public class MoveHistoryPanel extends JPanel {
             wrapper.setMaximumSize(d);
             wrapper.setMinimumSize(d);
         }
-
-        /* for(int i = 0 ; i < 5 ; i++) {
-            append((i % 2 == 0 ? "L'attaquant " : "Le d\u00e9fenseur ") + i + " ", i % 2 == 0 ? new Color(193, 69, 69) : new Color(87, 158, 189), "a boug\u00e9 le pion en E5 vers A1");
-        }
-        append("Le test", Color.BLUE, "Est en test"); */
     }
-
-    /* protected void append(String player, Color playerColor, String text) {
-        historyChat.append(player, playerColor, text);
-
-        JScrollBar jScrollBar = scrollPane.getVerticalScrollBar();
-        if(jScrollBar.getValue() + jScrollBar.getVisibleAmount() == jScrollBar.getMaximum()) {
-            previousVisibleAmount = 0; // Push scrollBar to the bottom
-            revalidate();
-            repaint();
-        }
-    } */
 
     @Override
     protected void paintComponent(Graphics g) {
-        /* int newHeight = historyChat.getLinesNumber() * 14 + 50;//getHeight() - 30;//getParent().getSize().height - 26;
+        // TODO: fix scrollbar
+        /* int newHeight = historyChat.getMovesNumber() * 20 + 50;//getHeight() - 30;//getParent().getSize().height - 26;
 
         if(previousHeight != newHeight) {
             scrollPane.setPreferredSize(new Dimension(getWidth(), newHeight));
@@ -100,7 +83,7 @@ public class MoveHistoryPanel extends JPanel {
         super.paintComponent(g);
     }
 
-    public void update() {
-        historyChat.updateContent();
+    public void clearChat() {
+        historyChat.clear();
     }
 }

@@ -26,6 +26,10 @@ public class LeftSideGame extends GameInterfaceSide {
     }
 
     public void update() {
-        historyPanel.update();
+        clearChat();
+    }
+
+    public void clearChat() {
+        historyPanel.clearChat();
     }
 }
