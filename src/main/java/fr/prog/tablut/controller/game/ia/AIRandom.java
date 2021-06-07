@@ -1,42 +1,21 @@
 package fr.prog.tablut.controller.game.ia;
 
-import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.player.PlayerEnum;
-import fr.prog.tablut.structures.Couple;
 
-import java.util.List;
-import java.util.Random;
-
-@Deprecated
-public class AIRandom extends AIPlayer {
-    private Random random;
-
+/**
+* IA totalement aléatoire. Aucun choix n'est plus rentable qu'un autre
+ */
+public class AIRandom extends AIMinMax {
     public AIRandom(PlayerEnum playerEnum) {
         super(playerEnum);
-        this.random = new Random();
     }
 
     @Override
-    public boolean play(Game game) {
-        List<Couple<Integer, Integer>> accesibleCells;
-        Couple<Integer, Integer> fromCell;
-
-        do {
-            List<Couple<Integer, Integer>> ownedCells = this.getOwnedCells();
-
-            fromCell = ownedCells.get(random.nextInt(ownedCells.size()));
-
-            accesibleCells = game.getAccessibleCells(fromCell.getFirst(), fromCell.getSecond());
-        } while(accesibleCells.isEmpty());
-
-        System.out.println("AI Play");
-        Couple<Integer, Integer> toCell = accesibleCells.get(random.nextInt(accesibleCells.size()));
-        game.move(fromCell.getFirst(), fromCell.getSecond(), toCell.getFirst(), toCell.getSecond());
-
-        return true;
-
+    public double evaluation(Simulation simulation, PlayerEnum playerEnum) {
+        // On renvoie une valeur constante, tous les coups auront donc une heuristique égale et le coup sera choisi aléatoirement
+        return 0;
     }
-    
+
     @Override
     public String toString() {
     	return "AIRandom";
