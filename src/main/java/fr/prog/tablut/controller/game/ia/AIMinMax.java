@@ -51,7 +51,7 @@ public abstract class AIMinMax extends AIPlayer {
         for (Movement curMove: moves) {
             //La classe simulation permet d'appliquer le mouvement et d'en déterminer l'heuristique par l'algorithme min/max
             Simulation newSimulation = (Simulation) simulation.clone();
-            newSimulation.move(curMove.fromL, curMove.fromC, curMove.toL, curMove.toC);
+            newSimulation.move(curMove.fromC, curMove.fromL, curMove.toC, curMove.toL);
 
             // Si la simulation renvoie un état gagnant, pas besoin de calculer les suivantes
             if (newSimulation.getWinner() == this.getPlayerEnum()) {
@@ -109,7 +109,7 @@ public abstract class AIMinMax extends AIPlayer {
             if (this.getPlayerEnum() == simulation.getPlayingPlayerEnum()) { //On est ici dans le cas du joueur
                 for (Movement movement : simulation.getAllPossibleMoves()) { 
                     alpha = Math.max(alpha, minimax(getNextSimulation(simulation, movement), alpha, beta, depth + 1, maxDepth));
-                    if (alpha >= beta) { 
+                    if (alpha >= beta) {
                         return beta; //On retourne la valeur beta si elle est maximale
                     }
                 }
@@ -131,7 +131,7 @@ public abstract class AIMinMax extends AIPlayer {
 
     private Simulation getNextSimulation(Simulation simulation, Movement movement) {
         Simulation newSimulation = (Simulation) simulation.clone(); // On clone la simulation pour ne pas perdre celle passée en paramètre
-        newSimulation.move(movement.fromL, movement.fromC, movement.toL, movement.toC); // Obtention du nouvel état de la simulation copiée
+        newSimulation.move(movement.fromC, movement.fromL, movement.toC, movement.toL); // Obtention du nouvel état de la simulation copiée
         return newSimulation;
     }
 

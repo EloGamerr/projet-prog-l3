@@ -57,7 +57,7 @@ public class CenterSideGame extends GameInterfaceSide {
                     break;
 
                 case DEFENDER:
-                    name = "Au tour du défenseur";
+                    name = "Au tour du d\u00e9fenseur";
                     img = CellContent.DEFENSE_TOWER.getImage();
                     break;
 

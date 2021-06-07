@@ -61,30 +61,30 @@ public class AIMedium extends AIMinMax {
         double numPieces = 0.0;
         
         // En bas du roi
-        if (isEnnemy(simulation, simulation.getKingL()+1, simulation.getKingC())) {
+        if (isEnnemy(simulation, simulation.getKingC(), simulation.getKingL()+1)) {
             numPieces += 0.25;
         }
 
         // En haut du roi
-        if (isEnnemy(simulation, simulation.getKingL()-1, simulation.getKingC())) {
+        if (isEnnemy(simulation, simulation.getKingC(), simulation.getKingL()-1)) {
             numPieces += 0.25;
         }
 
         // A droite du roi
-        if (isEnnemy(simulation, simulation.getKingL(), simulation.getKingC()+1)) {
+        if (isEnnemy(simulation, simulation.getKingC()+1, simulation.getKingL())) {
             numPieces += 0.25;
         }
 
         // A gauche du roi
-        if (isEnnemy(simulation, simulation.getKingL(), simulation.getKingC()-1)) {
+        if (isEnnemy(simulation, simulation.getKingC()-1, simulation.getKingL())) {
             numPieces += 0.25;
         }
 
         return numPieces;
     }
 
-    private boolean isEnnemy(Simulation simulation, int row, int col) {
-        return !simulation.isValid(row, col) || simulation.getCellContent(row, col) == CellContent.ATTACK_TOWER || simulation.getCellContent(row, col) == CellContent.GATE || simulation.isTheKingPlace(row, col);
+    private boolean isEnnemy(Simulation simulation, int col, int row) {
+        return !simulation.isValid(col, row) || simulation.getCellContent(col, row) == CellContent.ATTACK_TOWER || simulation.getCellContent(col, row) == CellContent.GATE || simulation.isTheKingPlace(col, row);
     }
 
     /**
@@ -102,12 +102,12 @@ public class AIMedium extends AIMinMax {
             value += 0.25;
         }
 
-        // Coin haut droit
+        // Coin bas gauche
         if (boardState.getCellContent(1, 7) == CellContent.ATTACK_TOWER) {
             value += 0.25;
         }
 
-        // Coin bas gauche
+        // Coin haut droit
         if (boardState.getCellContent(7, 1) == CellContent.ATTACK_TOWER) {
             value += 0.25;
         }
@@ -220,8 +220,8 @@ public class AIMedium extends AIMinMax {
         int moveIdx = 0;
         for (Movement move : kingMoves) {
             // If move brings you closer to the corner, attempt it
-            if (distance(new Point(move.getFromL(), move.getFromC()), corner) > distance(new Point(move.getToL(), move.getToC()), corner)) {
-                moveCounts[moveIdx++] = calcMinMovesToCorner(simulation, corner, moveCt + 1, new Point(move.getToL(), move.getToC()));
+            if (distance(new Point(move.getFromC(), move.getFromL()), corner) > distance(new Point(move.getToC(), move.getToL()), corner)) {
+                moveCounts[moveIdx++] = calcMinMovesToCorner(simulation, corner, moveCt + 1, new Point(move.getToC(), move.getToL()));
             }
         }
 

@@ -152,7 +152,7 @@ public class GamePage extends Page {
         // PAGE MIDDLE CONTENT
         GenericPanel p = new GenericPanel(new GridBagLayout());
         
-        winnerDescLabel = new GenericLabel("L'attaquant n'a pas réussi à encercler le Roi", 16);
+        winnerDescLabel = new GenericLabel("L'attaquant n'a pas r\u00e9ussi \u00e0 encercler le Roi", 16);
         winnerDescLabel.setForeground(GenericObjectStyle.getProp("label.light", "color"));
         GenericRoundedButton replay = new GenericRoundedButton("Revoir le match", 170, 40);
 
@@ -237,7 +237,7 @@ public class GamePage extends Page {
         winnerPage.getTitle().setText(wid? game.getDefenderName() : game.getAttackerName());
 
         // desc (to know the role of the winner / loser)
-        String desc = wid? "Le Roi a réussi à s'échapper" : "Le Roi n'a pas réussi à s'échapper";
+        String desc = wid? "Le Roi a r\u00e9ussi \u00e0 s'\u00e9chapper" : "Le Roi n'a pas r\u00e9ussi \u00e0 s'\u00e9chapper";
         winnerDescLabel.setText(desc);
 
         if(wid) {
