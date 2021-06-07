@@ -66,13 +66,14 @@ public class GameLoader {
 
 		while(scanner.hasNextLine()) {
 			String lineContent = scanner.nextLine();
-
-			if(lineNumber == 0 && !loadParameters(lineContent))
-				return false;
 			
+			if(lineNumber == 0 && !loadParameters(lineContent)) {
+				scanner.close();
+				return false;
+			}
 			lineNumber++;
 		}
-
+		scanner.close();
 		return true;
 	}
 	
@@ -160,7 +161,7 @@ public class GameLoader {
     				toOrFrom = SaverConstants.BLANK;
     				break;
     			case '\n':
-    				game.move(movement.fromL, movement.fromC, movement.toL,movement.toC);
+    				game.move(movement.fromC, movement.fromL, movement.toC,movement.toL);
     				toOrFrom = SaverConstants.NEXT_LINE;
     				break;
     			case '(':
@@ -174,16 +175,16 @@ public class GameLoader {
     			default:
 
     				if(toOrFrom.equals(SaverConstants.NEXT_LINE) && lOrC.equals(SaverConstants.BR_LEFT)) {
-    	    			movement.setFromL(Character.getNumericValue(playsString.charAt(index)));
-    				break;}
-    	    		else if(toOrFrom == SaverConstants.NEXT_LINE && lOrC == SaverConstants.COMMA) {
     	    			movement.setFromC(Character.getNumericValue(playsString.charAt(index)));
     				break;}
+    	    		else if(toOrFrom == SaverConstants.NEXT_LINE && lOrC == SaverConstants.COMMA) {
+    	    			movement.setFromL(Character.getNumericValue(playsString.charAt(index)));
+    				break;}
     	    		else if(toOrFrom == SaverConstants.BLANK && lOrC == SaverConstants.BR_LEFT) {
-    	    			movement.setToL(Character.getNumericValue(playsString.charAt(index)));
+    	    			movement.setToC(Character.getNumericValue(playsString.charAt(index)));
     				break;}
     	    		else if(toOrFrom == SaverConstants.BLANK && lOrC == SaverConstants.COMMA) {
-    	    			movement.setToC(Character.getNumericValue(playsString.charAt(index)));
+    	    			movement.setToL(Character.getNumericValue(playsString.charAt(index)));
     				break;}
     				
     		}

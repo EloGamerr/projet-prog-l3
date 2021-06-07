@@ -106,27 +106,27 @@ public class Game {
 	 * @param toC Column index on which we must put the pawn
 	 * @return True if the pawn was moved, false otherwise
 	 */
-	public boolean move(int l, int c, int toL, int toC) {
-		if(!canMove(l, c, toL, toC)) return false;
+	public boolean move(int c, int l, int toC, int toL) {
+		if(!canMove(c, l, toC, toL)) return false;
 
-		CellContent fromCellContent = getGrid()[l][c];
+		CellContent fromCellContent = getGrid()[c][l];
 
-		Play play = plays.move(l, c, toL, toC);
+		Play play = plays.move(c, l, toC, toL);
 
-		play.putModifiedOldCellContent(new Point(c, l), getCellContent(l, c));
-		setContent(CellContent.EMPTY, l, c);
+		play.putModifiedOldCellContent(new Point(c, l), getCellContent(c, l));
+		setContent(CellContent.EMPTY, c, l);
 		play.putModifiedNewCellContent(new Point(c, l), CellContent.EMPTY);
 		
 		l = toL;
 		c = toC;
 		
-		CellContent previousToCellContent = getCellContent(l, c);
+		CellContent previousToCellContent = getCellContent(c, l);
 
 		play.putModifiedOldCellContent(new Point(c, l), previousToCellContent);
-		setContent(fromCellContent, l, c);
+		setContent(fromCellContent, c, l);
 		play.putModifiedNewCellContent(new Point(c, l), fromCellContent);
 		
-		move.clearTakedPawns(l, c, play);
+		move.clearTakedPawns(c, l, play);
 		
 		setWinner(checkWin(previousToCellContent, fromCellContent));
 		playingPlayerEnum = playingPlayerEnum.getOpponent();
@@ -134,19 +134,19 @@ public class Game {
 		return true;
 	}
 
-	public boolean canMove(int l, int c, int toL, int toC) {
-		if(isWon() || !isValid(toL, toC) || (toL != l && toC != c))
+	public boolean canMove(int c, int l, int toC, int toL) {
+		if(isWon() || !isValid(toC, toL) || (toL != l && toC != c))
 			return false;
 
-		CellContent fromCellContent = getGrid()[l][c];
+		CellContent fromCellContent = getGrid()[c][l];
 
 		if(fromCellContent == CellContent.EMPTY || fromCellContent == CellContent.GATE)
 			return false;
 
-		if(!isPlayingPlayerOwningCell(l, c))
+		if(!isPlayingPlayerOwningCell(c, l))
 			return false;
 
-		List<Point> accessibleCells = getAccessibleCells(l, c);
+		List<Point> accessibleCells = getAccessibleCells(c, l);
 
 		if(!accessibleCells.contains(new Point(toC, toL)))
 			return false;
@@ -171,12 +171,12 @@ public class Game {
 
 					// We undo twice if it's Human VS AI
 					for(Map.Entry<Point, CellContent> entry : play.getModifiedOldCellContents().entrySet()) {
-						this.setContent(entry.getValue(), entry.getKey().y, entry.getKey().x);
+						this.setContent(entry.getValue(), entry.getKey().x, entry.getKey().y);
 					}
 
 					if(play2 != null) {
 						for(Map.Entry<Point, CellContent> entry : play2.getModifiedOldCellContents().entrySet()) {
-							this.setContent(entry.getValue(), entry.getKey().y, entry.getKey().x);
+							this.setContent(entry.getValue(), entry.getKey().x, entry.getKey().y);
 						}
 					}
 					else {
@@ -192,7 +192,7 @@ public class Game {
 			}
 			else {
 				for(Map.Entry<Point, CellContent> entry : play.getModifiedOldCellContents().entrySet()) {
-					this.setContent(entry.getValue(), entry.getKey().y, entry.getKey().x);
+					this.setContent(entry.getValue(), entry.getKey().x, entry.getKey().y);
 				}
 
 				this.playingPlayerEnum = this.getPlayingPlayerEnum().getOpponent();
@@ -213,7 +213,7 @@ public class Game {
 
 		if(play != null) {
 			for(Map.Entry<Point, CellContent> entry : play.getModifiedNewCellContents().entrySet()) {
-				this.setContent(entry.getValue(), entry.getKey().y, entry.getKey().x);
+				this.setContent(entry.getValue(), entry.getKey().x, entry.getKey().y);
 			}
 
 			this.playingPlayerEnum = this.getPlayingPlayerEnum().getOpponent();
@@ -227,18 +227,18 @@ public class Game {
 	}
 
     public boolean hasPreviousMove() {
-        return getPlays().getPreviousMovements().isEmpty();
+        return !getPlays().getPreviousMovements().isEmpty();
     }
 
     public boolean hasNextMove() {
-        return getPlays().getNextMovements().isEmpty();
+        return !getPlays().getNextMovements().isEmpty();
     }
 
 	/**
 	 * Initializing grid with pawns
 	 */
-	public void init_game(int rowAmount, int colAmount) {
-		this.init_grid(rowAmount, colAmount);
+	public void init_game(int colAmount, int rowAmount) {
+		this.init_grid( colAmount, rowAmount);
 
 		init_king();
 		init_gates();
@@ -248,8 +248,8 @@ public class Game {
 	/**
 	 * Initializing grid with empty cells
 	 */
-	public void init_grid(int rowAmount, int colAmount) {
-		setGrid(new CellContent[rowAmount][colAmount]);
+	public void init_grid(int colAmount, int rowAmount) {
+		setGrid(new CellContent[colAmount][rowAmount]);
 
 		for(int i = 0 ; i < rowAmount; i++) {
 			Arrays.fill(getGrid()[i], CellContent.EMPTY);
@@ -282,31 +282,31 @@ public class Game {
 
 	private void init_attackTowers() {
 		setAttackTower(middle, 0);
-		setAttackTower(middle, colAmount-1);
+		setAttackTower(middle, rowAmount-1);
 		setAttackTower(0, middle);
-		setAttackTower(rowAmount-1, middle);
+		setAttackTower(colAmount-1, middle);
 		
 		setAttackTower(middle-1, 0);
-		setAttackTower(middle-1, colAmount-1);
+		setAttackTower(middle-1, rowAmount-1);
 		setAttackTower(0, middle-1);
-		setAttackTower(rowAmount-1, middle-1);
+		setAttackTower(colAmount-1, middle-1);
 		
 		setAttackTower(middle+1, 0);
-		setAttackTower(middle+1, colAmount-1);
+		setAttackTower(middle+1, rowAmount-1);
 		setAttackTower(0, middle+1);
-		setAttackTower(rowAmount-1, middle+1);
+		setAttackTower(colAmount-1, middle+1);
 		
 		setAttackTower(middle, 1);
-		setAttackTower(middle, colAmount-2);
+		setAttackTower(middle, rowAmount-2);
 		setAttackTower(1, middle);
-		setAttackTower(rowAmount-2, middle);
+		setAttackTower(colAmount-2, middle);
 	}
 
 	private void init_gates() {
 		setGate(0, 0);
-		setGate(rowAmount-1, 0);
-		setGate(0, colAmount-1);
-		setGate(rowAmount-1, colAmount-1);
+		setGate(colAmount-1, 0);
+		setGate(0, rowAmount-1);
+		setGate(colAmount-1, rowAmount-1);
 	}
 
 
@@ -320,11 +320,11 @@ public class Game {
 	 * - Pawns can't go on a cell which is already occupied
 	 * @return True if the pawn can't access to the cell, otherwise, a couple of the cell coord is added to the param accessibleCells and false is returned
 	 */
-	private boolean cantAccess(int fromL, int fromC, int toL, int toC, List<Point> accessibleCells) {
-		CellContent fromCellContent = getGrid()[fromL][fromC];
-		CellContent toCellContent = getGrid()[toL][toC];
+	private boolean cantAccess(int fromC, int fromL, int toC, int toL, List<Point> accessibleCells) {
+		CellContent fromCellContent = getGrid()[fromC][fromL];
+		CellContent toCellContent = getGrid()[toC][toL];
 		
-		if(toCellContent == CellContent.GATE || (isTheKingPlace(toL, toC) && toCellContent == CellContent.EMPTY)) {
+		if(toCellContent == CellContent.GATE || (isTheKingPlace(toC, toL) && toCellContent == CellContent.EMPTY)) {
 			if(fromCellContent == CellContent.KING) {
 				accessibleCells.add(new Point(toC, toL));
 			}
@@ -347,23 +347,23 @@ public class Game {
 	 * @return True if the cell has an empty cell on her row or on her column
 	 * and if the cell content is owned by the playingPlayerEnum
 	 */
-	public boolean canMove(int l, int c) {
+	public boolean canMove(int c, int l) {
 		if(isWon())
 			return false;
 
-		if(!isPlayingPlayerOwningCell(l, c)) return false;
+		if(!isPlayingPlayerOwningCell(c, l)) return false;
 
-		return this.isNotBlocked(l, c);
+		return this.isNotBlocked(c, l);
 	}
 
 	/**
 	 *
 	 * @return True if the cell content is owned by the playingPlayerEnum
 	 */
-	public boolean isPlayingPlayerOwningCell(int l, int c) {
-		if(this.playingPlayerEnum == PlayerEnum.ATTACKER && this.getCellContent(l, c) != CellContent.ATTACK_TOWER) return false;
+	public boolean isPlayingPlayerOwningCell(int c, int l) {
+		if(this.playingPlayerEnum == PlayerEnum.ATTACKER && this.getCellContent(c, l) != CellContent.ATTACK_TOWER) return false;
 
-		if(this.playingPlayerEnum == PlayerEnum.DEFENDER && this.getCellContent(l, c) != CellContent.DEFENSE_TOWER && this.getCellContent(l, c) != CellContent.KING) return false;
+		if(this.playingPlayerEnum == PlayerEnum.DEFENDER && this.getCellContent(c, l) != CellContent.DEFENSE_TOWER && this.getCellContent(c, l) != CellContent.KING) return false;
 
 		return true;
 	}
@@ -375,29 +375,29 @@ public class Game {
 	 * if you don't need the list of the accessible cells
 	 * @return True if the cell has an empty cell on her row or on her column
 	 */
-	public boolean isNotBlocked(int fromL, int fromC) {
+	public boolean isNotBlocked(int fromC, int fromL) {
 		List<Point> accessibleCells = new ArrayList<>();
 
 		for(int toL = fromL-1 ; toL >= 0 ; toL--) {
-			if(cantAccess(fromL, fromC, toL, fromC , accessibleCells)) break;
+			if(cantAccess(fromC, fromL, fromC, toL , accessibleCells)) break;
 
 			if(!accessibleCells.isEmpty()) return true;
 		}
 
 		for(int toL = fromL+1 ; toL < rowAmount ; toL++) {
-			if(cantAccess(fromL, fromC, toL, fromC, accessibleCells)) break;
+			if(cantAccess(fromC, fromL, fromC, toL , accessibleCells)) break;
 
 			if(!accessibleCells.isEmpty()) return true;
 		}
 
 		for(int toC = fromC-1 ; toC >= 0 ; toC--) {
-			if(cantAccess(fromL, fromC, fromL, toC, accessibleCells)) break;
+			if(cantAccess(fromC, fromL, toC, fromL,  accessibleCells)) break;
 
 			if(!accessibleCells.isEmpty()) return true;
 		}
 
 		for(int toC = fromC+1 ; toC < colAmount ; toC++) {
-			if(cantAccess(fromL, fromC, fromL, toC, accessibleCells)) break;
+			if(cantAccess(fromC, fromL, toC, fromL, accessibleCells)) break;
 
 			if(!accessibleCells.isEmpty()) return true;
 		}
@@ -418,7 +418,7 @@ public class Game {
 		if(this.getWinner() != PlayerEnum.NONE) return winner;
 		
 		// If the king has been killed
-		if(!isTheKing(kingL,kingC))
+		if(!isTheKing(kingC,kingL))
 			return playingPlayerEnum;
 
 		// If the king is on a gate
@@ -435,32 +435,32 @@ public class Game {
 	/**
 	 * @return True if the cell content is not empty, false otherwise
 	 */
-	public boolean isOccupied(int l, int c) {
-		if(!isValid(l, c)) return true;
-		return getGrid()[l][c] != CellContent.EMPTY;
+	public boolean isOccupied(int c, int l) {
+		if(!isValid(c, l)) return true;
+		return getGrid()[c][l] != CellContent.EMPTY;
 	}
 
-	public boolean isTheKing(int l, int c) {
-		if(!isValid(l, c)) return false;
-		return getGrid()[l][c] == CellContent.KING;
+	public boolean isTheKing(int c, int l) {
+		if(!isValid(c, l)) return false;
+		return getGrid()[c][l] == CellContent.KING;
 	}
 	
-	public boolean isAttackTower(int l, int c) {
-		if(!isValid(l, c)) return false;
-		return getGrid()[l][c] == CellContent.ATTACK_TOWER;
+	public boolean isAttackTower(int c, int l) {
+		if(!isValid(c, l)) return false;
+		return getGrid()[c][l] == CellContent.ATTACK_TOWER;
 	}
 	
-	public boolean  isDefenseTower(int l, int c) {
-		if(!isValid(l, c)) return false;
-		return getGrid()[l][c] == CellContent.DEFENSE_TOWER;
+	public boolean  isDefenseTower(int c, int l) {
+		if(!isValid(c, l)) return false;
+		return getGrid()[c][l] == CellContent.DEFENSE_TOWER;
 	}
 	
-	public boolean isGate(int l, int c) {
-		if(!isValid(l, c)) return false;
-		return getGrid()[l][c] == CellContent.GATE;
+	public boolean isGate(int c, int l) {
+		if(!isValid(c, l)) return false;
+		return getGrid()[c][l] == CellContent.GATE;
 	}
 	
-	public boolean isValid(int l, int c) {
+	public boolean isValid(int c, int l) {
 		return !(l < 0 || c < 0 || l >= rowAmount || c >= colAmount);
 	}
 	
@@ -540,27 +540,27 @@ public class Game {
 	}
 
 	
-	public CellContent getCellContent(int l, int c) {
-		return this.getGrid()[l][c];
+	public CellContent getCellContent(int c, int l) {
+		return this.getGrid()[c][l];
 	}
 	
-	public List<Point> getAccessibleCells(int fromL, int fromC) {
+	public List<Point> getAccessibleCells(int fromC, int fromL) {
 		List<Point> accessibleCells = new ArrayList<>();
 
 		for(int toL = fromL-1 ; toL >= 0 ; toL--) {
-            if(cantAccess(fromL, fromC, toL, fromC , accessibleCells)) break;
+            if(cantAccess(fromC, fromL, fromC, toL , accessibleCells)) break;
         }
 
         for(int toL = fromL+1 ; toL < rowAmount ; toL++) {
-            if(cantAccess(fromL, fromC, toL, fromC, accessibleCells)) break;
+            if(cantAccess(fromC, fromL, fromC, toL, accessibleCells)) break;
         }
 
         for(int toC = fromC-1 ; toC >= 0 ; toC--) {
-            if(cantAccess(fromL, fromC, fromL, toC, accessibleCells)) break;
+            if(cantAccess(fromC, fromL, toC, fromL, accessibleCells)) break;
         }
 		
         for(int toC = fromC+1 ; toC < colAmount ; toC++) {
-            if(cantAccess(fromL, fromC, fromL, toC, accessibleCells)) break;
+            if(cantAccess(fromC, fromL, toC, fromL, accessibleCells)) break;
         }
 
 		return accessibleCells;
@@ -575,7 +575,7 @@ public class Game {
 
 		for(int i = 0 ; i < grid.length ; i++) {
 			for(int j = 0 ; j < grid[i].length ; j++) {
-				if(grid[i][j] == cellContent) {
+				if(grid[j][i] == cellContent) {
 					cells.add(new Point(j, i));
 				}
 			}
@@ -589,17 +589,17 @@ public class Game {
 	 * @param l Row of the target cell
 	 * @param c Column of the target cell
 	 */
-	public void setContent(CellContent cellContent, int l, int c) {
+	public void setContent(CellContent cellContent,int c, int l ) {
 		if (cellContent == CellContent.KING) {
 			kingC = c;
 			kingL = l;
 		}
 
-		if(getGrid()[l][c] == CellContent.ATTACK_TOWER) {
+		if(getGrid()[c][l] == CellContent.ATTACK_TOWER) {
 			attacker.getOwnedCells().remove(new Point(c, l));
 		}
 
-		else if(getGrid()[l][c] == CellContent.DEFENSE_TOWER || getGrid()[l][c] == CellContent.KING) {
+		else if(getGrid()[c][l] == CellContent.DEFENSE_TOWER || getGrid()[c][l] == CellContent.KING) {
 			defender.getOwnedCells().remove(new Point(c, l));
 		}
 		
@@ -611,7 +611,7 @@ public class Game {
 			defender.getOwnedCells().add(new Point(c, l));
 		}
 	
-		getGrid()[l][c] = cellContent;
+		getGrid()[c][l] = cellContent;
 	}
 	
 	public void setWinner(PlayerEnum winner) {
@@ -622,12 +622,12 @@ public class Game {
 		this.playingPlayerEnum = playingPlayer;
 	}
 	
-	public void setDefenseTower(int l, int c) {
-		setContent(CellContent.DEFENSE_TOWER, l, c);
+	public void setDefenseTower(int c, int l) {
+		setContent(CellContent.DEFENSE_TOWER, c, l);
 	}
 	
-	public void setAttackTower(int l, int c) {
-		setContent(CellContent.ATTACK_TOWER, l, c);
+	public void setAttackTower(int c, int l) {
+		setContent(CellContent.ATTACK_TOWER, c, l);
 	}
 	
 	public void setDefender(Player defender) {
@@ -637,12 +637,12 @@ public class Game {
 		this.attacker = attacker;
 	}
 	
-	public void setKing(int l, int c) {
-		setContent(CellContent.KING, l, c);
+	public void setKing(int c, int l) {
+		setContent(CellContent.KING, c, l);
 	}
 	
-	public void setGate(int l, int c) {
-		setContent(CellContent.GATE, l, c);
+	public void setGate(int c, int l) {
+		setContent(CellContent.GATE, c, l);
 	}
 	
 	public void setGrid(CellContent[][] grid) {

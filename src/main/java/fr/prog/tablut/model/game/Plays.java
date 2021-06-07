@@ -16,10 +16,10 @@ public class Plays {
 	 * This method is called when a moved is done in the game
 	 * @return The Play created by the move and add it to the plays list
 	 */
-	public Play move(int fromL, int fromC, int toL, int toC) {
+	public Play move(int fromC, int fromL, int toC, int toL) {
 		getNextMovements().clear(); // We must clear nextMovements if a player plays without using undo/redo buttons
 
-		Play play = new Play(new Movement(fromL, fromC, toL, toC));
+		Play play = new Play(new Movement(fromC, fromL, toC, toL));
 		plays.add(play);
 		currentMovement++;
 		return play;

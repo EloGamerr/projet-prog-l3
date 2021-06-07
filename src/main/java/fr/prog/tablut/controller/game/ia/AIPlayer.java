@@ -28,26 +28,26 @@ public abstract class AIPlayer extends Player {
 			int C = cell.x;
 
 			for(int toL = L-1 ; toL >= 0 ; toL--) {
-				if(grid[toL][C] != CellContent.EMPTY)
+				if(grid[C][toL] != CellContent.EMPTY)
 					break;
 				listPossibilities.add(new Possibility(cell, new Point(C, toL)));
 			}
 				
 			
 			for(int toL = L+1 ; toL < grid.length ; toL++) {
-				if(grid[toL][C] != CellContent.EMPTY)
+				if(grid[C][toL] != CellContent.EMPTY)
 					break;
 				listPossibilities.add(new Possibility(cell, new Point(C, toL)));
 			}
 			
 			for(int toC = C-1 ; toC >= 0 ; toC--) {
-				if(grid[L][toC] != CellContent.EMPTY)
+				if(grid[toC][L] != CellContent.EMPTY)
 					break;
 				listPossibilities.add(new Possibility(cell, new Point(toC, L)));
 			}
 			
 			for(int toC = C+1 ; toC < grid[0].length ; toC++) {
-				if(grid[L][toC] != CellContent.EMPTY) 
+				if(grid[toC][L] != CellContent.EMPTY) 
 					break;
 				listPossibilities.add(new Possibility(cell, new Point(toC, L)));
 			}

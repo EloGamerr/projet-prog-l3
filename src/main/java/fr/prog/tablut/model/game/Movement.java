@@ -6,11 +6,11 @@ public class Movement {
 	public int toL;
 	public int toC;
 
-	public Movement(int fromL, int fromC, int toL, int toC) {
-		this.fromL = fromL;
+	public Movement(int fromC, int fromL, int toC, int toL) {
 		this.fromC = fromC;
-		this.toL = toL;
+		this.fromL = fromL;
 		this.toC = toC;
+		this.toL = toL;
 	}
 	
 	public Movement() {
@@ -49,6 +49,6 @@ public class Movement {
 	}
 
 	public String toString() {
-		return "("+fromL+","+fromC+")"+" ("+toL+","+toC+")";
+		return "("+fromC+","+fromL+")"+" ("+toC+","+toL+")";
 	}
 }

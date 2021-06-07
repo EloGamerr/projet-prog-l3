@@ -23,7 +23,7 @@ public class GameMouseAdaptator extends MouseAdapter {
 		if(e.getButton() == MouseEvent.BUTTON1) {
 			int	l = gamePage.getRowFromYCoord(e.getY());
 			int c = gamePage.getColFromXCoord(e.getX());
-			gameController.click(l, c);
+			gameController.click(c, l);
 		}
 
 		else if(e.getButton() == MouseEvent.BUTTON3)

@@ -13,7 +13,7 @@ public class HumanPlayer extends Player {
     private GamePage gamePage;
     private GameControllerHuman gameControllerHuman;
     
-    public void updateState(int row, int col, GamePage gamePage, GameControllerHuman gameControllerHuman) {
+    public void updateState(int col, int row, GamePage gamePage, GameControllerHuman gameControllerHuman) {
         this.row = row;
         this.col = col;
         this.gamePage = gamePage;
@@ -23,7 +23,7 @@ public class HumanPlayer extends Player {
 
     public boolean play(Game game, GamePage gamePage) {
         if(gameControllerHuman.getSelectedCell() == null) {
-            if(game.canMove(row, col)) {
+            if(game.canMove(col,row)) {
                 gameControllerHuman.setSelectedCell(new Point(col, row));
                 gameControllerHuman.mouseMoved(gamePage.getMousePosition());
             }
@@ -31,7 +31,7 @@ public class HumanPlayer extends Player {
         else if(gameControllerHuman.getSelectedCell().y == row && gameControllerHuman.getSelectedCell().x == col)
             gameControllerHuman.undoSelect();
         else
-            return game.move(gameControllerHuman.getSelectedCell().y, gameControllerHuman.getSelectedCell().x, row, col);
+            return game.move(gameControllerHuman.getSelectedCell().x, gameControllerHuman.getSelectedCell().y, col, row);
         
         return false;
     }

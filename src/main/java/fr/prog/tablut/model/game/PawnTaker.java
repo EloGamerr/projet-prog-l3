@@ -25,58 +25,58 @@ public class PawnTaker {
 	// Main function
 	////////////////////////////////////////////////////	
 	
-	public void clearTakedPawns(int l, int c, Play play) {
-		if(game.isAttackTower(l, c))
-			attack(l,c, play);
+	public void clearTakedPawns(int c, int l, Play play) {
+		if(game.isAttackTower(c, l))
+			attack(c,l, play);
 
-		if(game.isDefenseTower(l, c))
-			defense(l,c, play);
+		if(game.isDefenseTower(c, l))
+			defense(c,l, play);
 	}
 	
 	////////////////////////////////////////////////////
 	// Attack 
 	////////////////////////////////////////////////////
 	
-	public void attack(int l, int c, Play play) {
-		attack_core(l-1,c,-1,0, play);
-		attack_core(l+1,c,1,0, play);
-		attack_core(l,c-1,0,-1, play);
-		attack_core(l,c+1,0,1, play);
+	public void attack(int c, int l, Play play) {
+		attack_core(c, l-1, 0,-1, play);
+		attack_core(c, l+1, 0, 1, play);
+		attack_core(c-1,l,-1, 0, play);
+		attack_core(c+1, l, 1, 0,  play);
 	}
 	
-	public void attack_core(int l, int c, int dl, int dc, Play play){
-		if(game.isDefenseTower(l, c)){ // Si la case contient une tour d�fensive
-			if(isAttTowerHelper(l+dl, c+dc)) { // Si deux cases plus loin nous avons un alli� de circonstance pour l'attaque
-				play.putModifiedOldCellContent(new Point(c, l), game.getCellContent(l, c));
-				game.setContent(CellContent.EMPTY,l,c); // on enleve le pion ennemi
+	public void attack_core(int c, int l, int dc,  int dl,  Play play){
+		if(game.isDefenseTower(c,l)){ // Si la case contient une tour d�fensive
+			if(isAttTowerHelper(c+dc, l+dl)) { // Si deux cases plus loin nous avons un alli� de circonstance pour l'attaque
+				play.putModifiedOldCellContent(new Point(c, l), game.getCellContent(c, l));
+				game.setContent(CellContent.EMPTY,c,l); // on enleve le pion ennemi
 				play.putModifiedNewCellContent(new Point(c, l), CellContent.EMPTY);
 			}
 			else 
-				testSurround(l, c, play);  // Sinon on v�rifie que le coup jou�  bloque totalement le pion ennemi
+				testSurround(c, l, play);  // Sinon on v�rifie que le coup jou�  bloque totalement le pion ennemi
 		}
-		else if(game.isTheKing(l,c)) // Si la case contient le roi
-				testSurround(l, c, play);  // On v�rifie que le coup jou�  bloque totalement le roi ennemi
+		else if(game.isTheKing(c,l)) // Si la case contient le roi
+				testSurround(c, l,  play);  // On v�rifie que le coup jou�  bloque totalement le roi ennemi
 	}
 	
 	////////////////////////////////////////////////////
 	// Defense 
 	////////////////////////////////////////////////////
 	
-	public void defense(int l, int c, Play play) {
-		defense_core(l-1,c,-1,0, play);
-		defense_core(l+1,c,1,0, play);
-		defense_core(l,c-1,0,-1, play);
-		defense_core(l,c+1,0,1, play);
+	public void defense(int c, int l,  Play play) {
+		defense_core(c, l-1, 0,-1, play);
+		defense_core(c, l+1, 0, 1, play);
+		defense_core(c-1,l,-1, 0, play);
+		defense_core(c+1, l, 1, 0,  play);
 	}
 	
-	public void defense_core(int l, int c, int dl, int dc, Play play){
-		if(game.isAttackTower(l, c)){
-			if(isDefTowerHelper(l+dl, c+dc)) { // Si deux cases plus loin nous avons un alli� de circonstance pour la d�fense
-				play.putModifiedOldCellContent(new Point(c, l), game.getCellContent(l, c));
-				game.setContent(CellContent.EMPTY,l,c); // on enleve le pion ennemi
+	public void defense_core(int c, int l, int dc, int dl, Play play){
+		if(game.isAttackTower(c, l)){
+			if(isDefTowerHelper( c+dc, l+dl)) { // Si deux cases plus loin nous avons un alli� de circonstance pour la d�fense
+				play.putModifiedOldCellContent(new Point(c, l), game.getCellContent(c,l));
+				game.setContent(CellContent.EMPTY,c,l); // on enleve le pion ennemi
 				play.putModifiedNewCellContent(new Point(c, l), CellContent.EMPTY);
 			}
-			else  testSurround(l, c, play); // Sinon on v�rifie que le coup jou�  bloque totalement le pion ennemi		
+			else  testSurround(c, l, play); // Sinon on v�rifie que le coup jou�  bloque totalement le pion ennemi		
 		}
 	}
 	
@@ -85,16 +85,16 @@ public class PawnTaker {
 	////////////////////////////////////////////////////
 	
 	
-	public void testSurround(int l, int c, Play play) {
-		if(isSurrounded(new Point(c, l),l,c)) { // Si le pion est encercl�
-			play.putModifiedOldCellContent(new Point(c, l), game.getCellContent(l, c));
-			game.setContent(CellContent.EMPTY,l,c); // On enl�ve le pion
+	public void testSurround(int c, int l,  Play play) {
+		if(isSurrounded(new Point(c, l),c,l)) { // Si le pion est encercl�
+			play.putModifiedOldCellContent(new Point(c, l), game.getCellContent(c,l));
+			game.setContent(CellContent.EMPTY,c,l); // On enl�ve le pion
 			play.putModifiedNewCellContent(new Point(c, l), CellContent.EMPTY);
 			
 			if(!visited.isEmpty()) {
 				for(Point cell : visited) {
-					play.putModifiedOldCellContent(cell, game.getCellContent(cell.y, cell.x));
-					game.setContent(CellContent.EMPTY,cell.y,cell.x); // // Et on enl�ve les pions encercl�s avec le pr�c�dent
+					play.putModifiedOldCellContent(cell, game.getCellContent( cell.x,cell.y));
+					game.setContent(CellContent.EMPTY,cell.x,cell.y); // // Et on enl�ve les pions encercl�s avec le pr�c�dent
 					play.putModifiedOldCellContent(cell, CellContent.EMPTY);
 				}
 			}
@@ -141,7 +141,7 @@ public class PawnTaker {
 				}
 				
 				for(Point cell : allyCells) {
-					if(!isSurrounded(new Point(cell.x, cell.y), cell.y, cell.x)) {
+					if(!isSurrounded(new Point(cell.x, cell.y), cell.x, cell.y)) {
 						surrounded = false;
 					}
 				}

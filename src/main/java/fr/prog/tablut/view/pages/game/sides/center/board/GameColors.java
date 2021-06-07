@@ -13,4 +13,6 @@ public class GameColors {
 	public static final Color WIN_CIRCLE = new Color(106, 200, 171);
     public static final Color GATE_FRAME_COLOR = new Color(200, 52, 47);
     public static final Color LETTERS_NUMBERS_COLOR = new Color(68, 68, 68);
+	public static final Color FROM_CELL = new Color(156, 146, 124);
+	public static final Color TO_CELL = new Color(156, 146, 124);
 }

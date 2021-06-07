@@ -19,13 +19,13 @@ public class GameControllerHuman {
     /**
 	 * @return True if we should repaint the window after the click
 	 */
-    public boolean click(int row, int col) {
-        if(!Game.getInstance().isValid(row, col) || !(Game.getInstance().getPlayingPlayer() instanceof HumanPlayer))
+    public boolean click(int col, int row) {
+        if(!Game.getInstance().isValid(col, row) || !(Game.getInstance().getPlayingPlayer() instanceof HumanPlayer))
             return false;
 
         HumanPlayer humanPlayer = (HumanPlayer) Game.getInstance().getPlayingPlayer();
 
-        humanPlayer.updateState(row, col, gamePage, this);
+        humanPlayer.updateState(col, row, gamePage, this);
 
         return humanPlayer.play(Game.getInstance(), gamePage);
     }
@@ -42,7 +42,7 @@ public class GameControllerHuman {
 
         if(mousePosition != null) {
             if(selectedCell != null) {
-                gamePage.updateImageOnMouse(Game.getInstance().getCellContent(selectedCell.y, selectedCell.x).getImage(), selectedCell);
+                gamePage.updateImageOnMouse(Game.getInstance().getCellContent(selectedCell.x, selectedCell.y).getImage(), selectedCell);
 
                 Point hoveringCell = null;
                 

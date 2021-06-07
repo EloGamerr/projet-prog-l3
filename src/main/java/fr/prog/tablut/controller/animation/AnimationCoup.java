@@ -1,5 +1,7 @@
 package fr.prog.tablut.controller.animation;
 
+import java.awt.Point;
+
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.Movement;
 import fr.prog.tablut.model.game.Play;
@@ -9,13 +11,11 @@ public class AnimationCoup {
 	Movement mov;
 	GamePage view;
 	double progres, vitesseAnim;
-	boolean isInAnim;
 	
 	public AnimationCoup(Play c, GamePage gamePage) {
 		vitesseAnim = 0.05;
 		this.view = gamePage;
 		mov = c.getMovement();
-		isInAnim = gamePage.isInAnim();
 	}
 
 
@@ -34,12 +34,13 @@ public class AnimationCoup {
         int dC =  (int)(fromC - (fromC - toC) * progres);
         int dL =  (int)(fromL - (fromL - toL) * progres);
 
-        view.update_anim(dL, dC, mov.fromL, mov.fromC);
+        view.update_anim(new Point(dC, dL), new Point(mov.fromC, mov.fromL),new Point(mov.toC, mov.toL));
 	}
 
 	public void stop_anim() {
-        Game.getInstance().move(mov.fromL, mov.fromC, mov.toL, mov.toC);
-        view.stop_anim();
+		view.stop_anim();
+        Game.getInstance().move(mov.fromC, mov.fromL, mov.toC, mov.toL);
+        
 	}
 
 	public boolean isOver() {
@@ -54,7 +55,7 @@ public class AnimationCoup {
 	}
 	
 	public void startAnim() {
-		if(Game.getInstance().canMove(mov.fromL, mov.fromC, mov.toL, mov.toC))
+		if(Game.getInstance().canMove(mov.fromC, mov.fromL, mov.toC, mov.toL))
 			update_anim();
 	}
 }

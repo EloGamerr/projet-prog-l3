@@ -18,12 +18,12 @@ public class PiecesDesigner extends Designer {
 		int imgSize = (int)(g.getCellSize() / 2);
 
         // draw all static pieces
-        for(int i = 0; i < game.getRowAmout(); i++) {
-			for(int j = 0; j < game.getColAmout(); j++) {
+        for(int i = 0; i < game.getColAmout(); i++) {
+			for(int j = 0; j < game.getRowAmout(); j++) {
                 // don't draw the animated pieces
                 if(
-                    (data.selectedCell != null && data.selectedCell.y == i && data.selectedCell.x == j) ||
-                    (data.animatedCell != null && data.animatedCell.y == i && data.animatedCell.x == j)
+                    (data.selectedCell != null && data.selectedCell.x == i && data.selectedCell.y == j) ||
+                    (data.isAnim && data.animatedCell != null && data.animatedCell.x == i && data.animatedCell.y == j)
                 )
                     continue;
 
@@ -31,7 +31,7 @@ public class PiecesDesigner extends Designer {
                 Image img = cell.getImage();
 
                 if(img != null) {
-                    g.drawImage(img, j, i, imgSize, imgSize, true);
+                    g.drawImage(img, i, j, imgSize, imgSize, true);
                 }
             }
         }
@@ -48,8 +48,8 @@ public class PiecesDesigner extends Designer {
     	}
 		
         // draw the animated piece
-		if(data.animatedCell != null) {
-			g.drawImageCoords(data.animatedImage, data.animPosition.x , data.animPosition.y, imgSize, imgSize, null);
+		if(data.isAnim) {
+			g.drawImageCoords(data.animatedImage, data.animPosition.x + imgSize/2, data.animPosition.y + imgSize/2, imgSize, imgSize, null);
 		}
     }
 }

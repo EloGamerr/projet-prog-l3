@@ -19,8 +19,8 @@ public class GameController {
 		this.gameControllerHuman = new GameControllerHuman(gamePage);
 	}
 	
-	public void click(int row, int col) {
-		if(gameControllerHuman.click(row, col))
+	public void click(int col, int row) {
+		if(gameControllerHuman.click(col, row))
 			postPlay();
 	}
 
@@ -42,14 +42,15 @@ public class GameController {
 	}
 	
 	private void postPlay() {
-		gamePage.enableUndoButton(!Game.getInstance().hasPreviousMove());
-		gamePage.enableUndoButton(!Game.getInstance().hasNextMove());
+		gamePage.enableRedoButton(Game.getInstance().hasNextMove());
+		gamePage.enableUndoButton(Game.getInstance().hasPreviousMove());
 		gameControllerHuman.undoSelect(); 
 	}
 
 	public void restart() {
 		Game.getInstance().restart();
 		gamePage.update();
+		postPlay();
 		gamePage.repaint();
 	}
 	
@@ -76,6 +77,7 @@ public class GameController {
 			return false;
             
 		if(Game.getInstance().redo_move()) {
+			Game.getInstance().setPaused(true);
 			gamePage.togglePauseButton(Game.getInstance().isPaused());
 			postPlay();
             return true;

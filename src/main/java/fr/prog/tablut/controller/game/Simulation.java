@@ -36,9 +36,9 @@ public class Simulation {
 		}
 	}
 
-	private void deplacer(int fromL, int fromC, int toL, int toC) {
-		grid[toL][toC] = grid[fromL][fromC];
-		grid[fromL][fromC] = CellContent.EMPTY;
+	private void deplacer(int fromC, int fromL, int toC, int toL) {
+		grid[toC][toL] = grid[fromC][fromL];
+		grid[fromC][fromL] = CellContent.EMPTY;
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class Simulation {
 			// Liste de toutes les possibilitées pour les pions blancs
 			// Parcours a droite du pion
 			for (int i = pion.y; i < 8; i++) {
-				if (grid[i][pion.x] != CellContent.EMPTY) {
+				if (grid[pion.x][i] != CellContent.EMPTY) {
 					break;
 				}
 
@@ -66,7 +66,7 @@ public class Simulation {
 
 			// Parcours en haut du pion
 			for (int i = pion.x; i < 8; i++) {
-				if (grid[pion.y][i] != CellContent.EMPTY) {
+				if (grid[i][pion.y] != CellContent.EMPTY) {
 					break;
 				}
 
@@ -75,7 +75,7 @@ public class Simulation {
 
 			// Parcours a gauche du pion
 			for (int i = pion.y; i > 8; i--) {
-				if (grid[i][pion.x] != CellContent.EMPTY) {
+				if (grid[pion.x][i] != CellContent.EMPTY) {
 					break;
 				}
 
@@ -84,7 +84,7 @@ public class Simulation {
 
 			// Parcours en bas du pion
 			for (int i = pion.x; i > 8; i--) {
-				if (grid[pion.y][i] != CellContent.EMPTY) {
+				if (grid[i][pion.y] != CellContent.EMPTY) {
 					break;
 				}
 
@@ -106,7 +106,7 @@ public class Simulation {
 			// Liste de toutes les possibilitées pour les pions blancs
 			// Parcours a droite du pion
 			for (int i = pion.y; i < 8; i++) {
-				if (grid[i][pion.x] != CellContent.EMPTY) {
+				if (grid[pion.x][i] != CellContent.EMPTY) {
 					break;
 				}
 
@@ -115,7 +115,7 @@ public class Simulation {
 
 			// Parcours en haut du pion
 			for (int i = pion.x; i < 8; i++) {
-				if (grid[pion.y][i] != CellContent.EMPTY) {
+				if (grid[i][pion.y] != CellContent.EMPTY) {
 					break;
 				}
 
@@ -124,7 +124,7 @@ public class Simulation {
 
 			// Parcours a gauche du pion
 			for (int i = pion.y; i > 8; i--) {
-				if (grid[i][pion.x] != CellContent.EMPTY) {
+				if (grid[pion.x][i] != CellContent.EMPTY) {
 					break;
 				}
 
@@ -133,7 +133,7 @@ public class Simulation {
 
 			// Parcours en bas du pion
 			for (int i = pion.x; i > 8; i--) {
-				if (grid[pion.y][i] != CellContent.EMPTY) {
+				if (grid[i][pion.y] != CellContent.EMPTY) {
 					break;
 				}
 

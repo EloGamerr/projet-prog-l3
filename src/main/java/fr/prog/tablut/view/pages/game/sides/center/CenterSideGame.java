@@ -23,4 +23,5 @@ public class CenterSideGame extends GameInterfaceSide {
     public BoardInterface getBoard() {
         return gridWindow;
     }
+
 }

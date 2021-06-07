@@ -99,9 +99,6 @@ public class GamePage extends Page {
             this.getRightSide().togglePauseButton(false);
         else
             this.getRightSide().togglePauseButton(Game.getInstance().isPaused());
-
-        enableUndoButton(!Game.getInstance().hasPreviousMove());
-        enableRedoButton(!Game.getInstance().hasNextMove());
     }
 
     /**
@@ -144,32 +141,38 @@ public class GamePage extends Page {
         return getBoardInterface().getYCoordFromRow(y);
     }
 
-    public void clearImageOnMouse() {
-
+    public void updateCellHovering(Point hoveringCell) {
+    	centerSide.getBoard().updateCellHovering(hoveringCell);
+        repaint();
     }
+	
+	public void clearImageOnMouse() {
+		centerSide.getBoard().clearImageOnMouse();
+		repaint();
+	}
 
     public void updateImageOnMouse(Image img, Point selectedCell) {
-
+    	centerSide.getBoard().updateImageOnMouse(img, selectedCell);
+		repaint();
     }
 
-    public void updateCellHovering(Point hoveringCell) {
 
-    }
-
-	public void update_anim(int  toL, int toC, int fromL, int fromC) {
-		//getGridWindow().update_anim(toL, toC, new Point(fromL, fromC));	
+	public void update_anim(Point animPosition, Point animatedCell, Point animatedFinalCell) {
+		centerSide.getBoard().update_anim(animPosition,animatedCell,animatedFinalCell);	
+		repaint();
 	}
     
 	public void stop_anim() {
-		//centerSide.stop_anim();
+		centerSide.getBoard().stop_anim();
+		repaint();
 	}
 
     public void setIsInAnim(boolean state) {
-        
+        centerSide.getBoard().getBoardData().isAnim = state;
     }
 
     public boolean isInAnim() {
-        return centerSide.getBoard().getBoardData().animatedCell == null;
+        return centerSide.getBoard().getBoardData().isAnim;
     }
 
     public void togglePauseButton(boolean isPaused) {

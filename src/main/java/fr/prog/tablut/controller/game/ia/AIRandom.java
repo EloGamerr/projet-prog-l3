@@ -17,8 +17,8 @@ import java.util.Random;
 public class AIRandom extends AIPlayer {
     private Random random;
     AnimationCoup anim;
-    Point fromCell = new Point(0, 0);
-    Point toCell = new Point(0, 0);
+    Point fromCell = null;
+    Point toCell = null;
     boolean isInAnim;
     public AIRandom() {
         this.random = new Random();
@@ -40,12 +40,12 @@ public class AIRandom extends AIPlayer {
 
             	fromCell = ownedCells.get(random.nextInt(ownedCells.size()));
 
-            	accesibleCells = game.getAccessibleCells(fromCell.y, fromCell.x);
+            	accesibleCells = game.getAccessibleCells(fromCell.x,fromCell.y);
         	} while(accesibleCells.isEmpty());
         
         	toCell = accesibleCells.get(random.nextInt(accesibleCells.size()));
         	
-        	anim =  new AnimationCoup(new Play(new Movement(fromCell.y, fromCell.x, toCell.y, toCell.x)), gamePage);
+        	anim =  new AnimationCoup(new Play(new Movement(fromCell.x,fromCell.y, toCell.x, toCell.y)), gamePage);
         	anim.startAnim();
         	
         	return true;

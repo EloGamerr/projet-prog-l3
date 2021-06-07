@@ -66,11 +66,11 @@ public class BoardDrawer {
     }
 
     public int getRealX(int x) {
-        return leftX + widthBorder + x * cellSize;
+    	return leftX + widthBorder + x * cellSize;
     }
 
     public int getRealY(int y) {
-        return leftY + widthBorder + y * cellSize;
+       return leftY + widthBorder + y * cellSize;
     }
 
 

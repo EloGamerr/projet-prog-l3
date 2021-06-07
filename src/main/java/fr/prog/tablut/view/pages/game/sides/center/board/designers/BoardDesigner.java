@@ -22,7 +22,10 @@ public class BoardDesigner extends Designer {
         // background
         g.setColor(GameColors.BACKGROUND_GRID);
         g.fillRectCoords(_x_, _y_, g.getSize() - bw*2, g.getSize() - bw*2);
-
+        
+        g.fillRectCoords(_x_, _y_, g.getSize() - bw*2, g.getSize() - bw*2);
+        
+       
         // border
         g.setColor(GameColors.BORDER_GRID);
         g.strokeWidth(bw);

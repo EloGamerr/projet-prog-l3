@@ -26,7 +26,7 @@ public class IA extends Player{
 	public boolean play(Game game, GamePage gamePage) {
 		try {
 			Movement m = joue(new Simulation(game.getGrid()), (game.getPlayingPlayerEnum() == PlayerEnum.DEFENDER), r).getFirst();
-			game.move(m.fromL, m.fromC, m.toL, m.toC);
+			game.move(m.fromC, m.fromL, m.toC, m.toL);
 			return true;
 		}
 		catch(Exception e) {
