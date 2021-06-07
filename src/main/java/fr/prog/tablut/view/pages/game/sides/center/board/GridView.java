@@ -127,9 +127,9 @@ public class GridView {
 			for(int j = 0 ; j < game.getColAmout() ; j++) {
 				if(selectedCell != null && selectedCell.getFirst() == i && selectedCell.getSecond() == j) continue;
 				
-				if(game.getCellContent(i, j).getImage() != null)
+				if(game.getCellContentView(i, j).getImage() != null)
 					gridWindow.drawImage(
-                        game.getCellContent(i, j).getImage(),
+                        game.getCellContentView(i, j).getImage(),
                         x + widthBorder + j * cellWidth - imgSize/2 + cellWidth/2 + 4,
                         y + widthBorder + i * cellHeight - imgSize/2 + cellHeight/2 + 4,
                         imgSize,

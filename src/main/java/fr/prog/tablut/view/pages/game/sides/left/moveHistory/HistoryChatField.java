@@ -23,8 +23,6 @@ import fr.prog.tablut.view.pages.game.GamePage;
 
 public class HistoryChatField extends JPanel {
     private GridBagConstraints c;
-	CellContent[][] savedGrid;
-	CellContent[][] currentWorkingGrid;
     private List<labelField> allHistory = new ArrayList<labelField>();
 	private final GamePage gamePage;
 	private static HistoryChatField instance;
@@ -60,11 +58,9 @@ public class HistoryChatField extends JPanel {
 	}
 
     public void addAction() {
-		this.savedGrid = getCurrentBoard();
-
 		System.out.println("Saved grid :");
 
-		this.printBoard(this.savedGrid);
+		this.printBoard(Game.getInstance().getGrid());
 
         labelField newPlayerAction = new labelField(String.format("Action du joueur"), this, c.gridy);
 
@@ -77,6 +73,20 @@ public class HistoryChatField extends JPanel {
         // GenericObjectStyle.getProp("chat.yellow", "color");  // -- couleur jaune d'un message système
 
         allHistory.add(newPlayerAction);
+
+        /*for(int i = 0 ; i < Game.getInstance().getPlays().getPreviousMovements().size() ; i++) {
+			if(i == Game.getInstance().getPlays().getPreviousMovements().size()-1) {
+				allHistory.add("gris" + play.getMovement().getFromC()+"");
+			}
+			else {
+				allHistory.add(play.getMovement().getFromC()+"");
+			}
+		}
+
+		for(Play play : Game.getInstance().getPlays().getNextMovements()) {
+			allHistory.add(play.getMovement().getFromC()+"");
+		}*/
+
         this.add(newPlayerAction, this.c);
         c.gridy++;
 		//gamePage.repaint();
@@ -105,7 +115,6 @@ public class HistoryChatField extends JPanel {
 			label.setForeground(Color.BLUE);
 		}
 
-		Game.getInstance().setGrid(currentGrid);
 		this.gamePage.revalidate();
 		this.gamePage.repaint();
 	}
@@ -116,8 +125,8 @@ public class HistoryChatField extends JPanel {
 			label.setForeground(GenericObjectStyle.getProp("chat", "color"));
 		}
 		System.out.println("Grid envoyé à la game : ");
-		this.printBoard(savedGrid);
-		Game.getInstance().setGrid(savedGrid);
+		this.printBoard(Game.getInstance().getGrid());
+		Game.getInstance().setGridView(copyGrid(Game.getInstance().getGrid()));
 		this.gamePage.revalidate();
 		this.gamePage.repaint();
 	}
@@ -126,16 +135,27 @@ public class HistoryChatField extends JPanel {
 		for(Integer i = pos; i < allHistory.size(); i++) {
 			this.remove(allHistory.get(i));
 			allHistory.remove(i);
+			Game.getInstance().undo_move();
 		}
 
-		Game.getInstance().setGrid(currentWorkingGrid);
+		//Game.getInstance().setGrid(copyGrid(Game.getInstance().getGridView()));
 		this.gamePage.revalidate();
 		this.gamePage.repaint();
 
 	}
 
+	private CellContent[][] copyGrid(CellContent[][] grid) {
+		if (grid == null)
+			return null;
+		CellContent[][] newGrid = new CellContent[grid.length][];
+		for (int i = 0; i < grid.length; i++) {
+			newGrid[i] = grid[i].clone();
+		}
+		return newGrid;
+	}
+
 	private CellContent[][] getCurrentBoard() {
-		return Game.getInstance().getGrid();
+		return Game.getInstance().getGridView();
 	}
 
 	private void printBoard(CellContent[][] grid) {
