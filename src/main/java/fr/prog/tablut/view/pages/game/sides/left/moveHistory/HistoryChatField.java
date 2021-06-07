@@ -1,6 +1,6 @@
 package fr.prog.tablut.view.pages.game.sides.left.moveHistory;
 
-import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,9 +15,12 @@ import javax.swing.JPanel;
 
 import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Game;
+import fr.prog.tablut.model.game.Movement;
 import fr.prog.tablut.model.game.Play;
 import fr.prog.tablut.model.game.Plays;
+import fr.prog.tablut.model.game.player.PlayerEnum;
 import fr.prog.tablut.structures.Couple;
+import fr.prog.tablut.view.components.generic.GenericLabel;
 import fr.prog.tablut.view.components.generic.GenericObjectStyle;
 import fr.prog.tablut.view.pages.game.GamePage;
 
@@ -27,6 +30,8 @@ public class HistoryChatField extends JPanel {
 	private final GamePage gamePage;
 	private static HistoryChatField instance;
 	private final MoveHistoryPanel moveHistoryPanel;
+	private Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
+    private Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	public HistoryChatField(Dimension d, GamePage gamePage, MoveHistoryPanel moveHistoryPanel) {
@@ -38,15 +43,10 @@ public class HistoryChatField extends JPanel {
 		this.gamePage = gamePage;
 		this.moveHistoryPanel = moveHistoryPanel;
 
-        this.setSize(d);
-        this.setPreferredSize(d);
-        this.setMaximumSize(d);
-        this.setMinimumSize(d);
-        
-
-        /* for(int i = 0; i < 5; i++) {
-        	addAction();
-        } */
+        setSize(d);
+        setPreferredSize(d);
+        setMaximumSize(d);
+        setMinimumSize(d);
     }
 
 	public static HistoryChatField getInstance() {
@@ -58,90 +58,109 @@ public class HistoryChatField extends JPanel {
 	}
 
     public void addAction() {
-		System.out.println("Saved grid :");
-
-		this.printBoard(Game.getInstance().getGrid());
-
-        labelField newPlayerAction = new labelField(String.format("Action du joueur"), this, c.gridy);
+        labelField newPlayerAction = new labelField(Game.getInstance().getPlayingPlayerEnum(), Game.getInstance().getLastPlay(), this, c.gridy);
 
 		newPlayerAction.setForeground(GenericObjectStyle.getProp("chat", "color"));
 
-        // GenericObjectStyle.getProp("chat", "color");         // -- couleur orange du texte
-        // GenericObjectStyle.getProp("chat.timing", "color");  // -- couleur blanche des minutes [3:24]
-        // GenericObjectStyle.getProp("chat.red", "color");     // -- couleur rouge de "Attaquant"
-        // GenericObjectStyle.getProp("chat.blue", "color");    // -- couleur bleue de "Défenseur"
-        // GenericObjectStyle.getProp("chat.yellow", "color");  // -- couleur jaune d'un message système
+		if(allHistory.size() >= c.gridy) {
+			for(Integer i = allHistory.size() - 1; i >= c.gridy; i--) {
+				remove(allHistory.get(i));
+				allHistory.remove(i);
+			}
+		}
 
         allHistory.add(newPlayerAction);
 
-        /*for(int i = 0 ; i < Game.getInstance().getPlays().getPreviousMovements().size() ; i++) {
-			if(i == Game.getInstance().getPlays().getPreviousMovements().size()-1) {
-				allHistory.add("gris" + play.getMovement().getFromC()+"");
-			}
-			else {
-				allHistory.add(play.getMovement().getFromC()+"");
-			}
-		}
-
-		for(Play play : Game.getInstance().getPlays().getNextMovements()) {
-			allHistory.add(play.getMovement().getFromC()+"");
-		}*/
-
-        this.add(newPlayerAction, this.c);
+        add(newPlayerAction, c);
+		
         c.gridy++;
-		//gamePage.repaint();
 
-		this.moveHistoryPanel.revalidate();
-		this.moveHistoryPanel.repaint();
-
+		moveHistoryPanel.revalidate();
+		moveHistoryPanel.repaint();
     }
 
-
 	public void updateContent() {
+
 	}
 
+	public void undo() {
+		System.out.println("Undo move");
+		labelField currentLabel = allHistory.get(--c.gridy);
+		currentLabel.setForeground(GenericObjectStyle.getProp("chat.yellow", "color"));
+	}
+
+	public void redo() {
+		System.out.println("Redo move");
+		labelField currentLabel = allHistory.get(c.gridy++);
+		currentLabel.setForeground(GenericObjectStyle.getProp("chat", "color"));
+	}
 
 	public void enteredChange(Integer pos) {
+		setCursor(handCursor);
 
-		List<Play> allPlays = Game.getInstance().getPlays().movements();
-		CellContent[][] currentGrid = getCurrentBoard();
-		for(Integer i = allHistory.size() - 1; i >= pos; i--) {
-			labelField label = allHistory.get(i);
-			Play currentPlay = allPlays.get(i);
+		Plays plays = Game.getInstance().getPlays();
+		List<Play> allPlays = plays.getPlays();
+		CellContent[][] currentGrid = copyGrid(Game.getInstance().getGrid());
 
-			for(Map.Entry<Couple<Integer, Integer>, CellContent> m : currentPlay.getModifiedOldCellContents().entrySet()) {
-				currentGrid[m.getKey().getFirst()][m.getKey().getSecond()] = m.getValue();
+		if(pos <= plays.getCurrentMovement()) {
+			for(int i = plays.getCurrentMovement() ; i >= pos ; i--) {
+				labelField label = allHistory.get(i);
+				Play currentPlay = allPlays.get(i);
+
+				for(Map.Entry<Couple<Integer, Integer>, CellContent> m : currentPlay.getModifiedOldCellContents().entrySet()) {
+					currentGrid[m.getKey().getFirst()][m.getKey().getSecond()] = m.getValue();
+				}
+				label.setForeground(GenericObjectStyle.getProp("chat.yellow", "color"));
 			}
-			label.setForeground(Color.BLUE);
+		}
+		else {
+			for(int i = plays.getCurrentMovement()+1 ; i < pos ; i++) {
+				Play currentPlay = allPlays.get(i);
+
+				for(Map.Entry<Couple<Integer, Integer>, CellContent> m : currentPlay.getModifiedNewCellContents().entrySet()) {
+					currentGrid[m.getKey().getFirst()][m.getKey().getSecond()] = m.getValue();
+				}
+			}
 		}
 
-		this.gamePage.revalidate();
-		this.gamePage.repaint();
+		gamePage.setGrid(currentGrid);
+
+		gamePage.refresh();
 	}
 
 	public void exitedChange(Integer pos) {
-		for(Integer i = allHistory.size() - 1; i >= pos; i--) {
+		setCursor(defaultCursor);
+
+		for(Integer i = c.gridy - 1; i >= pos; i--) {
 			labelField label = allHistory.get(i);
-			label.setForeground(GenericObjectStyle.getProp("chat", "color"));
+
+			if(!label.isActive())
+				label.hover(false);
 		}
-		System.out.println("Grid envoyé à la game : ");
-		this.printBoard(Game.getInstance().getGrid());
-		Game.getInstance().setGridView(copyGrid(Game.getInstance().getGrid()));
-		this.gamePage.revalidate();
-		this.gamePage.repaint();
+
+		gamePage.setGrid(null);
+		gamePage.refresh();
 	}
 
 	public void clickChange(Integer pos) {
-		for(Integer i = pos; i < allHistory.size(); i++) {
-			this.remove(allHistory.get(i));
-			allHistory.remove(i);
-			Game.getInstance().undo_move();
+		Plays plays = Game.getInstance().getPlays();
+
+		if(pos <= plays.getCurrentMovement()) {
+			for(int i = plays.getCurrentMovement() ; i >= pos ; i--) {
+				Game.getInstance().undo_move();
+				c.gridy --;
+				allHistory.get(i).setActive(true);
+				allHistory.get(i).hover(true);
+			}
+		}
+		else {
+			for(int i = plays.getCurrentMovement()+1 ; i < pos; i++) {
+				Game.getInstance().redo_move();
+				c.gridy++;
+			}
 		}
 
-		//Game.getInstance().setGrid(copyGrid(Game.getInstance().getGridView()));
-		this.gamePage.revalidate();
-		this.gamePage.repaint();
-
+		gamePage.refresh();
 	}
 
 	private CellContent[][] copyGrid(CellContent[][] grid) {
@@ -152,10 +171,6 @@ public class HistoryChatField extends JPanel {
 			newGrid[i] = grid[i].clone();
 		}
 		return newGrid;
-	}
-
-	private CellContent[][] getCurrentBoard() {
-		return Game.getInstance().getGridView();
 	}
 
 	private void printBoard(CellContent[][] grid) {
@@ -191,50 +206,163 @@ public class HistoryChatField extends JPanel {
 	}
 }
 
-class labelField extends JLabel{
-	
-    private GridBagConstraints c;
-	private CellContent[][] historyCell;
+class labelField extends JLabel {
     
     private Integer position;
+	private boolean active = false;
+	private boolean systemMessage = false;
+	private GenericLabel timing, player, sentence;
     
-	public labelField(String name, HistoryChatField historyMain, Integer pos) {
-        this.setText(name);
-		this.setPosition(pos);
-		this.addMouseListener(new MouseAdapter(){
-			
-			//Utilisé quand le curseur n'est plus sur le text
-			//On va devoir remètre le plateau à son état normal
-			@Override
-			public void mouseExited(MouseEvent e) {
-				historyMain.exitedChange(pos);
-			}
-			
-			@Override
-			/**
-			 * Utilisé quand le surseur survole le text
-			 * On va vouloir changer le plateau de jeu pour montrer l'historique
-			 */
-			public void mouseEntered(MouseEvent e) {
-				historyMain.enteredChange(pos);
-			}
-			/**
-			 * Utilisé quand on clique sur le text
-			 * On va vouloir charger un des coups et donc revenir en arrière
-			 */
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				historyMain.clickChange(pos);
+	public labelField(PlayerEnum p, Movement movement, HistoryChatField historyMain, Integer pos) {
+		int pp = p==PlayerEnum.ATTACKER? 1 : p==PlayerEnum.DEFENDER? 2 : 0;
+		
+		// player move message
+		if(pp > 0) {
+			timing = new GenericLabel("[" + formatTime(Game.getInstance().getDuration()) + "]", 12);
+			timing.setForeground(GenericObjectStyle.getProp("chat.timing", "color"));
+
+			player = new GenericLabel(pp==1? "L'attaquant" : "Le D\u00e9fenseur", 12);
+			player.setForeground(GenericObjectStyle.getProp("chat." + (pp==1? "red" : "blue"), "color"));
+
+			String text = " a joué ";
+			text += getColName(movement.getFromC()) + getRowName(movement.getFromL()); // from
+			text += " en ";
+			text += getColName(movement.getToC()) + getRowName(movement.getToL()); // to
+
+			sentence = new GenericLabel(text, 12);
+			sentence.setForeground(GenericObjectStyle.getProp("chat", "color"));
+
+			add(timing);
+			add(player);
+			add(sentence);
+		}
+
+		// system message
+		else {
+			setText("[System] ...");
+			systemMessage = true;
+		}
+
+
+		setPosition(pos);
+
+		if(!systemMessage) {
+			addMouseListener(new MouseAdapter() {
 				
-			}
-		});
+				//Utilisé quand le curseur n'est plus sur le text
+				//On va devoir remètre le plateau à son état normal
+				@Override
+				public void mouseExited(MouseEvent e) {
+					historyMain.exitedChange(pos);
+				}
+				
+				@Override
+				/**
+				* Utilisé quand le surseur survole le text
+				* On va vouloir changer le plateau de jeu pour montrer l'historique
+				*/
+				public void mouseEntered(MouseEvent e) {
+					historyMain.enteredChange(pos);
+				}
+				/**
+				* Utilisé quand on clique sur le text
+				* On va vouloir charger un des coups et donc revenir en arrière
+				*/
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					historyMain.clickChange(pos);
+					
+				}
+			});
+		}
+	}
+
+	public GenericLabel getTiming() {
+		return timing;
+	}
+
+	public GenericLabel getPlayer() {
+		return player;
+	}
+
+	public GenericLabel getSentence() {
+		return sentence;
+	}
+
+	private String formatTime(int time) {
+		return "00:00";
 	}
 	
+	private String getColName(int c) {
+		switch(c) {
+			case 0:
+				return "A";
+			case 1:
+				return "B";
+			case 2:
+				return "C";
+			case 3:
+				return "D";
+			case 4:
+				return "E";
+			case 5:
+				return "F";
+			case 6:
+				return "G";
+			case 7:
+				return "H";
+			case 8:
+				return "I";
+			default:
+				return null;
+		}
+	}
+
+	private String getRowName(int l) {
+		switch(l) {
+			case 0:
+				return "1";
+			case 1:
+				return "2";
+			case 2:
+				return "3";
+			case 3:
+				return "4";
+			case 4:
+				return "5";
+			case 5:
+				return "6";
+			case 6:
+				return "7";
+			case 7:
+				return "8";
+			case 8:
+				return "9";
+			default:
+				return null;
+		}
+	}
+
 	public void setPosition(Integer num) {
-		this.position = num;
+		position = num;
 	}
 	
 	public Integer getPosition() {
-		return this.position;
+		return position;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean state) {
+		active = state;
+	}
+
+	public void hover(boolean state) {
+		if(!systemMessage) {
+			String style = "chat" + (state? ".yellow" : "");
+			sentence.setForeground(GenericObjectStyle.getProp(style, "color"));
+		}
 	}
 }

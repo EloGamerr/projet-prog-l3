@@ -5,6 +5,7 @@ import java.awt.Point;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.structures.Couple;
 import fr.prog.tablut.view.pages.game.GamePage;
+import fr.prog.tablut.view.pages.game.sides.left.moveHistory.HistoryChatField;
 
 public class GameController {
 
@@ -54,12 +55,14 @@ public class GameController {
 
 	public void undo() {
 		if(Game.getInstance().undo_move()) {
+			HistoryChatField.getInstance().undo();
 			this.gamePage.repaint();
 		}
 	}
 
 	public void redo() {
 		if(Game.getInstance().redo_move()) {
+			HistoryChatField.getInstance().redo();
 			this.gamePage.repaint();
 		}
 	}

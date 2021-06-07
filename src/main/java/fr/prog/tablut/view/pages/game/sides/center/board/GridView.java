@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.util.List;
 
 import fr.prog.tablut.controller.game.HumanPlayer;
+import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.structures.Couple;
 
@@ -16,6 +17,7 @@ public class GridView {
     private int x, y, height, width, cellWidth, cellHeight;
     private Image imageOnMouse;
     private Couple<Integer, Integer> selectedCell;
+	private CellContent[][] grid;
 
 	public GridView(GridWindow gridWindow) {
 		this.gridWindow = gridWindow;
@@ -123,13 +125,15 @@ public class GridView {
 
 		int imgSize = cellWidth/2;
 
+		CellContent[][] grid = this.grid != null ? this.grid : game.getGrid();
+
 		for(int i = 0 ; i < game.getRowAmout() ; i++) {
 			for(int j = 0 ; j < game.getColAmout() ; j++) {
 				if(selectedCell != null && selectedCell.getFirst() == i && selectedCell.getSecond() == j) continue;
 				
-				if(game.getCellContentView(i, j).getImage() != null)
+				if(grid[i][j].getImage() != null)
 					gridWindow.drawImage(
-                        game.getCellContentView(i, j).getImage(),
+                        grid[i][j].getImage(),
                         x + widthBorder + j * cellWidth - imgSize/2 + cellWidth/2 + 4,
                         y + widthBorder + i * cellHeight - imgSize/2 + cellHeight/2 + 4,
                         imgSize,
@@ -175,4 +179,12 @@ public class GridView {
 	public int getRowFromYCoord(int y) {
 		return (y - widthBorder - getY()) / cellHeight();
 	}
+
+	public void setGrid(CellContent[][] grid) {
+        this.grid = grid;
+    }
+
+	public CellContent[][] getGrid() {
+        return grid;
+    }
 }

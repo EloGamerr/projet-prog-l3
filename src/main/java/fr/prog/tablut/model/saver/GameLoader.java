@@ -206,7 +206,7 @@ public class GameLoader {
     				toOrFrom = SaverConstants.BLANK;
     				break;
     			case '\n':
-    				game.getPlays().movements().add(new Play(movement));
+    				game.getPlays().getPlays().add(new Play(movement));
     				toOrFrom = SaverConstants.NEXT_LINE;
     				break;
     			case '(':

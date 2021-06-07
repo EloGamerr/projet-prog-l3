@@ -171,7 +171,7 @@ public class GameSaver {
 	public StringBuilder savePlays() {
 		StringBuilder builder = new StringBuilder();
 
-		for(Play move : game.getPlays().movements()) {
+		for(Play move : game.getPlays().getPlays()) {
 			builder.append(SaverConstants.BR_LEFT);
 			builder.append(move.getMovement().fromL);
 			builder.append(SaverConstants.COMMA);

@@ -18,7 +18,6 @@ public class Game {
 
 	private int rowAmount, colAmount;
 	private CellContent[][] grid;
-	private CellContent[][] gridView;
 	private final int middle;
 	private int kingL, kingC;
 	private PlayerEnum winner;
@@ -33,6 +32,7 @@ public class Game {
 	public GameLoader loader;
 
 	private boolean paused = false;
+	private long startTime;
 	
 	////////////////////////////////////////////////////
 	// Constructor
@@ -70,6 +70,7 @@ public class Game {
 		init_game(9,9);
 		setWinner(PlayerEnum.NONE);
 		hasStarted = true;
+		this.startTime = System.currentTimeMillis();
 	}
 
 	/**
@@ -82,6 +83,7 @@ public class Game {
 		this.plays = new Plays();
 		loader.loadData(index_selected);
 		hasStarted = true;
+		this.startTime = System.currentTimeMillis();
 	}
 
 	/**
@@ -188,13 +190,9 @@ public class Game {
 	 */
 	public void init_grid(int rowAmount, int colAmount) {
 		setGrid(new CellContent[rowAmount][colAmount]);
-		setGridView(new CellContent[rowAmount][colAmount]);
 
 		for(int i = 0 ; i < rowAmount; i++) {
 			Arrays.fill(getGrid()[i], CellContent.EMPTY);
-		}
-		for(int i = 0 ; i < rowAmount; i++) {
-			Arrays.fill(getGridView()[i], CellContent.EMPTY);
 		}
 
 		this.rowAmount = rowAmount;
@@ -407,13 +405,13 @@ public class Game {
 	public Plays getPlays() {
 		return plays;
 	}
+
+	public Movement getLastPlay() {
+		return plays.getPlays().get(plays.getPlays().size() - 1).getMovement();
+	}
 	
 	public CellContent[][] getGrid() {
 		return grid;
-	}
-
-	public CellContent[][] getGridView() {
-		return gridView;
 	}
 
 	public String getCurrentSavePath() {
@@ -426,10 +424,6 @@ public class Game {
 	
 	public CellContent getCellContent(int l, int c) {
 		return this.getGrid()[l][c];
-	}
-
-	public CellContent getCellContentView(int l, int c) {
-		return this.getGridView()[l][c];
 	}
 
 	public List<Couple<Integer, Integer>> getAccessibleCells(int fromL, int fromC) {
@@ -530,7 +524,6 @@ public class Game {
 		}
 	
 		getGrid()[l][c] = cellContent;
-		getGridView()[l][c] = cellContent;
 	}
 	
 	public void setWinner(PlayerEnum winner) {
@@ -568,10 +561,6 @@ public class Game {
 		this.grid = grid;
 	}
 
-	public void setGridView(CellContent[][] grid) {
-		this.gridView = grid;
-	}
-
 	public void setCurrentSavePath(String currentSavePath) {
 		this.currentSavePath = currentSavePath;
 	}
@@ -580,5 +569,11 @@ public class Game {
 		this.paused = paused;
 	}
 
-	
+	public long getStartTime() {
+		return startTime;
+	}
+
+	public int getDuration() {
+		return (int) (System.currentTimeMillis()-getStartTime());
+	}
 }

@@ -9,6 +9,7 @@ import javax.swing.Timer;
 import fr.prog.tablut.controller.game.gameAdaptator.GameMouseAdaptator;
 import fr.prog.tablut.controller.game.gameAdaptator.GameTimeAdaptator;
 import fr.prog.tablut.controller.game.gameController.GameController;
+import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.window.WindowConfig;
 import fr.prog.tablut.model.window.WindowName;
 import fr.prog.tablut.view.Page;
@@ -78,6 +79,11 @@ public class GamePage extends Page {
         this(null);
     }
     
+    public void refresh() {
+        revalidate();
+		repaint();
+    }
+
     /**
      * Returns the grid window object
      * @return The grid window
@@ -105,5 +111,13 @@ public class GamePage extends Page {
     @Override
     public void update() {
         leftSide.update();
+    }
+
+    public void setGrid(CellContent[][] gridView) {
+        this.getGridWindow().getGridView().setGrid(gridView);
+    }
+
+    public CellContent[][] getGrid() {
+        return this.getGridWindow().getGridView().getGrid();
     }
 }

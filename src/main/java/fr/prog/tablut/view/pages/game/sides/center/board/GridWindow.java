@@ -80,4 +80,8 @@ public class GridWindow extends GameInterfaceSide {
 	public int getRowFromYCoord(int y) {
 		return gridView.getRowFromYCoord(y);
 	}
+
+	public GridView getGridView() {
+		return gridView;
+	}
 }
