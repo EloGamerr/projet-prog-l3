@@ -25,7 +25,7 @@ public class IAMedium extends AIPlayer {
 	@Override
 	public boolean play(Game game) {
 		Simulation simulation = new Simulation(game);
-		Movement movement = minimaxDecision(simulation.getAllPossibleMoves(), simulation);
+		Movement movement = minimaxDecision(simulation);
 		game.move(movement.getFromL(), movement.getFromC(), movement.getToL(), movement.getToC());
 
 		return true;
@@ -39,19 +39,29 @@ public class IAMedium extends AIPlayer {
 	 * each of the available moves and then calling minimaxValue() to evaluate the value
 	 * of the move by traversing the game state tree using minimax with alpha-beta pruning.
 	 */
-	public Movement minimaxDecision(List<Movement> moves, Simulation boardState) {
-		// Keeps track of when the move was started in order to avoid timeouts
+	public Movement minimaxDecision(Simulation boardState) {
+
+		//On peut obtenir la liste de tout les mouvements possibles pour la game
+		List<Movement> moves = boardState.getAllPossibleMoves();
+
+		// Ajout d'un timer pour √©viter de tourner dans le vide
 		long moveStartTime = System.currentTimeMillis();
 
 		// Stores the value of every possible move for the current board state.
+		// Regroupe l'heuristique de tout les coups possibles
 		double[] moveValue = new double [moves.size()];
 
 		// This was found to be the max depth value which causes minimal timeouts
+		// L'IA a pour l'instant une profondeur de 3, aller au dessus prend beaucoup plus de temps
 		int maxDepth = 3;
 
 		/*
 		 * Iterate through all possible moves and assign a value to each of them using mimimax
 		 * (with ? - ? pruning) and the evaluation function.
+		 */
+
+		/**
+		 * On va it√©rer sur chaques possibilit√©es pour lui assigner une heuristique
 		 */
 		int curMoveIdx = 0;
 		for (Movement curMove: moves) {
@@ -126,10 +136,10 @@ public class IAMedium extends AIPlayer {
 		} else { // Otherwise, continue to generate and explore the search tree
 			List<Simulation> successors = getSuccessors(boardState);
 
-			if (this.getPlayerEnum() == boardState.getPlayingPlayerEnum()) { // if Max player is to move in s, return maxsí Value(sí).
-				for (Simulation sucState: successors) { // for each state sí in Successors(s)
-					// let ? = max { ?, MinValues(sí,?,?) }.
-					alpha = Math.max(alpha, minimaxValue(sucState, alpha, beta, depth + 1, maxDepth)); // let Value(sí) = MinimaxValue(sí)
+			if (this.getPlayerEnum() == boardState.getPlayingPlayerEnum()) { // if Max player is to move in s, return maxsÔøΩ Value(sÔøΩ).
+				for (Simulation sucState: successors) { // for each state sÔøΩ in Successors(s)
+					// let ? = max { ?, MinValues(sÔøΩ,?,?) }.
+					alpha = Math.max(alpha, minimaxValue(sucState, alpha, beta, depth + 1, maxDepth)); // let Value(sÔøΩ) = MinimaxValue(sÔøΩ)
 					if (alpha >= beta) { // if ? ? ?, return ?.
 						//System.out.println("test");
 						return beta;
@@ -137,11 +147,11 @@ public class IAMedium extends AIPlayer {
 				}
 
 				return alpha; // return ?.
-			} else { // if Min player is to move in s, return minsí Value(sí).
+			} else { // if Min player is to move in s, return minsÔøΩ Value(sÔøΩ).
 
-				for (Simulation sucState: successors) { // for each state sí in Successors(s)
-					// let ? = min { ?, MinValues(sí,?,?) }.
-					beta = Math.min(beta, minimaxValue(sucState, alpha, beta, depth + 1, maxDepth)); // let Value(sí) = MinimaxValue(sí)
+				for (Simulation sucState: successors) { // for each state sÔøΩ in Successors(s)
+					// let ? = min { ?, MinValues(sÔøΩ,?,?) }.
+					beta = Math.min(beta, minimaxValue(sucState, alpha, beta, depth + 1, maxDepth)); // let Value(sÔøΩ) = MinimaxValue(sÔøΩ)
 					if (alpha >= beta) { // if ? ? ?, return ?.
 						//System.out.println("test2 " + alpha + " " + beta);
 						return alpha;
