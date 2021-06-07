@@ -87,7 +87,6 @@ public class GameController {
 			return false;
             
 		if(Game.getInstance().redo_move()) {
-			Game.getInstance().setPaused(true);
 			gamePage.togglePauseButton(Game.getInstance().isPaused());
 			postPlay(MoveType.REDO);
             return true;
