@@ -1,34 +1,21 @@
 package fr.prog.tablut.controller.game.ia;
 
-import java.awt.Point;
-
-import fr.prog.tablut.controller.animation.AnimationCoup;
 import fr.prog.tablut.model.game.Game;
-import fr.prog.tablut.model.game.Movement;
-import fr.prog.tablut.model.game.Play;
+import fr.prog.tablut.model.game.player.PlayerEnum;
 import fr.prog.tablut.view.pages.game.GamePage;
 
-import java.util.List;
-import java.util.Random;
-
-
-
-@Deprecated
-public class AIRandom extends AIPlayer {
-    private Random random;
-    AnimationCoup anim;
-    Point fromCell = null;
-    Point toCell = null;
-    boolean isInAnim;
-    
-    public AIRandom() {
-        this.random = new Random();
+/**
+* IA totalement aléatoire. Aucun choix n'est plus rentable qu'un autre
+ */
+public class AIRandom extends AIMinMax {
+    public AIRandom(PlayerEnum playerEnum) {
+        super(playerEnum);
     }
 
     @Override
     public boolean play(Game game, GamePage gamePage) {
     	isInAnim = gamePage.isInAnim();
-    	
+
         if(isInAnim) {
     		anim.check_anim();
     		return true;
@@ -46,14 +33,19 @@ public class AIRandom extends AIPlayer {
         	anim = new AnimationCoup(new Play(new Movement(fromCell.x,fromCell.y, toCell.x, toCell.y)), gamePage);
 
         	anim.startAnim();
-        	
+
         	return true;
     	}
     }
-    
+
+    @Override
+    public double evaluation(Simulation simulation, PlayerEnum playerEnum) {
+        // On renvoie une valeur constante, tous les coups auront donc une heuristique égale et le coup sera choisi aléatoirement
+        return 0;
+    }
+
     @Override
     public String toString() {
     	return "AIRandom";
     }
 }
-

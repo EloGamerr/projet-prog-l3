@@ -1,4 +1,4 @@
-package fr.prog.tablut.controller.game;
+package fr.prog.tablut.controller.game.ia.old;
 
 import java.awt.Point;
 

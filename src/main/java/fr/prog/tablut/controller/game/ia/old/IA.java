@@ -1,8 +1,8 @@
-package fr.prog.tablut.controller.game.ia;
+package fr.prog.tablut.controller.game.ia.old;
 
-import fr.prog.tablut.controller.game.Elagage;
-import fr.prog.tablut.controller.game.Heuristique;
-import fr.prog.tablut.controller.game.Simulation;
+import fr.prog.tablut.controller.game.ia.old.Elagage;
+import fr.prog.tablut.controller.game.ia.old.Simulation;
+import fr.prog.tablut.controller.game.ia.old.Heuristique.Heuristique;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.Movement;
 import fr.prog.tablut.model.game.player.Player;
@@ -16,8 +16,9 @@ public class IA extends Player{
 	private Elagage e;
 	private int r;
 
-	public IA(Heuristique h, Elagage e, int r) {
-	    this.h = h;
+	public IA(Heuristique h, Elagage e, int r, PlayerEnum playerEnum) {
+		super(playerEnum);
+		this.h = h;
 	    this.e = e;
 	    this.r = r;
 	}
