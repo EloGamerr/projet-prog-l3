@@ -77,22 +77,22 @@ public class MyTools {
         double numPieces = 0.0;
         
         // Top left corner
-        if (boardState.getCellContent(boardState.getKingL()+1, boardState.getKingC()) == CellContent.ATTACK_TOWER) {
+        if (!boardState.isValid(boardState.getKingL()+1, boardState.getKingC()) || boardState.getCellContent(boardState.getKingL()+1, boardState.getKingC()) == CellContent.ATTACK_TOWER) {
             numPieces += 0.25;
         }
 
         // Top right corner
-        if (boardState.getCellContent(boardState.getKingL()-1, boardState.getKingC()) == CellContent.ATTACK_TOWER) {
+        if (!boardState.isValid(boardState.getKingL()-1, boardState.getKingC()) || boardState.getCellContent(boardState.getKingL()-1, boardState.getKingC()) == CellContent.ATTACK_TOWER) {
             numPieces += 0.25;
         }
 
         // Bottom left corner
-        if (boardState.getCellContent(boardState.getKingL(), boardState.getKingC()+1) == CellContent.ATTACK_TOWER) {
+        if (!boardState.isValid(boardState.getKingL(), boardState.getKingC()+1) || boardState.getCellContent(boardState.getKingL(), boardState.getKingC()+1) == CellContent.ATTACK_TOWER) {
             numPieces += 0.25;
         }
 
         // Bottom right corner
-        if (boardState.getCellContent(boardState.getKingL(), boardState.getKingC()-1) == CellContent.ATTACK_TOWER) {
+        if (!boardState.isValid(boardState.getKingL(), boardState.getKingC()-1) || boardState.getCellContent(boardState.getKingL(), boardState.getKingC()-1) == CellContent.ATTACK_TOWER) {
             numPieces += 0.25;
         }
 
