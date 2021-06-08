@@ -87,6 +87,7 @@ public class Game {
 		setWinner(PlayerEnum.NONE);
 		hasStarted = true;
 		paused = false;
+		this.startTime = System.currentTimeMillis();
 	}
 
 
