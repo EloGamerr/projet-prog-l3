@@ -55,16 +55,16 @@ public class Movement {
 	}
 
 	public void setToL(int toL) {
-		if(this.pointFrom == null) {
-			this.pointFrom = new Point();
+		if(this.pointTo == null) {
+			this.pointTo = new Point();
 		}
 
 		this.pointTo.y = toL;
 	}
 
 	public void setToC(int toC) {
-		if(this.pointFrom == null) {
-			this.pointFrom = new Point();
+		if(this.pointTo == null) {
+			this.pointTo = new Point();
 		}
 
 		this.pointTo.x = toC;
