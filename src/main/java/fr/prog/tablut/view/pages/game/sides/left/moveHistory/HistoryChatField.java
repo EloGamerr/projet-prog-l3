@@ -98,6 +98,9 @@ public class HistoryChatField extends GenericPanel {
 	}
 
 	public void enteredChange(Integer pos) {
+
+		System.out.println(String.format("Position : %d", pos));
+
 		setCursor(handCursor);
 
 		Plays plays = Game.getInstance().getPlays();

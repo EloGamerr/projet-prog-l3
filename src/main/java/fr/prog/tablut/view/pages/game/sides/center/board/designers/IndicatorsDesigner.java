@@ -59,7 +59,7 @@ public class IndicatorsDesigner extends Designer {
 			g.setColor(GameColors.CELL_SELECTION);
 			g.fillSquare(selectedCell.x, selectedCell.y);
 
-            if(hoveringCell != null && Game.getInstance().canMove(selectedCell.y, selectedCell.x, hoveringCell.y, hoveringCell.x))
+            if(hoveringCell != null && Game.getInstance().canMove(selectedCell.x, selectedCell.y, hoveringCell.x, hoveringCell.y))
 				g.fillRect(x + widthBorder + hoveringCell.x * cellSize, y + widthBorder + hoveringCell.y * cellSize, cellSize, cellSize);
 
             
@@ -94,7 +94,7 @@ public class IndicatorsDesigner extends Designer {
             int x = accessibleCell.toC;
             int y = accessibleCell.toL;
 
-            CellContent cell = Game.getInstance().getCellContent(y, x);
+            CellContent cell = Game.getInstance().getCellContent(x, y);
 
             // door hovering - if selected/hovering cell is the king and can access a door
             if(cell == CellContent.GATE) {

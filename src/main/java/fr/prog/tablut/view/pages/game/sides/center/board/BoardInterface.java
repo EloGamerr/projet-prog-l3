@@ -53,7 +53,7 @@ public class BoardInterface extends GameInterfaceSide {
             boardData.mousePosition = null;
 
         boardData.hoveringCell = (boardData.mousePosition != null)?
-            boardData.hoveringCell = new Point(getColFromXCoord(boardData.mousePosition.x),getRowFromYCoord(boardData.mousePosition.y)) :
+            boardData.hoveringCell = new Point(getColFromXCoord(boardData.mousePosition.x), getRowFromYCoord(boardData.mousePosition.y)) :
             null;
             
             
@@ -98,7 +98,7 @@ public class BoardInterface extends GameInterfaceSide {
     }
 
     public int getXCoordFromCol(int x) {
-        return  boardDrawer.getRealX(0) + boardDrawer.getCellSize() * x ;
+        return  boardDrawer.getRealX(0) + boardDrawer.getCellSize() * x;
     }
 
     public int getYCoordFromRow(int y) {
@@ -121,7 +121,7 @@ public class BoardInterface extends GameInterfaceSide {
 			boardData.animatedFinalCell = animatedFinalCell;
 			boardData.animatedCell = animatedCell;
 			boardData.isAnim = true;
-			boardData.animatedImage = Game.getInstance().getCellContent(boardData.animatedCell.x,boardData.animatedCell.y).getImage();
+			boardData.animatedImage = Game.getInstance().getCellContent(boardData.animatedCell.x, boardData.animatedCell.y).getImage();
 		}
 		
 		boardData.animPosition = animPosition;

@@ -19,12 +19,12 @@ public class PiecesDesigner extends Designer {
 
         // draw preview grid
         if(data.previewGrid != null) {
-            for(int x=0; x < data.previewGrid.length; x++) {
-                for(int y=0; y < data.previewGrid[y].length; y++) {
+            for(int y=0; y < data.previewGrid.length; y++) {
+                for(int x=0; x < data.previewGrid[y].length; x++) {
                     CellContent cell = data.previewGrid[y][x];
                     
                     if(cell != null && cell.getImage() != null) {
-                        g.drawImage(cell.getImage(), y, x, imgSize, imgSize, true);
+                        g.drawImage(cell.getImage(), x, y, imgSize, imgSize, true);
                     }
                 }
             }
@@ -33,20 +33,20 @@ public class PiecesDesigner extends Designer {
         // draw normal current grid
         else {
             // draw all static pieces
-            for(int i = 0; i < game.getColAmount(); i++) {
-                for(int j = 0; j < game.getRowAmount(); j++) {
+            for(int y = 0; y < game.getRowAmount(); y++) {
+                for(int x = 0; x < game.getColAmount(); x++) {
                     // don't draw the animated pieces
                     if(
-                        (data.selectedCell != null && data.selectedCell.x == i && data.selectedCell.y == j) ||
-                        (data.isAnim && data.animatedCell != null && data.animatedCell.x == i && data.animatedCell.y == j)
+                        (data.selectedCell != null && data.selectedCell.x == x && data.selectedCell.y == y) ||
+                        (data.isAnim && data.animatedCell != null && data.animatedCell.x == x && data.animatedCell.y == y)
                     )
                         continue;
 
-                    CellContent cell = game.getCellContent(i, j);
+                    CellContent cell = game.getCellContent(x, y);
                     Image img = cell.getImage();
 
                     if(img != null) {
-                        g.drawImage(img, i, j, imgSize, imgSize, true);
+                        g.drawImage(img, x, y, imgSize, imgSize, true);
                     }
                 }
             }

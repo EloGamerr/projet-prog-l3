@@ -157,7 +157,6 @@ public class GameLoader {
 
     	while(index < playsString.length()) {
     		switch(playsString.charAt(index)) {
-    		
     			case ' ':
     				toOrFrom = SaverConstants.BLANK;
     				break;
@@ -173,21 +172,19 @@ public class GameLoader {
     				break;
     			case ')':
     				break;
-    			default:
 
-    				if(toOrFrom.equals(SaverConstants.NEXT_LINE) && lOrC.equals(SaverConstants.BR_LEFT)) {
+    			default:
+    				if(toOrFrom.equals(SaverConstants.NEXT_LINE) && lOrC.equals(SaverConstants.BR_LEFT))
     	    			movement.setFromC(Character.getNumericValue(playsString.charAt(index)));
-    				break;}
-    	    		else if(toOrFrom == SaverConstants.NEXT_LINE && lOrC == SaverConstants.COMMA) {
+
+    	    		else if(toOrFrom == SaverConstants.NEXT_LINE && lOrC == SaverConstants.COMMA)
     	    			movement.setFromL(Character.getNumericValue(playsString.charAt(index)));
-    				break;}
-    	    		else if(toOrFrom == SaverConstants.BLANK && lOrC == SaverConstants.BR_LEFT) {
+
+    	    		else if(toOrFrom == SaverConstants.BLANK && lOrC == SaverConstants.BR_LEFT)
     	    			movement.setToC(Character.getNumericValue(playsString.charAt(index)));
-    				break;}
-    	    		else if(toOrFrom == SaverConstants.BLANK && lOrC == SaverConstants.COMMA) {
-    	    			movement.setToL(Character.getNumericValue(playsString.charAt(index)));
-    				break;}
-    				
+                        
+    	    		else if(toOrFrom == SaverConstants.BLANK && lOrC == SaverConstants.COMMA)
+    	    			movement.setToL(Character.getNumericValue(playsString.charAt(index)));    				
     		}
 
     		index++;

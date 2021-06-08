@@ -4,7 +4,6 @@ import java.awt.Point;
 
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.Movement;
-import fr.prog.tablut.model.game.Play;
 import fr.prog.tablut.view.pages.game.GamePage;
 
 public class AnimationCoup {
@@ -38,7 +37,6 @@ public class AnimationCoup {
 	public void stop_anim() {
 		view.stop_anim();
         Game.getInstance().move(mov.fromC, mov.fromL, mov.toC, mov.toL);
-        
 	}
 
 	public boolean isOver() {
