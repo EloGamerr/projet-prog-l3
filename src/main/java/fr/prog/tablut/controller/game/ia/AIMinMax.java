@@ -38,12 +38,6 @@ public abstract class AIMinMax extends AIPlayer {
                 e.printStackTrace();
             }
             System.out.println("Joue !");
-            BoardDrawer g =  gamePage.getBoardInterface().getIndicatorsDesigner().getBoardDrawer();
-            g.setColor(GameColors.GATE_FRAME_COLOR);
-            g.strokeWidth(2);
-            g.strokeSquare(1, 1);
-            g.strokeWidth(1);
-            g.setColor(GameColors.CIRCLE);
             //On évite que l'IA fasse les mêmes mouvements en boucle (voir plus loin dans le code)
             while(previousMovements.size() >= 3)
                 previousMovements.removeFirst();
