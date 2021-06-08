@@ -8,15 +8,15 @@ import java.awt.Graphics;
 import javax.swing.border.EmptyBorder;
 
 import fr.prog.tablut.view.components.generic.GenericPanel;
+import fr.prog.tablut.view.components.generic.GenericScrollPane;
 
 import javax.swing.JScrollPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 
 
 import fr.prog.tablut.view.pages.game.GamePage;
 
-public class MoveHistoryPanel extends JPanel {
+public class MoveHistoryPanel extends GenericPanel {
     private final HistoryChatField historyChat;
     private final JScrollPane scrollPane;
     private int previousHeight = -1;
@@ -27,20 +27,16 @@ public class MoveHistoryPanel extends JPanel {
     }
 
     public MoveHistoryPanel(int width, int height, GamePage gamePage) {
-        setOpaque(false);
+        super();
+        setBorder(new EmptyBorder(20, 0, 0, 0));
 
         GenericPanel wrapper = new GenericPanel(new BorderLayout());
+        wrapper.setBorder(new EmptyBorder(0, 0, 40, 0));
 
-        historyChat = new HistoryChatField(new Dimension(width, height), gamePage, this);
-
+        historyChat = new HistoryChatField(gamePage);
         historyChat.setFont(new Font("Calibri", Font.PLAIN, 12));
-
-        setBorder(new EmptyBorder(20, 0, 0, 0));
         
-        scrollPane = new JScrollPane(historyChat);
-        scrollPane.setOpaque(false);
-        scrollPane.getViewport().setOpaque(false);
-        scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+        scrollPane = new GenericScrollPane(historyChat);
 
         wrapper.add(scrollPane, BorderLayout.SOUTH);
         add(wrapper);
@@ -84,6 +80,8 @@ public class MoveHistoryPanel extends JPanel {
 
     public void addAction() {
         historyChat.addAction();
+		revalidate();
+		repaint();
     }
 
     public void undo() {

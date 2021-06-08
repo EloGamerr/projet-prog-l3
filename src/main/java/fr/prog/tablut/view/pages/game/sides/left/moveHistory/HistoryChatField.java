@@ -30,27 +30,21 @@ import fr.prog.tablut.view.utils.Time;
 
 public class HistoryChatField extends GenericPanel {
 	private final GamePage gamePage;
-	private final MoveHistoryPanel moveHistoryPanel;
     private GridBagConstraints c;
     private List<LabelField> allHistory = new ArrayList<LabelField>();
 	private Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
     private Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
     
-	public HistoryChatField(Dimension d, GamePage gamePage, MoveHistoryPanel moveHistoryPanel) {
+	public HistoryChatField(GamePage gamePage) {
         super(new GridBagLayout());
 
         c = new GridBagConstraints();
 
         c.gridx = 0;
         c.gridy = 0;
+        c.anchor = GridBagConstraints.SOUTH;
 
 		this.gamePage = gamePage;
-		this.moveHistoryPanel = moveHistoryPanel;
-
-        setSize(d);
-        setPreferredSize(d);
-        setMaximumSize(d);
-        setMinimumSize(d);
     }
 
     public void addAction() {
@@ -79,10 +73,6 @@ public class HistoryChatField extends GenericPanel {
 		
         // number of moves displayed
         c.gridy++;
-
-        // refresh the view
-		moveHistoryPanel.revalidate();
-		moveHistoryPanel.repaint();
     }
 
 	public void undo() {
@@ -99,7 +89,7 @@ public class HistoryChatField extends GenericPanel {
 
 	public void enteredChange(Integer pos) {
 
-		System.out.println(String.format("Position : %d", pos));
+		//System.out.println(String.format("Position : %d", pos));
 
 		setCursor(handCursor);
 
@@ -130,7 +120,6 @@ public class HistoryChatField extends GenericPanel {
 		}
 
 		gamePage.setPreviewGrid(currentGrid);
-
 		gamePage.refresh();
 	}
 
@@ -184,7 +173,10 @@ public class HistoryChatField extends GenericPanel {
 
     public void clear() {
         removeAll();
+
         c.gridy = 0;
+
+        allHistory.clear();
     }
 
     public int getMovesNumber() {
@@ -226,6 +218,7 @@ class LabelField extends JLabel {
 	public LabelField(boolean isSystem, String systemMessage, HistoryChatField historyMain, Integer pos) {
         setLayout(new FlowLayout(FlowLayout.LEFT));
         setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+
         setSize(LabelField.size);
         setPreferredSize(LabelField.size);
         setMaximumSize(LabelField.size);

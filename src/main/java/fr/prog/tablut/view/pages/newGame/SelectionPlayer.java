@@ -18,7 +18,6 @@ import fr.prog.tablut.view.components.generic.GenericPanel;
  * @see GenericPanel
  */
 public class SelectionPlayer extends GenericPanel {
-    // TODO: passer les PlayerData dans le model
 	protected PlayerData attacker = new PlayerData("attacker", "Attaquant", "Joueur 1");
 	protected PlayerData defender = new PlayerData("defender", "D\u00e9fenseur", "Joueur 2");
 	protected GenericComboBox<PlayerTypeEnum> comboBox1;

@@ -42,10 +42,6 @@ public class IndicatorsDesigner extends Designer {
         final int x = g.getRealX(0);
         final int y = g.getRealY(0);
 
-
-        g.drawImage(throne, 4, 4, cellSize/2, cellSize/2, true);
-
-
         if(data.isAnim) {
         	g.setColor(GameColors.FROM_CELL);
         	g.fillSquare(data.animatedCell.x, data.animatedCell.y);
@@ -79,6 +75,8 @@ public class IndicatorsDesigner extends Designer {
         else {
             g.setCursor("default");
         }
+
+        g.drawImage(throne, 4, 4, cellSize/2, cellSize/2, true);
     }
 
     // draw a symbol on a cell indicating that the current piece can move on that cell

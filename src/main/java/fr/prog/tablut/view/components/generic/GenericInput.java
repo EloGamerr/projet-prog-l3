@@ -157,7 +157,6 @@ public class GenericInput extends JTextField implements GenericComponent {
      * Repaints the input
      */
     public void paintComponent(Graphics g) {
-        //TODO : issue - the carret isn't drawn
         Graphics2D g2d = (Graphics2D) g;
 
         // Anti-aliased lines and text
