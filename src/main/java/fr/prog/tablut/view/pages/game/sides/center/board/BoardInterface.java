@@ -58,14 +58,14 @@ public class BoardInterface extends GameInterfaceSide {
             
             
         if(boardData.selectedCell != null)
-			boardData.accessibleCells = Game.getInstance().getAccessibleCells(boardData.selectedCell.x, boardData.selectedCell.y);
+			boardData.accessibleCells = Game.getInstance().getAllPossibleMovesForPosition(boardData.selectedCell.x, boardData.selectedCell.y);
         
         else if(boardData.mousePosition != null && game.getPlayingPlayer() instanceof HumanPlayer) {
 			int col = getColFromXCoord(boardData.mousePosition.x);
 			int row = getRowFromYCoord(boardData.mousePosition.y);
 
 			if(game.isValid(col, row) && game.canMove(col, row)) {
-				boardData.accessibleCells = game.getAccessibleCells(col, row);
+				boardData.accessibleCells = game.getAllPossibleMovesForPosition(col, row);
                 boardData.hoveringPossibleMoveCell = new Point(col, row);
             }
             else

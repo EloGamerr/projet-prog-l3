@@ -1,6 +1,5 @@
 package fr.prog.tablut.view.pages.game.sides.center.board.designers;
 
-import java.awt.Color;
 import java.awt.Image;
 import java.awt.Point;
 
@@ -12,6 +11,7 @@ import java.util.List;
 
 import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Game;
+import fr.prog.tablut.model.game.Movement;
 import fr.prog.tablut.view.pages.game.sides.center.board.BoardData;
 import fr.prog.tablut.view.pages.game.sides.center.board.BoardDrawer;
 import fr.prog.tablut.view.pages.game.sides.center.board.GameColors;
@@ -35,7 +35,7 @@ public class IndicatorsDesigner extends Designer {
         final Point selectedCell = data.selectedCell;
         final Point hoveringCell = data.hoveringCell;
         final Point hoveringPossibleMoveCell = data.hoveringPossibleMoveCell;
-        final List<Point> accessibleCells = data.accessibleCells;
+        final List<Movement> accessibleCells = data.accessibleCells;
 
         final int widthBorder = g.getBorderWidth();
         final int cellSize = g.getCellSize();
@@ -82,7 +82,7 @@ public class IndicatorsDesigner extends Designer {
     }
 
     // draw a symbol on a cell indicating that the current piece can move on that cell
-    private void drawAccessibleCells(List<Point> accessibleCells, Point hoveringCell) {
+    private void drawAccessibleCells(List<Movement> accessibleCells, Point hoveringCell) {
         int cellSize = g.getCellSize();
         final int r = cellSize / 3;
 
@@ -90,25 +90,28 @@ public class IndicatorsDesigner extends Designer {
 
         int cx, cy;
 
-		for(Point accessibleCell : accessibleCells) {
-            CellContent cell = Game.getInstance().getCellContent(accessibleCell.y, accessibleCell.x);
+		for(Movement accessibleCell : accessibleCells) {
+            int x = accessibleCell.toC;
+            int y = accessibleCell.toL;
+
+            CellContent cell = Game.getInstance().getCellContent(y, x);
 
             // door hovering - if selected/hovering cell is the king and can access a door
             if(cell == CellContent.GATE) {
                 g.setColor(GameColors.GATE_FRAME_COLOR);
                 g.strokeWidth(2);
-                g.strokeSquare(accessibleCell.x, accessibleCell.y);
+                g.strokeSquare(x, y);
                 g.strokeWidth(1);
                 g.setColor(GameColors.CIRCLE);
             }
 
             else {
-                cx = g.getRealX(accessibleCell.x) - r/2 + cellSize/2;
-                cy = g.getRealY(accessibleCell.y) - r/2 + cellSize/2;
+                cx = g.getRealX(x) - r/2 + cellSize/2;
+                cy = g.getRealY(y) - r/2 + cellSize/2;
 
-                if(hoveringCell != null && (accessibleCell.x == hoveringCell.x && accessibleCell.y == hoveringCell.y)) {
+                if(hoveringCell != null && (x == hoveringCell.x && y == hoveringCell.y)) {
                     g.setColor(GameColors.HOVERING_CIRCLE);
-                    g.strokeSquare(accessibleCell.x, accessibleCell.y);
+                    g.strokeSquare(x, y);
                 }
 
                 else {

@@ -21,6 +21,10 @@
 
             ".light": {
                 "color": [221, 221, 221]
+            },
+
+            ".darker": {
+                "color": [130, 130, 130]
             }
         },
         "description": {

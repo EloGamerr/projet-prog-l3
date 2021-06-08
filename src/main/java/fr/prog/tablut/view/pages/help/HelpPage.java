@@ -2,8 +2,6 @@ package fr.prog.tablut.view.pages.help;
 
 import java.awt.BorderLayout;
 
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import fr.prog.tablut.model.window.WindowConfig;
@@ -12,7 +10,6 @@ import fr.prog.tablut.view.Page;
 import fr.prog.tablut.view.components.BottomButtonPanel;
 import fr.prog.tablut.view.components.NavPage;
 import fr.prog.tablut.view.components.generic.GenericLabel;
-import fr.prog.tablut.view.components.generic.GenericObjectStyle;
 import fr.prog.tablut.view.components.generic.GenericPanel;
 
 /**

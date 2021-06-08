@@ -56,9 +56,10 @@ public class Style {
     public void reset() {
         String items[] = {
             "area", "button", "button.dark", "button.green", "button.home", "button.load",
-            "button.load:selected", "button.red", "description", "greenHover",
-            "input", "label", "label.light", "redHover", "select.item", "select.selected",
-            "table", "table.td", "table.th", "title", "title.light", "window"
+            "button.load:selected", "button.red", "chat", "chat.timing", "chat.red", "chat.blue",
+            "chat.yellow", "description", "greenHover", "input", "label", "label.light",
+            "label.darker", "redHover", "select.item", "select.selected", "table", "table.td",
+            "table.th", "title", "title.light", "window"
         };
 
         components = new HashMap<String, ComponentStyle>();

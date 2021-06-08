@@ -39,6 +39,7 @@ import fr.prog.tablut.view.pages.game.sides.center.CenterSideGame;
 import fr.prog.tablut.view.pages.game.sides.center.board.BoardInterface;
 import fr.prog.tablut.view.pages.game.sides.left.LeftSideGame;
 import fr.prog.tablut.view.pages.game.sides.right.RightSideGame;
+import fr.prog.tablut.view.utils.Time;
 
 /**
  * The page component that manages the game's view and regroups every components of the page
@@ -49,7 +50,7 @@ public class GamePage extends Page {
     private final RightSideGame rightSide;
     private final LeftSideGame leftSide;
 
-    private GenericLabel winnerDescLabel;
+    private GenericLabel winnerDescLabel, winnerTimeAndPlaysLabel;
     private NavPage winnerPage;
     private ImageComponent blackBT, blackT, whiteBT, whiteT;
     
@@ -127,6 +128,9 @@ public class GamePage extends Page {
 
         centerSide.updateTurnOf();
         leftSide.update();
+
+        // hide winner screen in the case the previous game was terminated
+        foregroundPanel.setVisible(false);
     }
 
     private void initWinnerPanel(GameController gc) {
@@ -153,7 +157,9 @@ public class GamePage extends Page {
         GenericPanel p = new GenericPanel(new GridBagLayout());
         
         winnerDescLabel = new GenericLabel("L'attaquant n'a pas r\u00e9ussi \u00e0 encercler le Roi", 16);
+        winnerTimeAndPlaysLabel = new GenericLabel("0h 0m 0s - 0 coups", 16);
         winnerDescLabel.setForeground(GenericObjectStyle.getProp("label.light", "color"));
+        winnerTimeAndPlaysLabel.setForeground(GenericObjectStyle.getProp("label.darker", "color"));
         GenericRoundedButton replay = new GenericRoundedButton("Revoir le match", 170, 40);
 
         replay.setStyle("button.dark");
@@ -172,8 +178,11 @@ public class GamePage extends Page {
         c.gridy = 0;
         p.add(winnerDescLabel, c);
 
-        c.insets = new Insets(20, 0, 0, 0);
         c.gridy = 1;
+        c.insets = new Insets(20, 0, 0, 0);
+        p.add(winnerTimeAndPlaysLabel, c);
+
+        c.gridy = 3;
         p.add(replay, c);
         //
 
@@ -240,19 +249,12 @@ public class GamePage extends Page {
         String desc = wid? "Le Roi a r\u00e9ussi \u00e0 s'\u00e9chapper" : "Le Roi n'a pas r\u00e9ussi \u00e0 s'\u00e9chapper";
         winnerDescLabel.setText(desc);
 
-        if(wid) {
-            blackBT.setVisible(true);
-            blackT.setVisible(false);
-            whiteT.setVisible(true);
-            whiteBT.setVisible(false);
-        }
+        winnerTimeAndPlaysLabel.setText(Time.formatToString(game.getDuration()) + " - " + ((game.getMovementsNumber()+1) / 2) + " coups");
 
-        else {
-            blackT.setVisible(true);
-            blackBT.setVisible(false);
-            whiteBT.setVisible(true);
-            whiteT.setVisible(false);
-        }
+        blackBT.setVisible(wid);
+        blackT.setVisible(!wid);
+        whiteT.setVisible(wid);
+        whiteBT.setVisible(!wid);
 
 
         // display the page

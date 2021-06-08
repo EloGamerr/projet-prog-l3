@@ -52,12 +52,12 @@ public class PiecesDesigner extends Designer {
             }
 
             // draw the piece in the mouse
-            if(data.imageOnMouse != null && data.lastMousePosition != null) {
+            if(data.imageOnMouse != null && data.mousePosition != null) {
                 int x = g.getRealX(0);
                 int y = g.getRealY(0);
 
-                int xImg = Math.min(Math.max(x, data.lastMousePosition.x - imgSize/2), x + g.getSize() - imgSize);
-                int yImg = Math.min(Math.max(y, data.lastMousePosition.y - imgSize/2), y + g.getSize() - imgSize);
+                int xImg = Math.min(Math.max(x, data.mousePosition.x - imgSize/2), x + g.getSize() - imgSize);
+                int yImg = Math.min(Math.max(y, data.mousePosition.y - imgSize/2), y + g.getSize() - imgSize);
                 
                 g.drawImageCoords(data.imageOnMouse, xImg, yImg, imgSize, imgSize, null);
             }

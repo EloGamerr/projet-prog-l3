@@ -26,6 +26,7 @@ import fr.prog.tablut.view.components.generic.GenericLabel;
 import fr.prog.tablut.view.components.generic.GenericObjectStyle;
 import fr.prog.tablut.view.components.generic.GenericPanel;
 import fr.prog.tablut.view.pages.game.GamePage;
+import fr.prog.tablut.view.utils.Time;
 
 public class HistoryChatField extends GenericPanel {
 	private final GamePage gamePage;
@@ -241,13 +242,13 @@ class LabelField extends JLabel {
 
             int pp = p==PlayerEnum.ATTACKER? 2 : p==PlayerEnum.DEFENDER? 1 : 0;
 
-			timing = new GenericLabel("[" + formatTime(Game.getInstance().getDuration()) + "]", 12);
+			timing = new GenericLabel("[" +  Time.format(Game.getInstance().getDuration()) + "]", 12);
 			timing.setForeground(GenericObjectStyle.getProp("chat.timing", "color"));
 
 			player = new GenericLabel(pp==1? "L'attaquant" : "Le D\u00e9fenseur", 12);
 			player.setForeground(GenericObjectStyle.getProp("chat." + (pp==1? "red" : "blue"), "color"));
 
-			String text = " a jou\u00e9 ";
+			String text = "a jou\u00e9 ";
 
 			text += (lastMove != null)? getColName(lastMove.getFromC()) + getRowName(lastMove.getFromL()) : "??"; // from
 			text += " en ";
@@ -304,21 +305,6 @@ class LabelField extends JLabel {
 
 	public GenericLabel getSentence() {
 		return sentence;
-	}
-
-	private String formatTime(int time) {
-        int ms = time % 1000;
-        time = (time - ms) / 1000;
-        int secs = time % 60;
-        time = (time - secs) / 60;
-        int mins = time % 60;
-        int hrs = (time - mins) / 60;
-
-        String h = (hrs > 9? "":"0") + hrs,
-            m = (mins > 9? "":"0") + mins,
-            s = (secs > 9? "":"0") + secs;
-
-        return ((hrs == 0)? "" : h + ":") + m + ":" + s;
 	}
 	
 	private String getColName(int c) {

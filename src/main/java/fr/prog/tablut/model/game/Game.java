@@ -767,4 +767,8 @@ public class Game {
 	public void setKingC(int kingC) {
 		this.kingC = kingC;
 	}
+
+    public int getMovementsNumber() {
+        return getPlays().getCurrentMovement();
+    }
 }

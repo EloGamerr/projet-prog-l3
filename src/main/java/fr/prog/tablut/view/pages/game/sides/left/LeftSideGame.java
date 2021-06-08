@@ -18,8 +18,8 @@ public class LeftSideGame extends GameInterfaceSide {
 
         Dimension mbd = new Dimension(d.width, 40);
 
-        buttons = new MoveButtons(mbd,gameController, rightSide);
-        historyPanel = new MoveHistoryPanel(d.width - 10, d.height - mbd.height*2 - 25, gamePage);
+        buttons = new MoveButtons(mbd, gameController, rightSide);
+        historyPanel = new MoveHistoryPanel(d.width - 10, d.height - mbd.height * 2 - 25, gamePage);
 
         add(historyPanel);
         add(buttons);
@@ -34,6 +34,8 @@ public class LeftSideGame extends GameInterfaceSide {
     }
 
     public void update() {
+        buttons.enableUndoButton(false);
+        buttons.enableRedoButton(false);
         clearChat();
     }
 
