@@ -120,4 +120,8 @@ public class IndicatorsDesigner extends Designer {
             }
 		}
     }
+
+    public BoardDrawer getBoardDrawer() {
+        return g;
+    }
 }

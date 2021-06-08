@@ -4,6 +4,8 @@ import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.Movement;
 import fr.prog.tablut.model.game.player.PlayerEnum;
 import fr.prog.tablut.view.pages.game.GamePage;
+import fr.prog.tablut.view.pages.game.sides.center.board.BoardDrawer;
+import fr.prog.tablut.view.pages.game.sides.center.board.GameColors;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -29,6 +31,13 @@ public abstract class AIMinMax extends AIPlayer {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            System.out.println("Joue !");
+            BoardDrawer g =  gamePage.getBoardInterface().getIndicatorsDesigner().getBoardDrawer();
+            g.setColor(GameColors.GATE_FRAME_COLOR);
+            g.strokeWidth(2);
+            g.strokeSquare(1, 1);
+            g.strokeWidth(1);
+            g.setColor(GameColors.CIRCLE);
             updateAnim(new Point(movement.fromC, movement.fromL), new Point(movement.toC, movement.toL), gamePage);
         }
 
