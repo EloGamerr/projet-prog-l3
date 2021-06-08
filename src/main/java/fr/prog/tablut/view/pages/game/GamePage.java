@@ -131,6 +131,8 @@ public class GamePage extends Page {
 
         // hide winner screen in the case the previous game was terminated
         foregroundPanel.setVisible(false);
+        
+        lastPlayer = null;
     }
 
     private void initWinnerPanel(GameController gc) {
@@ -218,10 +220,10 @@ public class GamePage extends Page {
         enableRedoButton(Game.getInstance().hasNextMove());
 		enableUndoButton(Game.getInstance().hasPreviousMove());
         centerSide.updateTurnOf();
-
+        
         if((lastPlayer == null || lastPlayer != Game.getInstance().getPlayingPlayerEnum()) && Game.getInstance().getLastPlay() != null) {
             lastPlayer = Game.getInstance().getPlayingPlayerEnum();
-
+            
             switch(movetype) {
                 case MOVE: leftSide.getMoveHistoryPanel().addAction(); break;
                 case UNDO: leftSide.getMoveHistoryPanel().undo(); break;
@@ -249,7 +251,7 @@ public class GamePage extends Page {
         String desc = wid? "Le Roi a r\u00e9ussi \u00e0 s'\u00e9chapper" : "Le Roi n'a pas r\u00e9ussi \u00e0 s'\u00e9chapper";
         winnerDescLabel.setText(desc);
 
-        winnerTimeAndPlaysLabel.setText(Time.formatToString(game.getDuration()) + " - " + ((game.getMovementsNumber()+1) / 2) + " coups");
+        winnerTimeAndPlaysLabel.setText(Time.formatToString(game.getDuration()) + " - " + ((game.getMovementsNumber()) / 2) + " coups");
 
         blackBT.setVisible(wid);
         blackT.setVisible(!wid);
@@ -262,8 +264,15 @@ public class GamePage extends Page {
     }
     
     public void refresh() {
+    	enableRedoButton(Game.getInstance().hasNextMove());
+		enableUndoButton(Game.getInstance().hasPreviousMove());
+		
         revalidate();
 		repaint();
+    }
+    
+    public void removePreview() {
+    	centerSide.getBoard().removePreview();
     }
 
     /**
@@ -288,6 +297,10 @@ public class GamePage extends Page {
      */
     public LeftSideGame getLeftSide() {
         return leftSide;
+    }
+    
+    public void resetLastPlayer() {
+    	lastPlayer = null;
     }
 
     public int getColFromXCoord(int x) {

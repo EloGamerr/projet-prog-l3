@@ -150,4 +150,8 @@ public class BoardInterface extends GameInterfaceSide {
     public IndicatorsDesigner getIndicatorsDesigner() {
         return this.indicatorsDesigner;
     }
+    
+    public void removePreview() {
+    	boardData.previewGrid = null;
+    }
 }

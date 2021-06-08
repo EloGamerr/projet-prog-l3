@@ -1,54 +1,87 @@
 package fr.prog.tablut.model.game;
 
+import java.awt.Point;
+
 public class Movement {
-	public int fromL;
-	public int fromC;
-	public int toL;
-	public int toC;
+	private Point pointFrom;
+	private Point pointTo;
 
 	public Movement(int fromC, int fromL, int toC, int toL) {
-		this.fromC = fromC;
-		this.fromL = fromL;
-		this.toC = toC;
-		this.toL = toL;
+		this.pointFrom = new Point(fromC, fromL);
+		this.pointTo = new Point(toC, toL);
 	}
 	
 	public Movement() {
 	}
-	
+
+	public Point getFrom() {
+		return this.pointFrom;
+	}
+
+	public Point getTo() {
+		return this.pointTo;
+	}
+
 	public int getFromL() {
-		return fromL;
+		return this.pointFrom.y;
 	}
 
 	public int getFromC() {
-		return fromC;
+		return this.pointFrom.x;
 	}
 
 	public int getToL() {
-		return toL;
+		return this.pointTo.y;
 	}
 
 	public int getToC() {
-		return toC;
+		return this.pointTo.x;
 	}
 	
 	public void setFromL(int fromL) {
-		this.fromL = fromL;
+		if(this.pointFrom == null) {
+			this.pointFrom = new Point();
+		}
+
+		this.pointFrom.y = fromL;
 	}
 
 	public void setFromC(int fromC) {
-		this.fromC = fromC;
+		if(this.pointFrom == null) {
+			this.pointFrom = new Point();
+		}
+
+		this.pointFrom.x = fromC;
 	}
 
 	public void setToL(int toL) {
-		this.toL = toL;
+		if(this.pointTo == null) {
+			this.pointTo = new Point();
+		}
+
+		this.pointTo.y = toL;
 	}
 
 	public void setToC(int toC) {
-		this.toC = toC;
+		if(this.pointTo == null) {
+			this.pointTo = new Point();
+		}
+
+		this.pointTo.x = toC;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Movement) {
+			Movement movement = (Movement)obj;
+
+			return ((pointFrom == null && movement.pointFrom == null) || pointFrom.equals(movement.pointFrom)) && ((pointTo == null && movement.pointTo == null) || pointTo.equals(movement.pointTo));
+		}
+		return super.equals(obj);
+	}
+
+	@Override
 	public String toString() {
-		return "("+fromC+","+fromL+")"+" ("+toC+","+toL+")";
+		return "("+getFromC()+","+getFromL()+")"+" ("+getToC()+","+getToL()+")";
 	}
 }

@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import fr.prog.tablut.controller.game.HumanPlayer;
 import fr.prog.tablut.controller.game.ia.AIEasy;
+import fr.prog.tablut.controller.game.ia.AIHard;
 import fr.prog.tablut.controller.game.ia.AIMedium;
 import fr.prog.tablut.controller.game.ia.AIRandom;
 
@@ -11,7 +12,8 @@ public enum PlayerTypeEnum {
     HUMAN("Humain", HumanPlayer.class, false),
     RANDOM_AI("Ordinateur al\u00e9atoire", AIRandom.class, true),
     EASY_AI("Ordinateur facile", AIEasy.class, true),
-    MEDIUM_AI("Ordinateur moyen", AIMedium.class, true);
+    MEDIUM_AI("Ordinateur moyen", AIMedium.class, true),
+    HARD_AI("Ordinateur diffcile", AIHard.class, true);
 
     
 	private String name;

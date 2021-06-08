@@ -23,20 +23,20 @@ public class AnimationCoup {
         if(progres > 1)
 			progres = 1;
 
-        int fromC = view.getXCoordFromCol(mov.fromC);
-        int fromL = view.getYCoordFromRow(mov.fromL);
-        int toC = view.getXCoordFromCol(mov.toC);
-        int toL = view.getYCoordFromRow(mov.toL);
+        int fromC = view.getXCoordFromCol(mov.getFromC());
+        int fromL = view.getYCoordFromRow(mov.getFromL());
+        int toC = view.getXCoordFromCol(mov.getToC());
+        int toL = view.getYCoordFromRow(mov.getToL());
         
         int dC =  (int)(fromC - (fromC - toC) * progres);
         int dL =  (int)(fromL - (fromL - toL) * progres);
 
-        view.update_anim(new Point(dC, dL), new Point(mov.fromC, mov.fromL),new Point(mov.toC, mov.toL));
+        view.update_anim(new Point(dC, dL), mov.getFrom(), mov.getTo());
 	}
 
 	public void stop_anim() {
 		view.stop_anim();
-        Game.getInstance().move(mov.fromC, mov.fromL, mov.toC, mov.toL);
+        Game.getInstance().move(mov.getFromC(), mov.getFromL(), mov.getToC(), mov.getToL());
 	}
 
 	public boolean isOver() {
@@ -51,7 +51,7 @@ public class AnimationCoup {
 	}
 	
 	public void startAnim() {
-		if(Game.getInstance().canMove(mov.fromC, mov.fromL, mov.toC, mov.toL))
+		if(Game.getInstance().canMove(mov.getFromC(), mov.getFromL(), mov.getToC(), mov.getToL()))
 			update_anim();
 	}
 }

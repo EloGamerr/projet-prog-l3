@@ -31,6 +31,7 @@ public class PawnTaker {
 
 		if(game.isDefenseTower(c, l))
 			defense(c, l, play);
+		
 	}
 	
 	////////////////////////////////////////////////////
@@ -110,13 +111,20 @@ public class PawnTaker {
 		Couple<Integer , List<Point>> var = new Couple<Integer, List<Point>>(counter_obstacle, allyCells);
 		
 		switch(game.getGrid()[y][x]) {
-			case DEFENSE_TOWER:
+		
 			case KING:
+				var = checkneighbour_king(var.getSecond(), var.getFirst(), x-1, y);
+				var = checkneighbour_king(var.getSecond(), var.getFirst(), x+1, y);
+				var = checkneighbour_king(var.getSecond(), var.getFirst(), x,   y-1);
+				var = checkneighbour_king(var.getSecond(), var.getFirst(), x,   y+1);
+				break;
+			case DEFENSE_TOWER:
 				var = checkneighbour_defense(var.getSecond(), var.getFirst(), x-1, y);
 				var = checkneighbour_defense(var.getSecond(), var.getFirst(), x+1, y);
 				var = checkneighbour_defense(var.getSecond(), var.getFirst(), x,   y-1);
 				var = checkneighbour_defense(var.getSecond(), var.getFirst(), x,   y+1);
 				break;
+			
 
 			case ATTACK_TOWER:
 				var = checkneighbour_attack(var.getSecond(), var.getFirst(), x-1, y);
@@ -174,6 +182,21 @@ public class PawnTaker {
 
 		return new Couple<Integer, List<Point>>(counter_obstacle, allyCells);
 	}
+	
+	public Couple<Integer, List<Point>> checkneighbour_king(List<Point> allyCells, int counter_obstacle, int x, int y) {
+		if(!game.isValid(x, y))
+			counter_obstacle++;
+
+		else if(isAttTowerHelper_king(x, y))
+			counter_obstacle++;	
+
+		else if(isDefenseAlly(x, y)) {
+			allyCells.add(new Point(x, y));
+			counter_obstacle++;
+		}
+
+		return new Couple<Integer, List<Point>>(counter_obstacle, allyCells);
+	}
 
 	public Couple<Integer, List<Point>> checkneighbour_defense(List<Point> allyCells, int counter_obstacle, int x, int y) {
 		if(!game.isValid(x, y))
@@ -191,10 +214,13 @@ public class PawnTaker {
 	}
 	
 	public boolean isDefTowerHelper(int x, int y) {
-		return ((game.isTheKingPlace(x, y) && !game.isOccupied(x, y)) || game.isDefenseTower(x, y) || game.isGate(x, y));
+		return (game.isOccupied(x, y) && (game.isDefenseTower(x, y) || game.isGate(x, y)));
 	}
 	public boolean isAttTowerHelper(int x, int y) {
-		return ((game.isTheKingPlace(x, y) && !game.isOccupied(x, y)) || game.isAttackTower(x, y) || game.isGate(x, y));
+		return (game.isOccupied(x, y) && (game.isAttackTower(x, y) || game.isGate(x, y)));
+	}
+	public boolean isAttTowerHelper_king(int x, int y) {
+		return (!game.isValid(x, y) || game.isTheKingPlace(x, y) || game.isAttackTower(x, y) || game.isGate(x, y));
 	}
 	
 	public boolean isDefenseAlly(int x ,int y) {
