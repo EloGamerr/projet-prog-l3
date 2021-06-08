@@ -320,7 +320,7 @@ class LabelField extends JLabel {
 
 	public void hover(boolean state) {
 		if(!systemMessage) {
-			String style = "chat" + (state? ".yellow" : "");
+			String style = "chat" + (state? ".hover" : "");
 			sentence.setForeground(GenericObjectStyle.getProp(style, "color"));
 		}
 	}

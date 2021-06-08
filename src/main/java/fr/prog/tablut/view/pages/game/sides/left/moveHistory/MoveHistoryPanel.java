@@ -36,13 +36,14 @@ public class MoveHistoryPanel extends GenericPanel {
         historyChat = new HistoryChatField(gamePage);
         historyChat.setFont(new Font("Calibri", Font.PLAIN, 12));
         
-        scrollPane = new GenericScrollPane(historyChat, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane = new GenericScrollPane(historyChat, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         wrapper.add(scrollPane, BorderLayout.SOUTH);
         add(wrapper);
 
         if(width > 0 && height > 0) {
             final Dimension d = new Dimension(width, height);
+
             setSize(d);
             setPreferredSize(d);
             setMaximumSize(d);
@@ -57,34 +58,27 @@ public class MoveHistoryPanel extends GenericPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
-        int newHeight = historyChat.getMovesNumber() * historyChat.getLabelHeight();
+        int newHeight = Math.min(historyChat.getMovesNumber() * historyChat.getLabelHeight(), getHeight() - 50);
 
         if(previousHeight != newHeight) {
             Dimension d = new Dimension(getWidth(), newHeight);
             scrollPane.setPreferredSize(d);
             scrollPane.setSize(d);
-            revalidate(); // Update layout because scrollPane changed
+            revalidate();
             previousHeight = newHeight;
         }
 
         JScrollBar jScrollBar = scrollPane.getVerticalScrollBar();
-        // If visible amount of the scrollbar changed, so we have to change value to avoid some problems with scrollbar.
-        // We set the scrollbar at the bottom because we want to see the more recent last events.
-        if(previousVisibleAmount != jScrollBar.getVisibleAmount()) {
-            jScrollBar.setValue(jScrollBar.getMaximum());
-            previousVisibleAmount = jScrollBar.getVisibleAmount();
-        }
+
+        if(previousVisibleAmount != jScrollBar.getMaximum())
+            jScrollBar.setValue((previousVisibleAmount = jScrollBar.getMaximum()));
 
         super.paintComponent(g);
     }
 
     public void addAction() {
+        // for(int i=0; i < 50; i++)
         historyChat.addAction();
-
-        JScrollBar jScrollBar = scrollPane.getVerticalScrollBar();
-        if(jScrollBar.getValue() + jScrollBar.getVisibleAmount() == jScrollBar.getMaximum()) {
-            previousVisibleAmount = 0; // Push scrollBar to the bottom
-        }
         
 		revalidate();
 		repaint();

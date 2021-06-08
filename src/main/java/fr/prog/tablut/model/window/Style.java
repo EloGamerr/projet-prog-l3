@@ -58,7 +58,7 @@ public class Style {
             "area", "button", "button.dark", "button.green", "button.home", "button.load",
             "button.load:selected", "button.red", "chat", "chat.timing", "chat.red", "chat.blue",
             "chat.yellow", "description", "greenHover", "input", "label", "label.light",
-            "label.darker", "redHover", "select.item", "select.selected", "table", "table.td",
+            "label.darker", "redHover", "select.item", "select.selected", "scrollbar", "table", "table.td",
             "table.th", "title", "title.light", "window"
         };
 
