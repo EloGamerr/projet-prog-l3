@@ -79,6 +79,8 @@ public class Game {
 	}
 	
 	public void restart() {
+		this.attacker.getOwnedCells().clear();
+		this.defender.getOwnedCells().clear();
 		setPlayingPlayer(PlayerEnum.ATTACKER);
 		this.plays = new Plays();
 		init_game(9,9);

@@ -9,11 +9,12 @@ import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.view.pages.game.GamePage;
 
 public abstract class Player implements Cloneable {
-	private List<Point> ownedCells = new ArrayList<>();
+	private List<Point> ownedCells;
 	private PlayerEnum playerEnum;
 
 	public Player(PlayerEnum playerEnum) {
 		this.playerEnum = playerEnum;
+		this.ownedCells = new ArrayList<>();
 	}
 
 	/**
