@@ -30,7 +30,6 @@ public class HelpPage extends Page {
 	 */
 	public HelpPage(WindowConfig config, PageName pageBack) {
 		super(config);
-
 		windowName = PageName.HelpPage;
 
         createRules();
@@ -49,10 +48,19 @@ public class HelpPage extends Page {
 		add(page);
 	}
 
+    /**
+     * Defines the page to go back to if the user clicks on "Retour".
+     * <p>It updates its bottomPanel's button</p>
+     * @param pageBack
+     */
 	public void setBackPage(PageName pageBack) {
 		bbp.setFirstButtonHref(pageBack);
 	}
 
+    /**
+     * Returns a panel component with all explained rules for the game.
+     * <p>Note : it's not used</p>
+     */
     private void createRules() {
         rules = new GenericPanel();
 

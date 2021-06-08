@@ -32,9 +32,9 @@ public class SavedGamesPanel extends GenericPanel {
 	private final int height = 350;
 	private final int btnHeight = 35;
 	private int index_selected = 0;
-	private GenericRoundedButton buttonToLightup;
-    private final GenericRoundedPanel wrapperContainer;
     private final GenericPanel wrapper;
+    private final GenericRoundedPanel wrapperContainer;
+	private GenericRoundedButton buttonToLightup;
     private GenericPanel wrapperInner = null;
 	
 	public GenericRoundedButton button_selected = null;
@@ -50,10 +50,12 @@ public class SavedGamesPanel extends GenericPanel {
 		super(new GridBagLayout());
         setBorder(new EmptyBorder(0, 0, 50, 0));
 
+        // the confirm button that's enabled only if a save is chosen
 		buttonToLightup = btnToLightup;
 
 		Dimension size = new Dimension(width, height);
 
+        // the rounded wrapper that's drawn
 		wrapperContainer = new GenericRoundedPanel();
 		wrapperContainer.setLayout(new BorderLayout());
 		wrapperContainer.setStyle("area");
@@ -62,6 +64,7 @@ public class SavedGamesPanel extends GenericPanel {
 		wrapperContainer.setMaximumSize(size);
 		wrapperContainer.setMinimumSize(size);
 		
+        // invisible inside wrapper that's used to organisze items
 		wrapper = new GenericPanel(new GridBagLayout());
 		wrapper.setBorder(new EmptyBorder(3, 0, 3, 0));
 
@@ -77,25 +80,46 @@ public class SavedGamesPanel extends GenericPanel {
 	 * @param button the button that's been clicked on (a save)
 	 */
 	public void select(GenericButton button, int index) {
+        // remove style of previously chose save
 		if(button_selected != null)
 			button_selected.setStyle("button.load");
 		
+        // update the style of chose one
 		button_selected = (GenericRoundedButton)button;
 		button_selected.setStyle("button.load:selected");
 		index_selected = index;
 
-		if(buttonToLightup.getStyle() != "button.green")
-			buttonToLightup.setStyle("button.green");
+        // enable the confirm button
+		enableConfirmButton();
 	}
 
-    public void disableConfirmButton() {
-        buttonToLightup.setStyle("button.green:disabled");
+    /**
+     * Enables the confirm button
+     */
+    public void enableConfirmButton() {
+        if(buttonToLightup.getStyle() != "button.green")
+			buttonToLightup.setStyle("button.green");
     }
 
+    /**
+     * Disables the confirm button
+     */
+    public void disableConfirmButton() {
+        if(buttonToLightup.getStyle() != "button.green:disabled")
+            buttonToLightup.setStyle("button.green:disabled");
+    }
+
+    /**
+     * Returns the index of the selected save
+     * @return The index of the selected save in the list
+     */
 	public int getSelectedIndex() {
 		return index_selected;
 	}
 
+    /**
+     * Updates the content in the list of the saves
+     */
     public void updateContent() {
 		ArrayList<Couple<String, Integer>> saves = GameSaver.getInstance().getSavesNames();
         
@@ -120,6 +144,7 @@ public class SavedGamesPanel extends GenericPanel {
             c.weightx = 1;
             c.weighty = 0;
 
+            // in the case there're more saves than the container, create a scrollPane
             wrapperInner = new GenericPanel(new GridBagLayout());
             GenericScrollPane scrollPane = new GenericScrollPane(wrapperInner);
             GenericRoundedButton buttonLoad;
@@ -133,10 +158,12 @@ public class SavedGamesPanel extends GenericPanel {
                 btnWidth -= 25;
             }
             else {
+                // delete wrapperInner (then the scrollPane and all its items)
                 wrapperInner.removeAll();
                 wrapperInner = null;
             }
             
+            // for each save, create a new button to select it, and one to delete it
             for(int i=0; i < saves.size(); i++) {
                 c.gridy = i;
                 String saveName = saves.get(i).getFirst();
@@ -173,7 +200,8 @@ public class SavedGamesPanel extends GenericPanel {
                 wrapper.add(scrollPane);
 
             else {
-                // align content to the top
+                // align content to the top pushing these with an invisible panel
+                // that takes the rest of the place
                 GenericPanel emptyPanel = new GenericPanel();
                 c.gridy = saves.size();
                 c.weighty = 1;
@@ -183,14 +211,20 @@ public class SavedGamesPanel extends GenericPanel {
 		}
     }
 
+    /**
+     * Delete the given save component
+     * @param saveButtonToDelete
+     */
     public void deleteSave(JPanel saveButtonToDelete) {
         final boolean win = wrapperInner == null;
+
         JPanel w = win? wrapper : wrapperInner;
 
         w.remove(saveButtonToDelete);
 
         int n = w.getComponentCount();
 
+        // recalculate the number of saves to reorganize these.
         if(!win && n * (btnHeight+2) < height) {
             Component cpnts[] = w.getComponents();
 
@@ -219,6 +253,7 @@ public class SavedGamesPanel extends GenericPanel {
             wrapperInner = null;
         }
 
+        // it deleted the last save - no more save
         if(n == 1) {
             GenericLabel label = new GenericLabel("Aucune partie sauvegard\u00e9e", 12);
             label.setBorder(new EmptyBorder(height/2 - 20, 0, 0, 0));

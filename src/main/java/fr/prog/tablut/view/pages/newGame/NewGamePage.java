@@ -21,11 +21,9 @@ public class NewGamePage extends Page {
 	 */
 	public NewGamePage(WindowConfig config) {
 		super(config);
-
 		windowName = PageName.NewGamePage;
 
-		SelectionPlayer gameSettings = new SelectionPlayer();
-
+		SelectionPlayerForm gameSettings = new SelectionPlayerForm();
 		BottomButtonPanel panel = new BottomButtonPanel(PageName.HomePage, PageName.GamePage, "Jouer !");
 
 		panel.getButton2().setAction(new CreateGameAdaptator(panel.getButton2(), gameSettings));

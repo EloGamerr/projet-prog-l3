@@ -25,7 +25,6 @@ public class HomePage extends Page {
 	 */
 	public HomePage(WindowConfig config) {
 		super(config);
-
 		windowName = PageName.HomePage;
 
 		setPLayout(new GridBagLayout());

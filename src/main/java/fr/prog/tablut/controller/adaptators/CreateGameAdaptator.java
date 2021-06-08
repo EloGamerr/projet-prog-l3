@@ -5,12 +5,12 @@ import java.awt.event.ActionEvent;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 import fr.prog.tablut.view.components.generic.GenericButton;
-import fr.prog.tablut.view.pages.newGame.SelectionPlayer;
+import fr.prog.tablut.view.pages.newGame.SelectionPlayerForm;
 
 public class CreateGameAdaptator  extends ActionAdaptator<GenericButton> {
-    SelectionPlayer gameSettings;
+    SelectionPlayerForm gameSettings;
 
-	public CreateGameAdaptator(GenericButton button, SelectionPlayer gameSettings) {
+	public CreateGameAdaptator(GenericButton button, SelectionPlayerForm gameSettings) {
 		super(button);
         this.gameSettings = gameSettings;
 	}
@@ -19,8 +19,8 @@ public class CreateGameAdaptator  extends ActionAdaptator<GenericButton> {
 	public void process(ActionEvent e) {
 		PlayerTypeEnum attacker = gameSettings.getPlayerType1();
 		PlayerTypeEnum defender = gameSettings.getPlayerType2();
-		String attackerName = gameSettings.getAttaquant().getUsernameInput().getText();
-		String defenderName = gameSettings.getDefender().getUsernameInput().getText();
+		String attackerName = gameSettings.getAttackerName();
+		String defenderName = gameSettings.getDefenderName();
 
         if(attackerName.replace(" ", "").length() == 0) attackerName = "Joueur 1";
         if(defenderName.replace(" ", "").length() == 0) defenderName = "Joueur 2";
