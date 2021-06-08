@@ -4,7 +4,8 @@ import fr.prog.tablut.model.game.player.PlayerEnum;
 
 
 /**
-* IA de difficulté facile basée sur le nombre de pièces du joueur actuel et de son adversiare et qui ne prend pas en compte l'évasion du roi
+* IA de difficulté facile basée sur le nombre de pièces du joueur actuel et de son adversiare
+ * et qui ne prend pas en compte l'évasion du roi
  */
 public class AIEasy extends AIMinMax {
     public AIEasy(PlayerEnum playerEnum) {

@@ -36,7 +36,8 @@ public abstract class AIMinMax extends AIPlayer {
                 e.printStackTrace();
             }
 
-            while(previousMovements.size() >= 2)
+            //On évite que l'IA fasse les mêmes mouvements en boucle (voir plus loin dans le code)
+            while(previousMovements.size() >= 3)
                 previousMovements.removeFirst();
 
             previousMovements.addLast(movement);
@@ -77,6 +78,7 @@ public abstract class AIMinMax extends AIPlayer {
                 return move;
             }
 
+            //On évite que l'IA fasse les mêmes mouvements en boucle
             if(previousMovements.contains(move)) {
                 values[i++] = executor.submit(() -> -1000D);
                 continue;
