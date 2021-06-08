@@ -29,6 +29,7 @@ import fr.prog.tablut.view.pages.game.GamePage;
 import fr.prog.tablut.view.utils.Time;
 
 public class HistoryChatField extends GenericPanel {
+    private int labelHeight;
 	private final GamePage gamePage;
     private GridBagConstraints c;
     private List<LabelField> allHistory = new ArrayList<LabelField>();
@@ -45,11 +46,13 @@ public class HistoryChatField extends GenericPanel {
         c.anchor = GridBagConstraints.SOUTH;
 
 		this.gamePage = gamePage;
+
+        labelHeight = 20;
     }
 
     public void addAction() {
         // update the view's size
-        LabelField.setDimension(new Dimension(getWidth(), 20));
+        LabelField.setDimension(new Dimension(getWidth(), labelHeight));
 
         // new action's label in the chat
         LabelField newPlayerAction = new LabelField(false, null, this, c.gridy);
@@ -58,9 +61,8 @@ public class HistoryChatField extends GenericPanel {
 		newPlayerAction.setForeground(GenericObjectStyle.getProp("chat", "color"));
 
         // erase next moves if these exist
-        // TODO: issue
 		if(allHistory.size() >= c.gridy) {
-			for(Integer i = allHistory.size() - 1; i >= c.gridy; i--) {
+			for(int i = allHistory.size() - 1; i >= c.gridy; i--) {
 				remove(allHistory.get(i));
 				allHistory.remove(i);
 			}
@@ -73,6 +75,22 @@ public class HistoryChatField extends GenericPanel {
 		
         // number of moves displayed
         c.gridy++;
+    }
+
+    public int getLabelHeight() {
+        return labelHeight;
+    }
+
+    public void clear() {
+        removeAll();
+
+        c.gridy = 0;
+
+        allHistory.clear();
+    }
+
+    public int getMovesNumber() {
+        return c.gridy;
     }
 
 	public void undo() {
@@ -111,6 +129,10 @@ public class HistoryChatField extends GenericPanel {
 		}
 		else {
 			for(int i=plays.getCurrentMovement()+1; i < pos; i++) {
+                // avoid out of bounds exception
+                if(allPlays.size() <= i)
+                    break;
+                
 				Play currentPlay = allPlays.get(i);
 
 				for(Map.Entry<Point, CellContent> m : currentPlay.getModifiedNewCellContents().entrySet()) {
@@ -169,37 +191,6 @@ public class HistoryChatField extends GenericPanel {
 		}
 
 		return newGrid;
-	}
-
-    public void clear() {
-        removeAll();
-
-        c.gridy = 0;
-
-        allHistory.clear();
-    }
-
-    public int getMovesNumber() {
-        return c.gridy;
-    }
-
-    private void printBoard(CellContent[][] grid) {
-		for(CellContent[] linCellContents : grid) {
-			System.out.print("|");
-			for(CellContent cellContent : linCellContents) {
-				switch(cellContent) {
-					case EMPTY: System.out.print("   |"); break;
-					case ATTACK_TOWER: System.out.print(" N |"); break;
-					case DEFENSE_TOWER: System.out.print(" B |"); break;
-					case KING: System.out.print(" K |"); break;
-					case GATE: System.out.print(" X |"); break;
-					//case KINGPLACE: System.out.print(" P |"); break;
-					default: break;
-				}
-			}
-			System.out.println("");
-		}
-		System.out.flush();
 	}
 }
 

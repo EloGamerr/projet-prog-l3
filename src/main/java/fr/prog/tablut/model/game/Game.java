@@ -665,7 +665,7 @@ public class Game {
 			kingL = l;
 		}
 
-		if(getGrid()[c][l] == CellContent.ATTACK_TOWER) {
+		if(getGrid()[l][c] == CellContent.ATTACK_TOWER) {
 			attacker.getOwnedCells().remove(new Point(c, l));
 		}
 

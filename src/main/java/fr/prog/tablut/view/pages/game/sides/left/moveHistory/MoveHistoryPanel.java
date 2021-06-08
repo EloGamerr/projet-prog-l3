@@ -36,7 +36,7 @@ public class MoveHistoryPanel extends GenericPanel {
         historyChat = new HistoryChatField(gamePage);
         historyChat.setFont(new Font("Calibri", Font.PLAIN, 12));
         
-        scrollPane = new GenericScrollPane(historyChat);
+        scrollPane = new GenericScrollPane(historyChat, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         wrapper.add(scrollPane, BorderLayout.SOUTH);
         add(wrapper);
@@ -57,15 +57,15 @@ public class MoveHistoryPanel extends GenericPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
-        // TODO: fix scrollbar
-        /* int newHeight = historyChat.getMovesNumber() * 20 + 50;//getHeight() - 30;//getParent().getSize().height - 26;
+        int newHeight = historyChat.getMovesNumber() * historyChat.getLabelHeight();
 
         if(previousHeight != newHeight) {
-            scrollPane.setPreferredSize(new Dimension(getWidth(), newHeight));
-            scrollPane.setSize(new Dimension(getWidth(), newHeight));
+            Dimension d = new Dimension(getWidth(), newHeight);
+            scrollPane.setPreferredSize(d);
+            scrollPane.setSize(d);
             revalidate(); // Update layout because scrollPane changed
             previousHeight = newHeight;
-        } */
+        }
 
         JScrollBar jScrollBar = scrollPane.getVerticalScrollBar();
         // If visible amount of the scrollbar changed, so we have to change value to avoid some problems with scrollbar.
@@ -80,6 +80,12 @@ public class MoveHistoryPanel extends GenericPanel {
 
     public void addAction() {
         historyChat.addAction();
+
+        JScrollBar jScrollBar = scrollPane.getVerticalScrollBar();
+        if(jScrollBar.getValue() + jScrollBar.getVisibleAmount() == jScrollBar.getMaximum()) {
+            previousVisibleAmount = 0; // Push scrollBar to the bottom
+        }
+        
 		revalidate();
 		repaint();
     }
@@ -93,6 +99,7 @@ public class MoveHistoryPanel extends GenericPanel {
     }
 
     public void clearChat() {
+        scrollPane.setSize(new Dimension(getWidth(), historyChat.getLabelHeight() * 2));
         historyChat.clear();
     }
 }
