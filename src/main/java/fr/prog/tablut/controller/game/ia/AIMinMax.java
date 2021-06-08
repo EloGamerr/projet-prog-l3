@@ -5,7 +5,9 @@ import fr.prog.tablut.model.game.Movement;
 import fr.prog.tablut.model.game.player.PlayerEnum;
 import fr.prog.tablut.view.pages.game.GamePage;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -15,9 +17,12 @@ import java.util.concurrent.Future;
 public abstract class AIMinMax extends AIPlayer {
     // Après plusieurs tests, on a conclu que 2 ou 3 threads permettaient d'avoir de meilleures performances
     private final ExecutorService executor = Executors.newFixedThreadPool(2);
+    private final Deque<Movement> previousMovements;
 
     public AIMinMax(PlayerEnum playerEnum) {
         super(playerEnum);
+
+        previousMovements = new ArrayDeque<>();
     }
 
     @Override
@@ -30,6 +35,12 @@ public abstract class AIMinMax extends AIPlayer {
             } catch (ExecutionException |InterruptedException e) {
                 e.printStackTrace();
             }
+
+            while(previousMovements.size() >= 2)
+                previousMovements.removeFirst();
+
+            previousMovements.addLast(movement);
+
             updateAnim(movement.getFrom(), movement.getTo(), gamePage);
         }
 
@@ -64,6 +75,11 @@ public abstract class AIMinMax extends AIPlayer {
             // Si la simulation renvoie un état gagnant, pas besoin de calculer les suivantes
             if (newSimulation.getWinner() == this.getPlayerEnum()) {
                 return move;
+            }
+
+            if(previousMovements.contains(move)) {
+                values[i++] = executor.submit(() -> Double.MIN_VALUE);
+                continue;
             }
 
             //On commence avec un alpha maximum et un beta au minimum et une profondeur de 1
