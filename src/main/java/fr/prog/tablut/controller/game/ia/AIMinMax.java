@@ -1,6 +1,5 @@
 package fr.prog.tablut.controller.game.ia;
 
-import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.Movement;
 import fr.prog.tablut.model.game.player.PlayerEnum;
@@ -9,8 +8,11 @@ import fr.prog.tablut.view.pages.game.GamePage;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.*;
 
 public abstract class AIMinMax extends AIPlayer {
+    private ExecutorService executor = Executors.newCachedThreadPool();
+
     public AIMinMax(PlayerEnum playerEnum) {
         super(playerEnum);
     }
@@ -19,7 +21,14 @@ public abstract class AIMinMax extends AIPlayer {
     public boolean play(Game game, GamePage gamePage) {
         if(super.play(game, gamePage)) {
             Simulation simulation = new Simulation(game);
-            Movement movement = getBestMovement(simulation);
+            Movement movement = null;
+            try {
+                movement = getBestMovement(simulation);
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             updateAnim(new Point(movement.fromC, movement.fromL), new Point(movement.toC, movement.toL), gamePage);
         }
 
@@ -31,15 +40,14 @@ public abstract class AIMinMax extends AIPlayer {
      * de créer et parcourir l'arbre des simulations jusqu'à une profondeur maximum
      * pour finalement déterminer quel coup est le plus rentable
      */
-    public Movement getBestMovement(Simulation simulation) {
+    public Movement getBestMovement(Simulation simulation) throws ExecutionException, InterruptedException {
 
         //On peut obtenir la liste de tout les mouvements possibles pour la game
         List<Movement> moves = simulation.getAllPossibleMoves();
 
         // Stores the value of every possible move for the current board state.
         // Regroupe l'heuristique de tout les coups possibles
-        double[] moveValue = new double [moves.size()];
-
+        Future[] moveValue = new Future [moves.size()];
         // This was found to be the max depth value which causes minimal timeouts
         // L'IA a pour l'instant une profondeur de 3, aller au dessus prend beaucoup plus de temps
         int maxDepth = 3;
@@ -59,7 +67,7 @@ public abstract class AIMinMax extends AIPlayer {
             }
 
             //On commence avec un alpha maximum et un beta au minimum et une profondeur de 1
-            moveValue[curMoveIdx++] = minimax(newSimulation, Integer.MIN_VALUE, Integer.MAX_VALUE, 1, maxDepth);
+            moveValue[curMoveIdx++] = executor.submit(() -> minimax(newSimulation, Integer.MIN_VALUE, Integer.MAX_VALUE, 1, maxDepth));
         }
         //On retourne le mouvement avec l'heuristique la plus haute dans la liste
         List<Integer> highestValueMoves = getHighestValueMoves(moveValue);
@@ -70,20 +78,21 @@ public abstract class AIMinMax extends AIPlayer {
      * Renvoie tous les indices dont la valeur correspondante est celle maximum
      * parmi tous les éléments du tableau
      */
-    public List<Integer> getHighestValueMoves(double [] moveValue) {
-        double maxValue = moveValue[0];
+    public List<Integer> getHighestValueMoves(Future [] moveValue) throws ExecutionException, InterruptedException {
+        double maxValue = (double) moveValue[0].get();
         List<Integer> maxIdx = new ArrayList<>();
         maxIdx.add(0);
         //On cherche la valeur max
         for(int i = 1; i < moveValue.length; i++) {
             //On vide la liste si on trouve une nouvelle valeur max
-            if (moveValue[i] > maxValue) {
+            double value = (double) moveValue[i].get();
+            if (value > maxValue) {
                 maxIdx.clear();
-                maxValue = moveValue[i];
+                maxValue = value;
                 maxIdx.add(i);
             }
             //On ajoute l'indice si sa valeur est la valeur max actuelle
-            else if(moveValue[i] == maxValue) {
+            else if(value == maxValue) {
                 maxIdx.add(i);
             }
         }
@@ -94,20 +103,20 @@ public abstract class AIMinMax extends AIPlayer {
      * Utilisation de l'algo minimax, on crée et parcourt un arbre des simulations en utilisant un élagage alpha-bêta 
      * et on renvoie la valeur du meilleur coup selon l'heuristique de la classe fils
      */
-    public double minimax(Simulation simulation, double alpha, double beta, int depth, int maxDepth) {
+    public double minimax(Simulation simulation, double alpha, double beta, int depth, int maxDepth) throws ExecutionException, InterruptedException {
         if (simulation.isWon()) {
             PlayerEnum winner = simulation.getWinner();
             if (winner == this.getPlayerEnum()) { // Si on arrive à une situation gagnante pour l'IA, on renvoie la valeur maximale
-                return Integer.MAX_VALUE;
+                return Double.MAX_VALUE;
             } else if (winner == this.getPlayerEnum().getOpponent()) { // Si on arrive à une situation perdante pour l'IA, on renvoie la valeur minimale
-                return Integer.MIN_VALUE;
+                return Double.MIN_VALUE;
             }
-            return 0; // On ne devrait jamais arriver ici mais au cas où
+            return 0D; // On ne devrait jamais arriver ici mais au cas où
         } else if (depth == maxDepth) { // Si on est arrivé a la profondeur maximale on renvoie la valeur selon l'heuristique définit dans la classe fils
             return this.evaluation(simulation, this.getPlayerEnum());
         } else { // On continue de créer et d'explorer l'arbre
             if (this.getPlayerEnum() == simulation.getPlayingPlayerEnum()) { //On est ici dans le cas du joueur
-                for (Movement movement : simulation.getAllPossibleMoves()) { 
+                for (Movement movement : simulation.getAllPossibleMoves()) {
                     alpha = Math.max(alpha, minimax(getNextSimulation(simulation, movement), alpha, beta, depth + 1, maxDepth));
                     if (alpha >= beta) {
                         return beta; //On retourne la valeur beta si elle est maximale
@@ -115,7 +124,7 @@ public abstract class AIMinMax extends AIPlayer {
                 }
 
                 return alpha; // On retourne la valeurs alpha si elle est maximale
-            } 
+            }
             else { // On est ici dans le cas de l'adversaire
                 for (Movement movement: simulation.getAllPossibleMoves()) {
                     beta = Math.min(beta, minimax(getNextSimulation(simulation, movement), alpha, beta, depth + 1, maxDepth));
