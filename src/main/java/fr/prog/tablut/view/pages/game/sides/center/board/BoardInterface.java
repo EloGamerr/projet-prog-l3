@@ -146,4 +146,8 @@ public class BoardInterface extends GameInterfaceSide {
     public void setPreviewGrid(CellContent[][] grid) {
         boardData.previewGrid = grid;
     }
+    
+    public void removePreview() {
+    	boardData.previewGrid = null;
+    }
 }

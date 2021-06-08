@@ -1,9 +1,12 @@
 package fr.prog.tablut.controller.game.gameController;
 
 import java.awt.Point;
+import java.util.Map;
 
+import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.MoveType;
+import fr.prog.tablut.model.game.Play;
 import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 import fr.prog.tablut.model.saver.GameSaver;
 import fr.prog.tablut.view.pages.game.GamePage;
@@ -72,8 +75,28 @@ public class GameController {
 	public boolean undo() {
 		if(gamePage.isInAnim())
 			return false;
-
-		if(Game.getInstance().undo_move()) {
+		
+		int numberOfUndoDone = 0;
+		int numberOfUndoToDo = 1;
+		
+		
+		// Handle undo differently if it is Human VS AI
+		if(PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker()).isAI() != PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender()).isAI()) {
+			// We can't undo when the AI is playing in a game Human VS AI
+			if(!PlayerTypeEnum.getFromPlayer(Game.getInstance().getPlayingPlayer()).isAI()) {
+				numberOfUndoToDo++;
+			}
+			else {
+				numberOfUndoToDo = 0;
+			}
+		}
+		
+		for(int i=0; i < numberOfUndoToDo; i++) {
+			if(Game.getInstance().undo_move())
+				numberOfUndoDone++;
+		}
+		
+		if(numberOfUndoDone > 0) {
 			gamePage.togglePauseButton(Game.getInstance().isPaused());
 			postPlay(MoveType.UNDO);
             return true;
@@ -85,8 +108,27 @@ public class GameController {
 	public boolean redo() {
 		if(gamePage.isInAnim())
 			return false;
-            
-		if(Game.getInstance().redo_move()) {
+		
+		int numberOfRedoDone = 0;
+		int numberOfRedoToDo = 1;
+		
+		// Handle redo differently if it is Human VS AI
+		if(PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker()).isAI() != PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender()).isAI()) {
+			// We can't redo when the AI is playing in a game Human VS AI
+			if(!PlayerTypeEnum.getFromPlayer(Game.getInstance().getPlayingPlayer()).isAI()) {
+				numberOfRedoToDo++;
+			}
+			else {
+				numberOfRedoToDo = 0;
+			}
+		}
+		
+		for(int i=0; i < numberOfRedoToDo; i++) {
+			if(Game.getInstance().redo_move())
+				numberOfRedoDone++;
+		}
+        
+		if(numberOfRedoDone > 0) {
 			gamePage.togglePauseButton(Game.getInstance().isPaused());
 			postPlay(MoveType.REDO);
             return true;
@@ -107,7 +149,7 @@ public class GameController {
         
 		Game.getInstance().setPaused(pause);
 		gamePage.stop_anim();
-		gamePage.togglePauseButton(true);
+		gamePage.togglePauseButton(pause);
 		postPlay(MoveType.PAUSE);
 	}
 }
