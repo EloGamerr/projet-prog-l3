@@ -11,7 +11,7 @@ public class AIRandom extends AIMinMax {
     }
 
     @Override
-    public double evaluation(Simulation simulation, PlayerEnum playerEnum) {
+    public double heuristic(Simulation simulation, PlayerEnum playerEnum) {
         // On renvoie une valeur constante, tous les coups auront donc une heuristique égale et le coup sera choisi aléatoirement
         return 0;
     }

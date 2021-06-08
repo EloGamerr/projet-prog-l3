@@ -89,8 +89,8 @@ public class IndicatorsDesigner extends Designer {
         int cx, cy;
 
 		for(Movement accessibleCell : accessibleCells) {
-            int x = accessibleCell.toC;
-            int y = accessibleCell.toL;
+            int x = accessibleCell.getToC();
+            int y = accessibleCell.getToL();
 
             CellContent cell = Game.getInstance().getCellContent(x, y);
 

@@ -151,9 +151,9 @@ public class Game {
 		if(!isPlayingPlayerOwningCell(c, l))
 			return false;
 
-		List<Point> accessibleCells = getAccessibleCells(c, l);
+		List<Movement> accessibleCells = getAllPossibleMovesForPosition(c, l);
 
-		if(!accessibleCells.contains(new Point(toC, toL)))
+		if(!accessibleCells.contains(new Movement(c, l, toC, toL)))
 			return false;
 
 		return true;
@@ -585,20 +585,6 @@ public class Game {
 
 	public CellContent getCellContent(int c, int l) {
 		return this.getGrid()[l][c];
-	}
-
-	/**
-	 * This method will be removed in future commits
-	 */
-	@Deprecated
-	public List<Point> getAccessibleCells(int fromC, int fromL) {
-		List<Point> accessibleCells = new ArrayList<>();
-
-		for(Movement movement : getAllPossibleMovesForPosition(fromC, fromL)) {
-			accessibleCells.add(new Point(movement.toC, movement.toL));
-		}
-
-		return accessibleCells;
 	}
 
 	public List<Movement> getAllPossibleMoves() {

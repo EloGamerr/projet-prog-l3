@@ -12,7 +12,7 @@ public class AIEasy extends AIMinMax {
     }
 
     @Override
-    public double evaluation(Simulation simulation, PlayerEnum playerEnum) {
+    public double heuristic(Simulation simulation, PlayerEnum playerEnum) {
         // Calcul de la différence entre le nombre de pièces du joueur et de son adversaire
         double difference = (double) (simulation.getPlayer(playerEnum).getOwnedCells().size() - simulation.getPlayer(playerEnum.getOpponent()).getOwnedCells().size());
 

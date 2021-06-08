@@ -5,7 +5,7 @@ import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.player.Player;
 import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 
-public class Simulation extends Game implements Cloneable {
+public class Simulation extends Game {
 
     public Simulation(Game game) {
         super();
@@ -28,20 +28,5 @@ public class Simulation extends Game implements Cloneable {
             newGrid[i] = grid[i].clone();
         }
         return newGrid;
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
-    }
-
-    @Override
-    protected Object clone() {
-        return new Simulation(this);
     }
 }

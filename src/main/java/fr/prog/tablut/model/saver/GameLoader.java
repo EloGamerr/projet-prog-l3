@@ -161,7 +161,7 @@ public class GameLoader {
     				toOrFrom = SaverConstants.BLANK;
     				break;
     			case '\n':
-    				game.move(movement.fromC, movement.fromL, movement.toC,movement.toL);
+    				game.move(movement.getFromC(), movement.getFromL(), movement.getToC(),movement.getToL());
     				toOrFrom = SaverConstants.NEXT_LINE;
     				break;
     			case '(':

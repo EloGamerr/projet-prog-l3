@@ -156,17 +156,17 @@ public class GameSaver {
 
 		for(Play move : Game.getInstance().getPlays().getPlays()) {
 			builder.append(SaverConstants.BR_LEFT);
-			builder.append(move.getMovement().fromC);
+			builder.append(move.getMovement().getFromC());
 			builder.append(SaverConstants.COMMA);
-			builder.append(move.getMovement().fromL);
+			builder.append(move.getMovement().getFromL());
 			builder.append(SaverConstants.BR_RIGHT);
 
 			builder.append(SaverConstants.BLANK);
 			
 			builder.append(SaverConstants.BR_LEFT);
-			builder.append(move.getMovement().toC);
+			builder.append(move.getMovement().getToC());
 			builder.append(SaverConstants.COMMA);
-			builder.append(move.getMovement().toL);
+			builder.append(move.getMovement().getToL());
 			builder.append(SaverConstants.BR_RIGHT);
 
 			builder.append(SaverConstants.NEXT_LINE);
