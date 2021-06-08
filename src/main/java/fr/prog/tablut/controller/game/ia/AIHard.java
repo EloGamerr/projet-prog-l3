@@ -34,6 +34,10 @@ public class AIHard extends AIMinMax {
         if (playerEnum == PlayerEnum.DEFENDER) {
             //Le défenseur cherche à garder le plus de tours possibles et d'éliminer le plus de tours adverse
             //On essaie de rapprocher au maximum le roi d'une des portes de sortie
+            //On essaie d'éviter que le roi soit entouré d'ennemis
+            //Dans le cas où il y a la possibilité d'atteindre une porte de sortie avec le roi, on regarde
+            //aussi le nombre d'ennemis sur la ligne du roi car la sortie est beaucoup plus facilement atteignable si
+            //aucun ennemi ne la protège
             result = 1.5 * (ownedCellsAmountPlayer - ownedCellsAmountOpponent) + amountOfkingMovesToCorner(simulation, 100, 100, 1) - 2*enemiesAroundKing(simulation) - (amountOfkingMovesToCorner(simulation, 100, 100, 1) == 0 ? 0 : enemiesOnKingLine(simulation));
         } else {
             //L'attaquant cherche à garder le plus de tours possibles et d'éliminer le plus de tours adverse
