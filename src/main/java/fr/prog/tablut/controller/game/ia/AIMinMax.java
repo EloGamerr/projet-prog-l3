@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.concurrent.*;
 
 public abstract class AIMinMax extends AIPlayer {
-    private ExecutorService executor = Executors.newCachedThreadPool();
+    private ExecutorService executor = Executors.newFixedThreadPool(3);
 
     public AIMinMax(PlayerEnum playerEnum) {
         super(playerEnum);
