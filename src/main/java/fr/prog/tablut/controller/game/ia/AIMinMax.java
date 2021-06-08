@@ -4,6 +4,8 @@ import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.Movement;
 import fr.prog.tablut.model.game.player.PlayerEnum;
 import fr.prog.tablut.view.pages.game.GamePage;
+import fr.prog.tablut.view.pages.game.sides.center.board.BoardDrawer;
+import fr.prog.tablut.view.pages.game.sides.center.board.GameColors;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -35,8 +37,9 @@ public abstract class AIMinMax extends AIPlayer {
             } catch (ExecutionException |InterruptedException e) {
                 e.printStackTrace();
             }
-
-            while(previousMovements.size() >= 2)
+            System.out.println("Joue !");
+            //On évite que l'IA fasse les mêmes mouvements en boucle (voir plus loin dans le code)
+            while(previousMovements.size() >= 3)
                 previousMovements.removeFirst();
 
             previousMovements.addLast(movement);
@@ -77,6 +80,7 @@ public abstract class AIMinMax extends AIPlayer {
                 return move;
             }
 
+            //On évite que l'IA fasse les mêmes mouvements en boucle
             if(previousMovements.contains(move)) {
                 values[i++] = executor.submit(() -> -1000D);
                 continue;
