@@ -63,8 +63,10 @@ public class HistoryChatField extends GenericPanel {
         // erase next moves if these exist
 		if(allHistory.size() >= c.gridy) {
 			for(int i = allHistory.size() - 1; i >= c.gridy; i--) {
-				remove(allHistory.get(i));
-				allHistory.remove(i);
+				if(allHistory.size() <= i)
+					break;
+				
+				remove(allHistory.remove(i));
 			}
 		}
 
@@ -84,7 +86,7 @@ public class HistoryChatField extends GenericPanel {
     public void clear() {
         removeAll();
 
-        c.gridy = 0;
+        c.gridy = Game.getInstance().getMovementsNumber();
 
         allHistory.clear();
     }
@@ -94,21 +96,14 @@ public class HistoryChatField extends GenericPanel {
     }
 
 	public void undo() {
-		LabelField currentLabel = allHistory.get(--c.gridy);
-        currentLabel.setActive(true);
-        currentLabel.hover(true);
+		remove(allHistory.remove(--c.gridy));
 	}
 
 	public void redo() {
-		LabelField currentLabel = allHistory.get(c.gridy++);
-        currentLabel.setActive(false);
-        currentLabel.hover(false);
+		addAction();
 	}
 
-	public void enteredChange(Integer pos) {
-
-		//System.out.println(String.format("Position : %d", pos));
-
+	public void enteredChange(int pos) {
 		setCursor(handCursor);
 
 		Plays plays = Game.getInstance().getPlays();
@@ -117,6 +112,9 @@ public class HistoryChatField extends GenericPanel {
 
 		if(pos <= plays.getCurrentMovement()) {
 			for(int i=plays.getCurrentMovement(); i >= pos; i--) {
+				if(allPlays.size() <= i || allHistory.size() <= i)
+					break;
+				
 				LabelField label = allHistory.get(i);
 				Play currentPlay = allPlays.get(i);
 
@@ -145,10 +143,13 @@ public class HistoryChatField extends GenericPanel {
 		gamePage.refresh();
 	}
 
-	public void exitedChange(Integer pos) {
+	public void exitedChange(int pos) {
 		setCursor(defaultCursor);
 
-		for(Integer i=c.gridy-1; i >= pos; i--) {
+		for(int i=c.gridy-1; i >= pos; i--) {
+			if(allHistory.size() <= i)
+				break;
+			
 			LabelField label = allHistory.get(i);
 
 			if(!label.isActive())
@@ -159,25 +160,37 @@ public class HistoryChatField extends GenericPanel {
 		gamePage.refresh();
 	}
 
-	public void clickChange(Integer pos) {
+	public void clickChange(int pos) {
 		Plays plays = Game.getInstance().getPlays();
+		
+		boolean hasChanged = false;
 
 		if(pos <= plays.getCurrentMovement()) {
 			for(int i = plays.getCurrentMovement(); i >= pos; i--) {
-				Game.getInstance().undo_move();
-				c.gridy--;
-				allHistory.get(i).setActive(true);
-				allHistory.get(i).hover(true);
+				if(allHistory.size() <= i)
+					break;
+				
+				if(Game.getInstance().undo_move()) {
+					c.gridy--;
+					remove(allHistory.remove(i));
+					hasChanged = true;
+				}
 			}
 		}
 		else {
 			for(int i=plays.getCurrentMovement()+1; i < pos; i++) {
-				Game.getInstance().redo_move();
-				c.gridy++;
+				if(Game.getInstance().redo_move())
+					c.gridy++;
+					gamePage.resetLastPlayer();
+					hasChanged = true;
 			}
 		}
-
-		gamePage.refresh();
+		
+		if(hasChanged) {
+			gamePage.resetLastPlayer();
+			gamePage.removePreview();
+			gamePage.refresh();
+		}
 	}
 
 	private CellContent[][] copyGrid(CellContent[][] grid) {
@@ -197,7 +210,7 @@ public class HistoryChatField extends GenericPanel {
 class LabelField extends JLabel {
     protected static Dimension size = new Dimension(0, 0);
 
-    private Integer position;
+    private int position;
 	private boolean active = false;
 	private boolean systemMessage = false;
 	private GenericLabel timing, player, sentence;
@@ -206,7 +219,7 @@ class LabelField extends JLabel {
         LabelField.size = d;
     }
     
-	public LabelField(boolean isSystem, String systemMessage, HistoryChatField historyMain, Integer pos) {
+	public LabelField(boolean isSystem, String systemMessage, HistoryChatField historyMain, int pos) {
         setLayout(new FlowLayout(FlowLayout.LEFT));
         setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 
@@ -302,11 +315,11 @@ class LabelField extends JLabel {
         return "" + (l+1);
 	}
 
-	public void setPosition(Integer num) {
+	public void setPosition(int num) {
 		position = num;
 	}
 	
-	public Integer getPosition() {
+	public int getPosition() {
 		return position;
 	}
 
