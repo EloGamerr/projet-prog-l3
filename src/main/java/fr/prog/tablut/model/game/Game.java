@@ -520,11 +520,11 @@ public class Game {
 		return winner;
 	}
 	
-	public int getRowAmout() {
+	public int getRowAmount() {
 		return this.rowAmount;
 	}
 	
-	public int getColAmout() {
+	public int getColAmount() {
 		return this.colAmount;
 	}
 

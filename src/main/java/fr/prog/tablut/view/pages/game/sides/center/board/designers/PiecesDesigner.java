@@ -19,12 +19,12 @@ public class PiecesDesigner extends Designer {
 
         // draw preview grid
         if(data.previewGrid != null) {
-            for(int i=0; i < data.previewGrid.length; i++) {
-                for(int j=0; j < data.previewGrid[i].length; j++) {
-                    CellContent cell = data.previewGrid[j][i];
+            for(int x=0; x < data.previewGrid.length; x++) {
+                for(int y=0; y < data.previewGrid[y].length; y++) {
+                    CellContent cell = data.previewGrid[y][x];
                     
                     if(cell != null && cell.getImage() != null) {
-                        g.drawImage(cell.getImage(), i, j, imgSize, imgSize, true);
+                        g.drawImage(cell.getImage(), y, x, imgSize, imgSize, true);
                     }
                 }
             }
@@ -33,8 +33,8 @@ public class PiecesDesigner extends Designer {
         // draw normal current grid
         else {
             // draw all static pieces
-            for(int i = 0; i < game.getColAmout(); i++) {
-                for(int j = 0; j < game.getRowAmout(); j++) {
+            for(int i = 0; i < game.getColAmount(); i++) {
+                for(int j = 0; j < game.getRowAmount(); j++) {
                     // don't draw the animated pieces
                     if(
                         (data.selectedCell != null && data.selectedCell.x == i && data.selectedCell.y == j) ||
