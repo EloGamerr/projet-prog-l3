@@ -8,7 +8,6 @@ import javax.swing.border.EmptyBorder;
 
 import fr.prog.tablut.controller.adaptators.ComboBoxAdaptator;
 import fr.prog.tablut.model.game.player.PlayerTypeEnum;
-import fr.prog.tablut.view.components.generic.GenericComboBox;
 import fr.prog.tablut.view.components.generic.GenericLabel;
 import fr.prog.tablut.view.components.generic.GenericPanel;
 
@@ -17,18 +16,18 @@ import fr.prog.tablut.view.components.generic.GenericPanel;
  * <p>Extends GenericPanel</p>
  * @see GenericPanel
  */
-public class SelectionPlayer extends GenericPanel {
+public class SelectionPlayerForm extends GenericPanel {
+    // form data of the first player (data that's not sent to model)
 	protected PlayerData attacker = new PlayerData("attacker", "Attaquant", "Joueur 1");
+    // form data of the second player (data that's not sent to model)
 	protected PlayerData defender = new PlayerData("defender", "D\u00e9fenseur", "Joueur 2");
-	protected GenericComboBox<PlayerTypeEnum> comboBox1;
-	protected GenericComboBox<PlayerTypeEnum> comboBox2;
 
 	/**
 	 * Default construtor.
 	 * <p>Creates a new form, with 2 sides, "attaquant" and "defenseur",
 	 * with their player's type and username.</p>
 	 */
-	public SelectionPlayer() {
+	public SelectionPlayerForm() {
 		super(new GridBagLayout());
 
 		GridBagConstraints c = new GridBagConstraints();
@@ -67,12 +66,8 @@ public class SelectionPlayer extends GenericPanel {
 		
 		// player's type
 		c.gridy = 1;
-		GenericComboBox<PlayerTypeEnum> cb = new GenericComboBox<>(PlayerTypeEnum.values());
-		cb.addActionListener(new ComboBoxAdaptator(p.name, this));
-		panel.add(cb, c);
-
-		if(n == 0) 	comboBox1 = cb;
-		else		comboBox2 = cb;
+		p.getComboBox().addActionListener(new ComboBoxAdaptator(p.name, this));
+		panel.add(p.getComboBox(), c);
 
 		// player's username
 		c.gridy = 2;
@@ -100,20 +95,36 @@ public class SelectionPlayer extends GenericPanel {
 		p.getUsernameInput().disable();
 	}
 
+    /**
+     * Returns the attacker's type
+     * @return The attacker's type
+     */
 	public PlayerTypeEnum getPlayerType1() {
-		return (PlayerTypeEnum) this.comboBox1.getSelectedItem();
+		return (PlayerTypeEnum) attacker.getPlayerType();
 	}
 
+    /**
+     * Returns the defender's type
+     * @return The defender's type
+     */
 	public PlayerTypeEnum getPlayerType2() {
-		return (PlayerTypeEnum) this.comboBox2.getSelectedItem();
+		return (PlayerTypeEnum) defender.getPlayerType();
 	}
 	
-	public PlayerData getDefender() {
-		return defender;
+    /**
+     * Returns the defender's username
+     * @return The defender's username
+     */
+	public String getAttackerName() {
+		return defender.getPlayerUsername();
 	}
 	
-	public PlayerData getAttaquant() {
-		return attacker;
+    /**
+     * Returns the attacker's username
+     * @return The attacker's username
+     */
+	public String getDefenderName() {
+		return attacker.getPlayerUsername();
 	}
 }
 

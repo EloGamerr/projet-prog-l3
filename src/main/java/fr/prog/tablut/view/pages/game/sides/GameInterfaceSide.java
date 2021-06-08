@@ -27,11 +27,15 @@ public abstract class GameInterfaceSide extends GenericPanel {
     @Override
     protected void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
-        Graphics2D drawable = (Graphics2D) graphics;
-        paint(drawable);
+        Graphics2D g2d = (Graphics2D) graphics;
+        paint(g2d);
     }
 
-    protected void paint(Graphics2D drawable) {
+    /**
+     * Called to paint the component
+     * @param g2d The drawable object
+     */
+    protected void paint(Graphics2D g2d) {
         
     }
 }

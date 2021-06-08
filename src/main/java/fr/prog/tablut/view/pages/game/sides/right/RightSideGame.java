@@ -16,10 +16,19 @@ import fr.prog.tablut.view.components.generic.GenericObjectStyle;
 import fr.prog.tablut.view.components.generic.GenericRoundedButton;
 import fr.prog.tablut.view.pages.game.sides.GameInterfaceSide;
 
+/**
+ * Game's right side component that manages all buttons menu
+ */
 public class RightSideGame extends GameInterfaceSide {
 	GameController gameController;
     GenericRoundedButton pause;
 
+    /**
+     * Creates the right side of the game's page
+     * @param config The config to apply
+     * @param d The dimension of the side
+     * @param gameController The game's controller
+     */
     public RightSideGame(WindowConfig config, Dimension d, GameController gameController) {
         super(d);
         this.gameController = gameController;
@@ -63,10 +72,18 @@ public class RightSideGame extends GameInterfaceSide {
         return this.pause;
     }
 
+    /**
+     * Toggles the pause button text
+     * @param isPaused The pause button's state
+     */
     public void togglePauseButton(boolean isPaused) {
         pause.updateText(isPaused? "Reprendre" : "Pause");
     }
 
+    /**
+     * Toggles the pause button's style (enable or disable it)
+     * @param enable The pause button's state
+     */
     public void enablePauseButton(boolean enable) {
         pause.setStyle("button" + (enable? "" : ":disabled"));
     }

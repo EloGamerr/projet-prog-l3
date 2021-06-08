@@ -1,6 +1,16 @@
 package fr.prog.tablut.view.utils;
 
+/**
+ * A Class that transform a timestamp in string time
+ */
 public abstract class Time {
+    /**
+     * Returns a timestamp in formatted string of type :
+     * <p>00:00:00</p>
+     * <p>If hours are equals to 0, then it only returns for minutes and seconds.</p>
+     * @param ms The timestamp
+     * @return The formatted time
+     */
     public static String formatToString(int ms) {
         int arr[] = getTimesArray(ms);
 
@@ -16,6 +26,13 @@ public abstract class Time {
         return text;
     }
 
+    /**
+     * Returns a timestamp in formatted string of type :
+     * <p>0h 0m 0s</p>
+     * <p>If hours are equals to 0, then it only returns for minutes and seconds.</p>
+     * @param ms The timestamp
+     * @return The formatted time
+     */
     public static String format(int ms) {
         int arr[] = getTimesArray(ms);
 
@@ -26,6 +43,12 @@ public abstract class Time {
         return ((arr[3] == 0)? "" : h + ":") + m + ":" + s;
     }
 
+    /**
+     * Returns an array of timing depending to given timestamp.
+     * <p>The array is of type { milliseconds, seconds, minuts, hours }</p>
+     * @param ms The timestamp
+     * @return The times array
+     */
     private static int[] getTimesArray(int ms) {
         int time = ms;
         ms = time % 1000;

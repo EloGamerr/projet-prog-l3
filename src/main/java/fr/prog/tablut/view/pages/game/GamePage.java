@@ -22,7 +22,6 @@ import fr.prog.tablut.controller.game.gameController.GameController;
 import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.MoveType;
-import fr.prog.tablut.model.game.Movement;
 import fr.prog.tablut.model.game.player.PlayerEnum;
 import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 import fr.prog.tablut.model.window.WindowConfig;
@@ -63,12 +62,13 @@ public class GamePage extends Page {
      */
     public GamePage(WindowConfig config) {
         super(config);
-        GameController gameController = new GameController(this);
-        
         windowName = PageName.GamePage;
 
-        final int s = (int)(config.windowHeight / 1.2);
-        final Dimension d = new Dimension((config.windowWidth - s)/2, config.windowHeight);
+        // the controller that's do the communication's bridge between the model and the view for the game
+        GameController gameController = new GameController(this);
+
+        final int s = (int)(config.windowHeight / 1.2); // size of the board
+        final Dimension d = new Dimension((config.windowWidth - s)/2, config.windowHeight); // size of sides
 
         centerSide = new CenterSideGame(config, new Dimension(s, s));
         rightSide = new RightSideGame(config, d, gameController);
@@ -93,11 +93,12 @@ public class GamePage extends Page {
         c.gridx = 2;
         add(rightSide, c);
         
-        
+        // add a board listener with the game controller
         GameMouseAdaptator gameMouseAdaptator = new GameMouseAdaptator(gameController, this);
         centerSide.getBoard().addMouseListener(gameMouseAdaptator);
         centerSide.getBoard().addMouseMotionListener(gameMouseAdaptator);
 
+        // communication's update time
         Timer time = new Timer(10, new GameTimeAdaptator(gameController));
         time.start();
 
@@ -113,19 +114,19 @@ public class GamePage extends Page {
         requestFocusInWindow();
     }
 
+    /**
+     * Triggered when the user comes on this page.
+     * <p>Explicitly called if it wants to update the view</p>
+     */
     @Override
     public void update() {
         boolean a = PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker()).isAI(),
             b = PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender()).isAI();
-
-        boolean enablePauseButton = a && b;
-
-        rightSide.enablePauseButton(enablePauseButton);
-
-        if(!enablePauseButton)
-            this.getRightSide().togglePauseButton(false);
+        
+        if(!a || !b)
+            getRightSide().togglePauseButton(false);
         else
-            this.getRightSide().togglePauseButton(Game.getInstance().isPaused());
+            getRightSide().togglePauseButton(Game.getInstance().isPaused());
 
         centerSide.updateTurnOf();
         leftSide.update();
@@ -136,6 +137,10 @@ public class GamePage extends Page {
         lastPlayer = null;
     }
 
+    /**
+     * Initializes all components and style for the victory screen
+     * @param gc The game controller
+     */
     private void initWinnerPanel(GameController gc) {
         foregroundPanel.setOpaque(true);
         
@@ -217,11 +222,21 @@ public class GamePage extends Page {
         foregroundPanel.add(whiteT);
     }
 
+    /**
+     * Updates the turn of the game's view
+     * @param movetype The type of the move done
+     */
     public void updateTurn(MoveType movetype) {
+        // updates undo/redo buttons
         enableRedoButton(Game.getInstance().hasNextMove());
 		enableUndoButton(Game.getInstance().hasPreviousMove());
+
+        // updates the board
         centerSide.updateTurnOf();
         
+        // this condition is done because animations are conflicting with this method.
+        // This issue will be resolved in a future version, where the animation's manager
+        // will be improved.
         if((lastPlayer == null || lastPlayer != Game.getInstance().getPlayingPlayerEnum()) && Game.getInstance().getLastPlay() != null) {
             lastPlayer = Game.getInstance().getPlayingPlayerEnum();
             
@@ -235,6 +250,9 @@ public class GamePage extends Page {
         }
     }
 
+    /**
+     * Shows the game result's panel
+     */
     public void announceWinner() {
         centerSide.getBoard().getBoardData().mousePosition = null;
         centerSide.getBoard().getBoardData().selectedCell = null;
@@ -254,16 +272,19 @@ public class GamePage extends Page {
 
         winnerTimeAndPlaysLabel.setText(Time.formatToString(game.getDuration()) + " - " + ((game.getMovementsNumber()) / 2) + " coups");
 
+        // show the broken / normal rook
         blackBT.setVisible(wid);
         blackT.setVisible(!wid);
         whiteT.setVisible(wid);
         whiteBT.setVisible(!wid);
 
-
         // display the page
         foregroundPanel.setVisible(true);
     }
     
+    /**
+     * Refreshes the view, refresh undo/redo buttons
+     */
     public void refresh() {
     	enableRedoButton(Game.getInstance().hasNextMove());
 		enableUndoButton(Game.getInstance().hasPreviousMove());
@@ -272,6 +293,9 @@ public class GamePage extends Page {
 		repaint();
     }
     
+    /**
+     * Removes the preview board
+     */
     public void removePreview() {
     	centerSide.getBoard().removePreview();
     }
@@ -300,76 +324,146 @@ public class GamePage extends Page {
         return leftSide;
     }
     
+    /**
+     * Resets the known player that was the last to play
+     */
     public void resetLastPlayer() {
     	lastPlayer = null;
     }
 
+    /**
+     * Returns the column index depending of pixel coord
+     * @param x The pixel coord
+     * @return The column index
+     */
     public int getColFromXCoord(int x) {
         return getBoardInterface().getColFromXCoord(x);
     }
 
+    /**
+     * Returns the row index depending of pixel coord
+     * @param y The pixel coord
+     * @return The row index
+     */
     public int getRowFromYCoord(int y) {
         return getBoardInterface().getRowFromYCoord(y);
     }
 
+    /**
+     * Returns the pixel coord of a column index
+     * @param x The column index
+     * @return The pixel coord
+     */
     public int getXCoordFromCol(int x) {
         return getBoardInterface().getXCoordFromCol(x);
     }
 
+    /**
+     * Returns the pixel coord of a row index
+     * @param x The row index
+     * @return The pixel coord
+     */
     public int getYCoordFromRow(int y) {
         return getBoardInterface().getYCoordFromRow(y);
     }
 
+    /**
+     * Updates the hovered cell and repaint the view
+     * @param hoveringCell
+     */
     public void updateCellHovering(Point hoveringCell) {
     	centerSide.getBoard().updateCellHovering(hoveringCell);
         repaint();
     }
 	
+    /**
+     * Clears the image on the mouse
+     */
 	public void clearImageOnMouse() {
 		centerSide.getBoard().clearImageOnMouse();
 		repaint();
 	}
 
+    /**
+     * Updates the image on the mouse
+     * @param img The image to put on the mouse
+     * @param selectedCell The selected cell index
+     */
     public void updateImageOnMouse(Image img, Point selectedCell) {
     	centerSide.getBoard().updateImageOnMouse(img, selectedCell);
 		repaint();
     }
 
-
+    /**
+     * Updates the current piece's animation and repaint the view
+     * @param animPosition The animation's point
+     * @param animatedCell The animated starting cell
+     * @param animatedFinalCell The animated final cell
+     */
 	public void update_anim(Point animPosition, Point animatedCell, Point animatedFinalCell) {
 		centerSide.getBoard().update_anim(animPosition,animatedCell,animatedFinalCell);	
 		repaint();
 	}
     
+    /**
+     * Stops the current piece's animation and repaint the view
+     */
 	public void stop_anim() {
 		centerSide.getBoard().stop_anim();
 		repaint();
 	}
 
+    /**
+     * Sets either the board is animating a piece or not
+     * @param state The state of the animation
+     */
     public void setIsInAnim(boolean state) {
         centerSide.getBoard().getBoardData().isAnim = state;
     }
 
+    /**
+     * Returns either a piece is animated
+     * @return Either a piece is animated
+     */
     public boolean isInAnim() {
         return centerSide.getBoard().getBoardData().isAnim;
     }
 
+    /**
+     * Toggles the pause button
+     * @param isPaused The pause button's state
+     */
     public void togglePauseButton(boolean isPaused) {
         rightSide.togglePauseButton(isPaused);
     }
 
+    /**
+     * Enables or disables the undo button
+     * @param enable Either it has to enable the undo button or not
+     */
     public void enableUndoButton(boolean enable) {
         leftSide.getMoveButtons().enableUndoButton(enable);
     }
 
+    /**
+     * Enables or disables the redo button
+     * @param enable Either it has to enable the undo button or not
+     */
     public void enableRedoButton(boolean enable) {
         leftSide.getMoveButtons().enableRedoButton(enable);
     }
 
+    /**
+     * Sets the given preview grid
+     * @param grid The preview grid to set
+     */
     public void setPreviewGrid(CellContent[][] grid, Integer moveIndex) {
         centerSide.setPreviewGrid(grid, moveIndex);
     }
 
+    /**
+     * Clears the move history chat
+     */
     public void clearChat() {
         leftSide.clearChat();
     }

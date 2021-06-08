@@ -24,12 +24,12 @@ public class LoadSavesPage extends Page {
 	 */
 	public LoadSavesPage(WindowConfig config) {
 		super(config);
-
 		windowName = PageName.LoadPage;
 
 		
 		bottomPanel = new BottomButtonPanel(PageName.HomePage, PageName.GamePage, "Jouer !");
 		panel = new SavedGamesPanel(bottomPanel.getButton2());
+
 		bottomPanel.getButton2().setStyle("button.green:disabled");
 		bottomPanel.getButton2().setAction(new LoadSaveAdaptator(bottomPanel.getButton2(), panel));
 
@@ -57,14 +57,10 @@ public class LoadSavesPage extends Page {
         backgroundPanel.add(whiteTower);
 	}
 
-	public SavedGamesPanel getPanel() {
-		return panel;
-	}
-
-	public BottomButtonPanel getBottomPanel() {
-		return bottomPanel;
-	}
-
+    /**
+     * Updates the saves searching in the save folder.
+     * <p>Fired every time the user goes on the page</p>
+     */
     @Override
     public void update() {
         panel.updateContent();

@@ -20,7 +20,10 @@ import fr.prog.tablut.view.pages.load.LoadSavesPage;
 import fr.prog.tablut.view.pages.newGame.NewGamePage;
 
 /**
- * The main window of the application
+ * The main window of the application.
+ * <p>It stores all pages and manage these ones, to show the current on its frame.</p>
+ * @see Page
+ * @see JFrame
  */
 public class GlobalWindow {
 	protected WindowConfig config;
@@ -42,28 +45,36 @@ public class GlobalWindow {
 	}
 
 	/**
-	 * Creates the main window with given surface and configuration
+	 * Creates the main window with given surface and configuration.
+     * <p>Loads everything about the window : resources (font, ...), pages, configuration etc...</p>
+     * @see Page
+     * @see JFrame
 	 * @param configfilePath The configuration file path
 	 * @throws ParseException
 	 */
     public GlobalWindow(String configfilePath) throws ParseException {
 		super();
 
+        // create a default configuration
 		config = new WindowConfig();
 
+        // load the given custom configuration
 		if(configfilePath != null) {
 			setConfig(configfilePath);
 		}
 		
+        // dispatch the style onto all components
 		GenericObjectStyle.setStyle(config.getStyle());
 		NavPage.setDimension(new Dimension(config.windowWidth, config.windowHeight - 25));
 
-
+        // load fonts
 		Loader loader = new Loader();
 		loader.loadCustomFont("Farro-Regular.ttf");
 		loader.loadCustomFont("Farro-Light.ttf");
 		loader.loadCustomFont("Staatliches-Regular.ttf");
 		
+
+        // create its frame and load all pages
 		jFrame = new JFrame(config.projectName);
 
 		GenericObjectStyle.setGlobalWindow(this);
@@ -76,10 +87,11 @@ public class GlobalWindow {
 		newGamePage = new NewGamePage(this.config);
 		loadPage = new LoadSavesPage(this.config);
 
-		
+		// default page to show - home page
 		homePage.setVisible(true);
 		jFrame.setContentPane(homePage);
 		
+        // frame parameters
 		jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		jFrame.setSize(config.windowWidth, config.windowHeight);
 		jFrame.setLocationRelativeTo(null);
@@ -89,6 +101,7 @@ public class GlobalWindow {
 
 	/**
 	 * Returns the configuration object of the window
+     * @see WindowConfig
 	 * @return The window's configuration
 	 */
 	public WindowConfig getConfig() {
@@ -97,6 +110,7 @@ public class GlobalWindow {
 
 	/**
 	 * Sets the window's configuration from the file at given path
+     * @see WindowConfig
 	 * @param configPath file's path
 	 * @throws ParseException
 	 */
@@ -106,6 +120,8 @@ public class GlobalWindow {
 
 	/**
 	 * Sets the window's configuration from given JSON
+     * @see JSONObject
+     * @see WindowConfig
 	 * @param configObject The json object
 	 */
 	protected void setConfig(JSONObject configObject) {
@@ -114,6 +130,7 @@ public class GlobalWindow {
 
 	/**
 	 * Copies the window's configuration from another window's config
+     * @see WindowConfig
 	 * @param config The configuration to copy
 	 */
 	protected void setConfig(WindowConfig config) {
@@ -122,100 +139,103 @@ public class GlobalWindow {
 
 	/**
 	 * Changes the visibility of the windows, depending of the window to display
+     * @see PageName
+     * @see Page
 	 * @param dest The window's name
 	 */
 	public void changeWindow(PageName dest) {
+        // we use a tmpPage so we don't hide the previous page
+        // if the new one does not exists
+        Page tmpPage;
+
+        // not dynamic - security
+		switch(dest) {
+			case GamePage: tmpPage = gamePage; break;
+			case LoadPage: tmpPage = loadPage; break;
+			case HomePage: tmpPage = homePage; break;
+			case HelpPage: tmpPage = helpPage; break;
+			case NewGamePage: tmpPage = newGamePage; break;
+			default: throw new IllegalArgumentException("Unexpected value: " + dest);
+		}
+
+        // hide future previous page
 		currentPage.setVisible(false);
+        // store the name of the future previous page in the case
+        // we want to go back to
 		previousPageName = currentPage.name();
 		helpPage.setBackPage(previousPageName);
 
-		switch(dest) {
-			case GamePage:
-				currentPage = gamePage;
-				break;
-
-			case LoadPage:
-				setLoadPage(new LoadSavesPage(config));
-				currentPage = loadPage;
-				break;
-
-			case HomePage:
-				currentPage = homePage;
-				break;
-
-			case HelpPage:
-				currentPage = helpPage;
-				break;
-
-			case NewGamePage:
-				currentPage = newGamePage;
-				break;
-
-			default:
-				throw new IllegalArgumentException("Unexpected value: " + dest);
-		}
+        currentPage = tmpPage;
         
         // update page if previous wasn't the help one
 		if(previousPageName != PageName.HelpPage)
             currentPage.update();
         
+        // show the new page
 		currentPage.setVisible(true);
 		jFrame.setContentPane(currentPage);
 	}
 	
+    /**
+     * Returns the game page
+     * @see GamePage
+     * @return The game page
+     */
 	public GamePage getGamePage() {
         return gamePage;
     }
 
+    /**
+     * Returns the home page
+     * @see HomePage
+     * @return The home page
+     */
     public HomePage getHomePage() {
         return homePage;
     }
 
+    /**
+     * Returns the load games page
+     * @see LoadSavesPage
+     * @return The load games page
+     */
     public LoadSavesPage getLoadPage() {
         return loadPage;
     }
 
+    /**
+     * Returns the help page
+     * @see HelpPage
+     * @return The help page
+     */
     public HelpPage getHelpPage() {
         return helpPage;
     }
 
+    /**
+     * Returns the new game page
+     * @see NewGamePage
+     * @return The new game page
+     */
     public NewGamePage getNewGamePage() {
         return newGamePage;
     }
 
+    /**
+     * Returns the current displayed page
+     * @see Page
+     * @return The current displayed page
+     */
     public Page getcurrentPage() {
         return currentPage;
     }
 
+    /**
+     * Returns the JFrame object of the window
+     * @see JFrame
+     * @return The JFrame object
+     */
     public JFrame getjFrame() {
         return jFrame;
-    }
-
-    public void setGameWindow(GamePage gamePage) {
-        this.gamePage = gamePage;
-    }
-
-    public void setHomePage(HomePage homePage) {
-        this.homePage = homePage;
-    }
-
-    public void setLoadPage(LoadSavesPage loadPage) {
-        this.loadPage = loadPage;
-    }
-
-    public void setHelpPage(HelpPage helpPage) {
-        this.helpPage = helpPage;
-    }
-
-    public void setNewGameWindow(NewGamePage newGamePage) {
-        this.newGamePage = newGamePage;
-    }
-
-    public void setcurrentPage(Page currentPage) {
-        this.currentPage = currentPage;
-    }
-
-    public void setjFrame(JFrame jFrame) {
-        this.jFrame = jFrame;
     }
 }

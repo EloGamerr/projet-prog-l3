@@ -10,10 +10,12 @@ import fr.prog.tablut.view.GlobalWindow;
  * --- MAIN ENTRY ---
  */
 public class Tablut implements Runnable {
+    // default loaded config if no argument given
     public static String configPath = "config/dark_theme.json";
     private String configFile = null;
 
     public static void main(String[] args) {
+        // args[0] is the config file to load (app theme)
         String config = (args.length > 0)? args[0] : configPath;
         SwingUtilities.invokeLater(new Tablut(config));
     }
