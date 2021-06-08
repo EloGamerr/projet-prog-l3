@@ -78,13 +78,13 @@ public abstract class AIMinMax extends AIPlayer {
             }
 
             if(previousMovements.contains(move)) {
-                values[i++] = executor.submit(() -> Double.MIN_VALUE);
+                values[i++] = executor.submit(() -> -1000D);
                 continue;
             }
 
             //On commence avec un alpha maximum et un beta au minimum et une profondeur de 1
             //On va diviser les calculs dans plusieurs threads pour améliorer légèrement les performances
-            values[i++] = executor.submit(() -> minimax(newSimulation, Integer.MIN_VALUE, Integer.MAX_VALUE, 1, maxDepth));
+            values[i++] = executor.submit(() -> minimax(newSimulation, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 1, maxDepth));
         }
         //On retourne le mouvement avec l'heuristique la plus haute dans la liste
         List<Integer> highestValueMoves = getHighestValues(values);
@@ -123,10 +123,10 @@ public abstract class AIMinMax extends AIPlayer {
     public double minimax(Simulation simulation, double alpha, double beta, int depth, int maxDepth) {
         PlayerEnum winner = simulation.getWinner();
         if (winner == this.getPlayerEnum()) { // Si on arrive à une situation gagnante pour l'IA, on renvoie la valeur maximale
-            return Double.MAX_VALUE;
+            return Double.POSITIVE_INFINITY;
         }
         else if(winner == this.getPlayerEnum().getOpponent()) { // Si on arrive à une situation perdante pour l'IA, on renvoie la valeur minimale
-            return Double.MIN_VALUE;
+            return Double.NEGATIVE_INFINITY;
         }
         else if (depth == maxDepth) { // Si on est arrivé a la profondeur maximale on renvoie la valeur selon l'heuristique définit dans la classe fils
             return this.heuristic(simulation, this.getPlayerEnum());
