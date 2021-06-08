@@ -22,36 +22,25 @@ public class AIMedium extends AIMinMax {
      */
     public double evaluation(Simulation boardState, PlayerEnum playerEnum) {
         PlayerEnum opponent = playerEnum.getOpponent();
-        double oppPieceValue = (double) boardState.getPlayer(opponent).getOwnedCells().size();
-        double yourPieceValue = (double) boardState.getPlayer(playerEnum).getOwnedCells().size();
+        int oppPieceValue = boardState.getPlayer(opponent).getOwnedCells().size();
+        int yourPieceValue = boardState.getPlayer(playerEnum).getOwnedCells().size();
 
-
-        int turn = 50;
         /*
          * On doit gérer l'évaluation différement selon si le joueur actuel est un défenseur ou un attaquant
          *
-         * Le défenseur ne prend pas en compte le nombre de pièces ennemis autour du roi mais prend en compte
-         * si le roi est proche d'une porte de sortie
-         *
-         * L'attaquant prend plus en compte la différence de pièces entre les 2 équipes
          */
-        double evaluationValue = 0.0;
+        double evaluationValue;
         if (playerEnum == PlayerEnum.DEFENDER) {
-            if (turn < 40) {
-                evaluationValue = yourPieceValue - oppPieceValue + kingMovesToCornerValue(boardState);
-            } else if (turn < 70) {
-                evaluationValue = yourPieceValue - oppPieceValue + 2.0 * kingMovesToCornerValue(boardState);
-            } else {
-                evaluationValue = yourPieceValue - oppPieceValue + 3.0 * kingMovesToCornerValue(boardState);
-            }
+            //Le défenseur cherche à garder le plus de tours possibles et d'éliminer le plus de tours adverse
+            //On essaie de rapprocher au maximum le roi d'une des portes de sortie
+            evaluationValue = yourPieceValue - oppPieceValue + 5 * kingMovesToCornerValue(boardState);
         } else {
-            if (turn < 40) {
-                evaluationValue = yourPieceValue - oppPieceValue + attackersAroundCorners(boardState) - kingMovesToCornerValue(boardState) + enemiesAroundKing(boardState);
-            } else if (turn < 70) {
-                evaluationValue = 2 * (yourPieceValue - oppPieceValue) + attackersAroundCorners(boardState) - 1.5 * kingMovesToCornerValue(boardState) + 6 * enemiesAroundKing(boardState);
-            } else {
-                evaluationValue = 3 * (yourPieceValue - oppPieceValue) + attackersAroundCorners(boardState) - 1.5 * kingMovesToCornerValue(boardState) + 12 * enemiesAroundKing(boardState);
-            }
+            //L'attaquant cherche à garder le plus de tours possibles et d'éliminer le plus de tours adverse
+            //On cherche aussi à éviter que le roi s'approche trop des portes de sortie
+            //On favorise aussi grandement les déplacements qui permettent la capture du roi
+            //On va aussi favoriser les déplacements qui permettent d'atteindre une position stratégique du Tablut
+            //pour les attaquants en se plaçant dans les coins
+            evaluationValue = 1.5 * (yourPieceValue - oppPieceValue) - 2 * kingMovesToCornerValue(boardState) + 3 * enemiesAroundKing(boardState) + attackersAroundCorners(boardState);
         }
 
         return evaluationValue;
@@ -155,7 +144,7 @@ public class AIMedium extends AIMinMax {
             // Attribution de la valeur en fonction de la distance
             for (int i = 0; i < distances.length; i++) {
                 switch (distances[i]) {
-                    case 1:  moveDistanceValue += 15; // Un roi à un mouvement de gagner est très profitable
+                    case 1:  moveDistanceValue += 50; // Un roi à un mouvement de gagner est très profitable
                         break;
                     case 2:  moveDistanceValue += 1; // Un roi a deux mouvement est bénéfique mais pas non plus incontournable
                         break;
