@@ -37,6 +37,13 @@ public class IndicatorsDesigner extends Designer {
         final Point hoveringPossibleMoveCell = data.hoveringPossibleMoveCell;
         final List<Movement> accessibleCells = data.accessibleCells;
 
+        // last move feedback
+        Movement lastMove = Game.getInstance().getCurrentLastPlay();
+
+        if(data.previewGrid != null && data.previewMoveIndex != -1) {
+            lastMove = Game.getInstance().getPlayAt(data.previewMoveIndex);
+        }
+
         final int widthBorder = g.getBorderWidth();
         final int cellSize = g.getCellSize();
         final int x = g.getRealX(0);
@@ -75,6 +82,13 @@ public class IndicatorsDesigner extends Designer {
         else {
             g.setCursor("default");
         }
+
+        if(lastMove != null) {
+            g.setColor(GameColors.FEEDBAK_LAST_MOVE);
+            g.fillSquare(lastMove.getFromC(), lastMove.getFromL()); // before
+            g.fillSquare(lastMove.getToC(), lastMove.getToL()); // after
+        }
+
 
         g.drawImage(throne, 4, 4, cellSize/2, cellSize/2, true);
     }

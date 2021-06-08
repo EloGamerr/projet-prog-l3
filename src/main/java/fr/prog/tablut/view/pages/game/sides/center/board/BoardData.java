@@ -22,4 +22,5 @@ public class BoardData {
     public List<Movement> accessibleCells = new ArrayList<>();
 	public boolean isAnim = false;
     public CellContent[][] previewGrid = null;
+    public Integer previewMoveIndex = -1;
 }

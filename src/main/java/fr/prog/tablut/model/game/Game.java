@@ -497,10 +497,18 @@ public class Game {
 		return plays;
 	}
 
-	public Movement getLastPlay() {
-        if(plays.getPlays().size() > 0)
-		    return plays.getPlays().get(plays.getPlays().size() - 1).getMovement();
+	public Movement getPlayAt(int index) {
+		if(index > -1 && plays.getPlays().size() > index)
+		    return plays.getPlays().get(index).getMovement();
         return null;
+	}
+	
+	public Movement getLastPlay() {
+        return getPlayAt(plays.getPlays().size() - 1);
+	}
+
+	public Movement getCurrentLastPlay() {
+		return getPlayAt(plays.getCurrentMovement());
 	}
 	
 	public CellContent[][] getGrid() {

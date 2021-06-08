@@ -79,7 +79,7 @@ public class CenterSideGame extends GameInterfaceSide {
         }
     }
     
-    public void setPreviewGrid(CellContent[][] grid) {
-        boardInterface.setPreviewGrid(grid);
+    public void setPreviewGrid(CellContent[][] grid, int moveIndex) {
+        boardInterface.setPreviewGrid(grid, moveIndex);
     }
 }

@@ -16,4 +16,5 @@ public class GameColors {
     public static final Color LETTERS_NUMBERS_COLOR = new Color(68, 68, 68);
 	public static final Color FROM_CELL = new Color(156, 146, 124);
 	public static final Color TO_CELL = new Color(156, 146, 124);
+	public static final Color FEEDBAK_LAST_MOVE = new Color(119, 149, 86);
 }

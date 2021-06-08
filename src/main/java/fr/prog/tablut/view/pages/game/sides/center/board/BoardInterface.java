@@ -9,6 +9,7 @@ import java.awt.RenderingHints;
 import fr.prog.tablut.controller.game.HumanPlayer;
 import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Game;
+import fr.prog.tablut.model.game.Movement;
 import fr.prog.tablut.view.pages.game.sides.GameInterfaceSide;
 import fr.prog.tablut.view.pages.game.sides.center.board.designers.*;
 
@@ -143,8 +144,9 @@ public class BoardInterface extends GameInterfaceSide {
 		boardData.selectedCell = null;
 	}
 
-    public void setPreviewGrid(CellContent[][] grid) {
+    public void setPreviewGrid(CellContent[][] grid, int moveIndex) {
         boardData.previewGrid = grid;
+        boardData.previewMoveIndex = moveIndex;
     }
 
     public IndicatorsDesigner getIndicatorsDesigner() {

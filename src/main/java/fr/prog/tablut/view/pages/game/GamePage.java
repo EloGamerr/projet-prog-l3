@@ -22,6 +22,7 @@ import fr.prog.tablut.controller.game.gameController.GameController;
 import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.MoveType;
+import fr.prog.tablut.model.game.Movement;
 import fr.prog.tablut.model.game.player.PlayerEnum;
 import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 import fr.prog.tablut.model.window.WindowConfig;
@@ -365,8 +366,8 @@ public class GamePage extends Page {
         leftSide.getMoveButtons().enableRedoButton(enable);
     }
 
-    public void setPreviewGrid(CellContent[][] grid) {
-        centerSide.setPreviewGrid(grid);
+    public void setPreviewGrid(CellContent[][] grid, Integer moveIndex) {
+        centerSide.setPreviewGrid(grid, moveIndex);
     }
 
     public void clearChat() {

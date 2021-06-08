@@ -120,9 +120,10 @@ public class HistoryChatField extends GenericPanel {
 
 				for(Map.Entry<Point, CellContent> m : currentPlay.getModifiedOldCellContents().entrySet()) {
 					currentGrid[m.getKey().y][m.getKey().x] = m.getValue();
+					
 				}
 
-                label.hover(true);
+				// gamePage.label.hover(true);
 			}
 		}
 		else {
@@ -139,7 +140,7 @@ public class HistoryChatField extends GenericPanel {
 			}
 		}
 
-		gamePage.setPreviewGrid(currentGrid);
+		gamePage.setPreviewGrid(currentGrid, pos);
 		gamePage.refresh();
 	}
 
@@ -156,7 +157,7 @@ public class HistoryChatField extends GenericPanel {
 				label.hover(false);
 		}
 
-		gamePage.setPreviewGrid(null);
+		gamePage.setPreviewGrid(null, -1);
 		gamePage.refresh();
 	}
 
@@ -238,7 +239,7 @@ class LabelField extends JLabel {
         // player move message
 		else {
             PlayerEnum p = Game.getInstance().getPlayingPlayerEnum();
-            Movement lastMove = Game.getInstance().getLastPlay();
+            Movement lastMove = Game.getInstance().getCurrentLastPlay();
 
             int pp = p==PlayerEnum.ATTACKER? 2 : p==PlayerEnum.DEFENDER? 1 : 0;
 
