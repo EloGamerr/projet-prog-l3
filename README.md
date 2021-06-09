@@ -65,13 +65,27 @@ Chaque bibliothèques utilisées sont écrites dans le fichier build.gradle du p
 
 Si pour une raison quelconque vous ne pouvez/voulez pas utiliser gradle pour gérer les dépendances, vous pouvez retrouver les 2 bibliothèques utilisées dans les dossiers json et commons-io
 
+
 # Membres du groupe
-## IHM :
+
+## IHM (partie programmation) :
 * Dorian Thivolle
-* Lilian Russo
+
 ## IA :
-* Arthur Ducros
-* Timon Roxard
+* Lilian Russo
+* Dorian Lorek
+
 ## Fonctionnalités du jeu :
 * Clément Corbillé
 * Dorian Lorek
+
+## Fonctionnalités de l'application dans son ensemble :
+* Lilian Russo
+* Clément Corbillé
+
+## Réflexion IHM (partie maquette) :
+* Dorian Thivolle
+* Arthur Ducros
+
+## Documentation, aide :
+* Arthur Ducros
