@@ -18,6 +18,9 @@ Nous avons implémenté la possibilité de jouer contre une IA avec plusieurs ni
 ## Avancée du projet
 Ce projet a été réalisé en 1 mois par un groupe de 6 étudiants. Le projet est dans un état final mais il se peut qu'il y est encore quelques bugs. Tout ce qui avait été prévu a été réalisé.
 
+## Image
+![Image du jeu](game_image.png)
+
 # Récupérer le dépôt
 Ouvrez un invité de commande là où vous voulez télécharger le dépôt et exécutez la commande suivante (il faut au préalable avoir installé git) :
 ```
