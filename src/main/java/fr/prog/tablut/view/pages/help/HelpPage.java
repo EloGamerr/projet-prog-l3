@@ -26,7 +26,7 @@ public class HelpPage extends Page {
 	 * <p>It needs to know the reference of the last opened page so when the user clicks on "Retour",
 	 * it goes back to the previous page.</p>
 	 * @param config The configuration to apply to the page
-	 * @param currentPage The previous page to go on when the user closes this page
+	 * @param pageBack The previous page to go on when the user closes this page
 	 */
 	public HelpPage(WindowConfig config, PageName pageBack) {
 		super(config);
@@ -51,7 +51,6 @@ public class HelpPage extends Page {
     /**
      * Defines the page to go back to if the user clicks on "Retour".
      * <p>It updates its bottomPanel's button</p>
-     * @param pageBack
      */
 	public void setBackPage(PageName pageBack) {
 		bbp.setFirstButtonHref(pageBack);

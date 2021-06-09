@@ -72,7 +72,7 @@ public class Style {
     /**
      * Get componentStyle entrySet
      * @see ComponentStyle
-     * @return THe entrySet<String, ComponentStyle>
+     * @return THe entrySet&lt;String, ComponentStyle&gt;
      */
     public Set<Entry<String, ComponentStyle>> entrySet() {
         return components.entrySet();

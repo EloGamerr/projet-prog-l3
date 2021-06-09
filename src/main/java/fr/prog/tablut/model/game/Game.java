@@ -93,7 +93,7 @@ public class Game {
 
 	/**
 	 * Load a new game. All properties of the current game are lost if not saved.
-	 * @param index_selected Save index (>= 0 and < amount of saves)
+	 * @param index_selected Save index (&gt;= 0 and &lt; amount of saves)
 	 */
 	public void load(int index_selected) {
 		this.move = new PawnTaker(this);

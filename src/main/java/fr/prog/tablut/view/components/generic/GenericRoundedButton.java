@@ -23,7 +23,6 @@ import fr.prog.tablut.model.window.PageName;
 /**
  * A component that extends a GenericButton (Jbutton), a button with rounded corners
  * @see GenericButton
- * @see JButton
  */
 public class GenericRoundedButton extends GenericButton {
     protected TextAlignment alignment = TextAlignment.CENTER;
@@ -199,8 +198,6 @@ public class GenericRoundedButton extends GenericButton {
      * Sets the button's style.
      * <p>Search the ComponentStyle in the generic global stylesheet thanks its name.
      * If the component is found, then apply its style, otherwise it does not change it.</p>
-     * @see ComponentStyle
-     * @see Style
      * @see GenericObjectStyle
      * @param style The style to apply
      */

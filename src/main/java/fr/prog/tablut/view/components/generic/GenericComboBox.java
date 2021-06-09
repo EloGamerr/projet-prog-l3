@@ -36,7 +36,7 @@ public class GenericComboBox<E> extends JComboBox<E> {
     protected Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
 
 	/**
-	 * Creates a drop-down list of elements of type <E>.
+	 * Creates a drop-down list of elements of type E.
 	 * <p>Sets the size and preselect the first item.</p>
 	 * @param data The data (each options)
 	 */

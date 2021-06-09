@@ -38,7 +38,6 @@ public class GenericRoundedPanel extends GenericPanel {
      * <p>Search the ComponentStyle in the generic global stylesheet thanks its name.
      * If the component is found, then apply its style, otherwise it does not change it.</p>
      * @see ComponentStyle
-     * @see Style
      * @see GenericObjectStyle
      * @param style The style to apply
      */

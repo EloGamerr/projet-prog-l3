@@ -61,7 +61,6 @@ public class NavPage extends GenericPanel {
 
     /**
      * Creates a page containing a title, a description, and a bottomPanel.
-     * @see TItle
      * @see GenericLabel
      * @see BottomButtonPanel
      * @param title The title
