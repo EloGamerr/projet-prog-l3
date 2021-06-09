@@ -19,6 +19,7 @@ public class ButtonUndoRedoAdaptator extends ActionAdaptator<GenericButton> {
 	
 	@Override
 	public void process(ActionEvent e) {
+		//On choisit l'action a faire en fonction du nom du bouton
 		if(entity.getName() == "undo-button")
 			gameController.undo();
         

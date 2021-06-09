@@ -23,6 +23,7 @@ public class CreateGameAdaptator  extends ActionAdaptator<GenericButton> {
 		String attackerName = gameSettings.getAttackerName();
 		String defenderName = gameSettings.getDefenderName();
 
+		//Si les inputs des joueurs sont vide, on les remplaces par des noms génériques
         if(attackerName.replace(" ", "").length() == 0) attackerName = "Joueur 1";
         if(defenderName.replace(" ", "").length() == 0) defenderName = "Joueur 2";
 		

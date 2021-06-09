@@ -12,6 +12,10 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
+/**
+ * A component extending a JScrollPane, to create a custom UI
+ * @see JScrollPane
+ */
 public class GenericScrollPane extends JScrollPane {
     public GenericScrollPane(Component content) {
         super(content);
@@ -36,6 +40,10 @@ public class GenericScrollPane extends JScrollPane {
     }
 }
 
+/**
+ * The custom scrollbar UI
+ * @see BasicScrollBarUI
+ */
 class ScrollBarUI extends BasicScrollBarUI {
     public ScrollBarUI() {
 

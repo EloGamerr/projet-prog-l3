@@ -15,7 +15,6 @@ public class ButtonLoadAdaptator extends ActionAdaptator<GenericButton> {
 	/**
 	* @param button Le component bouton
 	* @param index L'index du bouton dans le tableau
-	* @param saveButton 
 	* @param savedGamesPanel Le panel de sauvegarde
 	*/
 	public ButtonLoadAdaptator(GenericButton button, int index, SavedGamesPanel savedGamesPanel) {

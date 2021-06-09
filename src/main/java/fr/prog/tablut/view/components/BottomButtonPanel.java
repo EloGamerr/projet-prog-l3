@@ -97,19 +97,37 @@ public class BottomButtonPanel extends GenericPanel {
         }
     }
 
+    /**
+     * Sets the first button href location
+     * @see PageName
+     * @param href The href location
+     */
     public void setFirstButtonHref(PageName href) {
         btn1.setHref(href);
     }
 
+    /**
+     * Sets the second button href location
+     * @see PageName
+     * @param href The href location
+     */
     public void setSecondButtonHref(PageName href) {
         if(btn2 != null)
             btn2.setHref(href);
     }
 
+    /**
+     * Returns the first button (left)
+     * @return The left button
+     */
     public GenericRoundedButton getButton1() {
         return btn1;
     }
 
+    /**
+     * Returns the second button (right)
+     * @return The right button
+     */
     public GenericRoundedButton getButton2() {
         return btn2;
     }

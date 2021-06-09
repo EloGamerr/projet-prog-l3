@@ -117,6 +117,10 @@ public class GenericInput extends JTextField implements GenericComponent {
         });
     }
 
+    /**
+     * Add a key listener for key press action
+     * @param action The controller's action to set
+     */
     public void onKeyPress(KeyListener action) {
         addKeyListener(action);
     }
@@ -135,6 +139,9 @@ public class GenericInput extends JTextField implements GenericComponent {
         }
     }
 
+    /**
+     * Enables the input
+     */
     @Override
     public void enable() {
         if(isDisabled) {
@@ -144,6 +151,9 @@ public class GenericInput extends JTextField implements GenericComponent {
         }
     }
 
+    /**
+     * Disables the input
+     */
     @Override
     public void disable() {
         if(!isDisabled) {
@@ -200,10 +210,18 @@ public class GenericInput extends JTextField implements GenericComponent {
 
     }
 
+    /**
+     * Returns the input's style
+     * @return
+     */
     public String getStyle() {
 		return styleName;
 	}
 
+    /**
+     * Returns either the input is disabled or not
+     * @return Either the input is disabled or not
+     */
 	public boolean isDisabled() {
 		return getStyle().endsWith(":disabled");
 	}

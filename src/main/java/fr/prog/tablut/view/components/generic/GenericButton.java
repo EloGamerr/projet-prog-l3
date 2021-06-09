@@ -79,6 +79,11 @@ public class GenericButton extends JButton implements GenericComponent {
         });
 	}
 
+    /**
+     * Returns the page name's href location of the button
+     * @see PageName
+     * @return The href location of the button
+     */
 	public PageName getHref() {
 		return href;
 	}
@@ -92,11 +97,20 @@ public class GenericButton extends JButton implements GenericComponent {
         setHref(href, new ButtonNavAdaptator(this, GenericObjectStyle.getGlobalWindow(), href));
     }
 
+    /**
+     * Sets the button's href location and sets its action on click event
+     * @param href The href location
+     * @param action The action to trigger when the button is clicked
+     */
 	public void setHref(PageName href, ActionListener action) {
 		this.href = href;
 		setHrefAction(action);
 	}
 
+    /**
+     * Sets the action listener of the button
+     * @param actionHref the action to trigger when the user clicks on the button
+     */
 	public void setHrefAction(ActionListener actionHref) {
 		if(actionListenerHref != null)
 			removeActionListener(actionListenerHref);
@@ -106,6 +120,10 @@ public class GenericButton extends JButton implements GenericComponent {
 		addActionListener(actionListenerHref);
 	}
 
+    /**
+     * Sets the second action to perform when the button is clicked
+     * @param action The action to perform when the button is clicked
+     */
 	public void setAction(ActionListener action) {
 		if(actionListenerBase != null) {
 			removeActionListener(actionListenerBase);
@@ -116,6 +134,10 @@ public class GenericButton extends JButton implements GenericComponent {
 		addActionListener(actionListenerBase);
 	}
 
+    /**
+     * Sets the button's style
+     * @param style The style's name to set
+     */
 	public void setStyle(String style) {
 		if(GenericObjectStyle.getStyle().has(style)) {
             styleName = style;
@@ -123,10 +145,18 @@ public class GenericButton extends JButton implements GenericComponent {
         }
 	}
 
+    /**
+     * Returns the button's style
+     * @return The button's style
+     */
 	public String getStyle() {
 		return styleName;
 	}
 
+    /**
+     * Returns either the button is disabled or not
+     * @return Either the button is disabled or not
+     */
 	public boolean isDisabled() {
 		return getStyle().endsWith(":disabled");
 	}
