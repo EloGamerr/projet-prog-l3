@@ -10,6 +10,7 @@ import fr.prog.tablut.controller.game.gameAdaptator.ButtonQuitGameAdaptator;
 import fr.prog.tablut.controller.game.gameAdaptator.ButtonRestartAdaptator;
 import fr.prog.tablut.controller.game.gameAdaptator.ButtonSaveAdaptator;
 import fr.prog.tablut.controller.game.gameController.GameController;
+import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.window.PageName;
 import fr.prog.tablut.view.components.generic.GenericObjectStyle;
 import fr.prog.tablut.view.components.generic.GenericRoundedButton;
@@ -21,6 +22,7 @@ import fr.prog.tablut.view.pages.game.sides.GameInterfaceSide;
  */
 public class RightSideGame extends GameInterfaceSide {
     private final GenericRoundedButton pause;
+    private final GenericRoundedButton restart;
 
     /**
      * Creates the right side of the game's page with button's menu
@@ -33,7 +35,7 @@ public class RightSideGame extends GameInterfaceSide {
         // instantiation
         GenericRoundedButton saveToNewFile = new GenericRoundedButton("Sauvegarder la partie", 200, 40);
         pause = new GenericRoundedButton("Pause", 200, 40);
-        GenericRoundedButton restart = new GenericRoundedButton("Recommencer la partie", 200, 40);
+        restart = new GenericRoundedButton("Recommencer la partie", 200, 40);
         GenericRoundedButton shortcuts = new GenericRoundedButton("Raccourcis", 200, 40);
         GenericRoundedButton quit = new GenericRoundedButton("Quitter la partie", 200, 40);
         
@@ -79,5 +81,20 @@ public class RightSideGame extends GameInterfaceSide {
      */
     public void enablePauseButton(boolean enable) {
         pause.setStyle("button" + (enable? "" : ":disabled"));
+    }
+
+    /**
+     * Resets the buttons on right side component
+     */
+    public void reset() {
+        restart.setStyle("button:disabled");
+    }
+
+    /**
+     * Updates the buttons when a new turn has come
+     */
+    public void updateTurn() {
+        String style = (Game.getInstance().getMovementsNumber() > 0)? "" : ":disabled";
+        restart.setStyle("button" + style);
     }
 }

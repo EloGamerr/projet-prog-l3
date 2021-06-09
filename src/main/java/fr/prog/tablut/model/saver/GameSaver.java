@@ -209,7 +209,6 @@ public class GameSaver {
 		    f = new File(savePath);
 		}
 
-		System.out.println(savePath);
 		return savePath;
 	}
 

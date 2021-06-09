@@ -24,7 +24,6 @@ import fr.prog.tablut.model.window.ComponentStyle;
  * A component that extends a JTextField, a basic text input
  * @see JTextField
  */
-@SuppressWarnings("deprecation")
 public class GenericInput extends JTextField implements GenericComponent {
     protected String styleName;
     protected final int borderRadius = 10;

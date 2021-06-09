@@ -86,7 +86,7 @@ public class GlobalWindow {
 		previousPageName = currentPage.name();
 		helpPage = new HelpPage(this.config, this.previousPageName);
 		newGamePage = new NewGamePage(this.config);
-		loadPage = new LoadSavesPage(this.config);
+		loadPage = new LoadSavesPage(this.config, this);
 
 		// default page to show - home page
 		homePage.setVisible(true);

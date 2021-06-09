@@ -52,8 +52,15 @@ public class IndicatorsDesigner extends Designer {
         Movement lastMove = Game.getInstance().getCurrentLastPlay();
 
         // if we're viewing a preview, then don't draw the last done move but the last move at given move index
-        if(data.previewGrid != null && data.previewMoveIndex != -1) {
-            lastMove = Game.getInstance().getPlayAt(data.previewMoveIndex);
+        if(data.previewGrid != null) {
+            lastMove = (data.previewMoveIndex > -1)? Game.getInstance().getMoveAt(data.previewMoveIndex) : null;
+        }
+
+        // draw the last move from - to
+        if(lastMove != null) {
+            g.setColor(GameColors.FEEDBAK_LAST_MOVE);
+            g.fillSquare(lastMove.getFromC(), lastMove.getFromL()); // before
+            g.fillSquare(lastMove.getToC(), lastMove.getToL()); // after
         }
 
         final int widthBorder = g.getBorderWidth();
@@ -93,13 +100,6 @@ public class IndicatorsDesigner extends Designer {
         // default state
         else {
             g.setCursor("default");
-        }
-
-        // draw the last move from - to
-        if(lastMove != null) {
-            g.setColor(GameColors.FEEDBAK_LAST_MOVE);
-            g.fillSquare(lastMove.getFromC(), lastMove.getFromL()); // before
-            g.fillSquare(lastMove.getToC(), lastMove.getToL()); // after
         }
 
         // draw the throne

@@ -65,9 +65,10 @@ public class PiecesDesigner extends Designer {
             if(data.imageOnMouse != null && data.mousePosition != null) {
                 int x = g.getRealX(0);
                 int y = g.getRealY(0);
+                int mz = g.getSize() - 2 * g.getBorderWidth();
 
-                int xImg = Math.min(Math.max(x, data.mousePosition.x - imgSize/2), x + g.getSize() - imgSize);
-                int yImg = Math.min(Math.max(y, data.mousePosition.y - imgSize/2), y + g.getSize() - imgSize);
+                int xImg = Math.min(Math.max(x, data.mousePosition.x - imgSize/2), x + mz - imgSize);
+                int yImg = Math.min(Math.max(y, data.mousePosition.y - imgSize/2), y + mz - imgSize);
                 
                 g.drawImageCoords(data.imageOnMouse, xImg, yImg, imgSize, imgSize, null);
             }

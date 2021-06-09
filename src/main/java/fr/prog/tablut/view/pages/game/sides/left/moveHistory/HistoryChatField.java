@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import fr.prog.tablut.controller.game.listener.ChatMouseListener;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.Movement;
+import fr.prog.tablut.model.game.Play;
 import fr.prog.tablut.model.game.player.PlayerEnum;
 import fr.prog.tablut.view.components.generic.GenericLabel;
 import fr.prog.tablut.view.components.generic.GenericObjectStyle;
@@ -29,14 +30,17 @@ public class HistoryChatField extends GenericPanel {
     private final GridBagConstraints c;
 	private final Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
     private final Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
+    private Dimension baseDimension;
     
     /**
      * Creates a chat's action manager. Privates, only used by its parent.
      * <p>All other components communicates with MoveHistoryPanel which will communicates with HistoryChatField.</p>
      * @see MoveHistoryPanel
      */
-	public HistoryChatField(GamePage gamePage) {
+	public HistoryChatField(GamePage gamePage, Dimension d) {
         super(new GridBagLayout());
+
+        baseDimension = d;
 
         c = new GridBagConstraints();
 
@@ -53,12 +57,20 @@ public class HistoryChatField extends GenericPanel {
      * Adds a player action in the chat
      */
     public void addAction() {
+        addAction(-1);
+    }
+
+    public void addAction(int moveIndex) {
+        int width = (getWidth()==0)? baseDimension.width : getWidth();
+
         // update the view's size
-        LabelAction.setDimension(new Dimension(getWidth(), labelHeight));
+        LabelAction.setDimension(new Dimension(width, labelHeight));
 
-        // new action's label in the chat
-        LabelAction newPlayerAction = new LabelAction(false, null, c.gridy);
+        postAddAction(new LabelAction(moveIndex, c.gridy));
+    }
 
+    private void postAddAction(LabelAction newPlayerAction) {
+        // add a listener on it
         newPlayerAction.addMouseListener(new ChatMouseListener(newPlayerAction, this, gamePage));
 
         // default text's color
@@ -104,10 +116,8 @@ public class HistoryChatField extends GenericPanel {
      */
     public void clear() {
         removeAll();
-
-        c.gridy = Game.getInstance().getMovementsNumber();
-
         allHistory.clear();
+        c.gridy = 0;
     }
 
     /**
@@ -201,7 +211,18 @@ class LabelAction extends JLabel {
      * @param systemMessage If it's a system message, then this argument is the message to show
      * @param pos The position of the label in the chat
      */
-	public LabelAction(boolean isSystem, String systemMessage, int pos) {
+	public LabelAction(String systemMessage, int pos) {
+        this(pos, true, -1);
+		
+        setText("[System] ...");
+        setForeground(GenericObjectStyle.getProp("chat.yellow", "color"));
+	}
+
+    public LabelAction(int moveIndex, int pos) {
+        this(pos, false, moveIndex);
+    }
+
+    private LabelAction(int pos, boolean isSystem, int moveIndex) {
         setLayout(new FlowLayout(FlowLayout.LEFT));
         setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 
@@ -209,48 +230,56 @@ class LabelAction extends JLabel {
         setPreferredSize(LabelAction.size);
         setMaximumSize(LabelAction.size);
         setMinimumSize(LabelAction.size);
-		
-        this.systemMessage = isSystem;
-
-        // system message
-		if(this.systemMessage) {
-            setText("[System] ...");
-            setForeground(GenericObjectStyle.getProp("chat.yellow", "color"));
-        }
-        // player move message
-		else {
-            PlayerEnum p = Game.getInstance().getPlayingPlayerEnum();
-            Movement lastMove = Game.getInstance().getCurrentLastPlay();
-
-            int pp = p==PlayerEnum.ATTACKER? 2 : p==PlayerEnum.DEFENDER? 1 : 0;
-
-            // The date when the message has been created / sent
-            // from the game's creation
-			timing = new GenericLabel("[" +  Time.format(Game.getInstance().getDuration()) + "]", 12);
-			timing.setForeground(GenericObjectStyle.getProp("chat.timing", "color"));
-
-            // The player's type
-			player = new GenericLabel(pp==1? "L'attaquant" : "Le D\u00e9fenseur", 12);
-			player.setForeground(GenericObjectStyle.getProp("chat." + (pp==1? "red" : "blue"), "color"));
-
-            // The core message : the move that's been done
-			String text = "a jou\u00e9 ";
-
-			text += (lastMove != null)? getColName(lastMove.getFromC()) + getRowName(lastMove.getFromL()) : "??"; // from
-			text += " en ";
-			text += (lastMove != null)? getColName(lastMove.getToC()) + getRowName(lastMove.getToL()) : "??"; // to
-
-			sentence = new GenericLabel(text, 12);
-			sentence.setForeground(GenericObjectStyle.getProp("chat", "color"));
-
-			add(timing);
-			add(player);
-			add(sentence);
-		}
-
 
 		setPosition(pos);
-	}
+
+        this.systemMessage = isSystem;
+
+        setupAction(moveIndex);
+    }
+
+    private void setupAction(int moveIndex) {
+        Game game = Game.getInstance();
+        PlayerEnum p;
+        Movement lastMove;
+
+        // add last action
+        if(moveIndex > -1) {
+            Play play = game.getPlayAt(moveIndex);
+            p = (moveIndex%2==1)? PlayerEnum.ATTACKER : PlayerEnum.DEFENDER;
+            lastMove = play.getMovement();
+        }
+        // add a previous action (surely used to load the chat)
+        else {
+            p = game.getPlayingPlayerEnum();
+            lastMove = game.getCurrentLastPlay();
+        }
+
+        int pp = p==PlayerEnum.ATTACKER? 2 : p==PlayerEnum.DEFENDER? 1 : 0;
+
+        // The date when the message has been created / sent
+        // from the game's creation
+        timing = new GenericLabel("[" +  Time.format(game.getDuration()) + "]", 12);
+        timing.setForeground(GenericObjectStyle.getProp("chat.timing", "color"));
+
+        // The player's type
+        player = new GenericLabel(pp==1? "L'attaquant" : "Le D\u00e9fenseur", 12);
+        player.setForeground(GenericObjectStyle.getProp("chat." + (pp==1? "red" : "blue"), "color"));
+
+        // The core message : the move that's been done
+        String text = "a jou\u00e9 ";
+
+        text += (lastMove != null)? getColName(lastMove.getFromC()) + getRowName(lastMove.getFromL()) : "??"; // from
+        text += " en ";
+        text += (lastMove != null)? getColName(lastMove.getToC()) + getRowName(lastMove.getToL()) : "??"; // to
+
+        sentence = new GenericLabel(text, 12);
+        sentence.setForeground(GenericObjectStyle.getProp("chat", "color"));
+
+        add(timing);
+        add(player);
+        add(sentence);
+    }
 
     /**
      * Returns the timing label

@@ -7,6 +7,7 @@ import java.awt.Graphics;
 
 import javax.swing.border.EmptyBorder;
 
+import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.view.components.generic.GenericPanel;
 import fr.prog.tablut.view.components.generic.GenericScrollPane;
 
@@ -38,7 +39,7 @@ public class MoveHistoryPanel extends GenericPanel {
         GenericPanel wrapper = new GenericPanel(new BorderLayout(), d);
         wrapper.setBorder(new EmptyBorder(0, 0, 40, 0));
 
-        historyChat = new HistoryChatField(gamePage);
+        historyChat = new HistoryChatField(gamePage, d);
         historyChat.setFont(new Font("Calibri", Font.PLAIN, 12));
         
         scrollPane = new GenericScrollPane(historyChat, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -76,9 +77,16 @@ public class MoveHistoryPanel extends GenericPanel {
      */
     public void addAction() {
         historyChat.addAction();
-        
 		revalidate();
 		repaint();
+    }
+
+    public void addAction(int moveIndex) {
+        if(Game.getInstance().getMovementsNumber() > moveIndex) {
+            historyChat.addAction(moveIndex);
+            revalidate();
+            repaint();
+        }
     }
 
     /**
@@ -140,5 +148,16 @@ public class MoveHistoryPanel extends GenericPanel {
      */
     public void setHoveringAction(int i, boolean hover) {
         historyChat.setHoveringAction(i, hover);
+    }
+
+    public void syncChat() {
+        if(Game.getInstance() != null) {
+            clearChat();
+            int n = Game.getInstance().getMovementsNumber();
+
+            for(int i=0; i < n; i++) {
+                addAction(i);
+            }
+        }
     }
 }

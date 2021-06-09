@@ -2,6 +2,7 @@ package fr.prog.tablut.view.pages.game.sides.left;
 
 import java.awt.Dimension;
 
+import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.view.pages.game.GamePage;
 import fr.prog.tablut.view.pages.game.sides.GameInterfaceSide;
 import fr.prog.tablut.view.pages.game.sides.left.moveHistory.MoveHistoryPanel;
@@ -56,9 +57,9 @@ public class LeftSideGame extends GameInterfaceSide {
      * <p>Clears the chat, and disables buttons.</p>
      */
     public void reset() {
-        buttons.enableUndoButton(false);
-        buttons.enableRedoButton(false);
-        clearChat();
+        buttons.enableRedoButton(Game.getInstance().hasNextMove());
+		buttons.enableUndoButton(Game.getInstance().hasPreviousMove());
+        historyPanel.syncChat();
     }
 
     /**

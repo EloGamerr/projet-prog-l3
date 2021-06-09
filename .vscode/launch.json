@@ -9,7 +9,7 @@
             "name": "Launch Tablut",
             "request": "launch",
             "mainClass": "fr.prog.tablut.Tablut",
-            "projectName": "Projet"
+            "projectName": "Tablut"
         }
     ]
 }

@@ -92,12 +92,8 @@ public class Game {
 	 * Load a new game. All properties of the current game are lost if not saved.
 	 * @param index_selected Save index (&gt;= 0 and &lt; amount of saves)
 	 */
-	public void load(int index_selected) {
-		this.move = new PawnTaker(this);
-		this.plays = new Plays();
-		loader.loadData(index_selected);
-		hasStarted = true;
-		this.startTime = System.currentTimeMillis();
+	public boolean load(int index_selected) {
+		return loader.loadData(index_selected);
 	}
 
 	/**
@@ -490,18 +486,26 @@ public class Game {
 		return plays;
 	}
 
-	public Movement getPlayAt(int index) {
-		if(index > -1 && plays.getPlays().size() > index)
-		    return plays.getPlays().get(index).getMovement();
+	public Movement getMoveAt(int index) {
+		Play p = getPlayAt(index);
+
+        if(p != null)
+            return p.getMovement();
         return null;
 	}
+
+    public Play getPlayAt(int index) {
+        if(index > -1 && plays.getPlays().size() > index)
+		    return plays.getPlays().get(index);
+        return null;
+    }
 	
 	public Movement getLastPlay() {
-        return getPlayAt(plays.getPlays().size() - 1);
+        return getMoveAt(plays.getPlays().size() - 1);
 	}
 
 	public Movement getCurrentLastPlay() {
-		return getPlayAt(plays.getCurrentMovement());
+		return getMoveAt(plays.getCurrentMovement());
 	}
 	
 	public CellContent[][] getGrid() {

@@ -127,10 +127,11 @@ public class GamePage extends Page {
         boolean a = Objects.requireNonNull(PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker())).isAI(),
             b = Objects.requireNonNull(PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender())).isAI();
         
-        getRightSide().togglePauseButton(a && b && Game.getInstance().isPaused());
+        getRightSide().enablePauseButton((a && b) || Game.getInstance().isPaused());
 
         centerSide.updateTurnOf();
         leftSide.reset();
+        rightSide.reset();
 
         // hide winner screen in the case the previous game was terminated
         hideVictoryPage();
@@ -225,9 +226,12 @@ public class GamePage extends Page {
         // updates undo/redo buttons
         enableRedoButton(Game.getInstance().hasNextMove());
 		enableUndoButton(Game.getInstance().hasPreviousMove());
+		togglePauseButton(Game.getInstance().isPaused());
 
         // updates the board
         centerSide.updateTurnOf();
+        // update the buttons
+        rightSide.updateTurn();
         
         // this condition is done because animations are conflicting with this method.
         // This issue will be resolved in a future version, where the animation's manager
@@ -510,7 +514,7 @@ public class GamePage extends Page {
 			}
 		}
 
-		setPreviewGrid(currentGrid, pos);
+		setPreviewGrid(currentGrid, pos-1);
 		refresh();
 	}
 

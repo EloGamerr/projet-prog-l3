@@ -95,7 +95,6 @@ public class GameController {
 		}
 		
 		if(numberOfUndoDone > 0) {
-			gamePage.togglePauseButton(Game.getInstance().isPaused());
 			postPlay(MoveType.UNDO);
             return true;
 		}
@@ -128,7 +127,6 @@ public class GameController {
 		}
         
 		if(numberOfRedoDone > 0) {
-			gamePage.togglePauseButton(Game.getInstance().isPaused());
 			postPlay(MoveType.REDO);
             return true;
 		}
