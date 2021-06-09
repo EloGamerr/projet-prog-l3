@@ -30,7 +30,6 @@ public class Loader {
      * @see JSONObject
      * @param filepath The file path
      * @return The created JSONObject
-     * @throws ParseException
      */
     public JSONObject getJSON(String filepath) throws ParseException {
         String content = "{}";
@@ -79,7 +78,6 @@ public class Loader {
     /**
      * Loads a font family from given file (truetype only)
      * @see Font
-     * @param fontFamily
      */
     public void loadCustomFont(String fontFamily) {
         try {

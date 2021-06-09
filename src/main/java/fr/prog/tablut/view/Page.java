@@ -106,7 +106,7 @@ public class Page extends JPanel {
     /**
      * Intercepts what it wants to add to itself, to add it to its panel.
      * <p>Add the given component with given constraints</p>
-     * @param comp The component to add
+     * @param component The component to add
      * @param constraints The constraints to apply to the component
      */
     @Override

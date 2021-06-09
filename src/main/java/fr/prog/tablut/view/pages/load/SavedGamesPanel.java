@@ -43,8 +43,6 @@ public class SavedGamesPanel extends GenericPanel {
 	 * Default constructor.
 	 * <p>Creates the list of saved games and shows them.</p>
 	 * <p>Applies the style "area" and "button.load".</p>
-	 * @see Style
-	 * @see ComponentStyle
 	 */
 	public SavedGamesPanel(GenericRoundedButton btnToLightup) {
 		super(new GridBagLayout());
@@ -75,8 +73,6 @@ public class SavedGamesPanel extends GenericPanel {
 	/**
 	 * Triggered when the user clicks on a save.
 	 * <p>Changes its style to button.selected.</p>
-	 * @see Style
-	 * @see ComponentStyle
 	 * @param button the button that's been clicked on (a save)
 	 */
 	public void select(GenericButton button, int index) {
@@ -213,7 +209,6 @@ public class SavedGamesPanel extends GenericPanel {
 
     /**
      * Delete the given save component
-     * @param saveButtonToDelete
      */
     public void deleteSave(JPanel saveButtonToDelete) {
         final boolean win = wrapperInner == null;

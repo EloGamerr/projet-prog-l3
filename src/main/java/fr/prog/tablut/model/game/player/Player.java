@@ -18,7 +18,6 @@ public abstract class Player implements Cloneable {
 	}
 
 	/**
-	 * @param gamePage
 	 * @return True if we should repaint the window after the play
 	 */
 	public abstract boolean play(Game game, GamePage gamePage);

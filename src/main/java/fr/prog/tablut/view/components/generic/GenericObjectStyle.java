@@ -58,11 +58,7 @@ public abstract class GenericObjectStyle {
     /**
      * Returns the property's value of a ComponentStyle in the Style stylesheet.
      * <p>If it does not exist, returns null</p>
-     * @see ComponentStyle
      * @see Style
-     * @param componentName
-     * @param property
-     * @return
      */
     public static Color getProp(String componentName, String property) {
         if(GenericObjectStyle.styleRef.has(componentName) && GenericObjectStyle.styleRef.get(componentName).hasProperty(property))

@@ -360,7 +360,7 @@ public class GamePage extends Page {
 
     /**
      * Returns the pixel coord of a row index
-     * @param x The row index
+     * @param y The row index
      * @return The pixel coord
      */
     public int getYCoordFromRow(int y) {
@@ -369,7 +369,6 @@ public class GamePage extends Page {
 
     /**
      * Updates the hovered cell and repaint the view
-     * @param hoveringCell
      */
     public void updateCellHovering(Point hoveringCell) {
     	centerSide.getBoard().updateCellHovering(hoveringCell);

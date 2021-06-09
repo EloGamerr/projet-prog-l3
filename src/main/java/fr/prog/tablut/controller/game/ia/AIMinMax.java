@@ -66,9 +66,7 @@ public abstract class AIMinMax extends AIPlayer {
         // L'IA a pour l'instant une profondeur de 3, aller au dessus prend beaucoup plus de temps
         int maxDepth = 3;
 
-        /**
-         * On va itérer sur chaques possibilité pour lui assigner une heuristique
-         */
+        // On va itérer sur chaques possibilité pour lui assigner une heuristique
         int i = 0;
         for (Movement move: moves) {
             //La classe simulation permet d'appliquer le mouvement et d'en déterminer l'heuristique par l'algorithme min/max

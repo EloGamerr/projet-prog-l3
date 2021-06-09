@@ -15,10 +15,7 @@ import fr.prog.tablut.view.components.generic.GenericRoundedButton;
  * <p>The second button has the button.green style</p>
  * @see GenericPanel
  * @see PageName
- * @see Page
  * @see GenericRoundedButton
- * @see Style
- * @see ComponentStyle
  */
 public class BottomButtonPanel extends GenericPanel {
     private GenericRoundedButton btn1 = null;
@@ -48,8 +45,6 @@ public class BottomButtonPanel extends GenericPanel {
      * Creates two buttons, the first with the text "Retour"
      * and the second with the text "Confirmer" and with button.green style.
      * @see PageName
-     * @see Style
-     * @see ComponentStyle
      * @param href1 The href of the cancel button
      * @param href2 The href of the confirm button
      */
@@ -61,8 +56,6 @@ public class BottomButtonPanel extends GenericPanel {
      * Creates two buttons, with first having the text "Retour",
      * the second with given text, and button.green style.
      * @see PageName
-     * @see Style
-     * @see ComponentStyle
      * @param href1 The href of the first button
      * @param href2 The href of the second button
      * @param btnTextConfirm The text of the second button
@@ -75,8 +68,6 @@ public class BottomButtonPanel extends GenericPanel {
      * Creates two buttons, with given labels and href locations.
      * <p>The second button has button.green style.</p>
      * @see PageName
-     * @see Style
-     * @see ComponentStyle
      * @param href1 The href of the first button
      * @param href2 The href of the second button
      * @param btnTextConfirm The label of the second button

@@ -46,7 +46,6 @@ public class WindowConfig {
     /**
      * Loads configuration from a file
      * @param filepath The file path to the config file to load
-     * @throws ParseException
      */
     public WindowConfig(String filepath) throws ParseException {
         setConfig(filepath);
@@ -71,7 +70,6 @@ public class WindowConfig {
     /**
      * convert the file at given path to a JSONObject and loads its configuration
      * @param filepath The file path
-     * @throws ParseException
      */
     public void setConfig(String filepath) throws ParseException {
         setConfig(loader.getJSON(filepath));
@@ -107,7 +105,6 @@ public class WindowConfig {
      * <p>For the window, it will also check for its size. If it does not fit the screen size
      * or basic resolutions, then it will resize the window to not overflow the screen and fit
      * the required dimension.</p>
-     * @param json
      */
     public void setConfig(JSONObject json) {
         JSONObject o;
