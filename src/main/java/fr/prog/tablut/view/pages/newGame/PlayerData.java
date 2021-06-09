@@ -9,12 +9,12 @@ import fr.prog.tablut.view.components.generic.GenericInput;
  * A struct of player's form data
  */
 public class PlayerData {
-	public String name; // code name
-    public String realName; // string name
+	public final String name; // code name
+    public final String realName; // string name
 
     // components
-	private GenericComboBox<PlayerTypeEnum> playerType;
-	private GenericInput usernameInput;
+	private final GenericComboBox<PlayerTypeEnum> playerType;
+	private final GenericInput usernameInput;
 
 	/**
 	 * Default constructor.

@@ -7,7 +7,7 @@ import fr.prog.tablut.controller.game.gameController.GameController;
 import fr.prog.tablut.view.components.generic.GenericButton;
 
 public class ButtonPauseAdaptator extends ActionAdaptator<GenericButton> {
-	GameController gameController;
+	private final GameController gameController;
 	
 	public ButtonPauseAdaptator(GenericButton button, GameController gameController) {
 		super(button);

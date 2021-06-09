@@ -18,9 +18,9 @@ import fr.prog.tablut.view.components.generic.GenericPanel;
  */
 public class SelectionPlayerForm extends GenericPanel {
     // form data of the first player (data that's not sent to model)
-	protected PlayerData attacker = new PlayerData("attacker", "Attaquant", "Joueur 1");
+	protected final PlayerData attacker = new PlayerData("attacker", "Attaquant", "Joueur 1");
     // form data of the second player (data that's not sent to model)
-	protected PlayerData defender = new PlayerData("defender", "D\u00e9fenseur", "Joueur 2");
+	protected final PlayerData defender = new PlayerData("defender", "D\u00e9fenseur", "Joueur 2");
 
 	/**
 	 * Default construtor.
@@ -82,7 +82,7 @@ public class SelectionPlayerForm extends GenericPanel {
 	 * @param side The player to show his input
 	 */
 	public void showInput(String side) {
-		PlayerData p = (side == "attacker")? attacker : defender;
+		PlayerData p = (side.equals("attacker"))? attacker : defender;
 		p.getUsernameInput().enable();
 	}
 	
@@ -91,7 +91,7 @@ public class SelectionPlayerForm extends GenericPanel {
 	 * @param side The player to hide his input
 	 */
 	public void hideInput(String side) {
-		PlayerData p = (side == "attacker")? attacker : defender;
+		PlayerData p = (side.equals("attacker"))? attacker : defender;
 		p.getUsernameInput().disable();
 	}
 
@@ -100,7 +100,7 @@ public class SelectionPlayerForm extends GenericPanel {
      * @return The attacker's type
      */
 	public PlayerTypeEnum getPlayerType1() {
-		return (PlayerTypeEnum) attacker.getPlayerType();
+		return attacker.getPlayerType();
 	}
 
     /**
@@ -108,7 +108,7 @@ public class SelectionPlayerForm extends GenericPanel {
      * @return The defender's type
      */
 	public PlayerTypeEnum getPlayerType2() {
-		return (PlayerTypeEnum) defender.getPlayerType();
+		return defender.getPlayerType();
 	}
 	
     /**

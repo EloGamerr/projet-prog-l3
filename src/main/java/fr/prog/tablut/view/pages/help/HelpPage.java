@@ -18,8 +18,7 @@ import fr.prog.tablut.view.components.generic.GenericPanel;
  * @see Page
  */
 public class HelpPage extends Page {
-	BottomButtonPanel bbp;
-    GenericPanel rules;
+	private final BottomButtonPanel bbp;
 
 	/**
 	 * Creates a help page.
@@ -61,7 +60,7 @@ public class HelpPage extends Page {
      * <p>Note : it's not used</p>
      */
     private void createRules() {
-        rules = new GenericPanel();
+		GenericPanel rules = new GenericPanel();
 
         GenericLabel text = new GenericLabel(
             "<html>"

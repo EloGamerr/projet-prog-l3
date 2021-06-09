@@ -23,8 +23,8 @@ public class BoardInterface extends GameInterfaceSide {
 	private final BoardDesigner boardDesigner;
     private final PiecesDesigner piecesDesigner;
     private final IndicatorsDesigner indicatorsDesigner;
-    private BoardDrawer boardDrawer;
-    private BoardData boardData;
+    private final BoardDrawer boardDrawer;
+    private final BoardData boardData;
     
     /**
      * Creates the board's interface manager.
@@ -35,7 +35,6 @@ public class BoardInterface extends GameInterfaceSide {
      * @see Designer
      * @see BoardDrawer
      * @see BoardData
-     * @param size
      */
     public BoardInterface(int size) {
         super(new Dimension(size, size));
@@ -130,7 +129,7 @@ public class BoardInterface extends GameInterfaceSide {
      * @return The column's index
      */
     public int getColFromXCoord(int x) {
-        return (int)((x - boardDrawer.getRealX(0)) / boardDrawer.getCellSize());   
+        return (x - boardDrawer.getRealX(0)) / boardDrawer.getCellSize();
     }
     
     /**
@@ -139,7 +138,7 @@ public class BoardInterface extends GameInterfaceSide {
      * @return The row's index
      */
     public int getRowFromYCoord(int y) {
-        return (int)((y - boardDrawer.getRealY(0)) / boardDrawer.getCellSize());
+        return (y - boardDrawer.getRealY(0)) / boardDrawer.getCellSize();
     }
     
     /**

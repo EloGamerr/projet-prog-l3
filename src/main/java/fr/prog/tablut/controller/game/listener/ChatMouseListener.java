@@ -9,9 +9,9 @@ import fr.prog.tablut.view.pages.game.GamePage;
 import fr.prog.tablut.view.pages.game.sides.left.moveHistory.HistoryChatField;
 
 public class ChatMouseListener extends MouseAdapter {
-    JLabel chatAction;
-    HistoryChatField historyChat;
-    GamePage gamePage;
+    private final JLabel chatAction;
+    private final HistoryChatField historyChat;
+    private final GamePage gamePage;
 
     public ChatMouseListener(JLabel chatAction, HistoryChatField historyChat, GamePage gamePage) {
         this.chatAction = chatAction;

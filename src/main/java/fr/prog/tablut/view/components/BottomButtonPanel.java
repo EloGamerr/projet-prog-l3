@@ -18,7 +18,7 @@ import fr.prog.tablut.view.components.generic.GenericRoundedButton;
  * @see GenericRoundedButton
  */
 public class BottomButtonPanel extends GenericPanel {
-    private GenericRoundedButton btn1 = null;
+    private final GenericRoundedButton btn1;
     private GenericRoundedButton btn2 = null;
 
     /**

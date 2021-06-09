@@ -16,9 +16,7 @@ import fr.prog.tablut.view.components.Title;
  * @see Page
  */
 public class HomePage extends Page {
-	private final ButtonChoice button_choice;
-	private final Title title;
-	
+
 	/**
 	 * Creates the home page.
 	 * @param config The configuration to set to the page
@@ -28,9 +26,9 @@ public class HomePage extends Page {
 		windowName = PageName.HomePage;
 
 		setPLayout(new GridBagLayout());
-		
-		title = new Title("TABLUT");
-		button_choice = new ButtonChoice();
+
+		Title title = new Title("TABLUT");
+		ButtonChoice button_choice = new ButtonChoice();
 		
 		GridBagConstraints c = new GridBagConstraints();
 		

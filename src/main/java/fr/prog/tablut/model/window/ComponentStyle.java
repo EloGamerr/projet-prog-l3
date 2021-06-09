@@ -2,7 +2,6 @@ package fr.prog.tablut.model.window;
 
 import java.awt.Color;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map.Entry;
 
 /**
@@ -10,7 +9,7 @@ import java.util.Map.Entry;
  * @see Color
  */
 public class ComponentStyle {
-    protected HashMap<String, Color> properties = new HashMap<String, Color>() {{
+    protected final HashMap<String, Color> properties = new HashMap<String, Color>() {{
         put("background", new Color(255, 255, 255));
         put("borderColor", new Color(0, 0, 0));
         put("color", new Color(0, 0, 0));
@@ -54,10 +53,8 @@ public class ComponentStyle {
      * @param copy The ComponentStyle to copy
      */
     public void set(ComponentStyle copy) {
-        Iterator<String> it = properties.keySet().iterator();
 
-        while(it.hasNext()) {
-            String prop = it.next();
+        for (String prop : properties.keySet()) {
             set(prop, copy.get(prop));
         }
     }
@@ -94,20 +91,20 @@ public class ComponentStyle {
 
     @Override
     public String toString() {
-        String str = "{";
+        StringBuilder str = new StringBuilder("{");
 
         if(properties.size() > 0) {
             int i = 0;
             for(Entry<String, Color> prop : properties.entrySet()) {
-                str += "\n  " + prop.getKey() + ": " + prop.getValue().toString().replace("java.awt.Color", "");
+                str.append("\n  ").append(prop.getKey()).append(": ").append(prop.getValue().toString().replace("java.awt.Color", ""));
                 if(++i < properties.size())
-                    str += ",";
+                    str.append(",");
             }
-            str += "\n";
+            str.append("\n");
         }
 
-        str += "}";
+        str.append("}");
 
-        return str;
+        return str.toString();
     }
 }

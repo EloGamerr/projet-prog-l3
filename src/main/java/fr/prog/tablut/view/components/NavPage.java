@@ -27,7 +27,7 @@ public class NavPage extends GenericPanel {
 
     private Title title = null;
     private GenericLabel description = null;
-    private BottomButtonPanel bottomPanel = null;
+    private final BottomButtonPanel bottomPanel;
 
     /**
      * Static method that stores the dimension that the instances of NavPage should take.

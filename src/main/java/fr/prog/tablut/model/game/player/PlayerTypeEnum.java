@@ -16,9 +16,9 @@ public enum PlayerTypeEnum {
     HARD_AI("Ordinateur diffcile", AIHard.class, true);
 
     
-	private String name;
-    private Class<? extends Player> playerClass;
-    private boolean isAI;
+	private final String name;
+    private final Class<? extends Player> playerClass;
+    private final boolean isAI;
     
     PlayerTypeEnum(String name, Class<? extends Player> playerClass, boolean isAI) {
         this.name = name;

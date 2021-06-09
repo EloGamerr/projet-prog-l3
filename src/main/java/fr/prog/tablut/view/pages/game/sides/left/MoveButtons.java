@@ -13,13 +13,13 @@ import fr.prog.tablut.view.components.generic.GenericRoundedButton;
  * The In-game button's menu
  */
 public class MoveButtons extends GenericPanel {
-    private GenericRoundedButton undo, redo;
+    private final GenericRoundedButton undo;
+    private final GenericRoundedButton redo;
 
     /**
      * Creates the ing-game button's menu
      * @param d The dimension of the menu
      * @param gameController The game's controller
-     * @param rightSide The right side component
      */
     public MoveButtons(Dimension d, GameController gameController) {
         super(new GridBagLayout());
@@ -91,7 +91,7 @@ public class MoveButtons extends GenericPanel {
     private void enableButton(GenericRoundedButton button, boolean enable) {
         String style = "button" + (enable? "" : ":disabled");
 
-        if(button.getStyle().replace(":hover", "") != style)
+        if(!button.getStyle().replace(":hover", "").equals(style))
             button.setStyle(style);
     }
     

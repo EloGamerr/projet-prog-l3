@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.border.EmptyBorder;
 
@@ -38,18 +39,14 @@ public class HelpTable extends GenericPanel {
  */
 class HTable {
 	// number of columns
-	private int numCol = 0;
+	private final int numCol;
 
 	// headers <th>
-	private ArrayList<String> headers = new ArrayList<>();
+	private final ArrayList<String> headers = new ArrayList<>();
 	// rows <tr> containing cells <td>
-	private ArrayList<String[]> rows = new ArrayList<>();
+	private final ArrayList<String[]> rows = new ArrayList<>();
 
-	// header and cell's properties (font size)
-	private int headerFontSize = 20;
-	private int tdFontSize = 15;
-
-		/**
+	/**
 		 * Creates an empty help table with preset number of column
 		 * @param numCol Number of columns in the table
 		 */
@@ -68,9 +65,7 @@ class HTable {
 
 		int min = Math.min(numCol, headers.length);
 
-		for(int i=0; i < min; i++) {
-			this.headers.add(headers[i]);
-		}
+		this.headers.addAll(Arrays.asList(headers).subList(0, min));
 	}
 
 	/**
@@ -103,6 +98,8 @@ class HTable {
 		for(int i=0; i < numCol; i++) {
 			String h = headers.get(i);
 			gbc.gridx = i;
+			// header and cell's properties (font size)
+			int headerFontSize = 20;
 			GenericLabel hLabel = new GenericLabel(h, headerFontSize);
 			hLabel.setForeground(GenericObjectStyle.getProp("table.th", "color"));
 			hLabel.setBorder(new EmptyBorder(0, 50, 50, 50));
@@ -116,6 +113,7 @@ class HTable {
 			for(int j=0; j < numCol; j++) {
 				gbc.gridx = j;
 				String td = rows.get(i)[j];
+				int tdFontSize = 15;
 				GenericLabel tdLabel = new GenericLabel(td, tdFontSize);
 				tdLabel.setForeground(GenericObjectStyle.getProp("table.td", "color"));
 				tdLabel.setBorder(new EmptyBorder(8, 0, 8, 0));

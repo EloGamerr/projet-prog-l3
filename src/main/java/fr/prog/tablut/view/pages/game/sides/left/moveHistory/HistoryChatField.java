@@ -24,17 +24,16 @@ import fr.prog.tablut.view.utils.Time;
 
 public class HistoryChatField extends GenericPanel {
 	private final GamePage gamePage;
-    private int labelHeight;
-    private List<LabelAction> allHistory = new ArrayList<LabelAction>();
-    private GridBagConstraints c;
-	private Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
-    private Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
+    private final int labelHeight;
+    private final List<LabelAction> allHistory = new ArrayList<>();
+    private final GridBagConstraints c;
+	private final Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
+    private final Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
     
     /**
      * Creates a chat's action manager. Privates, only used by its parent.
      * <p>All other components communicates with MoveHistoryPanel which will communicates with HistoryChatField.</p>
      * @see MoveHistoryPanel
-     * @param gamePage
      */
 	public HistoryChatField(GamePage gamePage) {
         super(new GridBagLayout());
@@ -113,7 +112,6 @@ public class HistoryChatField extends GenericPanel {
 
     /**
      * Returns the number of moves in the history view
-     * @return
      */
     public int getMovesNumber() {
         return c.gridy;
@@ -135,10 +133,9 @@ public class HistoryChatField extends GenericPanel {
 
     /**
      * Sets the cursor's type when hovering the chat
-     * @param cursorType
      */
 	public void setCursorType(String cursorType) {
-        if(cursorType == "hand") setCursor(handCursor);
+        if(cursorType.equals("hand")) setCursor(handCursor);
         else setCursor(defaultCursor);
 	}
 
@@ -187,7 +184,7 @@ class LabelAction extends JLabel {
     protected static Dimension size = new Dimension(0, 0);
 
     private int position; // self position in the chat history
-	private boolean systemMessage = false;
+	private final boolean systemMessage;
 	private GenericLabel timing, player, sentence;
 
     /**
@@ -299,7 +296,6 @@ class LabelAction extends JLabel {
 
     /**
      * Sets the label's position in the chat
-     * @param num
      */
 	public void setPosition(int num) {
 		position = num;

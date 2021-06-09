@@ -20,10 +20,10 @@ public class ActionAdaptator<T extends GenericComponent> implements ActionListen
 		
 	}
 
-    @Override
     /**
-    * L'action du bouton sera lancé si il n'est pas désactivé
-    */
+     * L'action du bouton sera lancé si il n'est pas désactivé
+     */
+    @Override
     public void actionPerformed(ActionEvent e) {
         // doesn't process if the button is disabled
 		if(entity.isDisabled())

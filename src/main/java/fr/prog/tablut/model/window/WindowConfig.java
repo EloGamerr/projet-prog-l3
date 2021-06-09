@@ -22,7 +22,7 @@ public class WindowConfig {
 
     // possible resolutions of the window
     // we keep basic HD screen resolutions
-    public int resolutions[][] = {
+    public final int[][] resolutions = {
         { 640,  360 },
         { 1024, 576 },
         { 1280, 720 },
@@ -34,7 +34,7 @@ public class WindowConfig {
     public int windowWidth = resolutions[1][0];
     public int windowHeight = resolutions[1][1];
 
-    Style style = new Style();
+    final Style style = new Style();
     
     /**
      * Default constructor
@@ -63,6 +63,7 @@ public class WindowConfig {
      * Copies the configuration from another WindowConfig
      * @param config Another WindowConfig to copy its configuration
      */
+    @SuppressWarnings("CopyConstructorMissesField")
     public WindowConfig(WindowConfig config) {
         setConfig(config);
     }
@@ -106,6 +107,7 @@ public class WindowConfig {
      * or basic resolutions, then it will resize the window to not overflow the screen and fit
      * the required dimension.</p>
      */
+    @SuppressWarnings("ConstantConditions")
     public void setConfig(JSONObject json) {
         JSONObject o;
 
@@ -135,11 +137,10 @@ public class WindowConfig {
                 // if it overflows the screen, check for available resolutions
                 // that fit the screen
                 if(windowWidth > w || windowHeight > h) {
-                    int l = resolutions.length - 1;
-                    int i = l;
+                    int i = resolutions.length - 1;
 
                     if(i > -1) {
-                        int res[] = resolutions[i];
+                        int[] res = resolutions[i];
 
                         while(i > -1 && (w < res[0] || h < res[1])) {
                             res = resolutions[--i];

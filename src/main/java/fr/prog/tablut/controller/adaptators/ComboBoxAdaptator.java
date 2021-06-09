@@ -2,6 +2,7 @@ package fr.prog.tablut.controller.adaptators;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 import javax.swing.JComboBox;
 
@@ -25,7 +26,7 @@ public class ComboBoxAdaptator implements ActionListener {
 		JComboBox<?> comboBox = (JComboBox<?>)e.getSource();
 
 		//Si l'utilisateur séléctionne l'humain, on affiche l'input pour séléctionner le nom
-        if(comboBox.getSelectedItem().toString() == "Humain")
+        if(Objects.requireNonNull(comboBox.getSelectedItem()).toString().equals("Humain"))
 			selectionPlayer.showInput(side);
 		else
 		//Sinon on le cache

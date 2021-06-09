@@ -16,7 +16,7 @@ public class ButtonNavAdaptator extends ActionAdaptator<GenericButton> {
 	/**
 	* @param button Le component bouton
 	* @param globalWindow l'instance de la globalWindow
-	* @param savedGamesPanel La page de destination
+	* @param dest La page de destination
 	*/
 	public ButtonNavAdaptator(GenericButton button, GlobalWindow globalWindow, PageName dest) {
 		super(button);

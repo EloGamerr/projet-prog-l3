@@ -19,7 +19,6 @@ public class ButtonDeleteSaveAdaptator extends ActionAdaptator<GenericButton> {
 	/**
 	* @param button Le component bouton
 	* @param index L'index du bouton dans le tableau
-	* @param saveButton 
 	* @param savedGamesPanel Le panel de sauvegarde
 	*/
 	public ButtonDeleteSaveAdaptator(GenericButton button, int index, JPanel saveButton, SavedGamesPanel savedGamesPanel) {

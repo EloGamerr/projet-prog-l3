@@ -15,8 +15,8 @@ import fr.prog.tablut.view.components.NavPage;
  * @see Page
  */
 public class LoadSavesPage extends Page {
-	protected SavedGamesPanel panel;
-	protected BottomButtonPanel bottomPanel;
+	protected final SavedGamesPanel panel;
+	protected final BottomButtonPanel bottomPanel;
 
 	/**
 	 * Creates the load page.

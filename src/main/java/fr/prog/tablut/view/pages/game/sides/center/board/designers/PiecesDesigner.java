@@ -25,7 +25,7 @@ public class PiecesDesigner extends Designer {
     @Override
     public void draw(BoardData data) {
         Game game = Game.getInstance();
-		int imgSize = (int)(g.getCellSize() / 2);
+		int imgSize = g.getCellSize() / 2;
 
         // draw preview grid
         if(data.previewGrid != null) {

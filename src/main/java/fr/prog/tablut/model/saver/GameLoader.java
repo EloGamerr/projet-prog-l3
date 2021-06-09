@@ -24,7 +24,7 @@ public class GameLoader {
 	private static final String savePrefix = "save-";
 	private static final String saveSuffix = ".sv";
 	private String currentSavePath;
-	private Game game;
+	private final Game game;
 
 	////////////////////////////////////////////////////
 	// Constructor
@@ -38,6 +38,7 @@ public class GameLoader {
 	// Main function
 	////////////////////////////////////////////////////
 
+	@SuppressWarnings("UnusedReturnValue")
 	public boolean loadData(int index_Save) {
 		try {
 			Path path = Paths.get(savesPath);
@@ -132,7 +133,7 @@ public class GameLoader {
 	public PlayerTypeEnum getAttacker(int attacker) {
 		PlayerTypeEnum[] values = PlayerTypeEnum.values();
 
-		if(values.length == 0 || attacker < 0 || attacker >= values.length) {
+		if(attacker < 0 || attacker >= values.length) {
 			game.setAttacker(PlayerTypeEnum.getDefaultPlayer(PlayerEnum.ATTACKER));
 			return null;
 		}
@@ -143,7 +144,7 @@ public class GameLoader {
 	public PlayerTypeEnum getDefender(int defender) {
 		PlayerTypeEnum[] values = PlayerTypeEnum.values();
 
-		if(values.length == 0 || defender < 0 || defender >= values.length) {
+		if(defender < 0 || defender >= values.length) {
 			game.setDefender(PlayerTypeEnum.getDefaultPlayer(PlayerEnum.DEFENDER));
 			return null;
 		}
@@ -179,14 +180,13 @@ public class GameLoader {
     				if(toOrFrom.equals(SaverConstants.NEXT_LINE) && lOrC.equals(SaverConstants.BR_LEFT))
     	    			movement.setFromC(Character.getNumericValue(playsString.charAt(index)));
 
-    	    		else if(toOrFrom == SaverConstants.NEXT_LINE && lOrC == SaverConstants.COMMA)
+    	    		else if(toOrFrom.equals(SaverConstants.NEXT_LINE))
     	    			movement.setFromL(Character.getNumericValue(playsString.charAt(index)));
 
-    	    		else if(toOrFrom == SaverConstants.BLANK && lOrC == SaverConstants.BR_LEFT)
+    	    		else if(lOrC.equals(SaverConstants.BR_LEFT))
     	    			movement.setToC(Character.getNumericValue(playsString.charAt(index)));
                         
-    	    		else if(toOrFrom == SaverConstants.BLANK && lOrC == SaverConstants.COMMA)
-    	    			movement.setToL(Character.getNumericValue(playsString.charAt(index)));    				
+    	    		else movement.setToL(Character.getNumericValue(playsString.charAt(index)));
     		}
 
     		index++;

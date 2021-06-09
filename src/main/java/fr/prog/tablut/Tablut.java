@@ -11,8 +11,8 @@ import fr.prog.tablut.view.GlobalWindow;
  */
 public class Tablut implements Runnable {
     // default loaded config if no argument given
-    public static String configPath = "config/dark_theme.json";
-    private String configFile = null;
+    public static final String configPath = "config/dark_theme.json";
+    private final String configFile;
 
     public static void main(String[] args) {
         // args[0] is the config file to load (app theme)

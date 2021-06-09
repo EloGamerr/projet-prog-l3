@@ -11,6 +11,7 @@ import java.awt.font.FontRenderContext;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -28,8 +29,8 @@ public class GenericRoundedButton extends GenericButton {
     protected TextAlignment alignment = TextAlignment.CENTER;
     protected int width = 0;
     protected int height = 0;
-    protected int paddingWidth = 60;
-    protected int paddingHeight = 20;
+    protected final int paddingWidth = 60;
+    protected final int paddingHeight = 20;
     protected int borderRadius = 12;
 
     protected Rectangle2D textBounds;
@@ -206,7 +207,7 @@ public class GenericRoundedButton extends GenericButton {
         
         super.setStyle(style);
 
-        if(oldStyle != style) {
+        if(!oldStyle.equals(style)) {
             repaint();
         }
     }
@@ -244,12 +245,13 @@ public class GenericRoundedButton extends GenericButton {
      * @param height The image's height
      * @return Either it successfully loaded the image or not
      */
+    @SuppressWarnings("UnusedReturnValue")
     public boolean setImage(String imageSrc, int x, int y, int width, int height) {
         if(imageSrc != null) {
 			InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream("images/" + imageSrc);
 
 			try {
-				image = ImageIO.read(in);
+				image = ImageIO.read(Objects.requireNonNull(in));
 
                 imageX = x;
                 imageY = y;

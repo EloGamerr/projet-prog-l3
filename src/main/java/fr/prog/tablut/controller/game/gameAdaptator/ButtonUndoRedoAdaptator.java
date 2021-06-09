@@ -7,7 +7,7 @@ import fr.prog.tablut.controller.game.gameController.GameController;
 import fr.prog.tablut.view.components.generic.GenericButton;
 
 public class ButtonUndoRedoAdaptator extends ActionAdaptator<GenericButton> {
-	GameController gameController;
+	private final GameController gameController;
 
 	public ButtonUndoRedoAdaptator(GenericButton button, GameController gameController) {
 		super(button);
@@ -17,10 +17,10 @@ public class ButtonUndoRedoAdaptator extends ActionAdaptator<GenericButton> {
 	
 	@Override
 	public void process(ActionEvent e) {
-		if(entity.getName() == "undo-button")
+		if(entity.getName().equals("undo-button"))
 			gameController.undo();
         
-		else if(entity.getName() == "redo-button")
+		else if(entity.getName().equals("redo-button"))
 			gameController.redo();
 	}
 }

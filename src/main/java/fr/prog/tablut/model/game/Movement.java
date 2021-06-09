@@ -1,6 +1,7 @@
 package fr.prog.tablut.model.game;
 
 import java.awt.Point;
+import java.util.Objects;
 
 public class Movement {
 	private Point pointFrom;
@@ -75,7 +76,7 @@ public class Movement {
 		if (obj instanceof Movement) {
 			Movement movement = (Movement)obj;
 
-			return ((pointFrom == null && movement.pointFrom == null) || pointFrom.equals(movement.pointFrom)) && ((pointTo == null && movement.pointTo == null) || pointTo.equals(movement.pointTo));
+			return ((pointFrom == null && movement.pointFrom == null) || Objects.requireNonNull(pointFrom).equals(movement.pointFrom)) && ((pointTo == null && movement.pointTo == null) || Objects.requireNonNull(pointTo).equals(movement.pointTo));
 		}
 		return super.equals(obj);
 	}

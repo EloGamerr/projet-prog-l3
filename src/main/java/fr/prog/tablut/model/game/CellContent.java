@@ -3,6 +3,7 @@ package fr.prog.tablut.model.game;
 import java.awt.Image;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 
 import javax.imageio.ImageIO;
 
@@ -30,7 +31,7 @@ public enum CellContent {
 			InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(path);
 
 			try {
-				image = ImageIO.read(in);
+				image = ImageIO.read(Objects.requireNonNull(in));
 			}
 			catch(IOException e) {
 				e.printStackTrace();

@@ -13,7 +13,6 @@ import fr.prog.tablut.view.components.generic.GenericObjectStyle;
  * @see JLabel
  */
 public class Title extends JLabel {
-    AbstractBorder border = new EmptyBorder(0, 0, 20, 0);
 
     /**
      * Default constructor.
@@ -31,7 +30,8 @@ public class Title extends JLabel {
      */
     public Title(String text, int fontSize) {
         super(text);
-		setBorder(border);
+        AbstractBorder border = new EmptyBorder(0, 0, 20, 0);
+        setBorder(border);
         setFont(new Font("Farro", Font.BOLD, fontSize));
         setForeground(GenericObjectStyle.getProp("title", "color"));
     }

@@ -32,7 +32,7 @@ public class GameKeyAdaptator extends KeyAdapter {
                 case KeyEvent.VK_S:
                     value = JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment sauvegarder la partie en cours ?", "Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
-                    if(value != null && (int) value == 0) {
+                    if((int) value == 0) {
                         gameController.save();
                     }
                     break;
@@ -41,7 +41,7 @@ public class GameKeyAdaptator extends KeyAdapter {
                 case KeyEvent.VK_N:
                     value = JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment recommencer la partie en cours ?", "Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
-                    if(value != null && (int) value == 0) {
+                    if((int) value == 0) {
                         gameController.restart();
                     }
                     break;

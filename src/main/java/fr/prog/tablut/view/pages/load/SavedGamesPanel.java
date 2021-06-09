@@ -33,8 +33,7 @@ public class SavedGamesPanel extends GenericPanel {
 	private final int btnHeight = 35;
 	private int index_selected = 0;
     private final GenericPanel wrapper;
-    private final GenericRoundedPanel wrapperContainer;
-	private GenericRoundedButton buttonToLightup;
+    private final GenericRoundedButton buttonToLightup;
     private GenericPanel wrapperInner = null;
 	
 	public GenericRoundedButton button_selected = null;
@@ -54,7 +53,7 @@ public class SavedGamesPanel extends GenericPanel {
 		Dimension size = new Dimension(width, height);
 
         // the rounded wrapper that's drawn
-		wrapperContainer = new GenericRoundedPanel();
+        GenericRoundedPanel wrapperContainer = new GenericRoundedPanel();
 		wrapperContainer.setLayout(new BorderLayout());
 		wrapperContainer.setStyle("area");
 		
@@ -93,7 +92,7 @@ public class SavedGamesPanel extends GenericPanel {
      * Enables the confirm button
      */
     public void enableConfirmButton() {
-        if(buttonToLightup.getStyle() != "button.green")
+        if(!buttonToLightup.getStyle().equals("button.green"))
 			buttonToLightup.setStyle("button.green");
     }
 
@@ -101,7 +100,7 @@ public class SavedGamesPanel extends GenericPanel {
      * Disables the confirm button
      */
     public void disableConfirmButton() {
-        if(buttonToLightup.getStyle() != "button.green:disabled")
+        if(!buttonToLightup.getStyle().equals("button.green:disabled"))
             buttonToLightup.setStyle("button.green:disabled");
     }
 
@@ -116,6 +115,7 @@ public class SavedGamesPanel extends GenericPanel {
     /**
      * Updates the content in the list of the saves
      */
+    @SuppressWarnings("SuspiciousNameCombination")
     public void updateContent() {
 		ArrayList<Couple<String, Integer>> saves = GameSaver.getInstance().getSavesNames();
         
@@ -221,7 +221,7 @@ public class SavedGamesPanel extends GenericPanel {
 
         // recalculate the number of saves to reorganize these.
         if(!win && n * (btnHeight+2) < height) {
-            Component cpnts[] = w.getComponents();
+            Component[] cpnts = w.getComponents();
 
             GridBagConstraints c = new GridBagConstraints();
             c.anchor = GridBagConstraints.NORTH;

@@ -10,10 +10,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.io.FileNotFoundException;
 
 
@@ -85,9 +82,9 @@ public class GameSaver {
 	/*
  	* Va appeller la fonction qui va écraser la sauvegarde du jeu courant
  	*/
-	private void writeInFile(Path path, String content, OpenOption... options) {
+	private void writeInFile(Path path, String content) {
 		try {
-			Files.write(path, Collections.singletonList(content), StandardCharsets.UTF_8, options);
+			Files.write(path, Collections.singletonList(content), StandardCharsets.UTF_8, StandardOpenOption.CREATE);
 		}
 		catch(IOException e) {
 			e.printStackTrace();
@@ -114,7 +111,7 @@ public class GameSaver {
 			Files.createDirectories(path.getParent());
 
 			if(!Files.exists(path)) {
-				writeInFile(path, jsonParameters.toString(), StandardOpenOption.CREATE);
+				writeInFile(path, jsonParameters.toString());
 			}
 			else {
 				List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
@@ -149,9 +146,9 @@ public class GameSaver {
 		JSONObject jsonAttacker = new JSONObject();
 		JSONObject jsonAttackerName = new JSONObject();
 
-		jsonDefender.put("defender", PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender()).ordinal());
+		jsonDefender.put("defender", Objects.requireNonNull(PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender())).ordinal());
 		jsonDefenderName.put("defenderName", Game.getInstance().getDefenderName());
-		jsonAttacker.put("attacker", PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker()).ordinal());
+		jsonAttacker.put("attacker", Objects.requireNonNull(PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker())).ordinal());
 		jsonAttackerName.put("attackerName", Game.getInstance().getAttackerName());
 		jsonWinner.put("winner", Game.getInstance().getWinner().toString());
 		jsonPlayingPlayer.put("playingPlayer", Game.getInstance().getPlayingPlayerEnum().toString());
@@ -265,6 +262,7 @@ public class GameSaver {
 		currentSavePath = path;
 	}
 
+	@SuppressWarnings("ResultOfMethodCallIgnored")
 	public ArrayList<Couple<String, Integer>> getSavesNames() {
         int i = 0;
 		File folder = new File(savesPath);
@@ -272,13 +270,13 @@ public class GameSaver {
 			folder.mkdir();
 		}
         String[] files = folder.list();
-        ArrayList<Couple<String, Integer>> saves = new ArrayList<Couple<String, Integer>>();
+        ArrayList<Couple<String, Integer>> saves = new ArrayList<>();
 
         // recover saves
-		for(String f : files) {
+		for(String f : Objects.requireNonNull(files)) {
             if(f.startsWith(savePrefix) && f.endsWith(saveSuffix)) {
                 int fi = Integer.parseInt(f.replace(savePrefix, "").replace(saveSuffix, ""));
-                saves.add(new Couple<String, Integer>(generateSaveName(new File(savesPath + "/" + f), i++), fi));
+                saves.add(new Couple<>(generateSaveName(new File(savesPath + "/" + f), i++), fi));
             }
 		}
 

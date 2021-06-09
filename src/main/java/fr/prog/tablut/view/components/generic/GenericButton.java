@@ -17,8 +17,8 @@ import fr.prog.tablut.model.window.PageName;
 public class GenericButton extends JButton implements GenericComponent {
 	protected boolean hovering = false;
     protected boolean canHoverStyle = false;
-    protected Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
-    protected Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
+    protected final Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
+    protected final Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
 
 	protected ActionListener actionListenerHref = null;
 	protected ActionListener actionListenerBase = null;

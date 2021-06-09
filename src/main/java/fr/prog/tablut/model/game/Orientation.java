@@ -6,8 +6,8 @@ public enum Orientation {
     SOUTH(0, 1),
     WEST(-1, 0);
 
-    int dl;
-    int dc;
+    final int dl;
+    final int dc;
     
     Orientation(int dc, int dl) {
         this.dc = dc;

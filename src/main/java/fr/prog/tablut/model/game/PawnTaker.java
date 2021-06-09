@@ -8,9 +8,9 @@ import java.util.List;
 import fr.prog.tablut.structures.Couple;
 
 public class PawnTaker {
-	private List<Point> visited = new ArrayList<>(); // Variable globale qui sert à connaître les pions alliés et 
+	private final List<Point> visited = new ArrayList<>(); // Variable globale qui sert à connaître les pions alliés et
 													 // connexes qui ont déjà été traité par les fonctions de la classe
-	private Game game;
+	private final Game game;
 	
 	
 	////////////////////////////////////////////////////
@@ -123,7 +123,7 @@ public class PawnTaker {
 		List<Point> allyCells = new ArrayList<>();
 		boolean surrounded = true;
 		int counter_obstacle = 0;
-		Couple<Integer , List<Point>> var = new Couple<Integer, List<Point>>(counter_obstacle, allyCells);
+		Couple<Integer , List<Point>> var = new Couple<>(counter_obstacle, allyCells);
 		
 		switch(game.getGrid()[y][x]) {
 		
@@ -199,7 +199,7 @@ public class PawnTaker {
 			counter_obstacle++;
 		}
 
-		return new Couple<Integer, List<Point>>(counter_obstacle, allyCells);
+		return new Couple<>(counter_obstacle, allyCells);
 	}
 	
 	public Couple<Integer, List<Point>> checkneighbour_king(List<Point> allyCells, int counter_obstacle, int x, int y) {
@@ -214,7 +214,7 @@ public class PawnTaker {
 			counter_obstacle++;
 		}
 
-		return new Couple<Integer, List<Point>>(counter_obstacle, allyCells);
+		return new Couple<>(counter_obstacle, allyCells);
 	}
 
 	public Couple<Integer, List<Point>> checkneighbour_defense(List<Point> allyCells, int counter_obstacle, int x, int y) {
@@ -229,7 +229,7 @@ public class PawnTaker {
 			counter_obstacle++;
 		}
 
-		return new Couple<Integer, List<Point>>(counter_obstacle, allyCells);
+		return new Couple<>(counter_obstacle, allyCells);
 	}
 	
 

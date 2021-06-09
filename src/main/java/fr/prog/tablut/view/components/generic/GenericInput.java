@@ -24,9 +24,10 @@ import fr.prog.tablut.model.window.ComponentStyle;
  * A component that extends a JTextField, a basic text input
  * @see JTextField
  */
+@SuppressWarnings("deprecation")
 public class GenericInput extends JTextField implements GenericComponent {
     protected String styleName;
-    protected int borderRadius = 10;
+    protected final int borderRadius = 10;
     protected Rectangle2D textBounds;
     protected float labelX = 0;
     protected float labelY = 0;
@@ -35,9 +36,9 @@ public class GenericInput extends JTextField implements GenericComponent {
     protected boolean canFocusStyle = false;
     protected boolean canDisableStyle = false;
     protected boolean isDisabled = false;
-    private FontRenderContext frc = new FontRenderContext(null, false, false);
-    protected Cursor textCursor = new Cursor(Cursor.TEXT_CURSOR);
-    protected Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
+    private final FontRenderContext frc = new FontRenderContext(null, false, false);
+    protected final Cursor textCursor = new Cursor(Cursor.TEXT_CURSOR);
+    protected final Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
 
     /**
      * Default constructor.
@@ -166,6 +167,7 @@ public class GenericInput extends JTextField implements GenericComponent {
     /**
      * Repaints the input
      */
+    @SuppressWarnings("IntegerDivisionInFloatingPointContext")
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
 
@@ -212,7 +214,6 @@ public class GenericInput extends JTextField implements GenericComponent {
 
     /**
      * Returns the input's style
-     * @return
      */
     public String getStyle() {
 		return styleName;

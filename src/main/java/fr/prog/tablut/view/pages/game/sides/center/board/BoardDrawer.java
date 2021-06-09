@@ -17,19 +17,19 @@ import java.awt.Graphics2D;
  * <p>It's an independant class that doesn't look the model, communicates with the controller or with other project's view components.</p>
  */
 public class BoardDrawer {
-    private int cellNumber = 9;
+    private final int cellNumber = 9;
     private int boardSize = 0;
     private int leftX = 0;
     private int leftY = 0;
     private int cellSize = 0;
-    private int widthSeparator = 2;
-	private int widthBorder = 25;
+    private final int widthSeparator = 2;
+	private final int widthBorder = 25;
 
     private Graphics2D g2d;
     private JPanel container;
 
-    private Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
-    private Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
+    private final Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
+    private final Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
 
     /**
      * Creates a BoardDrawer utility manager
@@ -60,7 +60,6 @@ public class BoardDrawer {
     /**
      * Sets in which container it has to draw.
      * <p>Only used to set the cursor's type.</p>
-     * @param container
      */
     public void setContainer(JPanel container) {
         this.container = container;
@@ -84,7 +83,6 @@ public class BoardDrawer {
 
     /**
      * Returns the size of the drawn board
-     * @return
      */
     public int getSize() {
         return boardSize;
@@ -151,7 +149,7 @@ public class BoardDrawer {
     }
 
     public void setCursor(String cursor) {
-        if(cursor == "hand") container.setCursor(handCursor);
+        if(cursor.equals("hand")) container.setCursor(handCursor);
         else container.setCursor(defaultCursor);
     }
 

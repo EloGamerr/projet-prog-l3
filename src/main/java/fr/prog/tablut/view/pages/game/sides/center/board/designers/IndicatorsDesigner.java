@@ -8,6 +8,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import java.util.List;
+import java.util.Objects;
 
 import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Game;
@@ -33,7 +34,7 @@ public class IndicatorsDesigner extends Designer {
         super(bd);
 
         try {
-            throne = ImageIO.read(ClassLoader.getSystemClassLoader().getResourceAsStream("images/chess/small/throne_small.png"));
+            throne = ImageIO.read(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("images/chess/small/throne_small.png")));
         }
         catch(IOException e) {
             e.printStackTrace();

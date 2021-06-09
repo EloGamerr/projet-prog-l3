@@ -58,13 +58,13 @@ public class BoardDesigner extends Designer {
             g.line(_x_, y, _x_ + m, y); // H
 
             if(i < cellNumber) {
-                Integer n = i+1;
+                int n = i+1;
                 
                 int a = - bw/2;
                 int b = bw + z/*  + cellSize / 2 */;
 
                 g.setColor(GameColors.LETTERS_NUMBERS_COLOR);
-                g.drawString(n.toString(), _x_ + a - 3, _y_ + b + 12); // 0-9
+                g.drawString(Integer.toString(n), _x_ + a - 3, _y_ + b + 12); // 0-9
                 g.drawString(Character.toString((char)(i + 65)), _x_ + b, _y_ + a + 5); // A-I
             }
         }

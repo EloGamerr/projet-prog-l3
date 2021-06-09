@@ -11,11 +11,8 @@ import java.awt.*;
 import java.util.Random;
 
 public abstract class AIPlayer extends Player {
-	protected Random random;
+	protected final Random random;
 	private AnimationCoup anim;
-	private boolean isInAnim;
-	private Point fromCell = null;
-	private Point toCell = null;
 
 	public AIPlayer(PlayerEnum playerEnum) {
 		super(playerEnum);
@@ -29,7 +26,7 @@ public abstract class AIPlayer extends Player {
 	 */
 	@Override
 	public boolean play(Game game, GamePage gamePage) {
-		isInAnim = gamePage.isInAnim();
+		boolean isInAnim = gamePage.isInAnim();
 
 		if(isInAnim && anim != null) {
 			anim.check_anim();
@@ -40,8 +37,6 @@ public abstract class AIPlayer extends Player {
 	}
 
 	public void updateAnim(Point fromCell, Point toCell, GamePage gamePage) {
-		this.fromCell = fromCell;
-		this.toCell = toCell;
 		this.anim = new AnimationCoup(new Movement(fromCell.x,fromCell.y, toCell.x, toCell.y), gamePage);
 		anim.startAnim();
 	}

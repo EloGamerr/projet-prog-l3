@@ -22,7 +22,7 @@ import fr.prog.tablut.view.pages.game.sides.center.board.BoardInterface;
  * @see BoardInterface
  */
 public class CenterSideGame extends GameInterfaceSide {
-    protected BoardInterface boardInterface;
+    protected final BoardInterface boardInterface;
     protected GenericPanel turnOf;
 
     /**
@@ -71,7 +71,7 @@ public class CenterSideGame extends GameInterfaceSide {
             // We prefer to clear the component and recreate an image and a text
             turnOf.removeAll();
 
-            String name = null;
+            String name;
             Image img = null;
             ImageComponent ic;
 

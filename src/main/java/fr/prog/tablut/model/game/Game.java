@@ -2,10 +2,7 @@ package fr.prog.tablut.model.game;
 
 import java.awt.Point;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import fr.prog.tablut.model.game.player.Player;
 import fr.prog.tablut.model.game.player.PlayerEnum;
@@ -27,7 +24,7 @@ public class Game {
 	private Plays plays;
 	private boolean hasStarted;
 	private String currentSavePath = "";
-	public GameLoader loader;
+	public final GameLoader loader;
 	
 	private String attackerName = "";
 
@@ -153,10 +150,7 @@ public class Game {
 
 		List<Movement> accessibleCells = getAllPossibleMovesForPosition(c, l);
 
-		if(!accessibleCells.contains(new Movement(c, l, toC, toL)))
-			return false;
-
-		return true;
+		return accessibleCells.contains(new Movement(c, l, toC, toL));
 	}
 
 	/**
@@ -192,7 +186,7 @@ public class Game {
 			}
 
 			this.playingPlayerEnum = this.getPlayingPlayerEnum().getOpponent();
-			if(PlayerTypeEnum.getFromPlayer(this.getAttacker()).isAI() && PlayerTypeEnum.getFromPlayer(this.getDefender()).isAI())
+			if(Objects.requireNonNull(PlayerTypeEnum.getFromPlayer(this.getAttacker())).isAI() && Objects.requireNonNull(PlayerTypeEnum.getFromPlayer(this.getDefender())).isAI())
 				setPaused(true);
 			return true;
 		}
@@ -334,12 +328,11 @@ public class Game {
 	 *
 	 * @return True if the cell content is owned by the playingPlayerEnum
 	 */
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	public boolean isPlayingPlayerOwningCell(int c, int l) {
 		if(this.playingPlayerEnum == PlayerEnum.ATTACKER && this.getCellContent(c, l) != CellContent.ATTACK_TOWER) return false;
 
-		if(this.playingPlayerEnum == PlayerEnum.DEFENDER && this.getCellContent(c, l) != CellContent.DEFENSE_TOWER && this.getCellContent(c, l) != CellContent.KING) return false;
-
-		return true;
+		return this.playingPlayerEnum != PlayerEnum.DEFENDER || this.getCellContent(c, l) == CellContent.DEFENSE_TOWER || this.getCellContent(c, l) == CellContent.KING;
 	}
 
 	/**
@@ -659,7 +652,7 @@ public class Game {
 	}
 	
 	public void setPaused(boolean paused) {
-		boolean pause = PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker()).isAI() && PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender()).isAI();
+		boolean pause = Objects.requireNonNull(PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker())).isAI() && Objects.requireNonNull(PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender())).isAI();
 
 		if(pause)
 			pause = paused;

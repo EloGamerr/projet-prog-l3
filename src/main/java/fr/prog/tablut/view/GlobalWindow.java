@@ -1,10 +1,13 @@
 package fr.prog.tablut.view;
 
-import java.awt.Dimension;
+import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
+import java.util.Objects;
 
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 
 import org.json.JSONObject;
 
@@ -26,13 +29,13 @@ import fr.prog.tablut.view.pages.newGame.NewGamePage;
  * @see JFrame
  */
 public class GlobalWindow {
-	protected WindowConfig config;
-    private GamePage gamePage;
-    private HomePage homePage;
-    private LoadSavesPage loadPage;
-    private HelpPage helpPage;
-    private NewGamePage newGamePage;
-	private JFrame jFrame;
+	protected final WindowConfig config;
+    private final GamePage gamePage;
+    private final HomePage homePage;
+    private final LoadSavesPage loadPage;
+    private final HelpPage helpPage;
+    private final NewGamePage newGamePage;
+	private final JFrame jFrame;
     private Page currentPage;
 	private PageName previousPageName;
 
@@ -95,6 +98,14 @@ public class GlobalWindow {
 		jFrame.setLocationRelativeTo(null);
 		jFrame.setVisible(true);
 		jFrame.setResizable(false);
+
+		InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream("images/chess/small/white_tower_small.png");
+		try {
+			ImageIcon img = new ImageIcon(ImageIO.read(Objects.requireNonNull(in)));
+			jFrame.setIconImage(img.getImage());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
 
 	/**

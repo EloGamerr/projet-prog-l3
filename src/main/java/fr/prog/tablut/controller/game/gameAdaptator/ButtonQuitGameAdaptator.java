@@ -19,7 +19,7 @@ public class ButtonQuitGameAdaptator extends ActionAdaptator<GenericButton> {
     public void process(ActionEvent e) {
         Object value = JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment quitter la partie en cours ?", "Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
-        if(value != null && (int) value == 0) {
+        if((int) value == 0) {
             Game.resetInstance();
             globalWindow.getGamePage().setIsInAnim(false);
             globalWindow.changeWindow(entity.getHref());

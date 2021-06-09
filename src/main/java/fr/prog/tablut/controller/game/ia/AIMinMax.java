@@ -4,18 +4,14 @@ import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.Movement;
 import fr.prog.tablut.model.game.player.PlayerEnum;
 import fr.prog.tablut.view.pages.game.GamePage;
-import fr.prog.tablut.view.pages.game.sides.center.board.BoardDrawer;
-import fr.prog.tablut.view.pages.game.sides.center.board.GameColors;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+@SuppressWarnings("rawtypes")
 public abstract class AIMinMax extends AIPlayer {
     // Après plusieurs tests, on a conclu que 2 ou 3 threads permettaient d'avoir de meilleures performances
     private final ExecutorService executor = Executors.newFixedThreadPool(2);
@@ -44,7 +40,7 @@ public abstract class AIMinMax extends AIPlayer {
 
             previousMovements.addLast(movement);
 
-            updateAnim(movement.getFrom(), movement.getTo(), gamePage);
+            updateAnim(Objects.requireNonNull(movement).getFrom(), movement.getTo(), gamePage);
         }
 
         return true;

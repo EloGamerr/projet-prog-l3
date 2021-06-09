@@ -1,6 +1,5 @@
 package fr.prog.tablut.controller.adaptators;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -12,11 +11,6 @@ import fr.prog.tablut.view.components.generic.GenericInput;
 public class InputAdaptator extends ActionAdaptator<GenericInput> implements KeyListener {
     public InputAdaptator(GenericInput input) {
         super(input);
-    }
-
-    @Override
-    public void process(ActionEvent e) {
-		
     }
 
     @Override

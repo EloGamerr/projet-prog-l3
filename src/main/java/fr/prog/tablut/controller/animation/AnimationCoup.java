@@ -12,9 +12,10 @@ import fr.prog.tablut.view.pages.game.GamePage;
  * nécéssite en paramètre le mouvement choisie par l'IA et la page de jeu actuelle
  */
 public class AnimationCoup {
-	Movement mov;
-	GamePage view;
-	double progres, vitesseAnim;
+	private final Movement mov;
+	private final GamePage view;
+	private double progres;
+	private final double vitesseAnim;
 	
 	public AnimationCoup(Movement movement, GamePage gamePage) {
 		vitesseAnim = 0.05;

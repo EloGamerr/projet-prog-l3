@@ -7,7 +7,7 @@ import fr.prog.tablut.view.pages.game.GamePage;
 public class GameControllerAI {
     private int timer;
     private final int speed;
-    private GamePage gamePage;
+    private final GamePage gamePage;
 
     public GameControllerAI(int speed, GamePage gamePage) {
         this.speed = speed;

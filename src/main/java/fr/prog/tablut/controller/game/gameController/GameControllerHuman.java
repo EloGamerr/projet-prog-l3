@@ -40,22 +40,20 @@ public class GameControllerHuman {
         int colHovered = gamePage.getColFromXCoord(mousePosition.x);
         int rowHovered = gamePage.getRowFromYCoord(mousePosition.y);
 
-        if(mousePosition != null) {
-            if(selectedCell != null) {
-                gamePage.updateImageOnMouse(Game.getInstance().getCellContent(selectedCell.x, selectedCell.y).getImage(), selectedCell);
+        if(selectedCell != null) {
+            gamePage.updateImageOnMouse(Game.getInstance().getCellContent(selectedCell.x, selectedCell.y).getImage(), selectedCell);
 
-                Point hoveringCell = null;
-                
-                if(colHovered < 9 && rowHovered < 9)
-                    hoveringCell = new Point(colHovered, rowHovered);
+            Point hoveringCell = null;
 
-                gamePage.updateCellHovering(hoveringCell);
-            }
-            else if(lastRowHovered != rowHovered || lastColHovered != colHovered) {
-                lastRowHovered = rowHovered;
-                lastColHovered = colHovered;
-                gamePage.repaint();
-            }
+            if(colHovered < 9 && rowHovered < 9)
+                hoveringCell = new Point(colHovered, rowHovered);
+
+            gamePage.updateCellHovering(hoveringCell);
+        }
+        else if(lastRowHovered != rowHovered || lastColHovered != colHovered) {
+            lastRowHovered = rowHovered;
+            lastColHovered = colHovered;
+            gamePage.repaint();
         }
     }
 

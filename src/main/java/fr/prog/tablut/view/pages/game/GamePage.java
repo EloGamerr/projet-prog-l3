@@ -3,15 +3,14 @@ package fr.prog.tablut.view.pages.game;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
-import java.awt.event.ActionEvent;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Graphics;
+import java.util.Objects;
 
 import javax.swing.Timer;
 
@@ -34,7 +33,6 @@ import fr.prog.tablut.view.Page;
 import fr.prog.tablut.view.components.BottomButtonPanel;
 import fr.prog.tablut.view.components.ImageComponent;
 import fr.prog.tablut.view.components.NavPage;
-import fr.prog.tablut.view.components.generic.GenericButton;
 import fr.prog.tablut.view.components.generic.GenericLabel;
 import fr.prog.tablut.view.components.generic.GenericObjectStyle;
 import fr.prog.tablut.view.components.generic.GenericPanel;
@@ -58,7 +56,7 @@ public class GamePage extends Page {
     private NavPage winnerPage;
     private ImageComponent blackBT, blackT, whiteBT, whiteT;
 
-    private GameController gameController;
+    private final GameController gameController;
     
     private PlayerEnum lastPlayer = null;
 
@@ -126,10 +124,10 @@ public class GamePage extends Page {
      */
     @Override
     public void update() {
-        boolean a = PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker()).isAI(),
-            b = PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender()).isAI();
+        boolean a = Objects.requireNonNull(PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker())).isAI(),
+            b = Objects.requireNonNull(PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender())).isAI();
         
-        getRightSide().togglePauseButton((!a || !b)? false : Game.getInstance().isPaused());
+        getRightSide().togglePauseButton(a && b && Game.getInstance().isPaused());
 
         centerSide.updateTurnOf();
         leftSide.reset();
@@ -142,7 +140,6 @@ public class GamePage extends Page {
 
     /**
      * Initializes all components and style for the victory screen
-     * @param gc The game controller
      */
     private void initWinnerPanel() {
         foregroundPanel.setOpaque(true);
@@ -154,7 +151,7 @@ public class GamePage extends Page {
 
         bottomButton.getButton1().setStyle("button.dark");
 
-        bottomButton.getButton2().setAction(new ButtonRestartAdaptator((GenericButton)bottomButton.getButton2(), gameController, true, this));
+        bottomButton.getButton2().setAction(new ButtonRestartAdaptator(bottomButton.getButton2(), gameController, true, this));
         bottomButton.getButton1().setHref(PageName.HomePage, new ButtonQuitGameAdaptator(bottomButton.getButton1(), GenericObjectStyle.getGlobalWindow()));
         //
 
@@ -175,12 +172,7 @@ public class GamePage extends Page {
 
         replay.setStyle("button.dark");
 
-        replay.setAction(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                hideVictoryPage();
-            }
-        });
+        replay.setAction(e -> hideVictoryPage());
 
         GridBagConstraints c = new GridBagConstraints();
 
@@ -486,7 +478,6 @@ public class GamePage extends Page {
 
     /**
      * Returns the game's controller
-     * @return
      */
 	public GameController getGameController() {
 		return gameController;

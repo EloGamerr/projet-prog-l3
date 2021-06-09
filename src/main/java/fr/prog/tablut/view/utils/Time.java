@@ -12,18 +12,18 @@ public abstract class Time {
      * @return The formatted time
      */
     public static String formatToString(int ms) {
-        int arr[] = getTimesArray(ms);
+        int[] arr = getTimesArray(ms);
 
-        String text = "";
-        String units[] = { "ms", "s", "m", "h" };
+        StringBuilder text = new StringBuilder();
+        String[] units = { "ms", "s", "m", "h" };
 
         for(int i=units.length - 1; i > 0; i--) {
             if(arr[i] > 0) {
-                text += arr[i] + units[i];
+                text.append(arr[i]).append(units[i]);
             }
         }
 
-        return text;
+        return text.toString();
     }
 
     /**
@@ -34,7 +34,7 @@ public abstract class Time {
      * @return The formatted time
      */
     public static String format(int ms) {
-        int arr[] = getTimesArray(ms);
+        int[] arr = getTimesArray(ms);
 
         String h = (arr[3] > 9? "":"0") + arr[3],
             m = (arr[2] > 9? "":"0") + arr[2],
@@ -58,8 +58,6 @@ public abstract class Time {
         int mins = time % 60;
         int hrs = (time - mins) / 60;
 
-        int arr[] = { ms, secs, mins, hrs };
-
-        return arr;
+        return new int[]{ ms, secs, mins, hrs };
     }
 }

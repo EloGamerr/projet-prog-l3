@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 * Adaptateur pour le bouton de sauvegarde du jeu
 */
 public class ButtonSaveAdaptator extends ActionAdaptator<GenericButton> {
-	GameController gameController;
+	private final GameController gameController;
 	
 	public ButtonSaveAdaptator(GenericButton button, GameController gameController) {
 		super(button);
@@ -25,7 +25,7 @@ public class ButtonSaveAdaptator extends ActionAdaptator<GenericButton> {
 		Object value = JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment sauvegarder la partie en cours ?", "Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
 		//Si l'utilisateur l'accepte, on réinitialise le jeu
-		if(value != null && (int) value == 0) {
+		if((int) value == 0) {
 			gameController.save();
 		}
 	}

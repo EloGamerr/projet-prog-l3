@@ -11,7 +11,7 @@ import fr.prog.tablut.view.pages.newGame.SelectionPlayerForm;
 * Adaptateur pour créer une nouvelle game
 */
 public class CreateGameAdaptator  extends ActionAdaptator<GenericButton> {
-    SelectionPlayerForm gameSettings;
+	private final SelectionPlayerForm gameSettings;
 
 	public CreateGameAdaptator(GenericButton button, SelectionPlayerForm gameSettings) {
 		super(button);

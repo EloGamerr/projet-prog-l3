@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import java.text.ParseException;
+import java.util.Objects;
 
 import fr.prog.tablut.Tablut;
 import org.apache.commons.io.IOUtils;
@@ -42,7 +43,7 @@ public class Loader {
             else {
                 in = new FileInputStream(filepath);
             }
-            content = IOUtils.toString(in);
+            content = IOUtils.toString(Objects.requireNonNull(in));
         }
         catch(IOException e) {
             e.printStackTrace();
@@ -83,7 +84,7 @@ public class Loader {
         try {
             String fontPath = "fonts/" + fontFamily;
             InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(fontPath);
-            Font customFont = Font.createFont(Font.TRUETYPE_FONT, in);
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(in));
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(customFont);
         }

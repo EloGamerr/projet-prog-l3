@@ -54,7 +54,7 @@ public class Style {
      * Sets every component to their default value
      */
     public void reset() {
-        String items[] = {
+        String[] items = {
             "area", "button", "button.dark", "button.green", "button.home", "button.load",
             "button.load:selected", "button.red", "chat", "chat.timing", "chat.red", "chat.blue",
             "chat.yellow", "description", "greenHover", "input", "label", "label.light",
@@ -62,10 +62,10 @@ public class Style {
             "table.th", "title", "title.light", "window"
         };
 
-        components = new HashMap<String, ComponentStyle>();
-        
-        for(int i=0; i < items.length; i++) {
-            components.put(items[i], new ComponentStyle());
+        components = new HashMap<>();
+
+        for (String item : items) {
+            components.put(item, new ComponentStyle());
         }
     }
 

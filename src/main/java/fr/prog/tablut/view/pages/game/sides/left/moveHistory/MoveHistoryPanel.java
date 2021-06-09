@@ -113,7 +113,6 @@ public class MoveHistoryPanel extends GenericPanel {
 
     /**
      * Removes an action in the chat history
-     * @param i
      */
     public void removeAction(int i) {
         historyChat.removeAction(i);
@@ -121,7 +120,6 @@ public class MoveHistoryPanel extends GenericPanel {
 
     /**
      * Sets the cursor's type when hovering the component
-     * @param cursorType
      */
     public void setCursorType(String cursorType) {
         historyChat.setCursorType(cursorType);

@@ -30,10 +30,10 @@ import javax.swing.plaf.basic.BasicComboBoxUI;
  * @see JComboBox
  */
 public class GenericComboBox<E> extends JComboBox<E> {
-    protected int borderRadius = 10;
+    protected final int borderRadius = 10;
     protected boolean hovering = false;
-    protected Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
-    protected Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
+    protected final Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
+    protected final Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
 
 	/**
 	 * Creates a drop-down list of elements of type E.
@@ -48,7 +48,7 @@ public class GenericComboBox<E> extends JComboBox<E> {
         setEditable(true);
 
         setUI(GenericComboBoxUI.createUI(this));
-        setRenderer(new GenericComboBoxRenderer<E>());
+        setRenderer(new GenericComboBoxRenderer<>());
         setEditor(new GenericComboBoxEditor());
 
         GenericComboBox<E> me = this;
@@ -139,7 +139,6 @@ class GenericComboBoxUI extends BasicComboBoxUI {
  * @see GenericRoundedButton
  */
 class ArrowButton extends GenericRoundedButton {
-    private final int size = 30;
 
     /**
      * Creates an arrow button for a comboBox
@@ -148,7 +147,8 @@ class ArrowButton extends GenericRoundedButton {
     protected ArrowButton() {
         super();
         setName("ComboBox.arrowButton");
-        setImage("theme/select-arrow.png", size/4, size/4, size/2, size/2);
+        int size = 30;
+        setImage("theme/select-arrow.png", size /4, size /4, size /2, size /2);
 
         setBorder(new EmptyBorder(0, 0, 0, 0));
         setOpaque(false);
@@ -184,8 +184,8 @@ class ArrowButton extends GenericRoundedButton {
  * The Items list editor component
  */
 class GenericComboBoxRenderer<E> extends JLabel implements ListCellRenderer<E> {
-    protected Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
-    protected Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
+    protected final Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
+    protected final Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
 
     public GenericComboBoxRenderer() {
         setOpaque(true);
@@ -218,7 +218,7 @@ class GenericComboBoxRenderer<E> extends JLabel implements ListCellRenderer<E> {
 class GenericComboBoxEditor extends BasicComboBoxEditor {
     private String text = "";
 
-    private GenericPanel panel = new GenericPanel(null, null) {
+    private final GenericPanel panel = new GenericPanel(null, null) {
         public void paintComponent(Graphics g) {
             Graphics2D g2d = (Graphics2D) g;
 

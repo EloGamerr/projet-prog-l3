@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import javax.imageio.ImageIO;
 
@@ -124,7 +125,7 @@ public class ImageComponent extends GenericPanel {
     public void load() {
         if(!hasLoaded()) {
             try {
-                img = ImageIO.read(ClassLoader.getSystemClassLoader().getResourceAsStream("images/" + src));
+                img = ImageIO.read(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("images/" + src)));
                 loaded = true;
                 revalidate();
                 repaint();

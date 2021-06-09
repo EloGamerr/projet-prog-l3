@@ -20,7 +20,7 @@ import fr.prog.tablut.view.pages.game.sides.GameInterfaceSide;
  * @see GameInterfaceSide
  */
 public class RightSideGame extends GameInterfaceSide {
-    GenericRoundedButton pause;
+    private final GenericRoundedButton pause;
 
     /**
      * Creates the right side of the game's page with button's menu

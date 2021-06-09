@@ -1,18 +1,15 @@
 package fr.prog.tablut.controller.game.gameController;
 
 import java.awt.Point;
-import java.util.Map;
+import java.util.Objects;
 
-import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.MoveType;
-import fr.prog.tablut.model.game.Play;
 import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 import fr.prog.tablut.model.saver.GameSaver;
 import fr.prog.tablut.view.pages.game.GamePage;
 
 public class GameController {
-
 	private final GamePage gamePage;
 	private final GameControllerAI gameControllerAI;
 	private final GameControllerHuman gameControllerHuman;
@@ -72,6 +69,7 @@ public class GameController {
 		return gamePage;
 	}
 
+	@SuppressWarnings("UnusedReturnValue")
 	public boolean undo() {
 		if(gamePage.isInAnim())
 			return false;
@@ -81,9 +79,9 @@ public class GameController {
 		
 		
 		// Handle undo differently if it is Human VS AI
-		if(PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker()).isAI() != PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender()).isAI()) {
+		if(Objects.requireNonNull(PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker())).isAI() != Objects.requireNonNull(PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender())).isAI()) {
 			// We can't undo when the AI is playing in a game Human VS AI
-			if(!PlayerTypeEnum.getFromPlayer(Game.getInstance().getPlayingPlayer()).isAI()) {
+			if(!Objects.requireNonNull(PlayerTypeEnum.getFromPlayer(Game.getInstance().getPlayingPlayer())).isAI()) {
 				numberOfUndoToDo++;
 			}
 			else {
@@ -105,6 +103,7 @@ public class GameController {
         return false;
 	}
 
+	@SuppressWarnings("UnusedReturnValue")
 	public boolean redo() {
 		if(gamePage.isInAnim())
 			return false;
@@ -113,9 +112,9 @@ public class GameController {
 		int numberOfRedoToDo = 1;
 		
 		// Handle redo differently if it is Human VS AI
-		if(PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker()).isAI() != PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender()).isAI()) {
+		if(Objects.requireNonNull(PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker())).isAI() != Objects.requireNonNull(PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender())).isAI()) {
 			// We can't redo when the AI is playing in a game Human VS AI
-			if(!PlayerTypeEnum.getFromPlayer(Game.getInstance().getPlayingPlayer()).isAI()) {
+			if(!Objects.requireNonNull(PlayerTypeEnum.getFromPlayer(Game.getInstance().getPlayingPlayer())).isAI()) {
 				numberOfRedoToDo++;
 			}
 			else {
@@ -142,7 +141,7 @@ public class GameController {
 	}
 
 	public void pause() {
-		boolean pause = PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker()).isAI() && PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender()).isAI();
+		boolean pause = Objects.requireNonNull(PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker())).isAI() && Objects.requireNonNull(PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender())).isAI();
 		
         if(pause)
 			pause = !Game.getInstance().isPaused();

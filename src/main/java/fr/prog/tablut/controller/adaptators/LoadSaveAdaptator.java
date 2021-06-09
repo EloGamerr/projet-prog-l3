@@ -10,7 +10,7 @@ import fr.prog.tablut.view.pages.load.SavedGamesPanel;
 * Adaptateur pour le panel de load
 */
 public class LoadSaveAdaptator extends ActionAdaptator<GenericButton> {
-    private SavedGamesPanel savesPanel;
+    private final SavedGamesPanel savesPanel;
 
     public LoadSaveAdaptator(GenericButton button, SavedGamesPanel savesPanel) {
         super(button);

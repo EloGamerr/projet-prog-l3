@@ -9,7 +9,7 @@ import fr.prog.tablut.view.components.generic.GenericButton;
 * Adaptateur pour les actions d'undo et de redo du jeu
 */
 public class ButtonUndoRedoAdaptator extends ActionAdaptator<GenericButton> {
-	GameController gameController;
+	private final GameController gameController;
 
 	public ButtonUndoRedoAdaptator(GenericButton button, GameController gameController) {
 		super(button);
@@ -20,10 +20,10 @@ public class ButtonUndoRedoAdaptator extends ActionAdaptator<GenericButton> {
 	@Override
 	public void process(ActionEvent e) {
 		//On choisit l'action a faire en fonction du nom du bouton
-		if(entity.getName() == "undo-button")
+		if(entity.getName().equals("undo-button"))
 			gameController.undo();
         
-		else if(entity.getName() == "redo-button")
+		else if(entity.getName().equals("redo-button"))
 			gameController.redo();
 	}
 }

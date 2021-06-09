@@ -66,7 +66,6 @@ class ScrollBarUI extends BasicScrollBarUI {
 
     /**
      * Creates an empty and invisible button
-     * @return
      */
     protected JButton emptyButton() {
         JButton button = new JButton("");
@@ -95,6 +94,7 @@ class ScrollBarUI extends BasicScrollBarUI {
 
     // external rod
     @Override
+    @SuppressWarnings("SuspiciousNameCombination")
     protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(GenericObjectStyle.getProp("window", "background"));
