@@ -7,30 +7,30 @@ import fr.prog.tablut.model.game.Movement;
 import fr.prog.tablut.view.pages.game.GamePage;
 
 /**
-* Animation des coups joués par l'IA 
- * prends en compte une vitesse d'animation 
- * nécéssite en paramètre le mouvement choisie par l'IA et la page de jeu actuelle
+ * Animation of the AI plays 
+ * @param animSpeed the speed of the animation
+ * @param gamePage the page of the current game
+ * @param movement the movement choosed by the AI
  */
 public class AnimationCoup {
-	private final Movement mov;
-	private final GamePage view;
-	private double progres;
-	private final double vitesseAnim;
+	Movement mov;
+	GamePage view;
+	double progress, animSpeed;
 	
 	public AnimationCoup(Movement movement, GamePage gamePage) {
-		vitesseAnim = 0.05;
+		animSpeed = 0.05;
 		this.view = gamePage;
 		mov = movement;
 	}
 	/*
-	* Commence l'animation si le move est autorisé
+	* Start the animation if the move is autorised
  	*/
 	public void startAnim() {
 		if(Game.getInstance().canMove(mov.getFromC(), mov.getFromL(), mov.getToC(), mov.getToL()))
 			update_anim();
 	}
 	/*
-	* Vérifie l'état de l'animation en cours
+	* Verify if the animation is over, continue if not
  	*/
 	public void check_anim() {
 		if(isOver())
@@ -39,30 +39,30 @@ public class AnimationCoup {
 			update_anim();	
 	}
 	/*
-	* Permet d'update la position de l'animation en cours
+	* Permits to update the current animation
  	*/
 	public void update_anim() {
-		progres += vitesseAnim;
+		progress += animSpeed;
 		
-        if(progres > 1)
-			progres = 1;
+        if(progress > 1)
+			progress = 1;
 
         int fromC = view.getXCoordFromCol(mov.getFromC());
         int fromL = view.getYCoordFromRow(mov.getFromL());
         int toC = view.getXCoordFromCol(mov.getToC());
         int toL = view.getYCoordFromRow(mov.getToL());
         
-        int dC =  (int)(fromC - (fromC - toC) * progres);
-        int dL =  (int)(fromL - (fromL - toL) * progres);
+        int dC =  (int)(fromC - (fromC - toC) * progress);
+        int dL =  (int)(fromL - (fromL - toL) * progress);
 
-        view.update_anim(new Point(dC, dL), mov.getFrom(), mov.getTo()); // Ici on fait le repaint avec la nouvelle frame d'animation
+        view.update_anim(new Point(dC, dL), mov.getFrom(), mov.getTo()); // Repaint
 	}
 
 	/*
-	* Termine l'animation en cours
+	* 
  	*/
 	public void stop_anim() {
-		view.stop_anim(); // met à jours les variables de la vue servant à l'animation
+		view.stop_anim(); // 
         Game.getInstance().move(mov.getFromC(), mov.getFromL(), mov.getToC(), mov.getToL()); // met à jour le jeu en jouant le coup pour le modele
 	}
 
@@ -70,7 +70,7 @@ public class AnimationCoup {
 	* Vérifie si l'animation est terminée
  	*/
 	public boolean isOver() {
-		return progres >= 1;
+		return progress >= 1;
 	}
 
 	

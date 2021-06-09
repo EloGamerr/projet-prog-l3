@@ -67,6 +67,11 @@ Si pour une raison quelconque vous ne pouvez/voulez pas utiliser gradle pour gé
 
 
 # Membres du groupe
+* [Dorian Thivolle](https://github.com/NoxFly)
+* [Dorian Lorek](https://github.com/EloGamerr)
+* [Lilian Russo](https://github.com/Leer0r)
+* [Clément Corbillé](https://github.com/corbillc)
+* [Arthur Ducros](https://github.com/SpyciBear)
 
 ## IHM (partie programmation) :
 * Dorian Thivolle
