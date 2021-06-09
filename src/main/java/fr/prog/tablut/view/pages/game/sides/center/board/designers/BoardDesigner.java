@@ -6,7 +6,17 @@ import fr.prog.tablut.view.pages.game.sides.center.board.BoardData;
 import fr.prog.tablut.view.pages.game.sides.center.board.BoardDrawer;
 import fr.prog.tablut.view.pages.game.sides.center.board.GameColors;
 
+/**
+ * The designer layer that draws the board
+ * @see Designer
+ */
 public class BoardDesigner extends Designer {
+    /**
+     * Creates the board designer's layer
+     * @see Designer
+     * @see BoardDrawer
+     * @param bd The board drawer reference
+     */
     public BoardDesigner(BoardDrawer bd) {
         super(bd);
     }

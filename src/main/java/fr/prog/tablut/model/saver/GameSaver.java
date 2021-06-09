@@ -25,8 +25,9 @@ import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 import fr.prog.tablut.structures.Couple;
 import fr.prog.tablut.model.game.Game;
 
-
-
+/**
+ * Classe permettant la sauvegarde de la partie en cours dans un fichier en format JSON
+ */
 public class GameSaver {
     private static GameSaver gameSaver;
 	private static final String savesPath = Paths.get(System.getProperty("user.dir"), "saves").toString();
@@ -37,11 +38,13 @@ public class GameSaver {
 	////////////////////////////////////////////////////
 	// Constructors
 	////////////////////////////////////////////////////
-
+	/*
+ 	* Si c'est une nouvelle classe, le path de sauvegarde sera généré automatiquement
+	* sinon le path est passé en paramètre
+ 	*/
 	public GameSaver() {
 		
 	}
-
 	 public GameSaver(String currentSavePath) {
 		this.currentSavePath = currentSavePath;
 	}
@@ -49,7 +52,9 @@ public class GameSaver {
 	////////////////////////////////////////////////////
 	// Main Functions
 	////////////////////////////////////////////////////
-
+	/*
+ 	* Va chercher l'instance de GameSaver
+ 	*/
 	public static GameSaver getInstance() {
 		if(gameSaver == null) {
 			gameSaver = new GameSaver();
@@ -58,6 +63,9 @@ public class GameSaver {
 		return gameSaver;
 	}
 
+	/*
+ 	* Sauvegarde de la partie
+ 	*/
 	public void save() {
 		if(Game.getInstance().getCurrentSavePath().matches(""))
             newSave();
@@ -65,7 +73,7 @@ public class GameSaver {
 			save_core(Paths.get(Game.getInstance().getCurrentSavePath()));
 	}
 
-	private void writeInFile(Path path, List<String> items, OpenOption... options) {
+    private void writeInFile(Path path, List<String> items, OpenOption... options) {
 		try {
 			Files.write(path, items, StandardCharsets.UTF_8, options);
 		}
@@ -74,14 +82,28 @@ public class GameSaver {
 		}
 	}
 
+	/*
+ 	* Va appeller la fonction qui va écraser la sauvegarde du jeu courant
+ 	*/
 	private void writeInFile(Path path, String content, OpenOption... options) {
-		writeInFile(path, Collections.singletonList(content), options);
+		try {
+			Files.write(path, Collections.singletonList(content), StandardCharsets.UTF_8, options);
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 
+	/*
+ 	* Sauvegarde de la nouvelle partie
+ 	*/
 	public void newSave() {
 		save_core(Paths.get(newSaveName()));
 	}
 
+	/*
+ 	* Fonction de sauvegarde principale
+ 	*/
 	public void save_core(Path path) {
 		JSONArray jsonArrayParameters = generateJSONParameters();
 		JSONObject jsonParameters = new JSONObject();
@@ -113,7 +135,9 @@ public class GameSaver {
 	 // JSON generators
 	 ////////////////////////////////////////////////////
 
-
+	/*
+ 	* va générer les paramètres du jeu à sauvegarder en format JSON
+ 	*/
 	public JSONArray generateJSONParameters() {
 		JSONArray jsonParameters = new JSONArray();
 
@@ -148,9 +172,9 @@ public class GameSaver {
 	 // StringBuilder functions
 	 ////////////////////////////////////////////////////
 
-	
-
-
+	/*
+ 	* Construit la sauvegarde des coups joués dans la partie
+ 	*/
 	public StringBuilder savePlays() {
 		StringBuilder builder = new StringBuilder();
 
@@ -174,7 +198,9 @@ public class GameSaver {
 
 		return builder;
 	}
-
+	/*
+ 	* Génère un nouveau nom de sauvegarde
+ 	*/
 	private String newSaveName() {
 		int index = 1;
 		String savePath = Paths.get(savesPath, savePrefix + index + saveSuffix).toString();
@@ -193,6 +219,7 @@ public class GameSaver {
 	////////////////////////////////////////////////////
 	// Delete / overwrite saves
 	////////////////////////////////////////////////////
+
 
 	public void overwriteSave() {
 		save_core(Paths.get(currentSavePath));
@@ -283,6 +310,7 @@ public class GameSaver {
 		return "Erreur de lecture";
 	}
 
+	
 	private String getData(String nextLine, File f, int i) {
 		try {
 			

@@ -204,7 +204,7 @@ class GenericComboBoxRenderer<E> extends JLabel implements ListCellRenderer<E> {
 class GenericComboBoxEditor extends BasicComboBoxEditor {
     private String text = "";
 
-    private GenericPanel panel = new GenericPanel(null) {
+    private GenericPanel panel = new GenericPanel(null, null) {
         public void paintComponent(Graphics g) {
             Graphics2D g2d = (Graphics2D) g;
 

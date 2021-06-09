@@ -2,6 +2,9 @@ package fr.prog.tablut.view.pages.game.sides.center.board;
 
 import java.awt.Color;
 
+/**
+ * All board's colors
+ */
 public class GameColors {
 	public static final Color LINE = new Color(127, 127, 127);
 	public static final Color BORDER_GRID = new Color(134, 112, 81);

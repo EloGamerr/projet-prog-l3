@@ -7,6 +7,7 @@ import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 import fr.prog.tablut.view.components.generic.GenericButton;
 import fr.prog.tablut.view.pages.newGame.SelectionPlayerForm;
 
+//Adaptateur pour créer une nouvelle game
 public class CreateGameAdaptator  extends ActionAdaptator<GenericButton> {
     SelectionPlayerForm gameSettings;
 

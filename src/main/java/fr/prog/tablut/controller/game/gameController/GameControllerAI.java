@@ -19,9 +19,7 @@ public class GameControllerAI {
 	 * @return True if we should repaint the window after the tick
 	 */
     //Calculer le coup avant la fin du timer
-    @Deprecated
     public boolean tick() {
-    	// TODO
         if(!Game.getInstance().isWon() && Game.getInstance().getPlayingPlayer() instanceof AIPlayer && !Game.getInstance().isPaused()) {
             if(timer-- <= 0) {
                 boolean shouldRepaint = Game.getInstance().getPlayingPlayer().play(Game.getInstance(),gamePage);

@@ -16,9 +16,19 @@ import fr.prog.tablut.view.pages.game.sides.center.board.BoardData;
 import fr.prog.tablut.view.pages.game.sides.center.board.BoardDrawer;
 import fr.prog.tablut.view.pages.game.sides.center.board.GameColors;
 
+/**
+ * The designer layer that draws all board's indications, decorations
+ * @see Designer
+ */
 public class IndicatorsDesigner extends Designer {
     private Image throne = null;
 
+    /**
+     * Creates the indication/decoration designer's layer
+     * @see Designer
+     * @see BoardDrawer
+     * @param bd The board drawer reference
+     */
     public IndicatorsDesigner(BoardDrawer bd) {
         super(bd);
 
@@ -40,6 +50,7 @@ public class IndicatorsDesigner extends Designer {
         // last move feedback
         Movement lastMove = Game.getInstance().getCurrentLastPlay();
 
+        // if we're viewing a preview, then don't draw the last done move but the last move at given move index
         if(data.previewGrid != null && data.previewMoveIndex != -1) {
             lastMove = Game.getInstance().getPlayAt(data.previewMoveIndex);
         }
@@ -49,6 +60,7 @@ public class IndicatorsDesigner extends Designer {
         final int x = g.getRealX(0);
         final int y = g.getRealY(0);
 
+        // animation's indications
         if(data.isAnim) {
         	g.setColor(GameColors.FROM_CELL);
         	g.fillSquare(data.animatedCell.x, data.animatedCell.y);
@@ -62,10 +74,9 @@ public class IndicatorsDesigner extends Designer {
 			g.setColor(GameColors.CELL_SELECTION);
 			g.fillSquare(selectedCell.x, selectedCell.y);
 
+            // The place of the piece that's selected
             if(hoveringCell != null && Game.getInstance().canMove(selectedCell.x, selectedCell.y, hoveringCell.x, hoveringCell.y))
 				g.fillRect(x + widthBorder + hoveringCell.x * cellSize, y + widthBorder + hoveringCell.y * cellSize, cellSize, cellSize);
-
-            
 
 			drawAccessibleCells(accessibleCells, data.hoveringCell);
 		}
@@ -83,13 +94,14 @@ public class IndicatorsDesigner extends Designer {
             g.setCursor("default");
         }
 
+        // draw the last move from - to
         if(lastMove != null) {
             g.setColor(GameColors.FEEDBAK_LAST_MOVE);
             g.fillSquare(lastMove.getFromC(), lastMove.getFromL()); // before
             g.fillSquare(lastMove.getToC(), lastMove.getToL()); // after
         }
 
-
+        // draw the throne
         g.drawImage(throne, 4, 4, cellSize/2, cellSize/2, true);
     }
 
@@ -121,11 +133,11 @@ public class IndicatorsDesigner extends Designer {
                 cx = g.getRealX(x) - r/2 + cellSize/2;
                 cy = g.getRealY(y) - r/2 + cellSize/2;
 
+                // The hovered possible move
                 if(hoveringCell != null && (x == hoveringCell.x && y == hoveringCell.y)) {
                     g.setColor(GameColors.HOVERING_CIRCLE);
                     g.strokeSquare(x, y);
                 }
-
                 else {
                     g.setColor(GameColors.CIRCLE);
                 }

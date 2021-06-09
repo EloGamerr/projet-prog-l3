@@ -25,8 +25,6 @@ public abstract class AIPlayer extends Player {
 
 	/**
 	 *
-	 * @param game
-	 * @param gamePage
 	 * @return True if the child class should play, false otherwise (if an animation is running)
 	 */
 	@Override

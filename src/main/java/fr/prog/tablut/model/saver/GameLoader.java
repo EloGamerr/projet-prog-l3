@@ -17,6 +17,8 @@ import fr.prog.tablut.model.game.Movement;
 import fr.prog.tablut.model.game.player.PlayerEnum;
 import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 
+
+
 public class GameLoader {
 	private static final String savesPath = Paths.get(System.getProperty("user.dir"), "saves").toString();
 	private static final String savePrefix = "save-";

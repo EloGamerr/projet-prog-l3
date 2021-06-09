@@ -13,6 +13,12 @@ import javax.imageio.ImageIO;
 
 import fr.prog.tablut.view.components.generic.GenericPanel;
 
+/**
+ * Used to cheat on images and display absoluted positionated images on the window
+ * thanks a panel.
+ * @see GenericPanel
+ * @see Image
+ */
 public class ImageComponent extends GenericPanel {
     protected String src;
     protected Image img;
@@ -88,23 +94,6 @@ public class ImageComponent extends GenericPanel {
             }
         }
     }
-
-    /* public void setSize(int width, int height) {
-        Dimension d = new Dimension(width, height);
-
-        super.setSize(d);
-        super.setPreferredSize(d);
-        super.setMaximumSize(d);
-        super.setMinimumSize(d);
-    } */
-
-    /* @Override
-    public void setSize(Dimension d) {
-        super.setSize(d);
-        super.setPreferredSize(d);
-        super.setMaximumSize(d);
-        super.setMinimumSize(d);
-    } */
 
     public boolean hasLoaded() {
         return loaded;

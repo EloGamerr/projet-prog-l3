@@ -1,4 +1,5 @@
-package fr.prog.tablut.controller.adaptators;
+package fr.prog.tablut.controller.game.gameAdaptator;
+import fr.prog.tablut.controller.adaptators.ActionAdaptator;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.view.GlobalWindow;
 import fr.prog.tablut.view.components.generic.GenericButton;

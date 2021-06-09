@@ -8,7 +8,8 @@ import java.util.List;
 import fr.prog.tablut.structures.Couple;
 
 public class PawnTaker {
-	private List<Point> visited = new ArrayList<>();
+	private List<Point> visited = new ArrayList<>(); // Variable globale qui sert à connaître les pions alliés et 
+													 // connexes qui ont déjà été traité par les fonctions de la classe
 	private Game game;
 	
 	
@@ -23,8 +24,12 @@ public class PawnTaker {
 	
 	////////////////////////////////////////////////////
 	// Main function
-	////////////////////////////////////////////////////	
-	
+	////////////////////////////////////////////////////
+
+	/**
+	* Méthode principale
+	* Vérifie si des pions ont étés pris en fonction de la nature de la case déplacée 
+ 	*/
 	public void clearTakedPawns(int c, int l, Play play) {
 		if(game.isAttackTower(c, l))
 			attack(c, l, play);
@@ -38,6 +43,9 @@ public class PawnTaker {
 	// Attack 
 	////////////////////////////////////////////////////
 	
+	/**
+	* Regarde aux extremités de la case en question
+ 	*/
 	public void attack(int c, int l, Play play) {
 		attack_core(c,   l-1,  0,-1, play);
 		attack_core(c,   l+1,  0, 1, play);
@@ -46,23 +54,25 @@ public class PawnTaker {
 	}
 	
 	public void attack_core(int c, int l, int dc, int dl, Play play){
-		if(game.isDefenseTower(c, l)) { // Si la case contient une tour d�fensive
-			if(isAttTowerHelper(c+dc, l+dl)) { // Si deux cases plus loin nous avons un alli� de circonstance pour l'attaque
+		if(game.isDefenseTower(c, l)) { // Si la case contient une tour défensive
+			if(isAttTowerHelper(c+dc, l+dl)) { // Si deux cases plus loin nous avons un allié de circonstance pour l'attaque
 				play.putModifiedOldCellContent(new Point(c, l), game.getCellContent(c, l));
 				game.setContent(CellContent.EMPTY, c, l); // on enleve le pion ennemi
 				play.putModifiedNewCellContent(new Point(c, l), CellContent.EMPTY);
 			}
 			else 
-				testSurround(c, l, play);  // Sinon on v�rifie que le coup jou�  bloque totalement le pion ennemi
+				testSurround(c, l, play);  // Sinon on vérifie que le coup joué  bloque totalement le pion ennemi
 		}
 		else if(game.isTheKing(c, l)) // Si la case contient le roi
-				testSurround(c, l,  play);  // On v�rifie que le coup jou�  bloque totalement le roi ennemi
+				testSurround(c, l,  play);  // On vérifie que le coup joué  bloque totalement le roi ennemi
 	}
 	
 	////////////////////////////////////////////////////
 	// Defense 
 	////////////////////////////////////////////////////
-	
+	/**
+	* Regarde aux extremités de la case en question
+ 	*/
 	public void defense(int c, int l, Play play) {
 		defense_core(c,   l-1,  0,-1, play);
 		defense_core(c,   l+1,  0, 1, play);
@@ -72,30 +82,31 @@ public class PawnTaker {
 	
 	public void defense_core(int c, int l, int dc, int dl, Play play) {
 		if(game.isAttackTower(c, l)) {
-			if(isDefTowerHelper(c+dc, l+dl)) { // Si deux cases plus loin nous avons un alli� de circonstance pour la d�fense
+			if(isDefTowerHelper(c+dc, l+dl)) { // Si deux cases plus loin nous avons un allié de circonstance pour la défense
 				play.putModifiedOldCellContent(new Point(c, l), game.getCellContent(c, l));
 				game.setContent(CellContent.EMPTY, c, l); // on enleve le pion ennemi
 				play.putModifiedNewCellContent(new Point(c, l), CellContent.EMPTY);
 			}
-			else  testSurround(c, l, play); // Sinon on v�rifie que le coup jou�  bloque totalement le pion ennemi		
+			else  testSurround(c, l, play); // Sinon on vérifie que le coup joué  bloque totalement le pion ennemi		
 		}
 	}
 	
 	////////////////////////////////////////////////////
 	// Surround test 
 	////////////////////////////////////////////////////
-	
-	
+	/**
+	* Vérifie si la case passée en paramètre est entourée d'obstacle inamicaux
+ 	*/
 	public void testSurround(int c, int l,  Play play) {
-		if(isSurrounded(new Point(c, l), c, l)) { // Si le pion est encercl�
+		if(isSurrounded(new Point(c, l), c, l)) { // Si le pion est encerclé
 			play.putModifiedOldCellContent(new Point(c, l), game.getCellContent(c, l));
-			game.setContent(CellContent.EMPTY,c, l); // On enl�ve le pion
+			game.setContent(CellContent.EMPTY,c, l); // On enléve le pion
 			play.putModifiedNewCellContent(new Point(c, l), CellContent.EMPTY);
 			
-			if(!visited.isEmpty()) {
+			if(!visited.isEmpty()) { // Si des pions alliés ont étés traités par la classe
 				for(Point cell : visited) {
 					play.putModifiedOldCellContent(cell, game.getCellContent(cell.x, cell.y));
-					game.setContent(CellContent.EMPTY,cell.x, cell.y); // // Et on enl�ve les pions encercl�s avec le pr�c�dent
+					game.setContent(CellContent.EMPTY,cell.x, cell.y); // // On les enleves également
 					play.putModifiedOldCellContent(cell, CellContent.EMPTY);
 				}
 			}
@@ -103,7 +114,11 @@ public class PawnTaker {
 
 		visited.clear();
 	}
-	
+	/**
+	* Va chercher le nombre d'obstacle et le nombre d'alliés connexes à la case x,y
+	* va vérifier si la case est encerclée et fera de même avec ses alliés connexes si c'est le cas
+	* retourne vrai si encerclée et faux sinon
+ 	*/
 	public boolean isSurrounded(Point c, int x, int y) {
 		List<Point> allyCells = new ArrayList<>();
 		boolean surrounded = true;
@@ -167,7 +182,11 @@ public class PawnTaker {
 	////////////////////////////////////////////////////
 	// Check content functions
 	////////////////////////////////////////////////////
-	
+
+	/**
+	* regarde si la case  connexe  x,y est un obstacle ou un allié et complète les compteurs passées en paramètre
+ 	*/
+
 	public Couple<Integer, List<Point>> checkneighbour_attack(List<Point> allyCells, int counter_obstacle, int x, int y) {
 		if(!game.isValid(x, y))
 			counter_obstacle++;
@@ -213,6 +232,8 @@ public class PawnTaker {
 		return new Couple<Integer, List<Point>>(counter_obstacle, allyCells);
 	}
 	
+
+
 	public boolean isDefTowerHelper(int x, int y) {
 		return (game.isOccupied(x, y) && (game.isDefenseTower(x, y) || game.isGate(x, y)));
 	}

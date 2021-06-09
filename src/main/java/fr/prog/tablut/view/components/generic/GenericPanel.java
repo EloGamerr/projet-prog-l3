@@ -19,6 +19,10 @@ public class GenericPanel extends JPanel {
         this(layout, null);
     }
 
+    public GenericPanel(Dimension d) {
+        this(new FlowLayout(), d);
+    }
+
     public GenericPanel(LayoutManager layout, Dimension d) {
         super();
         setOpaque(false);

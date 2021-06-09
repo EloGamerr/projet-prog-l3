@@ -10,6 +10,12 @@ import javax.swing.JPanel;
 
 import java.awt.Graphics2D;
 
+/**
+ * A class that's used to draw on the board with all sizes, positions etc...
+ * <p>It's an util class that ressemble every calculations to draw at correct positions</p>
+ * <p>Because most of the drawings are around cell's positions</p>
+ * <p>It's an independant class that doesn't look the model, communicates with the controller or with other project's view components.</p>
+ */
 public class BoardDrawer {
     private int cellNumber = 9;
     private int boardSize = 0;
@@ -25,58 +31,111 @@ public class BoardDrawer {
     private Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
     private Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
 
-
+    /**
+     * Creates a BoardDrawer utility manager
+     */
     public BoardDrawer() {
 
     }
 
-
+    /**
+     * Sets the board's dimension to draw
+     * @param size The square board dimension
+     */
     public void setBoardDimension(int size) {
         boardSize = size;
         cellSize = (boardSize - 2 * widthBorder) / cellNumber;
     }
 
+    /**
+     * Sets the board's position to draw
+     * @param x The x-Axis position's coord
+     * @param y The y-Axis position's coord
+     */
     public void setPosition(int x, int y) {
         leftX = x;
         leftY = y;
     }
 
+    /**
+     * Sets in which container it has to draw.
+     * <p>Only used to set the cursor's type.</p>
+     * @param container
+     */
     public void setContainer(JPanel container) {
         this.container = container;
     }
     
+    /**
+     * Sets the draw color
+     * @param color The color to set
+     */
     public void setColor(Color color) {
         g2d.setColor(color);
     }
 
+    /**
+     * Updates the g2d graphics's reference
+     * @param g2d The graphics's object reference
+     */
     public void setGraphics(Graphics2D g2d) {
         this.g2d = g2d;
     }
 
+    /**
+     * Returns the size of the drawn board
+     * @return
+     */
     public int getSize() {
         return boardSize;
     }
 
+    /**
+     * Returns the board's border width
+     * @return The board's border width
+     */
     public int getBorderWidth() {
         return widthBorder;
     }
 
+    /**
+     * Returns the board's cell size
+     * @return The board's cell size
+     */
     public int getCellSize() {
         return cellSize;
     }
 
+    /**
+     * Returns the board's cell separator lines
+     * @return The board's cell separator lines
+     */
     public int getCellSepSize() {
         return widthSeparator;
     }
 
+    /**
+     * Returns the number of cell on a side
+     * @return The number of cell on a side
+     */
     public int getCellNumber() {
         return cellNumber;
     }
 
+    /**
+     * Returns the real pixel x-Axis coord from a column's index
+     * @param x The column's index
+     * @return The x-Axis pixel's coord
+     */
     public int getRealX(int x) {
     	return leftX + widthBorder + x * cellSize;
     }
 
+    /**
+     * Returns the real pixel y-Axis coord from a row's index
+     * @param y The row's index
+     * @return The y-Axis pixel's coord
+     */
     public int getRealY(int y) {
        return leftY + widthBorder + y * cellSize;
     }

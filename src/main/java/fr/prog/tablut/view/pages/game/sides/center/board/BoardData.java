@@ -8,6 +8,9 @@ import java.util.List;
 import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Movement;
 
+/**
+ * The view side board's data
+ */
 public class BoardData {
     public Point selectedCell = null;
     public Point animatedCell = null;

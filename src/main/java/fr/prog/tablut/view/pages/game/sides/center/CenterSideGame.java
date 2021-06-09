@@ -9,18 +9,30 @@ import javax.swing.JLabel;
 
 import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Game;
-import fr.prog.tablut.model.window.WindowConfig;
 import fr.prog.tablut.view.components.ImageComponent;
 import fr.prog.tablut.view.components.generic.GenericLabel;
 import fr.prog.tablut.view.components.generic.GenericPanel;
 import fr.prog.tablut.view.pages.game.sides.GameInterfaceSide;
 import fr.prog.tablut.view.pages.game.sides.center.board.BoardInterface;
 
+/**
+ * The center component of the game's page.
+ * <p>Stores the board's view and the "turn of" component.</p>
+ * @see GameInterfaceSide
+ * @see BoardInterface
+ */
 public class CenterSideGame extends GameInterfaceSide {
     protected BoardInterface boardInterface;
     protected GenericPanel turnOf;
 
-    public CenterSideGame(WindowConfig config, Dimension d) {
+    /**
+     * Creates the center component of the game's page.
+     * <p>Stores the board's view and the "turn of" component.</p>
+     * @see GameInterfaceSide
+     * @see BoardInterface
+     * @param d The dimension of the component
+     */
+    public CenterSideGame(Dimension d) {
         super(d);
 
         setLayout(new BorderLayout());
@@ -33,17 +45,30 @@ public class CenterSideGame extends GameInterfaceSide {
         add(turnOf, BorderLayout.SOUTH);
     }
 
+    /**
+     * Returns the board's view component
+     * @return The board's view component
+     */
     public BoardInterface getBoard() {
         return boardInterface;
     }
 
+    /**
+     * Initializes the "turn of" component
+     */
     private void initTurnOf() {
         turnOf = new GenericPanel(null, new Dimension(getWidth(), 60));
         updateTurnOf();
     }
 
+    /**
+     * Updates the "turn of" component, which is looking the game's turn.
+     * @see Game
+     */
     public void updateTurnOf() {
+        // if the game is created and if the current playing player exists too
         if(Game.getInstance() != null && Game.getInstance().getPlayingPlayerEnum() != null) {
+            // We prefer to clear the component and recreate an image and a text
             turnOf.removeAll();
 
             String name = null;
@@ -79,6 +104,11 @@ public class CenterSideGame extends GameInterfaceSide {
         }
     }
     
+    /**
+     * Sets the preview grid to visualize
+     * @param grid The preview grid to visualize
+     * @param moveIndex The move index, to retrieve its feedback
+     */
     public void setPreviewGrid(CellContent[][] grid, int moveIndex) {
         boardInterface.setPreviewGrid(grid, moveIndex);
     }

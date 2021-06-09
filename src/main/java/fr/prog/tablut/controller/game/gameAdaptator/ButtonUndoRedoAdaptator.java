@@ -1,13 +1,11 @@
-package fr.prog.tablut.controller.adaptators;
+package fr.prog.tablut.controller.game.gameAdaptator;
 
 import java.awt.event.ActionEvent;
 
+import fr.prog.tablut.controller.adaptators.ActionAdaptator;
 import fr.prog.tablut.controller.game.gameController.GameController;
 import fr.prog.tablut.view.components.generic.GenericButton;
 
-/**
-* Adaptateur pour les actions d'undo et de redo du jeu
-*/
 public class ButtonUndoRedoAdaptator extends ActionAdaptator<GenericButton> {
 	GameController gameController;
 

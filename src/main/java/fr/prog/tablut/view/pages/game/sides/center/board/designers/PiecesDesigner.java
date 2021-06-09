@@ -7,7 +7,17 @@ import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.view.pages.game.sides.center.board.BoardData;
 import fr.prog.tablut.view.pages.game.sides.center.board.BoardDrawer;
 
+/**
+ * The designer layer that draws all board's pieces
+ * @see Designer
+ */
 public class PiecesDesigner extends Designer {
+    /**
+     * Creates the pieces designer's layer
+     * @see Designer
+     * @see BoardDrawer
+     * @param bd The board drawer reference
+     */
     public PiecesDesigner(BoardDrawer bd) {
         super(bd);
     }

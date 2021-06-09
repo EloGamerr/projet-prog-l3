@@ -3,24 +3,18 @@ package fr.prog.tablut.view.pages.game.sides.left.moveHistory;
 import java.awt.ComponentOrientation;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Point;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.JLabel;
 
-import fr.prog.tablut.model.game.CellContent;
+import fr.prog.tablut.controller.game.listener.ChatMouseListener;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.Movement;
-import fr.prog.tablut.model.game.Play;
-import fr.prog.tablut.model.game.Plays;
 import fr.prog.tablut.model.game.player.PlayerEnum;
 import fr.prog.tablut.view.components.generic.GenericLabel;
 import fr.prog.tablut.view.components.generic.GenericObjectStyle;
@@ -29,13 +23,19 @@ import fr.prog.tablut.view.pages.game.GamePage;
 import fr.prog.tablut.view.utils.Time;
 
 public class HistoryChatField extends GenericPanel {
-    private int labelHeight;
 	private final GamePage gamePage;
+    private int labelHeight;
+    private List<LabelAction> allHistory = new ArrayList<LabelAction>();
     private GridBagConstraints c;
-    private List<LabelField> allHistory = new ArrayList<LabelField>();
 	private Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
     private Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
     
+    /**
+     * Creates a chat's action manager. Privates, only used by its parent.
+     * <p>All other components communicates with MoveHistoryPanel which will communicates with HistoryChatField.</p>
+     * @see MoveHistoryPanel
+     * @param gamePage
+     */
 	public HistoryChatField(GamePage gamePage) {
         super(new GridBagLayout());
 
@@ -50,12 +50,17 @@ public class HistoryChatField extends GenericPanel {
         labelHeight = 20;
     }
 
+    /**
+     * Adds a player action in the chat
+     */
     public void addAction() {
         // update the view's size
-        LabelField.setDimension(new Dimension(getWidth(), labelHeight));
+        LabelAction.setDimension(new Dimension(getWidth(), labelHeight));
 
         // new action's label in the chat
-        LabelField newPlayerAction = new LabelField(false, null, this, c.gridy);
+        LabelAction newPlayerAction = new LabelAction(false, null, c.gridy);
+
+        newPlayerAction.addMouseListener(new ChatMouseListener(newPlayerAction, this, gamePage));
 
         // default text's color
 		newPlayerAction.setForeground(GenericObjectStyle.getProp("chat", "color"));
@@ -79,10 +84,25 @@ public class HistoryChatField extends GenericPanel {
         c.gridy++;
     }
 
+    /**
+     * Returns the height of an action's label
+     * @return The action's label height
+     */
     public int getLabelHeight() {
         return labelHeight;
     }
 
+    /**
+     * Returns the history list's size
+     * @return The history list's size
+     */
+    public int getHistoryLength() {
+        return allHistory.size();
+    }
+
+    /**
+     * Clears the history
+     */
     public void clear() {
         removeAll();
 
@@ -91,143 +111,107 @@ public class HistoryChatField extends GenericPanel {
         allHistory.clear();
     }
 
+    /**
+     * Returns the number of moves in the history view
+     * @return
+     */
     public int getMovesNumber() {
         return c.gridy;
     }
 
+    /**
+     * Removes an action from the chat
+     */
 	public void undo() {
 		remove(allHistory.remove(--c.gridy));
 	}
 
+    /**
+     * Re-add a previously removed action in the chat
+     */
 	public void redo() {
 		addAction();
 	}
 
-	public void enteredChange(int pos) {
-		setCursor(handCursor);
-
-		Plays plays = Game.getInstance().getPlays();
-		List<Play> allPlays = plays.getPlays();
-		CellContent[][] currentGrid = copyGrid(Game.getInstance().getGrid());
-
-		if(pos <= plays.getCurrentMovement()) {
-			for(int i=plays.getCurrentMovement(); i >= pos; i--) {
-				if(allPlays.size() <= i || allHistory.size() <= i)
-					break;
-				
-				LabelField label = allHistory.get(i);
-				Play currentPlay = allPlays.get(i);
-
-				for(Map.Entry<Point, CellContent> m : currentPlay.getModifiedOldCellContents().entrySet()) {
-					currentGrid[m.getKey().y][m.getKey().x] = m.getValue();
-					
-				}
-
-				// gamePage.label.hover(true);
-			}
-		}
-		else {
-			for(int i=plays.getCurrentMovement()+1; i < pos; i++) {
-                // avoid out of bounds exception
-                if(allPlays.size() <= i)
-                    break;
-                
-				Play currentPlay = allPlays.get(i);
-
-				for(Map.Entry<Point, CellContent> m : currentPlay.getModifiedNewCellContents().entrySet()) {
-					currentGrid[m.getKey().y][m.getKey().x] = m.getValue();
-				}
-			}
-		}
-
-		gamePage.setPreviewGrid(currentGrid, pos);
-		gamePage.refresh();
+    /**
+     * Sets the cursor's type when hovering the chat
+     * @param cursorType
+     */
+	public void setCursorType(String cursorType) {
+        if(cursorType == "hand") setCursor(handCursor);
+        else setCursor(defaultCursor);
 	}
 
-	public void exitedChange(int pos) {
-		setCursor(defaultCursor);
+    /**
+     * Returns the position of a given label in the chat
+     * @return The action label's position
+     */
+    public int getActionPosition(JLabel action) {
+        return ((LabelAction)action).getPosition();
+    }
 
-		for(int i=c.gridy-1; i >= pos; i--) {
-			if(allHistory.size() <= i)
-				break;
-			
-			LabelField label = allHistory.get(i);
+    /**
+     * Returns the move history list
+     * @see LabelAction
+     * @return The move history list
+     */
+    public List<LabelAction> getHistory() {
+        return allHistory;
+    }
 
-			if(!label.isActive())
-				label.hover(false);
-		}
+    /**
+     * Removes an action's label in the chat view and list
+     * @param i The action's index
+     */
+    public void removeAction(int i) {
+        if(i < allHistory.size()) {
+            c.gridy--;
+            remove(allHistory.remove(i));
+        }
+    }
 
-		gamePage.setPreviewGrid(null, -1);
-		gamePage.refresh();
-	}
-
-	public void clickChange(int pos) {
-		Plays plays = Game.getInstance().getPlays();
-		
-		boolean hasChanged = false;
-
-		if(pos <= plays.getCurrentMovement()) {
-			for(int i = plays.getCurrentMovement(); i >= pos; i--) {
-				if(allHistory.size() <= i)
-					break;
-				
-				if(Game.getInstance().undo_move()) {
-					c.gridy--;
-					remove(allHistory.remove(i));
-					hasChanged = true;
-				}
-			}
-		}
-		else {
-			for(int i=plays.getCurrentMovement()+1; i < pos; i++) {
-				if(Game.getInstance().redo_move())
-					c.gridy++;
-					gamePage.resetLastPlayer();
-					hasChanged = true;
-			}
-		}
-		
-		if(hasChanged) {
-			gamePage.resetLastPlayer();
-			gamePage.removePreview();
-			gamePage.refresh();
-		}
-	}
-
-	private CellContent[][] copyGrid(CellContent[][] grid) {
-		if (grid == null)
-			return null;
-        
-		CellContent[][] newGrid = new CellContent[grid.length][];
-
-		for(int i=0; i < grid.length; i++) {
-			newGrid[i] = grid[i].clone();
-		}
-
-		return newGrid;
-	}
+    /**
+     * Defines the hovering state's style of an action's label
+     * @param i The action label's index
+     * @param hover The hovering's state
+     */
+    public void setHoveringAction(int i, boolean hover) {
+        allHistory.get(i).hover(hover);
+    }
 }
 
-class LabelField extends JLabel {
+/**
+ * A component used for a one-line action message
+ */
+class LabelAction extends JLabel {
     protected static Dimension size = new Dimension(0, 0);
 
-    private int position;
-	private boolean active = false;
+    private int position; // self position in the chat history
 	private boolean systemMessage = false;
 	private GenericLabel timing, player, sentence;
 
+    /**
+     * Sets the dimension of all the LabelActions
+     * @param d The dimension to set to the action's labels
+     */
     public static void setDimension(Dimension d) {
-        LabelField.size = d;
+        LabelAction.size = d;
     }
     
-	public LabelField(boolean isSystem, String systemMessage, HistoryChatField historyMain, int pos) {
+    /**
+     * Creates a new action's label
+     * @param isSystem Is the message a system message or a player move's indication
+     * @param systemMessage If it's a system message, then this argument is the message to show
+     * @param pos The position of the label in the chat
+     */
+	public LabelAction(boolean isSystem, String systemMessage, int pos) {
         setLayout(new FlowLayout(FlowLayout.LEFT));
         setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 
-        setSize(LabelField.size);
-        setPreferredSize(LabelField.size);
-        setMaximumSize(LabelField.size);
-        setMinimumSize(LabelField.size);
+        setSize(LabelAction.size);
+        setPreferredSize(LabelAction.size);
+        setMaximumSize(LabelAction.size);
+        setMinimumSize(LabelAction.size);
 		
         this.systemMessage = isSystem;
 
@@ -243,12 +227,16 @@ class LabelField extends JLabel {
 
             int pp = p==PlayerEnum.ATTACKER? 2 : p==PlayerEnum.DEFENDER? 1 : 0;
 
+            // The date when the message has been created / sent
+            // from the game's creation
 			timing = new GenericLabel("[" +  Time.format(Game.getInstance().getDuration()) + "]", 12);
 			timing.setForeground(GenericObjectStyle.getProp("chat.timing", "color"));
 
+            // The player's type
 			player = new GenericLabel(pp==1? "L'attaquant" : "Le D\u00e9fenseur", 12);
 			player.setForeground(GenericObjectStyle.getProp("chat." + (pp==1? "red" : "blue"), "color"));
 
+            // The core message : the move that's been done
 			String text = "a jou\u00e9 ";
 
 			text += (lastMove != null)? getColName(lastMove.getFromC()) + getRowName(lastMove.getFromL()) : "??"; // from
@@ -261,77 +249,74 @@ class LabelField extends JLabel {
 			add(timing);
 			add(player);
 			add(sentence);
-
-            addMouseListener(new MouseAdapter() {
-				/**
-                 * Triggered when mouse's over
-				 * Replace the current board's context
-                 */
-				@Override
-				public void mouseExited(MouseEvent e) {
-					historyMain.exitedChange(pos);
-				}
-				
-				/**
-				 * Triggered when mouse's hovering the chat
-                 * Changes the board's context to hovered movement
-				 */
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					historyMain.enteredChange(pos);
-				}
-
-				/**
-				 * Triggered when player selected an older move
-                 * Change board's context and confirm it
-				 */
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					historyMain.clickChange(pos);
-				}
-			});
 		}
 
 
 		setPosition(pos);
 	}
 
+    /**
+     * Returns the timing label
+     * @return The timing label
+     */
 	public GenericLabel getTiming() {
 		return timing;
 	}
 
+    /**
+     * Returns the player's type label
+     * @return The player's type label
+     */
 	public GenericLabel getPlayer() {
 		return player;
 	}
 
+    /**
+     * Returns the core message's label
+     * @return The core message's label
+     */
 	public GenericLabel getSentence() {
 		return sentence;
 	}
 	
+    /**
+     * Returns the column's letter [A-I] of the given index
+     * @param c The column's index
+     * @return The column's letter
+     */
 	private String getColName(int c) {
         return Character.toString((char)(65 + c));
 	}
 
+    /**
+     * Returns the row's index of a given index (+1) as a string
+     * @param l The row's index
+     * @return The row's real index starting from 1, as a string
+     */
 	private String getRowName(int l) {
         return "" + (l+1);
 	}
 
+    /**
+     * Sets the label's position in the chat
+     * @param num
+     */
 	public void setPosition(int num) {
 		position = num;
 	}
 	
+    /**
+     * Returns the label's position in the chat
+     * @return The label's position in the chat
+     */
 	public int getPosition() {
 		return position;
 	}
 
-	public boolean isActive() {
-		return active;
-	}
-
-	public void setActive(boolean state) {
-		active = state;
-	}
-
+    /**
+     * Defines either the label is hovered or not. Changes its style.
+     * @param state The hovering's state of the label
+     */
 	public void hover(boolean state) {
 		if(!systemMessage) {
 			String style = "chat" + (state? ".hover" : "");

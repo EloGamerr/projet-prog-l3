@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionListener;
+import java.util.List;
+import java.util.Map;
 import java.awt.event.ActionEvent;
 import java.awt.Image;
 import java.awt.Insets;
@@ -13,8 +15,8 @@ import java.awt.Graphics;
 
 import javax.swing.Timer;
 
-import fr.prog.tablut.controller.adaptators.ButtonQuitGameAdaptator;
-import fr.prog.tablut.controller.adaptators.ButtonRestartAdaptator;
+import fr.prog.tablut.controller.game.gameAdaptator.ButtonQuitGameAdaptator;
+import fr.prog.tablut.controller.game.gameAdaptator.ButtonRestartAdaptator;
 import fr.prog.tablut.controller.game.gameAdaptator.GameKeyAdaptator;
 import fr.prog.tablut.controller.game.gameAdaptator.GameMouseAdaptator;
 import fr.prog.tablut.controller.game.gameAdaptator.GameTimeAdaptator;
@@ -22,6 +24,8 @@ import fr.prog.tablut.controller.game.gameController.GameController;
 import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.MoveType;
+import fr.prog.tablut.model.game.Play;
+import fr.prog.tablut.model.game.Plays;
 import fr.prog.tablut.model.game.player.PlayerEnum;
 import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 import fr.prog.tablut.model.window.WindowConfig;
@@ -53,6 +57,8 @@ public class GamePage extends Page {
     private GenericLabel winnerDescLabel, winnerTimeAndPlaysLabel;
     private NavPage winnerPage;
     private ImageComponent blackBT, blackT, whiteBT, whiteT;
+
+    private GameController gameController;
     
     private PlayerEnum lastPlayer = null;
 
@@ -65,14 +71,14 @@ public class GamePage extends Page {
         windowName = PageName.GamePage;
 
         // the controller that's do the communication's bridge between the model and the view for the game
-        GameController gameController = new GameController(this);
+        gameController = new GameController(this);
 
         final int s = (int)(config.windowHeight / 1.2); // size of the board
         final Dimension d = new Dimension((config.windowWidth - s)/2, config.windowHeight); // size of sides
 
-        centerSide = new CenterSideGame(config, new Dimension(s, s));
-        rightSide = new RightSideGame(config, d, gameController);
-        leftSide = new LeftSideGame(config, gameController, d, this, rightSide);
+        centerSide = new CenterSideGame(new Dimension(s, s));
+        rightSide = new RightSideGame(d, gameController);
+        leftSide = new LeftSideGame(d, this);
 
         setPLayout(new GridBagLayout());
 
@@ -105,7 +111,7 @@ public class GamePage extends Page {
         addKeyListener(new GameKeyAdaptator(gameController));
         setFocusable(true);
 
-        initWinnerPanel(gameController);
+        initWinnerPanel();
     }
 
     @Override
@@ -123,16 +129,13 @@ public class GamePage extends Page {
         boolean a = PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker()).isAI(),
             b = PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender()).isAI();
         
-        if(!a || !b)
-            getRightSide().togglePauseButton(false);
-        else
-            getRightSide().togglePauseButton(Game.getInstance().isPaused());
+        getRightSide().togglePauseButton((!a || !b)? false : Game.getInstance().isPaused());
 
         centerSide.updateTurnOf();
-        leftSide.update();
+        leftSide.reset();
 
         // hide winner screen in the case the previous game was terminated
-        foregroundPanel.setVisible(false);
+        hideVictoryPage();
         
         lastPlayer = null;
     }
@@ -141,7 +144,7 @@ public class GamePage extends Page {
      * Initializes all components and style for the victory screen
      * @param gc The game controller
      */
-    private void initWinnerPanel(GameController gc) {
+    private void initWinnerPanel() {
         foregroundPanel.setOpaque(true);
         
         foregroundPanel.setBackground(new Color(0, 0, 0, 230));
@@ -151,7 +154,7 @@ public class GamePage extends Page {
 
         bottomButton.getButton1().setStyle("button.dark");
 
-        bottomButton.getButton2().setAction(new ButtonRestartAdaptator((GenericButton)bottomButton.getButton2(), gc, true, this));
+        bottomButton.getButton2().setAction(new ButtonRestartAdaptator((GenericButton)bottomButton.getButton2(), gameController, true, this));
         bottomButton.getButton1().setHref(PageName.HomePage, new ButtonQuitGameAdaptator(bottomButton.getButton1(), GenericObjectStyle.getGlobalWindow()));
         //
 
@@ -175,7 +178,7 @@ public class GamePage extends Page {
         replay.setAction(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                foregroundPanel.setVisible(false);
+                hideVictoryPage();
             }
         });
 
@@ -279,7 +282,7 @@ public class GamePage extends Page {
         whiteBT.setVisible(!wid);
 
         // display the page
-        foregroundPanel.setVisible(true);
+        showVictoryPage();
     }
     
     /**
@@ -467,4 +470,125 @@ public class GamePage extends Page {
     public void clearChat() {
         leftSide.clearChat();
     }
+
+    /**
+     * Hides the victory page
+     */
+    public void hideVictoryPage() {
+        foregroundPanel.setVisible(false);
+    }
+
+    /**
+     * Shows the victory page
+     */
+    public void showVictoryPage() {
+        foregroundPanel.setVisible(true);
+    }
+
+    /**
+     * Returns the game's controller
+     * @return
+     */
+	public GameController getGameController() {
+		return gameController;
+	}
+
+    /**
+     * Sets the preview grid to visualize.
+     * <p>Updates the move chat history</p>
+     * @param pos The move index in list of moves the game
+     */
+	public void setPreviewAt(int pos) {
+        Plays plays = Game.getInstance().getPlays();
+		List<Play> allPlays = plays.getPlays();
+		CellContent[][] currentGrid = copyGrid(Game.getInstance().getGrid());
+
+        leftSide.getMoveHistoryPanel().setCursorType("hand");
+
+		if(pos <= plays.getCurrentMovement()) {
+			for(int i=plays.getCurrentMovement(); i >= pos; i--) {
+				if(allPlays.size() <= i || leftSide.getMoveHistoryPanel().historyLength() <= i)
+					break;
+				
+				Play currentPlay = allPlays.get(i);
+
+				for(Map.Entry<Point, CellContent> m : currentPlay.getModifiedOldCellContents().entrySet()) {
+					currentGrid[m.getKey().y][m.getKey().x] = m.getValue();
+				}
+
+                leftSide.getMoveHistoryPanel().setHoveringAction(i, true);
+			}
+		}
+
+		setPreviewGrid(currentGrid, pos);
+		refresh();
+	}
+
+    /**
+     * Stop previewing at a given point. restores the grid to the previous point
+     * @param pos The play's index in the game
+     */
+    public void exitPreviewAt(int pos) {
+        leftSide.getMoveHistoryPanel().setCursorType("default");
+
+        int cy = leftSide.getMoveHistoryPanel().getMovesNumber();
+
+		for(int i=cy-1; i >= pos; i--) {
+			if(leftSide.getMoveHistoryPanel().historyLength() <= i)
+				break;
+			
+            leftSide.getMoveHistoryPanel().setHoveringAction(i, false);
+		}
+
+		setPreviewGrid(null, -1);
+		refresh();
+    }
+
+    /**
+     * Confirms the preview grid.
+     * <p>The current grid is changed to the preview one</p>
+     * @param pos The move index to go to
+     */
+    public void confirmPreviewAt(int pos) {
+        Plays plays = Game.getInstance().getPlays();
+		
+		boolean hasChanged = false;
+
+		if(pos <= plays.getCurrentMovement()) {
+			for(int i = plays.getCurrentMovement(); i >= pos; i--) {
+				if(leftSide.getMoveHistoryPanel().historyLength() <= i)
+					break;
+				
+				if(Game.getInstance().undo_move()) {
+					leftSide.getMoveHistoryPanel().removeAction(i);
+					hasChanged = true;
+				}
+			}
+		}
+		
+		if(hasChanged) {
+			resetLastPlayer();
+			removePreview();
+			refresh();
+		}
+    }
+
+    /**
+     * Deep copy a grid of CellContent
+     * @see CellContent
+     * @param grid The grid to copy
+     * @return The copied grid
+     */
+    private CellContent[][] copyGrid(CellContent[][] grid) {
+		if(grid == null)
+			return null;
+        
+		CellContent[][] newGrid = new CellContent[grid.length][];
+
+		for(int i=0; i < grid.length; i++) {
+			newGrid[i] = grid[i].clone();
+		}
+
+		return newGrid;
+	}
 }

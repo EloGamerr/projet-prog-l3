@@ -121,14 +121,26 @@ public class NavPage extends GenericPanel {
         add(content, BorderLayout.CENTER);
     }
 
+    /**
+     * Returns the title of the nav page
+     * @return The title of the nav page
+     */
     public Title getTitle() {
         return title;
     }
 
+    /**
+     * Returns the description of the nav page
+     * @return The description of the nav page
+     */
     public GenericLabel getDescription() {
         return description;
     }
 
+    /**
+     * Returns the bottomPanel object of the nav page
+     * @return The bottomPanel
+     */
     public BottomButtonPanel getBottomPanel() {
         return bottomPanel;
     }

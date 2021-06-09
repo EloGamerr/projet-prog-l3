@@ -5,12 +5,11 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-import fr.prog.tablut.controller.adaptators.ButtonPauseAdaptator;
-import fr.prog.tablut.controller.adaptators.ButtonQuitGameAdaptator;
-import fr.prog.tablut.controller.adaptators.ButtonRestartAdaptator;
-import fr.prog.tablut.controller.adaptators.ButtonSaveAdaptator;
+import fr.prog.tablut.controller.game.gameAdaptator.ButtonPauseAdaptator;
+import fr.prog.tablut.controller.game.gameAdaptator.ButtonQuitGameAdaptator;
+import fr.prog.tablut.controller.game.gameAdaptator.ButtonRestartAdaptator;
+import fr.prog.tablut.controller.game.gameAdaptator.ButtonSaveAdaptator;
 import fr.prog.tablut.controller.game.gameController.GameController;
-import fr.prog.tablut.model.window.WindowConfig;
 import fr.prog.tablut.model.window.PageName;
 import fr.prog.tablut.view.components.generic.GenericObjectStyle;
 import fr.prog.tablut.view.components.generic.GenericRoundedButton;
@@ -18,42 +17,44 @@ import fr.prog.tablut.view.pages.game.sides.GameInterfaceSide;
 
 /**
  * Game's right side component that manages all buttons menu
+ * @see GameInterfaceSide
  */
 public class RightSideGame extends GameInterfaceSide {
-	GameController gameController;
     GenericRoundedButton pause;
 
     /**
-     * Creates the right side of the game's page
-     * @param config The config to apply
+     * Creates the right side of the game's page with button's menu
      * @param d The dimension of the side
      * @param gameController The game's controller
      */
-    public RightSideGame(WindowConfig config, Dimension d, GameController gameController) {
+    public RightSideGame(Dimension d, GameController gameController) {
         super(d);
-        this.gameController = gameController;
         
+        // instantiation
         GenericRoundedButton saveToNewFile = new GenericRoundedButton("Sauvegarder la partie", 200, 40);
         pause = new GenericRoundedButton("Pause", 200, 40);
         GenericRoundedButton restart = new GenericRoundedButton("Recommencer la partie", 200, 40);
         GenericRoundedButton shortcuts = new GenericRoundedButton("Raccourcis", 200, 40);
         GenericRoundedButton quit = new GenericRoundedButton("Quitter la partie", 200, 40);
         
+        // style
         saveToNewFile.setStyle("button.greenHover");
         quit.setStyle("button.redHover");
 
+        // actions
         shortcuts.setHref(PageName.HelpPage);
         quit.setHref(PageName.HomePage, new ButtonQuitGameAdaptator(quit, GenericObjectStyle.getGlobalWindow()));
 
-        saveToNewFile.setAction(new ButtonSaveAdaptator(saveToNewFile, this));
+        saveToNewFile.setAction(new ButtonSaveAdaptator(saveToNewFile, gameController));
         
-        pause.setAction(new ButtonPauseAdaptator(pause, this));
+        pause.setAction(new ButtonPauseAdaptator(pause, gameController));
         restart.setAction(new ButtonRestartAdaptator(restart, gameController, false, null));
         
+        // add components to the view
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        c.anchor = GridBagConstraints.FIRST_LINE_START;
 
+        c.anchor = GridBagConstraints.FIRST_LINE_START;
         c.insets = new Insets(10, 100, 10, 0);
         c.gridx = 0;
         
@@ -62,14 +63,6 @@ public class RightSideGame extends GameInterfaceSide {
         c.gridy = 2; add(restart, c);
         c.gridy = 3; add(shortcuts, c);
         c.gridy = 4; add(quit, c);
-    }
-
-    public GameController getGameController() {
-        return this.gameController;
-    }
-
-    public GenericRoundedButton getPauseButton() {
-        return this.pause;
     }
 
     /**
