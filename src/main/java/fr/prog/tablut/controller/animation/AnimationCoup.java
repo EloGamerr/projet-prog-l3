@@ -13,9 +13,10 @@ import fr.prog.tablut.view.pages.game.GamePage;
  * @param movement the movement choosed by the AI
  */
 public class AnimationCoup {
-	Movement mov;
-	GamePage view;
-	double progress, animSpeed;
+	private final Movement mov;
+	private final GamePage view;
+	private double progress;
+	private final double animSpeed;
 	
 	public AnimationCoup(Movement movement, GamePage gamePage) {
 		animSpeed = 0.05;
@@ -59,10 +60,10 @@ public class AnimationCoup {
 	}
 
 	/*
-	* 
+	* Stops the animation
  	*/
 	public void stop_anim() {
-		view.stop_anim(); // 
+		view.stop_anim();
         Game.getInstance().move(mov.getFromC(), mov.getFromL(), mov.getToC(), mov.getToL()); // met à jour le jeu en jouant le coup pour le modele
 	}
 
