@@ -33,7 +33,7 @@ public abstract class AIMinMax extends AIPlayer {
             } catch (ExecutionException |InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println("Joue !");
+
             //On évite que l'IA fasse les mêmes mouvements en boucle (voir plus loin dans le code)
             while(previousMovements.size() >= 3)
                 previousMovements.removeFirst();
