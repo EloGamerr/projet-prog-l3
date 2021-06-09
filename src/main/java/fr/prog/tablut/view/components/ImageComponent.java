@@ -26,27 +26,58 @@ public class ImageComponent extends GenericPanel {
     protected int width = 0;
     protected int height = 0;
 
-
+    /**
+     * Creates an image component without any setting
+     */
     public ImageComponent() {
         super();
     }
 
+    /**
+     * Creates an image component with given image source's path
+     * @param src The image source's path
+     */
     public ImageComponent(String src) {
         this.src = src;
     }
 
+    /**
+     * Creates an image component with given image source's path and dimension
+     * @param src The image source's path
+     * @param width The image's width
+     * @param height The image's height
+     */
     public ImageComponent(String src, int width, int height) {
         this(src, null, new Dimension(width, height));
     }
 
+    /**
+     * Creates an image component with given image source's path, top-left corner location and dimension
+     * @param src The image source's path
+     * @param x The image top-left corner x-Axis coord
+     * @param y The image top-left corner y-Axis coord
+     * @param width The image's width
+     * @param height The image's height
+     */
     public ImageComponent(String src, int x, int y, int width, int height) {
         this(src, new Point(x, y), new Dimension(width, height));
     }
 
+    /**
+     * Creates an image component with given image source's path and dimension
+     * @param src The image source's path
+     * @param d The image's dimension
+     */
     public ImageComponent(String src, Dimension d) {
         this(src, null, d);
     }
 
+    /**
+     * Creates an image component with given image source's path, location and dimension
+     * @param src The image source's path
+     * @param p The image top-left corner's location
+     * @param d The image's dimension
+     */
     public ImageComponent(String src, Point p, Dimension d) {
         this.src = src;
 
@@ -62,6 +93,12 @@ public class ImageComponent extends GenericPanel {
         }
     }
 
+    /**
+     * Creates an image component with given image, location and dimension
+     * @param img The pre-loaded image
+     * @param p The image top-left corner's location
+     * @param d The image's dimension
+     */
     public ImageComponent(Image img, Point p, Dimension d) {
         if(img != null) {
             this.img = img;
@@ -81,6 +118,9 @@ public class ImageComponent extends GenericPanel {
         }
     }
 
+    /**
+     * Loads the image if not already loaded
+     */
     public void load() {
         if(!hasLoaded()) {
             try {
@@ -95,24 +135,39 @@ public class ImageComponent extends GenericPanel {
         }
     }
 
+    /**
+     * Returns either it has loaded or not its image
+     */
     public boolean hasLoaded() {
         return loaded;
     }
 
+    /**
+     * sets the image's source if the image has not loaded yet
+     */
     public void setSrc(String src) {
         if(!hasLoaded()) {
             this.src = src;
         }
     }
 
+    /**
+     * Returns the image's source
+     */
     public String getSrc() {
         return src;
     }
 
+    /**
+     * Returns the image
+     */
     public Image getImage() {
         return img;
     }
 
+    /**
+     * Custom paint of the image's component
+     */
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
 

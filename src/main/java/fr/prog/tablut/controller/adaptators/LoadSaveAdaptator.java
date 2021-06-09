@@ -6,7 +6,9 @@ import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.view.components.generic.GenericButton;
 import fr.prog.tablut.view.pages.load.SavedGamesPanel;
 
-//Adaptateur pour le panel de load
+/**
+* Adaptateur pour le panel de load
+*/
 public class LoadSaveAdaptator extends ActionAdaptator<GenericButton> {
     private SavedGamesPanel savesPanel;
 

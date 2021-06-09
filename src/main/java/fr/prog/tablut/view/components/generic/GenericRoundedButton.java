@@ -211,6 +211,11 @@ public class GenericRoundedButton extends GenericButton {
         }
     }
 
+    /**
+     * Sets the text's alignment of the button
+     * @see TextAlignment
+     * @param alignment The text's alignment of the button
+     */
     public void alignText(TextAlignment alignment) {
         this.alignment = alignment;
         int padding = 10;
@@ -230,6 +235,15 @@ public class GenericRoundedButton extends GenericButton {
         }
     }
 
+    /**
+     * Sets an image on the button at specified position and dimension
+     * @param imageSrc The image's source path
+     * @param x The image's top-left corner x-Axis coord
+     * @param y The image's top-left corner y-Axis coord
+     * @param width The image's width
+     * @param height The image's height
+     * @return Either it successfully loaded the image or not
+     */
     public boolean setImage(String imageSrc, int x, int y, int width, int height) {
         if(imageSrc != null) {
 			InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream("images/" + imageSrc);
@@ -253,13 +267,19 @@ public class GenericRoundedButton extends GenericButton {
         return false;
     }
 
-    // @Override
+    /**
+     * Updates the text of the button and re-calculates its position
+     * @param text The text to put in the button
+     */
     public void updateText(String text) {
         super.setText(text);
         textBounds = getFont().getStringBounds(text, new FontRenderContext(null, false, false));
         alignText(alignment);
     }
 
+    /**
+     * Repains the button with its set style
+     */
     public void paint(Graphics g) {
         // Don't draw the button or border
         setContentAreaFilled(false);

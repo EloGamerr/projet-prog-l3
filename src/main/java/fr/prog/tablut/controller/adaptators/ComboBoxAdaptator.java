@@ -7,7 +7,9 @@ import javax.swing.JComboBox;
 
 import fr.prog.tablut.view.pages.newGame.SelectionPlayerForm;
 
-//Adaptateur pour les comboBox, utilisé pour séléctioner les types de joueurs pour les attaquants et les défenseur
+/**
+* Adaptateur pour les comboBox, utilisé pour séléctioner les types de joueurs pour les attaquants et les défenseur
+*/
 public class ComboBoxAdaptator implements ActionListener {
 	private final SelectionPlayerForm selectionPlayer;
 	private final String side;

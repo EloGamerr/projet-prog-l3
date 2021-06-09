@@ -6,7 +6,9 @@ import java.awt.event.KeyListener;
 
 import fr.prog.tablut.view.components.generic.GenericInput;
 
-//Adaptateur pour les inputs, utilisé pour saisir les noms des joueurs
+/**
+* Adaptateur pour les inputs, utilisé pour saisir les noms des joueurs
+*/
 public class InputAdaptator extends ActionAdaptator<GenericInput> implements KeyListener {
     public InputAdaptator(GenericInput input) {
         super(input);
@@ -25,7 +27,7 @@ public class InputAdaptator extends ActionAdaptator<GenericInput> implements Key
         }
 
         int k = e.getKeyCode();
-        
+
         if(k == KeyEvent.VK_UP || k == KeyEvent.VK_DOWN || k == KeyEvent.VK_LEFT || k == KeyEvent.VK_RIGHT) {
             entity.revalidate();
             entity.repaint();

@@ -17,16 +17,31 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
  * @see JScrollPane
  */
 public class GenericScrollPane extends JScrollPane {
+    /**
+     * Creates a generic custom styled JScrollPane (for custom scrollbar)
+     * @see JScrollPane
+     * @param content The component to put in the scrollpane
+     */
     public GenericScrollPane(Component content) {
         super(content);
         init();
     }
 
+    /**
+     * Creates a generic custom styled JScrollPane (for custom scrollbar)
+     * @see JScrollPane
+     * @param content The component to put in the scrollpane
+     * @param vsbPolicy The vertical scrollbar's status
+     * @param hsbPolicy The horizontal scrollbar's status
+     */
     public GenericScrollPane(Component content, int vsbPolicy, int hsbPolicy) {
         super(content, vsbPolicy, hsbPolicy);
         init();
     }
 
+    /**
+     * Initializes the GenericScrollPane's UI
+     */
     private void init() {
         setOpaque(false);
         getViewport().setOpaque(false);
@@ -49,26 +64,36 @@ class ScrollBarUI extends BasicScrollBarUI {
 
     }
 
-    protected JButton createZeroButton() {
-        JButton button = new JButton("zero button");
-        Dimension zeroDim = new Dimension(0,0);
-        button.setPreferredSize(zeroDim);
-        button.setMinimumSize(zeroDim);
-        button.setMaximumSize(zeroDim);
+    /**
+     * Creates an empty and invisible button
+     * @return
+     */
+    protected JButton emptyButton() {
+        JButton button = new JButton("");
+        Dimension d = new Dimension(0, 0);
+        button.setPreferredSize(d);
+        button.setMinimumSize(d);
+        button.setMaximumSize(d);
         return button;
     }
 
+    /**
+     * Removes the decrease button
+     */
     @Override
     protected JButton createDecreaseButton(int orientation) {
-        return createZeroButton();
+        return emptyButton();
     }
 
+    /**
+     * Removes the increase button
+     */
     @Override
     protected JButton createIncreaseButton(int orientation) {
-        return createZeroButton();
+        return emptyButton();
     }
 
-    // barre exterieure
+    // external rod
     @Override
     protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
         Graphics2D g2d = (Graphics2D) g;
@@ -76,7 +101,7 @@ class ScrollBarUI extends BasicScrollBarUI {
         g2d.fillRect(0, 0, getTrackBounds().height, getTrackBounds().height);
     }
 
-    // barre interieure
+    // internal rod
     @Override
     protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
         Graphics2D g2d = (Graphics2D) g;

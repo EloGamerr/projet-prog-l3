@@ -46,6 +46,9 @@ public class GenericRoundedPanel extends GenericPanel {
             this.style = GenericObjectStyle.getStyle().get(style);
     }
 
+    /**
+     * Repaint the rounded panel
+     */
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
 

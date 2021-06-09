@@ -1,5 +1,8 @@
 package fr.prog.tablut.view.components.generic;
 
+/**
+* Utilisé pour aligner le texte du chat
+*/
 public enum TextAlignment {
 	CENTER(0),
 	LEFT(1),

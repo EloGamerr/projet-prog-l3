@@ -82,6 +82,9 @@ public class GenericComboBox<E> extends JComboBox<E> {
         repaint();
 	}
 
+    /**
+     * Repaints the comboBox UI's style
+     */
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
 
@@ -107,6 +110,9 @@ class GenericComboBoxUI extends BasicComboBoxUI {
         return new GenericComboBoxUI(c);
     }
 
+    /**
+     * Creates a generic comboBox UI
+     */
     protected GenericComboBoxUI(JComponent c) {
         super();
 
@@ -118,6 +124,9 @@ class GenericComboBoxUI extends BasicComboBoxUI {
         c.add(btn);
     }
 
+    /**
+     * Returns a redesigned arrow button
+     */
     @Override
     protected ArrowButton createArrowButton() {
         return new ArrowButton();
@@ -127,10 +136,15 @@ class GenericComboBoxUI extends BasicComboBoxUI {
 
 /**
  * The arrow component of the comboBox
+ * @see GenericRoundedButton
  */
 class ArrowButton extends GenericRoundedButton {
     private final int size = 30;
 
+    /**
+     * Creates an arrow button for a comboBox
+     * @see GenericRoundedButton
+     */
     protected ArrowButton() {
         super();
         setName("ComboBox.arrowButton");
