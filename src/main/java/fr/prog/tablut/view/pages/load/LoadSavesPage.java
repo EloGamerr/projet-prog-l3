@@ -1,13 +1,13 @@
 package fr.prog.tablut.view.pages.load;
 
 import fr.prog.tablut.controller.adaptators.LoadSaveAdaptator;
-import fr.prog.tablut.model.window.WindowConfig;
-import fr.prog.tablut.model.window.PageName;
-import fr.prog.tablut.view.GlobalWindow;
-import fr.prog.tablut.view.Page;
 import fr.prog.tablut.view.components.BottomButtonPanel;
-import fr.prog.tablut.view.components.ImageComponent;
 import fr.prog.tablut.view.components.NavPage;
+import fr.prog.tablut.view.pages.Page;
+import fr.prog.tablut.view.pages.ThemePage;
+import fr.prog.tablut.view.window.GlobalWindow;
+import fr.prog.tablut.view.window.PageName;
+import fr.prog.tablut.view.window.WindowConfig;
 
 /**
  * The Load page. Extends Page class.
@@ -15,7 +15,7 @@ import fr.prog.tablut.view.components.NavPage;
  * To continue to play this game.</p>
  * @see Page
  */
-public class LoadSavesPage extends Page {
+public class LoadSavesPage extends ThemePage {
 	protected final SavedGamesPanel panel;
 	protected final BottomButtonPanel bottomPanel;
 
@@ -24,8 +24,7 @@ public class LoadSavesPage extends Page {
 	 * @param config The configuration to set to the page
 	 */
 	public LoadSavesPage(WindowConfig config, GlobalWindow globalWindow) {
-		super(config);
-		windowName = PageName.LoadPage;
+		super(config, PageName.LoadPage);
 
 		bottomPanel = new BottomButtonPanel(PageName.HomePage, PageName.GamePage, "Jouer !");
 		panel = new SavedGamesPanel(bottomPanel.getButton2());
@@ -43,18 +42,6 @@ public class LoadSavesPage extends Page {
 		page.setContent(panel);
 
 		add(page);
-
-        
-        // setup background pannel
-        final int iconSize = 500;
-        ImageComponent blackTower = new ImageComponent("theme/transparent_black_tower.png", -iconSize/2, config.windowHeight/2 - iconSize/2, iconSize, iconSize);
-        ImageComponent whiteTower = new ImageComponent("theme/transparent_white_tower.png", config.windowWidth-iconSize/2, config.windowHeight/2 - iconSize/2, iconSize, iconSize);
-
-        blackTower.load();
-        whiteTower.load();
-
-        backgroundPanel.add(blackTower);
-        backgroundPanel.add(whiteTower);
 	}
 
     /**

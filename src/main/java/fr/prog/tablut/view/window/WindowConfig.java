@@ -1,4 +1,4 @@
-package fr.prog.tablut.model.window;
+package fr.prog.tablut.view.window;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -15,8 +15,6 @@ import fr.prog.tablut.model.Loader;
  * stores the configuration of a Window
  */
 public class WindowConfig {
-    protected final Loader loader = new Loader();
-
     // project name
     public String projectName = "";
 
@@ -73,7 +71,7 @@ public class WindowConfig {
      * @param filepath The file path
      */
     public void setConfig(String filepath) throws ParseException {
-        setConfig(loader.getJSON(filepath));
+        setConfig(Loader.getJSON(filepath));
     }
 
     /**
@@ -254,7 +252,7 @@ public class WindowConfig {
 
             if(cpnt.hasProperty(k)) {
                 hasAtLeastOneProp = true;
-                Color color = loader.getColorFromArray(o.getJSONArray(k));
+                Color color = Loader.getColorFromArray(o.getJSONArray(k));
                 cpnt.set(k, color);
             }
         }

@@ -4,7 +4,7 @@ import java.text.ParseException;
 
 import javax.swing.SwingUtilities;
 
-import fr.prog.tablut.view.GlobalWindow;
+import fr.prog.tablut.view.window.GlobalWindow;
 
 /**
  * --- MAIN ENTRY ---

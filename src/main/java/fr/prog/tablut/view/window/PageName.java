@@ -1,4 +1,4 @@
-package fr.prog.tablut.model.window;
+package fr.prog.tablut.view.window;
 
 /**
  * Page's name

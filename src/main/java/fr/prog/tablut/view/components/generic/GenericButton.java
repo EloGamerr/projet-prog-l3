@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
 import fr.prog.tablut.controller.adaptators.ButtonNavAdaptator;
-import fr.prog.tablut.model.window.PageName;
+import fr.prog.tablut.view.window.PageName;
 
 /**
  * A component that extends JButton, a basic button.

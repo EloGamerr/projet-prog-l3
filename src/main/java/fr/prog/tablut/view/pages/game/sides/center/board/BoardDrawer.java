@@ -5,8 +5,13 @@ import java.awt.Cursor;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.io.IOException;
 
 import javax.swing.JPanel;
+
+import fr.prog.tablut.model.Loader;
 
 import java.awt.Graphics2D;
 
@@ -28,14 +33,22 @@ public class BoardDrawer {
     private Graphics2D g2d;
     private JPanel container;
 
-    private final Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
-    private final Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
+    private Cursor grabCursor;
+    private Cursor grabbingCursor;
+    private Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
 
     /**
      * Creates a BoardDrawer utility manager
      */
     public BoardDrawer() {
-
+        try {
+            Toolkit toolkit = Toolkit.getDefaultToolkit();
+            grabCursor = toolkit.createCustomCursor(Loader.getImage("theme/grab.png"), new Point(0, 0), "grab");
+            grabbingCursor = toolkit.createCustomCursor(Loader.getImage("theme/grabbing.png"), new Point(0, 0), "grabbing");
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -144,13 +157,28 @@ public class BoardDrawer {
         g2d.setStroke(new BasicStroke(width));
     }
     
+    /**
+     * Defines the font to put on the text to draw
+     * @param font The font to set on the text
+     */
     public void setFont(Font font) {
         g2d.setFont(font);
     }
 
+    /**
+     * Defines the cursor to draw
+     * @param cursor The cursor name. "grab", "grabbing" or "default".
+     */
     public void setCursor(String cursor) {
-        if(cursor.equals("hand")) container.setCursor(handCursor);
-        else container.setCursor(defaultCursor);
+        Cursor c;
+
+        switch(cursor) {
+            case "grab": c = grabCursor; break;
+            case "grabbing": c = grabbingCursor; break;
+            default: c = defaultCursor;
+        }
+
+        container.setCursor(c);
     }
 
 

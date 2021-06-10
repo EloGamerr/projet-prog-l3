@@ -112,4 +112,20 @@ public class CenterSideGame extends GameInterfaceSide {
     public void setPreviewGrid(CellContent[][] grid, int moveIndex) {
         boardInterface.setPreviewGrid(grid, moveIndex);
     }
+
+    /**
+     * Called when the window is resized
+     * @param width The new width it wants to set
+     * @param height The new height it wants to set
+     */
+    @Override
+    public void onResize(int width, int height) {
+        if(boardInterface != null)
+            boardInterface.resize(new Dimension(width, height));
+
+        if(turnOf != null && turnOf.getComponentCount() > 1) {
+            turnOf.getComponent(0).setLocation(turnOf.getWidth()/2 - 70, 10);
+            turnOf.getComponent(1).setLocation(turnOf.getWidth()/2 - 60, 10);
+        }
+    }
 }

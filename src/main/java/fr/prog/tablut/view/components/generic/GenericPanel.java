@@ -6,11 +6,13 @@ import java.awt.LayoutManager;
 
 import javax.swing.JPanel;
 
+import fr.prog.tablut.view.components.ResizableObject;
+
 /**
  * A component extending a JPanel, to create a rounded JPanel
  * @see JPanel
  */
-public class GenericPanel extends JPanel {
+public class GenericPanel extends ResizableObject {
     /**
      * Creates a generic panel with FlowLayout's manager and no dimension
      * @see FlowLayout
@@ -47,11 +49,6 @@ public class GenericPanel extends JPanel {
         setOpaque(false);
         setLayout(layout);
 
-        if(d != null) {
-            setSize(d);
-            setPreferredSize(d);
-            setMaximumSize(d);
-            setMinimumSize(d);
-        }
+        resize(d);
     }
 }

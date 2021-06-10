@@ -18,7 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import fr.prog.tablut.controller.adaptators.InputAdaptator;
-import fr.prog.tablut.model.window.ComponentStyle;
+import fr.prog.tablut.view.window.ComponentStyle;
 
 /**
  * A component that extends a JTextField, a basic text input

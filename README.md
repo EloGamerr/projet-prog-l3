@@ -16,7 +16,7 @@ L'IHM a beaucoup été travaillé pour permettre une compréhension rapide du je
 ## Information sur l'IA
 Nous avons implémenté la possibilité de jouer contre une IA avec plusieurs niveaux de difficulté définis selon nos propres tests.
 ## Avancée du projet
-Ce projet a été réalisé en 1 mois par un groupe de 6 étudiants. Le projet est dans un état final mais il se peut qu'il y est encore quelques bugs. Tout ce qui avait été prévu a été réalisé.
+Ce projet a été réalisé en 1 mois par un groupe de 6 étudiants. Le projet est dans un état final mais il se peut qu'il y ait encore quelques bugs. Tout ce qui avait été prévu a été réalisé.
 
 ## Image
 ![Image du jeu](game_image.png)

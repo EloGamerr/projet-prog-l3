@@ -5,11 +5,9 @@ import java.awt.Point;
 
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
-
 import java.util.List;
-import java.util.Objects;
 
+import fr.prog.tablut.model.Loader;
 import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.Movement;
@@ -34,7 +32,7 @@ public class IndicatorsDesigner extends Designer {
         super(bd);
 
         try {
-            throne = ImageIO.read(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("images/chess/small/throne_small.png")));
+            throne = Loader.getImage("chess/small/throne_small.png");
         }
         catch(IOException e) {
             e.printStackTrace();
@@ -87,6 +85,8 @@ public class IndicatorsDesigner extends Designer {
 				g.fillRect(x + widthBorder + hoveringCell.x * cellSize, y + widthBorder + hoveringCell.y * cellSize, cellSize, cellSize);
 
 			drawAccessibleCells(accessibleCells, data.hoveringCell);
+
+            g.setCursor("grabbing");
 		}
 
         // The player hovers pieces
@@ -94,7 +94,7 @@ public class IndicatorsDesigner extends Designer {
             g.setColor(GameColors.CELL_SELECTION);
             g.fillSquare(hoveringPossibleMoveCell.x, hoveringPossibleMoveCell.y);
             drawAccessibleCells(accessibleCells, null);
-            g.setCursor("hand");
+            g.setCursor("grab");
         }
 
         // default state

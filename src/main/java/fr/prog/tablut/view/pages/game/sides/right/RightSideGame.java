@@ -11,10 +11,10 @@ import fr.prog.tablut.controller.game.gameAdaptator.ButtonRestartAdaptator;
 import fr.prog.tablut.controller.game.gameAdaptator.ButtonSaveAdaptator;
 import fr.prog.tablut.controller.game.gameController.GameController;
 import fr.prog.tablut.model.game.Game;
-import fr.prog.tablut.model.window.PageName;
 import fr.prog.tablut.view.components.generic.GenericObjectStyle;
 import fr.prog.tablut.view.components.generic.GenericRoundedButton;
 import fr.prog.tablut.view.pages.game.sides.GameInterfaceSide;
+import fr.prog.tablut.view.window.PageName;
 
 /**
  * Game's right side component that manages all buttons menu

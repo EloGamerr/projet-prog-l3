@@ -30,9 +30,9 @@ public class ButtonRestartAdaptator extends ActionAdaptator<GenericButton> {
 			gameController.restart();
 		}
 		else {
-			Object value = JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment recommencer la partie en cours ?", "Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+			int value = JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment recommencer la partie en cours ?", "Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
-			if((int) value == 0) {
+			if(value == 0) {
 				gameController.restart();
 			}
 		}

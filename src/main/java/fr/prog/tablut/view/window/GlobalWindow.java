@@ -1,21 +1,25 @@
-package fr.prog.tablut.view;
+package fr.prog.tablut.view.window;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Point;
+
 import java.io.IOException;
-import java.io.InputStream;
-import java.text.ParseException;
-import java.util.Objects;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
+import java.text.ParseException;
+
+import javax.swing.WindowConstants;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.border.LineBorder;
 
 import org.json.JSONObject;
 
 import fr.prog.tablut.model.Loader;
-import fr.prog.tablut.model.window.WindowConfig;
-import fr.prog.tablut.model.window.PageName;
 import fr.prog.tablut.view.components.NavPage;
 import fr.prog.tablut.view.components.generic.GenericObjectStyle;
+import fr.prog.tablut.view.pages.Page;
 import fr.prog.tablut.view.pages.game.GamePage;
 import fr.prog.tablut.view.pages.help.HelpPage;
 import fr.prog.tablut.view.pages.home.HomePage;
@@ -30,6 +34,7 @@ import fr.prog.tablut.view.pages.newGame.NewGamePage;
  */
 public class GlobalWindow {
 	protected final WindowConfig config;
+    private final Titlebar titlebar;
     private final GamePage gamePage;
     private final HomePage homePage;
     private final LoadSavesPage loadPage;
@@ -69,16 +74,13 @@ public class GlobalWindow {
 		NavPage.setDimension(new Dimension(config.windowWidth, config.windowHeight - 25));
 
         // load fonts
-		Loader loader = new Loader();
-		loader.loadCustomFont("Farro-Regular.ttf");
-		loader.loadCustomFont("Farro-Light.ttf");
-		loader.loadCustomFont("Staatliches-Regular.ttf");
+		Loader.loadCustomFont("Farro-Regular.ttf");
+		Loader.loadCustomFont("Farro-Light.ttf");
+		Loader.loadCustomFont("Staatliches-Regular.ttf");
 		
 
-        // create its frame and load all pages
-		jFrame = new JFrame(config.projectName);
-
 		GenericObjectStyle.setGlobalWindow(this);
+        Page.setParent(this);
 		
 		gamePage = new GamePage(this.config);
 		homePage = new HomePage(this.config);
@@ -88,20 +90,29 @@ public class GlobalWindow {
 		newGamePage = new NewGamePage(this.config);
 		loadPage = new LoadSavesPage(this.config, this);
 
+
+        // create its frame and load all pages
+		jFrame = new JFrame(config.projectName);
+        jFrame.setUndecorated(true);
+        jFrame.getRootPane().setBorder(new LineBorder(new Color(68, 68, 68)));
+
+        titlebar = new Titlebar(this);
+
+        jFrame.getContentPane().add(titlebar, BorderLayout.PAGE_START);
+        
 		// default page to show - home page
 		homePage.setVisible(true);
-		jFrame.setContentPane(homePage);
+		jFrame.getContentPane().add(homePage);
 		
         // frame parameters
 		jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		jFrame.setSize(config.windowWidth, config.windowHeight);
+		jFrame.setSize(config.windowWidth, config.windowHeight + titlebar.getHeight());
 		jFrame.setLocationRelativeTo(null);
 		jFrame.setVisible(true);
 		jFrame.setResizable(false);
 
-		InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream("images/chess/small/white_tower_small.png");
 		try {
-			ImageIcon img = new ImageIcon(ImageIO.read(Objects.requireNonNull(in)));
+			ImageIcon img = new ImageIcon(Loader.getImage("chess/small/white_tower_small.png"));
 			jFrame.setIconImage(img.getImage());
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -173,6 +184,8 @@ public class GlobalWindow {
 		previousPageName = currentPage.name();
 		helpPage.setBackPage(previousPageName);
 
+        jFrame.getContentPane().remove(currentPage);
+
         currentPage = tmpPage;
         
         // update page if previous wasn't the help one
@@ -181,7 +194,7 @@ public class GlobalWindow {
         
         // show the new page
 		currentPage.setVisible(true);
-		jFrame.setContentPane(currentPage);
+        jFrame.getContentPane().add(currentPage);
 	}
 	
     /**
@@ -245,5 +258,76 @@ public class GlobalWindow {
      */
     public JFrame getjFrame() {
         return jFrame;
+    }
+
+    /**
+     * Returns the window's titlebar component
+     * @return THe window's titlebar component
+     */
+    public Titlebar getTitlebar() {
+        return titlebar;
+    }
+
+    /**
+     * Returns the window's size, not including the titlebar's size
+     * @return The inner window's size
+     */
+    public Dimension getSize() {
+        return new Dimension(jFrame.getWidth(), jFrame.getHeight() - titlebar.getHeight());
+    }
+
+    /**
+     * Sets the window's state (iconified or not)
+     * @param iconified The window's state
+     */
+    public void setState(int iconified) {
+        jFrame.setState(iconified);
+    }
+
+    /**
+     * Closes the window
+     */
+    public void close() {
+        System.exit(0);
+    }
+
+    /**
+     * Toggles the state of the window between minimized and maximized
+     * <p>Dispatches an event for all its pages</p>
+     */
+    public void maximize() {
+        jFrame.setExtendedState((jFrame.getExtendedState() == JFrame.MAXIMIZED_BOTH)? JFrame.NORMAL : JFrame.MAXIMIZED_BOTH);
+        jFrame.revalidate();
+        jFrame.repaint();
+        dispatchEvent("resize");
+    }
+
+    /**
+     * Dispatch the given event in all its pages
+     * @param eventName The event name to dispatch
+     */
+    public void dispatchEvent(String eventName) {
+        homePage.listenEvent(eventName);
+        helpPage.listenEvent(eventName);
+        newGamePage.listenEvent(eventName);
+        loadPage.listenEvent(eventName);
+        gamePage.listenEvent(eventName);
+    }
+
+    /**
+     * Sets the window's location at given point
+     * @param p The new window's location
+     */
+	public void setLocation(Point p) {
+        jFrame.setLocation(p);
+	}
+
+    /**
+     * Sets the window's location at the given point
+     * @param x The top-left corner X-Axis coord of the window
+     * @param y The top-left corner Y-Axis coord of the window
+     */
+    public void setLocation(int x, int y) {
+        jFrame.setLocation(x, y);
     }
 }

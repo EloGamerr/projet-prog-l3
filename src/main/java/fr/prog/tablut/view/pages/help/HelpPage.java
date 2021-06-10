@@ -4,13 +4,13 @@ import java.awt.BorderLayout;
 
 import javax.swing.border.EmptyBorder;
 
-import fr.prog.tablut.model.window.WindowConfig;
-import fr.prog.tablut.model.window.PageName;
-import fr.prog.tablut.view.Page;
 import fr.prog.tablut.view.components.BottomButtonPanel;
 import fr.prog.tablut.view.components.NavPage;
 import fr.prog.tablut.view.components.generic.GenericLabel;
 import fr.prog.tablut.view.components.generic.GenericPanel;
+import fr.prog.tablut.view.pages.Page;
+import fr.prog.tablut.view.window.PageName;
+import fr.prog.tablut.view.window.WindowConfig;
 
 /**
  * The Help page. Extends Page class.
@@ -28,8 +28,7 @@ public class HelpPage extends Page {
 	 * @param pageBack The previous page to go on when the user closes this page
 	 */
 	public HelpPage(WindowConfig config, PageName pageBack) {
-		super(config);
-		windowName = PageName.HelpPage;
+		super(config, PageName.HelpPage);
 
         createRules();
 

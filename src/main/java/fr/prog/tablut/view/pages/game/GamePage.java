@@ -27,9 +27,6 @@ import fr.prog.tablut.model.game.Play;
 import fr.prog.tablut.model.game.Plays;
 import fr.prog.tablut.model.game.player.PlayerEnum;
 import fr.prog.tablut.model.game.player.PlayerTypeEnum;
-import fr.prog.tablut.model.window.WindowConfig;
-import fr.prog.tablut.model.window.PageName;
-import fr.prog.tablut.view.Page;
 import fr.prog.tablut.view.components.BottomButtonPanel;
 import fr.prog.tablut.view.components.ImageComponent;
 import fr.prog.tablut.view.components.NavPage;
@@ -37,11 +34,14 @@ import fr.prog.tablut.view.components.generic.GenericLabel;
 import fr.prog.tablut.view.components.generic.GenericObjectStyle;
 import fr.prog.tablut.view.components.generic.GenericPanel;
 import fr.prog.tablut.view.components.generic.GenericRoundedButton;
+import fr.prog.tablut.view.pages.Page;
 import fr.prog.tablut.view.pages.game.sides.center.CenterSideGame;
 import fr.prog.tablut.view.pages.game.sides.center.board.BoardInterface;
 import fr.prog.tablut.view.pages.game.sides.left.LeftSideGame;
 import fr.prog.tablut.view.pages.game.sides.right.RightSideGame;
 import fr.prog.tablut.view.utils.Time;
+import fr.prog.tablut.view.window.PageName;
+import fr.prog.tablut.view.window.WindowConfig;
 
 /**
  * The page component that manages the game's view and regroups every components of the page
@@ -65,8 +65,7 @@ public class GamePage extends Page {
      * @param config The configuration to apply to the page
      */
     public GamePage(WindowConfig config) {
-        super(config);
-        windowName = PageName.GamePage;
+        super(config, PageName.GamePage);
 
         // the controller that's do the communication's bridge between the model and the view for the game
         gameController = new GameController(this);
@@ -74,7 +73,7 @@ public class GamePage extends Page {
         final int s = (int)(config.windowHeight / 1.2); // size of the board
         final Dimension d = new Dimension((config.windowWidth - s)/2, config.windowHeight); // size of sides
 
-        centerSide = new CenterSideGame(new Dimension(s, s));
+        centerSide = new CenterSideGame(new Dimension(s, config.windowHeight));
         rightSide = new RightSideGame(d, gameController);
         leftSide = new LeftSideGame(d, this);
 
@@ -116,27 +115,6 @@ public class GamePage extends Page {
     protected void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
         requestFocusInWindow();
-    }
-
-    /**
-     * Triggered when the user comes on this page.
-     * <p>Explicitly called if it wants to update the view</p>
-     */
-    @Override
-    public void update() {
-        boolean a = Objects.requireNonNull(PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker())).isAI(),
-            b = Objects.requireNonNull(PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender())).isAI();
-        
-        getRightSide().enablePauseButton((a && b) || Game.getInstance().isPaused());
-
-        centerSide.updateTurnOf();
-        leftSide.reset();
-        rightSide.reset();
-
-        // hide winner screen in the case the previous game was terminated
-        hideVictoryPage();
-        
-        lastPlayer = null;
     }
 
     /**
@@ -216,6 +194,48 @@ public class GamePage extends Page {
         foregroundPanel.add(blackT);
         foregroundPanel.add(whiteBT);
         foregroundPanel.add(whiteT);
+    }
+
+    /**
+     * Called when the window is resized
+     * @param width The new width it wants to set
+     * @param height The new height it wants to set
+     */
+    @Override
+    protected void onResize(int width, int height) {
+        if(centerSide != null) {
+            Dimension d = new Dimension(height, height);
+            int s = (int)(height / 2.5);
+            Dimension d2 = new Dimension(s, height);
+            centerSide.resize(d);
+
+            if(leftSide != null)
+                leftSide.resize(d2);
+
+            if(rightSide != null)
+                rightSide.resize(d2);
+        }
+    }
+
+    /**
+     * Triggered when the user comes on this page.
+     * <p>Explicitly called if it wants to update the view</p>
+     */
+    @Override
+    public void update() {
+        boolean a = Objects.requireNonNull(PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker())).isAI(),
+            b = Objects.requireNonNull(PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender())).isAI();
+        
+        getRightSide().enablePauseButton((a && b) || Game.getInstance().isPaused());
+
+        centerSide.updateTurnOf();
+        leftSide.reset();
+        rightSide.reset();
+
+        // hide winner screen in the case the previous game was terminated
+        hideVictoryPage();
+        
+        lastPlayer = null;
     }
 
     /**

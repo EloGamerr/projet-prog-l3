@@ -10,13 +10,11 @@ import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Objects;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 
-import fr.prog.tablut.model.window.PageName;
+import fr.prog.tablut.model.Loader;
+import fr.prog.tablut.view.window.PageName;
 
 
 // Source : Adapted from http://www.bryanesmith.com/docs/rounded-jbuttons
@@ -248,10 +246,8 @@ public class GenericRoundedButton extends GenericButton {
     @SuppressWarnings("UnusedReturnValue")
     public boolean setImage(String imageSrc, int x, int y, int width, int height) {
         if(imageSrc != null) {
-			InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream("images/" + imageSrc);
-
 			try {
-				image = ImageIO.read(Objects.requireNonNull(in));
+				image = Loader.getImage(imageSrc);
 
                 imageX = x;
                 imageY = y;

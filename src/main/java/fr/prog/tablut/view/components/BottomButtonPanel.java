@@ -6,9 +6,9 @@ import java.awt.Insets;
 
 import javax.swing.border.EmptyBorder;
 
-import fr.prog.tablut.model.window.PageName;
 import fr.prog.tablut.view.components.generic.GenericPanel;
 import fr.prog.tablut.view.components.generic.GenericRoundedButton;
+import fr.prog.tablut.view.window.PageName;
 
 /**
  * A component that places a GenericPanel of 1 or 2 buttons which will href to another page

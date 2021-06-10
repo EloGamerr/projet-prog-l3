@@ -8,10 +8,8 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 
 import java.io.IOException;
-import java.util.Objects;
 
-import javax.imageio.ImageIO;
-
+import fr.prog.tablut.model.Loader;
 import fr.prog.tablut.view.components.generic.GenericPanel;
 
 /**
@@ -86,12 +84,7 @@ public class ImageComponent extends GenericPanel {
             setLocation(p);
         }
         
-        if(d != null) {
-            super.setSize(d);
-            super.setPreferredSize(d);
-            super.setMaximumSize(d);
-            super.setMinimumSize(d);
-        }
+        resize(d);
     }
 
     /**
@@ -111,12 +104,7 @@ public class ImageComponent extends GenericPanel {
             setLocation(p);
         }
 
-        if(d != null) {
-            super.setSize(d);
-            super.setPreferredSize(d);
-            super.setMaximumSize(d);
-            super.setMinimumSize(d);
-        }
+        resize(d);
     }
 
     /**
@@ -125,7 +113,7 @@ public class ImageComponent extends GenericPanel {
     public void load() {
         if(!hasLoaded()) {
             try {
-                img = ImageIO.read(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("images/" + src)));
+                img = Loader.getImage(src);
                 loaded = true;
                 revalidate();
                 repaint();

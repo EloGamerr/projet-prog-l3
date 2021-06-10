@@ -2,8 +2,8 @@ package fr.prog.tablut.view.components.generic;
 
 import java.awt.Color;
 
-import fr.prog.tablut.model.window.Style;
-import fr.prog.tablut.view.GlobalWindow;
+import fr.prog.tablut.view.window.GlobalWindow;
+import fr.prog.tablut.view.window.Style;
 
 /**
  * static abstract class for all Generic components.

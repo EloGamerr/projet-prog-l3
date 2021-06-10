@@ -1,12 +1,12 @@
 package fr.prog.tablut.view.pages.newGame;
 
 import fr.prog.tablut.controller.adaptators.CreateGameAdaptator;
-import fr.prog.tablut.model.window.WindowConfig;
-import fr.prog.tablut.model.window.PageName;
-import fr.prog.tablut.view.Page;
 import fr.prog.tablut.view.components.BottomButtonPanel;
-import fr.prog.tablut.view.components.ImageComponent;
 import fr.prog.tablut.view.components.NavPage;
+import fr.prog.tablut.view.pages.Page;
+import fr.prog.tablut.view.pages.ThemePage;
+import fr.prog.tablut.view.window.PageName;
+import fr.prog.tablut.view.window.WindowConfig;
 
 /**
  * The new game page. Extends Page class.
@@ -14,14 +14,13 @@ import fr.prog.tablut.view.components.NavPage;
  * clicks on the confirm button, starts the game.</p>
  * @see Page
  */
-public class NewGamePage extends Page {
+public class NewGamePage extends ThemePage {
 	/**
 	 * Creates the new game page.
 	 * @param config The configuration to set to the page
 	 */
 	public NewGamePage(WindowConfig config) {
-		super(config);
-		windowName = PageName.NewGamePage;
+		super(config, PageName.NewGamePage);
 
 		SelectionPlayerForm gameSettings = new SelectionPlayerForm();
 		BottomButtonPanel panel = new BottomButtonPanel(PageName.HomePage, PageName.GamePage, "Jouer !");
@@ -38,17 +37,5 @@ public class NewGamePage extends Page {
 		page.setContent(gameSettings);
 
 		add(page);
-
-        
-        // setup background pannel
-        final int iconSize = 500;
-        ImageComponent blackTower = new ImageComponent("theme/transparent_black_tower.png", -iconSize/2, config.windowHeight/2 - iconSize/2, iconSize, iconSize);
-        ImageComponent whiteTower = new ImageComponent("theme/transparent_white_tower.png", config.windowWidth-iconSize/2, config.windowHeight/2 - iconSize/2, iconSize, iconSize);
-
-        blackTower.load();
-        whiteTower.load();
-
-        backgroundPanel.add(blackTower);
-        backgroundPanel.add(whiteTower);
 	}
 }

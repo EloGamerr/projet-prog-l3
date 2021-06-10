@@ -2,9 +2,9 @@ package fr.prog.tablut.controller.adaptators;
 
 import java.awt.event.ActionEvent;
 
-import fr.prog.tablut.model.window.PageName;
-import fr.prog.tablut.view.GlobalWindow;
 import fr.prog.tablut.view.components.generic.GenericButton;
+import fr.prog.tablut.view.window.GlobalWindow;
+import fr.prog.tablut.view.window.PageName;
 
 /**
 * Adaptateur pour les boutons de navigations

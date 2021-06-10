@@ -6,9 +6,9 @@ import java.awt.Insets;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import fr.prog.tablut.model.window.PageName;
 import fr.prog.tablut.view.components.generic.GenericPanel;
 import fr.prog.tablut.view.components.generic.GenericRoundedButton;
+import fr.prog.tablut.view.window.PageName;
 
 /**
  * The home panel that contains all buttons.

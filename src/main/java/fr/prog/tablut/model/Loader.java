@@ -4,7 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
-
+import java.awt.image.BufferedImage;
+import java.awt.Image;
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -13,26 +14,21 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.util.Objects;
 
+import javax.imageio.ImageIO;
+
 import fr.prog.tablut.Tablut;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class Loader {
-    /**
-     * Default constructor. Nothing to do.
-     */
-    public Loader() {
-
-    }
-
+public abstract class Loader {
     /**
      * Reads a file and returns a JSONObject from it
      * @see JSONObject
      * @param filepath The file path
      * @return The created JSONObject
      */
-    public JSONObject getJSON(String filepath) throws ParseException {
+    public static JSONObject getJSON(String filepath) throws ParseException {
         String content = "{}";
  
         try {
@@ -59,7 +55,7 @@ public class Loader {
      * @param array the JSONArray
      * @return The converted Color
      */
-    public Color getColorFromArray(JSONArray array) {
+    public static Color getColorFromArray(JSONArray array) {
         int r = 255, g = 255, b = 255;
 
         if(array.length() > 2) {
@@ -80,7 +76,7 @@ public class Loader {
      * Loads a font family from given file (truetype only)
      * @see Font
      */
-    public void loadCustomFont(String fontFamily) {
+    public static void loadCustomFont(String fontFamily) {
         try {
             String fontPath = "fonts/" + fontFamily;
             InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(fontPath);
@@ -91,5 +87,26 @@ public class Loader {
         catch(FontFormatException | IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Loads an image and returns its buffer image
+     * @param imagePath The image's source path
+     * @return The buffer of the image
+     * @throws IOException
+     */
+    public static BufferedImage getBufferedImage(String imagePath) throws IOException {
+        InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream("images/" + imagePath);
+        return ImageIO.read(Objects.requireNonNull(in));
+    }
+
+    /**
+     * Loads an returns an image
+     * @param imagePath The image's source path
+     * @return The loaded image
+     * @throws IOException
+     */
+    public static Image getImage(String imagePath) throws IOException {
+        return (Image)getBufferedImage(imagePath);
     }
 }

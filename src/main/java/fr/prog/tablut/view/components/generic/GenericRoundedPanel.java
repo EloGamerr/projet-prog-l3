@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
-import fr.prog.tablut.model.window.ComponentStyle;
+import fr.prog.tablut.view.window.ComponentStyle;
 
 /**
  * A component extending a GenericPanel, to create a rounded GenericPanel
