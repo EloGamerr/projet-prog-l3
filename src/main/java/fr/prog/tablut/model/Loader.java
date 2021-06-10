@@ -6,7 +6,6 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import java.io.InputStream;
@@ -32,9 +31,8 @@ public class Loader {
      * @see JSONObject
      * @param filepath The file path
      * @return The created JSONObject
-     * @throws FileNotFoundException
      */
-    public JSONObject getJSON(String filepath) throws ParseException, FileNotFoundException {
+    public JSONObject getJSON(String filepath) throws ParseException {
         String content = "{}";
         InputStream in;
         try {

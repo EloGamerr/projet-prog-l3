@@ -41,9 +41,8 @@ public class GlobalWindow {
 
 	/**
 	 * Creates the main window with given surface
-	 * @throws IOException
 	 */
-	public GlobalWindow() throws ParseException, IOException {
+	public GlobalWindow() throws ParseException {
 		this(null);
 	}
 
@@ -53,9 +52,8 @@ public class GlobalWindow {
      * @see Page
      * @see JFrame
 	 * @param configfilePath The configuration file path
-	 * @throws IOException
 	 */
-    public GlobalWindow(String configfilePath) throws ParseException, IOException {
+    public GlobalWindow(String configfilePath) throws ParseException {
 		super();
 
         // create a default configuration
@@ -123,9 +121,8 @@ public class GlobalWindow {
 	 * Sets the window's configuration from the file at given path
      * @see WindowConfig
 	 * @param configPath file's path
-	 * @throws IOException
 	 */
-	protected void setConfig(String configPath) throws ParseException, IOException {
+	protected void setConfig(String configPath) throws ParseException {
 		config.setConfig(configPath);
 	}
 
