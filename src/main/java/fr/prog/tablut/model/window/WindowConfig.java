@@ -3,6 +3,7 @@ package fr.prog.tablut.model.window;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Iterator;
 import java.util.Map;
@@ -46,8 +47,9 @@ public class WindowConfig {
     /**
      * Loads configuration from a file
      * @param filepath The file path to the config file to load
+     * @throws IOException
      */
-    public WindowConfig(String filepath) throws ParseException {
+    public WindowConfig(String filepath) throws ParseException, IOException {
         setConfig(filepath);
     }
 
@@ -71,8 +73,9 @@ public class WindowConfig {
     /**
      * convert the file at given path to a JSONObject and loads its configuration
      * @param filepath The file path
+     * @throws IOException
      */
-    public void setConfig(String filepath) throws ParseException {
+    public void setConfig(String filepath) throws ParseException, IOException {
         setConfig(loader.getJSON(filepath));
     }
 

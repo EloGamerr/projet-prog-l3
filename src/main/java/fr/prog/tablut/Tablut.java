@@ -1,5 +1,6 @@
 package fr.prog.tablut;
 
+import java.io.IOException;
 import java.text.ParseException;
 
 import javax.swing.SwingUtilities;
@@ -40,6 +41,8 @@ public class Tablut implements Runnable {
             new GlobalWindow(configFile);
         }
         catch(ParseException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
