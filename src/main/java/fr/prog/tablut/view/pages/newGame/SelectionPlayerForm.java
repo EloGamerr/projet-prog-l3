@@ -116,7 +116,7 @@ public class SelectionPlayerForm extends GenericPanel {
      * @return The defender's username
      */
 	public String getAttackerName() {
-		return defender.getPlayerUsername();
+		return attacker.getPlayerUsername();
 	}
 	
     /**
@@ -124,7 +124,7 @@ public class SelectionPlayerForm extends GenericPanel {
      * @return The attacker's username
      */
 	public String getDefenderName() {
-		return attacker.getPlayerUsername();
+		return defender.getPlayerUsername();
 	}
 }
 
