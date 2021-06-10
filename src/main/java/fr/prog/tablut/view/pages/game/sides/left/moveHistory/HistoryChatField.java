@@ -30,7 +30,7 @@ public class HistoryChatField extends GenericPanel {
     private final GridBagConstraints c;
 	private final Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
     private final Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
-    private Dimension baseDimension;
+    private final Dimension baseDimension;
     
     /**
      * Creates a chat's action manager. Privates, only used by its parent.
@@ -207,7 +207,6 @@ class LabelAction extends JLabel {
     
     /**
      * Creates a new action's label
-     * @param isSystem Is the message a system message or a player move's indication
      * @param systemMessage If it's a system message, then this argument is the message to show
      * @param pos The position of the label in the chat
      */

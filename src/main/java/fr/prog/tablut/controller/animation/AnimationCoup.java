@@ -6,18 +6,17 @@ import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.model.game.Movement;
 import fr.prog.tablut.view.pages.game.GamePage;
 
-/**
- * Animation of the AI plays 
- * @param animSpeed the speed of the animation
- * @param gamePage the page of the current game
- * @param movement the movement choosed by the AI
- */
 public class AnimationCoup {
 	private final Movement mov;
 	private final GamePage view;
 	private double progress;
 	private final double animSpeed;
-	
+
+	/**
+	 * Animation of the AI plays
+	 * @param gamePage the page of the current game
+	 * @param movement the movement choosed by the AI
+	 */
 	public AnimationCoup(Movement movement, GamePage gamePage) {
 		animSpeed = 0.05;
 		this.view = gamePage;
