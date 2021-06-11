@@ -71,9 +71,6 @@ public class GameController {
 
 	@SuppressWarnings("UnusedReturnValue")
 	public boolean undo() {
-		if(gamePage.isInAnim())
-			return false;
-		
 		int numberOfUndoDone = 0;
 		int numberOfUndoToDo = 1;
 		
@@ -95,6 +92,7 @@ public class GameController {
 		}
 		
 		if(numberOfUndoDone > 0) {
+			gamePage.setIsInAnim(false);
 			postPlay(MoveType.UNDO);
             return true;
 		}
@@ -104,9 +102,6 @@ public class GameController {
 
 	@SuppressWarnings("UnusedReturnValue")
 	public boolean redo() {
-		if(gamePage.isInAnim())
-			return false;
-		
 		int numberOfRedoDone = 0;
 		int numberOfRedoToDo = 1;
 		
@@ -127,6 +122,7 @@ public class GameController {
 		}
         
 		if(numberOfRedoDone > 0) {
+			gamePage.setIsInAnim(false);
 			postPlay(MoveType.REDO);
             return true;
 		}

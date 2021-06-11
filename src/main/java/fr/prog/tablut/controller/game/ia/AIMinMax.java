@@ -5,6 +5,7 @@ import fr.prog.tablut.model.game.Movement;
 import fr.prog.tablut.model.game.player.PlayerEnum;
 import fr.prog.tablut.view.pages.game.GamePage;
 
+import javax.swing.SwingUtilities;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -16,31 +17,41 @@ public abstract class AIMinMax extends AIPlayer {
     // Après plusieurs tests, on a conclu que 2 ou 3 threads permettaient d'avoir de meilleures performances
     private final ExecutorService executor = Executors.newFixedThreadPool(2);
     private final Deque<Movement> previousMovements;
+    private boolean lockPlay;
 
     public AIMinMax(PlayerEnum playerEnum) {
         super(playerEnum);
 
         previousMovements = new ArrayDeque<>();
+        lockPlay = false;
     }
 
     @Override
     public boolean play(Game game, GamePage gamePage) {
-        if(super.play(game, gamePage)) {
-            Simulation simulation = new Simulation(game);
-            Movement movement = null;
-            try {
-                movement = getBestMovement(simulation);
-            } catch (ExecutionException |InterruptedException e) {
-                e.printStackTrace();
-            }
+        if(!lockPlay && super.play(game, gamePage)) {
+            lockPlay = true;
+            // On cherche le meilleur mouvement dans un nouveau thread pour ne pas bloquer l'interface
+            new Thread(() -> {
+                Simulation simulation = new Simulation(game);
+                try {
+                    final Movement movement = getBestMovement(simulation);
 
-            //On évite que l'IA fasse les mêmes mouvements en boucle (voir plus loin dans le code)
-            while(previousMovements.size() >= 3)
-                previousMovements.removeFirst();
+                    //On évite que l'IA fasse les mêmes mouvements en boucle (voir plus loin dans le code)
+                    while(previousMovements.size() >= 3)
+                        previousMovements.removeFirst();
 
-            previousMovements.addLast(movement);
+                    previousMovements.addLast(movement);
 
-            updateAnim(Objects.requireNonNull(movement).getFrom(), movement.getTo(), gamePage);
+                    // On revient sur le thread principal
+                    SwingUtilities.invokeLater(() -> {
+                        updateAnim(Objects.requireNonNull(movement).getFrom(), movement.getTo(), gamePage);
+                        lockPlay = false;
+                    });
+                } catch (ExecutionException |InterruptedException e) {
+                    e.printStackTrace();
+                    lockPlay = false;
+                }
+            }).start();
         }
 
         return true;
