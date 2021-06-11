@@ -29,7 +29,10 @@ public abstract class AIMinMax extends AIPlayer {
     @Override
     public boolean play(Game game, GamePage gamePage) {
         if(!lockPlay && super.play(game, gamePage)) {
+            // On doit lock la méthode play car elle va être rappelé
+            // tant que l'IA cherche meilleur coup
             lockPlay = true;
+
             // On cherche le meilleur mouvement dans un nouveau thread pour ne pas bloquer l'interface
             new Thread(() -> {
                 Simulation simulation = new Simulation(game);
@@ -44,12 +47,15 @@ public abstract class AIMinMax extends AIPlayer {
 
                     // On revient sur le thread principal
                     SwingUtilities.invokeLater(() -> {
-                        updateAnim(Objects.requireNonNull(movement).getFrom(), movement.getTo(), gamePage);
+                        //On doit mettre lockPlay à false seulement dès qu'on repasse
+                        //dans le thread principal
                         lockPlay = false;
+                        updateAnim(Objects.requireNonNull(movement).getFrom(), movement.getTo(), gamePage);
                     });
                 } catch (ExecutionException |InterruptedException e) {
-                    e.printStackTrace();
+                    //On remet lockPlay à false car une erreur a eu lieu : l'IA n'est plus en train de chercher un meilleur coup
                     lockPlay = false;
+                    e.printStackTrace();
                 }
             }).start();
         }
