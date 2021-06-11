@@ -5,6 +5,7 @@ import fr.prog.tablut.model.game.Movement;
 import fr.prog.tablut.model.game.player.PlayerEnum;
 import fr.prog.tablut.view.pages.game.GamePage;
 
+import javax.swing.SwingUtilities;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -16,31 +17,47 @@ public abstract class AIMinMax extends AIPlayer {
     // Après plusieurs tests, on a conclu que 2 ou 3 threads permettaient d'avoir de meilleures performances
     private final ExecutorService executor = Executors.newFixedThreadPool(2);
     private final Deque<Movement> previousMovements;
+    private boolean lockPlay;
 
     public AIMinMax(PlayerEnum playerEnum) {
         super(playerEnum);
 
         previousMovements = new ArrayDeque<>();
+        lockPlay = false;
     }
 
     @Override
     public boolean play(Game game, GamePage gamePage) {
-        if(super.play(game, gamePage)) {
-            Simulation simulation = new Simulation(game);
-            Movement movement = null;
-            try {
-                movement = getBestMovement(simulation);
-            } catch (ExecutionException |InterruptedException e) {
-                e.printStackTrace();
-            }
+        if(!lockPlay && super.play(game, gamePage)) {
+            // On doit lock la méthode play car elle va être rappelé
+            // tant que l'IA cherche meilleur coup
+            lockPlay = true;
 
-            //On évite que l'IA fasse les mêmes mouvements en boucle (voir plus loin dans le code)
-            while(previousMovements.size() >= 3)
-                previousMovements.removeFirst();
+            // On cherche le meilleur mouvement dans un nouveau thread pour ne pas bloquer l'interface
+            new Thread(() -> {
+                Simulation simulation = new Simulation(game);
+                try {
+                    final Movement movement = getBestMovement(simulation);
 
-            previousMovements.addLast(movement);
+                    //On évite que l'IA fasse les mêmes mouvements en boucle (voir plus loin dans le code)
+                    while(previousMovements.size() >= 3)
+                        previousMovements.removeFirst();
 
-            updateAnim(Objects.requireNonNull(movement).getFrom(), movement.getTo(), gamePage);
+                    previousMovements.addLast(movement);
+
+                    // On revient sur le thread principal
+                    SwingUtilities.invokeLater(() -> {
+                        //On doit mettre lockPlay à false seulement dès qu'on repasse
+                        //dans le thread principal
+                        lockPlay = false;
+                        updateAnim(Objects.requireNonNull(movement).getFrom(), movement.getTo(), gamePage);
+                    });
+                } catch (ExecutionException |InterruptedException e) {
+                    //On remet lockPlay à false car une erreur a eu lieu : l'IA n'est plus en train de chercher un meilleur coup
+                    lockPlay = false;
+                    e.printStackTrace();
+                }
+            }).start();
         }
 
         return true;

@@ -30,9 +30,8 @@ public abstract class Loader {
      */
     public static JSONObject getJSON(String filepath) throws ParseException {
         String content = "{}";
- 
+        InputStream in;
         try {
-            InputStream in;
             if(Tablut.configPath.equals(filepath)) {
                 in = ClassLoader.getSystemClassLoader().getResourceAsStream(filepath);
             }
@@ -42,8 +41,10 @@ public abstract class Loader {
             content = IOUtils.toString(Objects.requireNonNull(in));
         }
         catch(IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            System.out.println("Unable to load config file..");
         }
+        
         
         return new JSONObject(content);
     }
