@@ -53,22 +53,39 @@ public class MoveHistoryPanel extends GenericPanel {
      */
     @Override
     protected void paintComponent(Graphics g) {
-        int newHeight = Math.min(historyChat.getMovesNumber() * historyChat.getLabelHeight(), getHeight() - 50);
+        updateScrollPaneHeight();
+        scrollPaneToBottom();
+
+        super.paintComponent(g);
+    }
+
+    private void updateScrollPaneHeight() {
+        int n = historyChat.getMovesNumber() * historyChat.getLabelHeight();
+        int newHeight = Math.min(n, getHeight());
+
+        Dimension dH = new Dimension(getWidth(), n);
 
         if(previousHeight != newHeight) {
             Dimension d = new Dimension(getWidth(), newHeight);
             scrollPane.setPreferredSize(d);
             scrollPane.setSize(d);
+            historyChat.setSize(dH);
+            historyChat.setPreferredSize(dH);
             revalidate();
             previousHeight = newHeight;
         }
 
+        if(newHeight == getHeight()) {
+            historyChat.setSize(dH);
+            historyChat.setPreferredSize(dH);
+        }
+    }
+
+    private void scrollPaneToBottom() {
         JScrollBar jScrollBar = scrollPane.getVerticalScrollBar();
 
         if(previousVisibleAmount != jScrollBar.getMaximum())
             jScrollBar.setValue((previousVisibleAmount = jScrollBar.getMaximum()));
-
-        super.paintComponent(g);
     }
 
     /**
@@ -77,15 +94,15 @@ public class MoveHistoryPanel extends GenericPanel {
      */
     public void addAction() {
         historyChat.addAction();
-		revalidate();
-		repaint();
+		updateScrollPaneHeight();
+        scrollPaneToBottom();
     }
 
     public void addAction(int moveIndex) {
         if(Game.getInstance().getMovementsNumber() > moveIndex) {
             historyChat.addAction(moveIndex);
-            revalidate();
-            repaint();
+            updateScrollPaneHeight();
+            scrollPaneToBottom();
         }
     }
 
@@ -94,6 +111,8 @@ public class MoveHistoryPanel extends GenericPanel {
      */
     public void undo() {
         historyChat.undo();
+        updateScrollPaneHeight();
+        scrollPaneToBottom();
     }
 
     /**
@@ -101,13 +120,15 @@ public class MoveHistoryPanel extends GenericPanel {
      */
     public void redo() {
         historyChat.redo();
+        updateScrollPaneHeight();
+        scrollPaneToBottom();
     }
 
     /**
      * Clears the chat and resize its container
      */
     public void clearChat() {
-        scrollPane.setSize(new Dimension(getWidth(), historyChat.getLabelHeight() * 2));
+        scrollPane.setSize(new Dimension(getWidth(), 0));
         historyChat.clear();
     }
 
