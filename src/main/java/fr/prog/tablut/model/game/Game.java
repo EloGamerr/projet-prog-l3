@@ -449,7 +449,7 @@ public class Game {
 		return getGrid()[l][c] == CellContent.ATTACK_TOWER;
 	}
 
-	public boolean  isDefenseTower(int c, int l) {
+	public boolean isDefenseTower(int c, int l) {
 		if(!isValid(c, l)) return false;
 		return getGrid()[l][c] == CellContent.DEFENSE_TOWER;
 	}

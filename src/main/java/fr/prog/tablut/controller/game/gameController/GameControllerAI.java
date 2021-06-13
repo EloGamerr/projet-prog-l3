@@ -14,6 +14,8 @@ public class GameControllerAI {
     private CooldownMove cdMove = null;
     private int cdMoveDuration = 0;
     private boolean pending = false;
+    private long timestamp_beforeGetMove = 0;
+    private long timestamp_afterGetMove = 0;
 
     public GameControllerAI(int speed, GamePage gamePage) {
         this.gamePage = gamePage;
@@ -78,7 +80,8 @@ public class GameControllerAI {
      */
     private void play(AIPlayer ai, Game game) {
         pending = true;
-        
+        timestamp_beforeGetMove = System.currentTimeMillis();
+
         // search for the best move in a new thread so the interface isn't freezed
         new Thread(() -> {
             Movement movement = ai.play(game);
@@ -86,7 +89,9 @@ public class GameControllerAI {
             if(movement != null && game.move(movement.getFromC(), movement.getFromL(), movement.getToC(), movement.getToL())) {
                 SwingUtilities.invokeLater(() -> {
                     pending = false;
-                    cdMove = new CooldownMove(ai, game, movement, cdMoveDuration, gamePage);
+                    timestamp_afterGetMove = System.currentTimeMillis();
+                    int diff = (int)(timestamp_afterGetMove - timestamp_beforeGetMove);
+                    cdMove = new CooldownMove(ai, game, movement, Math.max(0, cdMoveDuration - diff), gamePage);
                 });
             }
             else {

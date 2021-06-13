@@ -16,7 +16,7 @@ public class GameController {
 
 	public GameController(GamePage gamePage) {
 		this.gamePage = gamePage;
-		this.gameControllerAI = new GameControllerAI(50, gamePage);
+		this.gameControllerAI = new GameControllerAI(300, gamePage);
 		this.gameControllerHuman = new GameControllerHuman(gamePage);
 	}
 
@@ -79,7 +79,6 @@ public class GameController {
             if(gameControllerAI.isAnimationPending()) {
                 gamePage.setIsInAnim(true);
                 gamePage.update(MoveType.NONE);
-                checkEnd();
             }
         }
 
@@ -92,6 +91,7 @@ public class GameController {
                 Game.getInstance().confirmMove();
                 gamePage.setIsInAnim(false);
                 gamePage.updateTurn(MoveType.MOVE);
+                checkEnd();
             }
         }
 	}

@@ -18,7 +18,7 @@ public class AnimationMove {
 	 * @param movement the movement choosed by the AI
 	 */
 	public AnimationMove(Movement movement, GamePage gamePage) {
-		animSpeed = 0.05;
+		animSpeed = 0.03;
 		this.view = gamePage;
 		mov = movement;
 	}
