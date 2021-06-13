@@ -12,14 +12,14 @@ public enum CellContent {
 	DEFENSE_TOWER("chess/small/white_tower_small.png"),
 	KING("chess/small/king_small.png"),
 	GATE("chess/small/door_small.png");
-	
+
 	Image image;
 
 	/**
 	 * Loads the image of a cell depending of its type.
-	 * 
+	 *
 	 * Images are in the folder res/images/
-	 * 
+	 *
 	 * @param imagePath The image's path
 	 */
 	CellContent(String imagePath) {
@@ -32,7 +32,7 @@ public enum CellContent {
 			}
 		}
 	}
-	
+
 	/**
 	 * Returns the image of the cell
 	 * @return The image

@@ -35,9 +35,9 @@ public class SavedGamesPanel extends GenericPanel {
     private final GenericPanel wrapper;
     private final GenericRoundedButton buttonToLightup;
     private GenericPanel wrapperInner = null;
-	
+
 	public GenericRoundedButton button_selected = null;
-	
+
 	/**
 	 * Default constructor.
 	 * <p>Creates the list of saved games and shows them.</p>
@@ -56,11 +56,11 @@ public class SavedGamesPanel extends GenericPanel {
         GenericRoundedPanel wrapperContainer = new GenericRoundedPanel();
 		wrapperContainer.setLayout(new BorderLayout());
 		wrapperContainer.setStyle("area");
-		
+
 		wrapperContainer.setPreferredSize(size);
 		wrapperContainer.setMaximumSize(size);
 		wrapperContainer.setMinimumSize(size);
-		
+
         // invisible inside wrapper that's used to organisze items
 		wrapper = new GenericPanel(new GridBagLayout());
 		wrapper.setBorder(new EmptyBorder(3, 0, 3, 0));
@@ -78,7 +78,7 @@ public class SavedGamesPanel extends GenericPanel {
         // remove style of previously chose save
 		if(button_selected != null)
 			button_selected.setStyle("button.load");
-		
+
         // update the style of chose one
 		button_selected = (GenericRoundedButton)button;
 		button_selected.setStyle("button.load:selected");
@@ -118,16 +118,16 @@ public class SavedGamesPanel extends GenericPanel {
     @SuppressWarnings("SuspiciousNameCombination")
     public void updateContent() {
 		ArrayList<Couple<String, Integer>> saves = GameSaver.getInstance().getSavesNames();
-        
+
         wrapper.removeAll();
-        
+
         // no save found
 		if(saves.size() == 0) {
             GenericLabel label = new GenericLabel("Aucune partie sauvegard\u00e9e", 12);
             label.setBorder(new EmptyBorder(height/2 - 20, 0, 0, 0));
 			wrapper.add(label);
 		}
-        
+
         // list saves
 		else {
             // calculate if number of saves overflow the wrapper
@@ -158,7 +158,7 @@ public class SavedGamesPanel extends GenericPanel {
                 wrapperInner.removeAll();
                 wrapperInner = null;
             }
-            
+
             // for each save, create a new button to select it, and one to delete it
             for(int i=0; i < saves.size(); i++) {
                 c.gridy = i;
@@ -191,7 +191,7 @@ public class SavedGamesPanel extends GenericPanel {
                 else
                     wrapper.add(saveBtn, c);
             }
-            
+
             if(isOverflowing)
                 wrapper.add(scrollPane);
 
@@ -229,7 +229,7 @@ public class SavedGamesPanel extends GenericPanel {
             c.weightx = 1;
             c.weighty = 0;
             int i;
-            
+
             for(i=0; i < cpnts.length; i++) {
                 GenericPanel b = (GenericPanel)cpnts[i];
                 c.gridy = i;

@@ -27,7 +27,7 @@ public class ChatMouseListener extends MouseAdapter {
     public void mouseExited(MouseEvent e) {
         gamePage.exitPreviewAt(historyChat.getActionPosition(chatAction));
     }
-    
+
     /**
      * Triggered when mouse's hovering the chat
      * Changes the board's context to hovered movement

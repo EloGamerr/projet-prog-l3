@@ -1,66 +1,62 @@
-package fr.prog.tablut.controller.game.ia;
+package fr.prog.tablut.model.game.player.ai;
 
-import fr.prog.tablut.model.game.Game;
-import fr.prog.tablut.model.game.Movement;
-import fr.prog.tablut.model.game.player.PlayerEnum;
-import fr.prog.tablut.view.pages.game.GamePage;
+import java.awt.Point;
 
-import javax.swing.SwingUtilities;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.Deque;
+import java.util.List;
+
+import fr.prog.tablut.model.game.Game;
+import fr.prog.tablut.model.game.Movement;
+import fr.prog.tablut.model.game.player.PlayerEnum;
+import fr.prog.tablut.model.game.player.PlayerTypeEnum;
+
 
 @SuppressWarnings("rawtypes")
 public abstract class AIMinMax extends AIPlayer {
     // Après plusieurs tests, on a conclu que 2 ou 3 threads permettaient d'avoir de meilleures performances
     private final ExecutorService executor = Executors.newFixedThreadPool(2);
     private final Deque<Movement> previousMovements;
-    private boolean lockPlay;
 
-    public AIMinMax(PlayerEnum playerEnum) {
-        super(playerEnum);
+    public AIMinMax(PlayerEnum playerEnum, PlayerTypeEnum type) {
+        super(playerEnum, type);
 
         previousMovements = new ArrayDeque<>();
-        lockPlay = false;
+    }
+
+    public Movement play(Game game) {
+        if(lockThread()) {
+            Simulation simulation = new Simulation(game);
+
+            try {
+                final Movement movement = getBestMovement(simulation);
+
+                // On évite que l'IA fasse les mêmes mouvements en boucle (voir plus loin dans le code)
+                while(previousMovements.size() >= 3)
+                    previousMovements.removeFirst();
+
+                previousMovements.addLast(movement);
+
+                return movement;
+            }
+            catch(ExecutionException | InterruptedException e) {
+                // On remet lockPlay à false car une erreur a eu lieu : l'IA n'est plus en train de chercher un meilleur coup
+                unlockThread();
+                e.printStackTrace();
+            }
+        }
+
+        return null;
     }
 
     @Override
-    public boolean play(Game game, GamePage gamePage) {
-        if(!lockPlay && super.play(game, gamePage)) {
-            // On doit lock la méthode play car elle va être rappelé
-            // tant que l'IA cherche meilleur coup
-            lockPlay = true;
-
-            // On cherche le meilleur mouvement dans un nouveau thread pour ne pas bloquer l'interface
-            new Thread(() -> {
-                Simulation simulation = new Simulation(game);
-                try {
-                    final Movement movement = getBestMovement(simulation);
-
-                    //On évite que l'IA fasse les mêmes mouvements en boucle (voir plus loin dans le code)
-                    while(previousMovements.size() >= 3)
-                        previousMovements.removeFirst();
-
-                    previousMovements.addLast(movement);
-
-                    // On revient sur le thread principal
-                    SwingUtilities.invokeLater(() -> {
-                        //On doit mettre lockPlay à false seulement dès qu'on repasse
-                        //dans le thread principal
-                        lockPlay = false;
-                        updateAnim(Objects.requireNonNull(movement).getFrom(), movement.getTo(), gamePage);
-                    });
-                } catch (ExecutionException |InterruptedException e) {
-                    //On remet lockPlay à false car une erreur a eu lieu : l'IA n'est plus en train de chercher un meilleur coup
-                    lockPlay = false;
-                    e.printStackTrace();
-                }
-            }).start();
-        }
-
-        return true;
+    public boolean play(Game game, Point from, Point to) {
+        return false;
     }
 
     /**
@@ -85,6 +81,7 @@ public abstract class AIMinMax extends AIPlayer {
             //La classe simulation permet d'appliquer le mouvement et d'en déterminer l'heuristique par l'algorithme min/max
             Simulation newSimulation = new Simulation(simulation);
             newSimulation.move(move.getFromC(), move.getFromL(), move.getToC(), move.getToL());
+            newSimulation.confirmMove();
 
             // Si la simulation renvoie un état gagnant, pas besoin de calculer les suivantes
             if (newSimulation.getWinner() == this.getPlayerEnum()) {
@@ -132,7 +129,7 @@ public abstract class AIMinMax extends AIPlayer {
     }
 
     /**
-     * Utilisation de l'algo minimax, on crée et parcourt un arbre des simulations en utilisant un élagage alpha-bêta 
+     * Utilisation de l'algo minimax, on crée et parcourt un arbre des simulations en utilisant un élagage alpha-bêta
      * et on renvoie la valeur du meilleur coup selon l'heuristique de la classe fils
      */
     public double minimax(Simulation simulation, double alpha, double beta, int depth, int maxDepth) {
@@ -173,6 +170,7 @@ public abstract class AIMinMax extends AIPlayer {
     private Simulation getNextSimulation(Simulation simulation, Movement movement) {
         Simulation newSimulation = new Simulation(simulation); // On clone la simulation pour ne pas perdre celle passée en paramètre
         newSimulation.move(movement.getFromC(), movement.getFromL(), movement.getToC(), movement.getToL()); // Obtention du nouvel état de la simulation copiée
+        newSimulation.confirmMove();
         return newSimulation;
     }
 

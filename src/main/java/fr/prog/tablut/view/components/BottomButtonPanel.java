@@ -86,7 +86,7 @@ public class BottomButtonPanel extends GenericPanel {
         btn1.setBorderRadius(8);
         c.gridy = 0;
 		add(btn1, c);
-		
+
         if(href2 != null) {
             btn2 = new GenericRoundedButton(btnTextConfirm, 170, 35);
             btn2.setHref(href2);

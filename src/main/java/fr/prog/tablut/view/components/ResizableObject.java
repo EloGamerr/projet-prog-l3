@@ -10,7 +10,7 @@ import javax.swing.JPanel;
  */
 public class ResizableObject extends JPanel {
     /**
-     * Creates a new resizable object 
+     * Creates a new resizable object
      */
     public ResizableObject() {
 
@@ -28,7 +28,7 @@ public class ResizableObject extends JPanel {
             setPreferredSize(d);
             setMaximumSize(d);
             setMinimumSize(d);
-         
+
             onResize(d.width, d.height);
         }
     }

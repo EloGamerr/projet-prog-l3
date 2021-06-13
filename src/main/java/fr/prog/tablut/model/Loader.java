@@ -44,8 +44,8 @@ public abstract class Loader {
             //e.printStackTrace();
             System.out.println("Unable to load config file..");
         }
-        
-        
+
+
         return new JSONObject(content);
     }
 
@@ -69,7 +69,7 @@ public abstract class Loader {
                 return  new Color(r, g, b, a);
             }
         }
-        
+
         return new Color(r, g, b);
     }
 

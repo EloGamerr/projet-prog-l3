@@ -2,7 +2,11 @@ package fr.prog.tablut.model.game;
 
 import java.awt.Point;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Arrays;
+import java.util.ArrayList;
 
 import fr.prog.tablut.model.game.player.Player;
 import fr.prog.tablut.model.game.player.PlayerEnum;
@@ -25,16 +29,16 @@ public class Game {
 	private boolean hasStarted;
 	private String currentSavePath = "";
 	public final GameLoader loader;
-	
+
 	private String attackerName = "";
-
-
 	private String defenderName = "";
 
 
 	private boolean paused = false;
 	private long startTime;
-	
+
+    private Movement pendingMove = null;
+
 	////////////////////////////////////////////////////
 	// Constructor
 	////////////////////////////////////////////////////
@@ -74,7 +78,7 @@ public class Game {
 		paused = false;
 		this.startTime = System.currentTimeMillis();
 	}
-	
+
 	public void restart() {
 		this.attacker.getOwnedCells().clear();
 		this.defender.getOwnedCells().clear();
@@ -105,30 +109,11 @@ public class Game {
 	 * @return True if the pawn was moved, false otherwise
 	 */
 	public boolean move(int c, int l, int toC, int toL) {
-		if(!canMove(c, l, toC, toL)) return false;
+		if(hasPendingMove() || !canMove(c, l, toC, toL))
+            return false;
 
-		CellContent fromCellContent = getGrid()[l][c];
+        setPendingMove(c, l, toC, toL);
 
-		Play play = plays.move(c, l, toC, toL);
-
-		play.putModifiedOldCellContent(new Point(c, l), getCellContent(c, l));
-		setContent(CellContent.EMPTY, c, l);
-		play.putModifiedNewCellContent(new Point(c, l), CellContent.EMPTY);
-		
-		l = toL;
-		c = toC;
-		
-		CellContent previousToCellContent = getCellContent(c, l);
-
-		play.putModifiedOldCellContent(new Point(c, l), previousToCellContent);
-		setContent(fromCellContent, c, l);
-		play.putModifiedNewCellContent(new Point(c, l), fromCellContent);
-		
-		move.clearTakedPawns(c, l, play);
-		
-		setWinner(checkWin(previousToCellContent, fromCellContent));
-		playingPlayerEnum = playingPlayerEnum.getOpponent();
-		
 		return true;
 	}
 
@@ -148,6 +133,57 @@ public class Game {
 
 		return accessibleCells.contains(new Movement(c, l, toC, toL));
 	}
+
+    private boolean hasPendingMove() {
+        return pendingMove != null;
+    }
+
+    private void setPendingMove(int c, int l, int toC, int toL) {
+        if(!hasPendingMove())
+            pendingMove = new Movement(c, l, toC, toL);
+    }
+
+    public boolean confirmMove() {
+        if(!hasPendingMove())
+            return false;
+
+        int l = pendingMove.getFromL();
+        int c = pendingMove.getFromC();
+        int toL = pendingMove.getToL();
+        int toC = pendingMove.getToC();
+
+        pendingMove = null;
+
+        Point p = new Point(c, l);
+
+        CellContent fromCellContent = getGrid()[l][c];
+
+        Play play = plays.move(c, l, toC, toL);
+
+        play.putModifiedOldCellContent(p, getCellContent(c, l));
+        setContent(CellContent.EMPTY, c, l);
+        play.putModifiedNewCellContent(p, CellContent.EMPTY);
+
+        l = toL;
+        c = toC;
+
+        CellContent previousToCellContent = getCellContent(c, l);
+
+        play.putModifiedOldCellContent(p, previousToCellContent);
+        setContent(fromCellContent, c, l);
+        play.putModifiedNewCellContent(p, fromCellContent);
+
+        move.clearTakedPawns(c, l, play);
+
+        setWinner(checkWin(previousToCellContent, fromCellContent));
+        playingPlayerEnum = playingPlayerEnum.getOpponent();
+
+        return true;
+    }
+
+    public Movement getPendingMove() {
+        return pendingMove;
+    }
 
 	/**
 	 * Undo the last move
@@ -222,7 +258,7 @@ public class Game {
 		this.rowAmount = rowAmount;
 		this.colAmount = colAmount;
 	}
-	
+
 	private void init_king() {
 		setKing(middle, middle);
 	}
@@ -237,7 +273,7 @@ public class Game {
 		setDefenseTower(middle-2, middle);
 		setDefenseTower(middle+1, middle);
 		setDefenseTower(middle+2, middle);
-		
+
 		setDefenseTower(middle, middle-1);
 		setDefenseTower(middle, middle-2);
 		setDefenseTower(middle, middle+1);
@@ -249,17 +285,17 @@ public class Game {
 		setAttackTower(middle, rowAmount-1);
 		setAttackTower(0, middle);
 		setAttackTower(colAmount-1, middle);
-		
+
 		setAttackTower(middle-1, 0);
 		setAttackTower(middle-1, rowAmount-1);
 		setAttackTower(0, middle-1);
 		setAttackTower(colAmount-1, middle-1);
-		
+
 		setAttackTower(middle+1, 0);
 		setAttackTower(middle+1, rowAmount-1);
 		setAttackTower(0, middle+1);
 		setAttackTower(colAmount-1, middle+1);
-		
+
 		setAttackTower(middle, 1);
 		setAttackTower(middle, rowAmount-2);
 		setAttackTower(1, middle);
@@ -379,7 +415,7 @@ public class Game {
 	 */
 	private PlayerEnum checkWin(CellContent previousToCellContent, CellContent toCellContent) {
 		if(this.getWinner() != PlayerEnum.NONE) return winner;
-		
+
 		// If the king has been killed
 		if(!isTheKing(kingC, kingL))
 			return playingPlayerEnum;
@@ -387,10 +423,10 @@ public class Game {
 		// If the king is on a gate
 		else if(previousToCellContent == CellContent.GATE && toCellContent == CellContent.KING)
 			return playingPlayerEnum;
-		
+
 		return PlayerEnum.NONE;
 	}
-	
+
 	public boolean isTheKingPlace(int x, int y) {
 		return x == middle && y == middle;
 	}
@@ -407,38 +443,38 @@ public class Game {
 		if(!isValid(c, l)) return false;
 		return getGrid()[l][c] == CellContent.KING;
 	}
-	
+
 	public boolean isAttackTower(int c, int l) {
 		if(!isValid(c, l)) return false;
 		return getGrid()[l][c] == CellContent.ATTACK_TOWER;
 	}
-	
+
 	public boolean  isDefenseTower(int c, int l) {
 		if(!isValid(c, l)) return false;
 		return getGrid()[l][c] == CellContent.DEFENSE_TOWER;
 	}
-	
+
 	public boolean isGate(int c, int l) {
 		if(!isValid(c, l)) return false;
 		return getGrid()[l][c] == CellContent.GATE;
 	}
-	
+
 	public boolean isValid(int c, int l) {
 		return !(l < 0 || c < 0 || l >= rowAmount || c >= colAmount);
 	}
-	
+
 	public boolean isWon() {
 		return winner != PlayerEnum.NONE;
 	}
-	
+
 	public boolean hasStarted() {
 		return hasStarted;
 	}
-	
+
 	public boolean isPaused() {
 		return paused ;
 	}
-	
+
 	////////////////////////////////////////////////////
 	// Getters & Setters
 	////////////////////////////////////////////////////
@@ -449,11 +485,11 @@ public class Game {
 	public PlayerEnum getWinner() {
 		return winner;
 	}
-	
+
 	public int getRowAmount() {
 		return this.rowAmount;
 	}
-	
+
 	public int getColAmount() {
 		return this.colAmount;
 	}
@@ -465,7 +501,7 @@ public class Game {
 	public int getKingC() {
 		return kingC;
 	}
-	
+
 	public Player getAttacker() {
 		return attacker;
 	}
@@ -499,7 +535,7 @@ public class Game {
 		    return plays.getPlays().get(index);
         return null;
     }
-	
+
 	public Movement getLastPlay() {
         return getMoveAt(plays.getPlays().size() - 1);
 	}
@@ -507,7 +543,7 @@ public class Game {
 	public Movement getCurrentLastPlay() {
 		return getMoveAt(plays.getCurrentMovement());
 	}
-	
+
 	public CellContent[][] getGrid() {
 		return grid;
 	}
@@ -519,11 +555,11 @@ public class Game {
 	public PlayerEnum getPlayingPlayerEnum() {
 		return this.playingPlayerEnum;
 	}
-	
+
 	public String getDefenderName() {
 		return defenderName;
 	}
-	
+
 	public String getAttackerName() {
 		return attackerName;
 	}
@@ -585,7 +621,7 @@ public class Game {
 
 		return cells;
 	}
-	
+
 	/**
 	 * @param cellContent CellContent to be set in the target cell
 	 * @param l Row of the target cell
@@ -604,49 +640,49 @@ public class Game {
 		else if(getGrid()[l][c] == CellContent.DEFENSE_TOWER || getGrid()[l][c] == CellContent.KING) {
 			defender.getOwnedCells().remove(new Point(c, l));
 		}
-		
+
 		if(cellContent == CellContent.ATTACK_TOWER) {
 			attacker.getOwnedCells().add(new Point(c, l));
 		}
-		
+
 		else if(cellContent == CellContent.DEFENSE_TOWER || cellContent == CellContent.KING) {
 			defender.getOwnedCells().add(new Point(c, l));
 		}
-	
+
 		getGrid()[l][c] = cellContent;
 	}
-	
+
 	public void setWinner(PlayerEnum winner) {
 		this.winner = winner;
 	}
-	
+
 	public void setPlayingPlayer(PlayerEnum playingPlayer) {
 		this.playingPlayerEnum = playingPlayer;
 	}
-	
+
 	public void setDefenseTower(int c, int l) {
 		setContent(CellContent.DEFENSE_TOWER, c, l);
 	}
-	
+
 	public void setAttackTower(int c, int l) {
 		setContent(CellContent.ATTACK_TOWER, c, l);
 	}
-	
+
 	public void setDefender(Player defender) {
 		this.defender = defender;
 	}
 	public void setAttacker(Player attacker) {
 		this.attacker = attacker;
 	}
-	
+
 	public void setKing(int c, int l) {
 		setContent(CellContent.KING, c, l);
 	}
-	
+
 	public void setGate(int c, int l) {
 		setContent(CellContent.GATE, c, l);
 	}
-	
+
 	public void setGrid(CellContent[][] grid) {
 		this.grid = grid;
 	}
@@ -654,7 +690,7 @@ public class Game {
 	public void setCurrentSavePath(String currentSavePath) {
 		this.currentSavePath = currentSavePath;
 	}
-	
+
 	public void setPaused(boolean paused) {
 		boolean pause = Objects.requireNonNull(PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker())).isAI() && Objects.requireNonNull(PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender())).isAI();
 
@@ -663,7 +699,7 @@ public class Game {
 
 		this.paused = pause;
 	}
-	
+
 	public void setNames(PlayerTypeEnum attacker, PlayerTypeEnum defender, String attackerName, String defenderName) {
 		if(attacker.isAI())
 			setAttackerName(attacker.toString());
@@ -675,13 +711,13 @@ public class Game {
 		else
 			setDefenderName(defenderName);
 	}
-	
+
 	public void setDefenderName(String defenderName) {
-		this.defenderName = defenderName;	
+		this.defenderName = defenderName;
 	}
 
 	public void setAttackerName(String attackerName) {
-		this.attackerName = attackerName;	
+		this.attackerName = attackerName;
     }
 
 	public long getStartTime() {

@@ -59,7 +59,7 @@ public class GenericRoundedButton extends GenericButton {
         super();
         init(size);
     }
-    
+
     /**
      * <p>Initializes all stuff around the draw : the position of the text, the rectangle etc...</p>
      * <p>Sets the font, the size, the colors</p>
@@ -167,7 +167,7 @@ public class GenericRoundedButton extends GenericButton {
         height = size.height;
 
         labelY = (float) getFont().getSize() + (float) (height - getFont().getSize()) / 2 - 1;
-        
+
         alignText(alignment);
     }
 
@@ -202,7 +202,7 @@ public class GenericRoundedButton extends GenericButton {
      */
     public void setStyle(String style) {
         String oldStyle = getStyle();
-        
+
         super.setStyle(style);
 
         if(!oldStyle.equals(style)) {

@@ -32,7 +32,7 @@ public class PiecesDesigner extends Designer {
             for(int y=0; y < data.previewGrid.length; y++) {
                 for(int x=0; x < data.previewGrid[y].length; x++) {
                     CellContent cell = data.previewGrid[y][x];
-                    
+
                     if(cell != null && cell.getImage() != null) {
                         g.drawImage(cell.getImage(), x, y, imgSize, imgSize, true);
                     }
@@ -48,7 +48,7 @@ public class PiecesDesigner extends Designer {
                     // don't draw the animated pieces
                     if(
                         (data.selectedCell != null && data.selectedCell.x == x && data.selectedCell.y == y) ||
-                        (data.isAnim && data.animatedCell != null && data.animatedCell.x == x && data.animatedCell.y == y)
+                        (data.isAnimating && data.animatedCell != null && data.animatedCell.x == x && data.animatedCell.y == y)
                     )
                         continue;
 
@@ -69,12 +69,12 @@ public class PiecesDesigner extends Designer {
 
                 int xImg = Math.min(Math.max(x, data.mousePosition.x - imgSize/2), x + mz - imgSize);
                 int yImg = Math.min(Math.max(y, data.mousePosition.y - imgSize/2), y + mz - imgSize);
-                
+
                 g.drawImageCoords(data.imageOnMouse, xImg, yImg, imgSize, imgSize, null);
             }
-            
+
             // draw the animated piece
-            if(data.isAnim) {
+            if(data.isAnimating && data.animatedImage != null && data.animPosition != null) {
                 g.drawImageCoords(data.animatedImage, data.animPosition.x + imgSize/2, data.animPosition.y + imgSize/2, imgSize, imgSize, null);
             }
         }

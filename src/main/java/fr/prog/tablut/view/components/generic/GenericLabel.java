@@ -39,7 +39,7 @@ public class GenericLabel extends JLabel {
 	private void init(String fontFamily, int size) {
 		if(fontFamily == null)
 			fontFamily = "Farro";
-		
+
 		setFont(new Font(fontFamily, Font.PLAIN, size));
         setForeground(GenericObjectStyle.getProp("label", "color"));
 	}

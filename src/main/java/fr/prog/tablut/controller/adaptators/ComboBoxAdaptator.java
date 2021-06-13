@@ -14,7 +14,7 @@ import fr.prog.tablut.view.pages.newGame.SelectionPlayerForm;
 public class ComboBoxAdaptator implements ActionListener {
 	private final SelectionPlayerForm selectionPlayer;
 	private final String side;
-	
+
 	public ComboBoxAdaptator(String side, SelectionPlayerForm selectionPlayer) {
 		this.selectionPlayer = selectionPlayer;
 		this.side = side;

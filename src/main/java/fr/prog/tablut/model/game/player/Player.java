@@ -6,22 +6,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.prog.tablut.model.game.Game;
-import fr.prog.tablut.view.pages.game.GamePage;
 
 public abstract class Player implements Cloneable {
 	private List<Point> ownedCells;
 	private PlayerEnum playerEnum;
+    protected final PlayerTypeEnum type;
 
-	public Player(PlayerEnum playerEnum) {
+	public Player(PlayerEnum playerEnum, PlayerTypeEnum type) {
 		this.playerEnum = playerEnum;
 		this.ownedCells = new ArrayList<>();
+        this.type = type;
 	}
 
 	/**
 	 * @return True if we should repaint the window after the play
 	 */
-	public abstract boolean play(Game game, GamePage gamePage);
-	
+	public abstract boolean play(Game game, Point from, Point to);
+
 	public List<Point> getOwnedCells() {
 		return this.ownedCells;
 	}
@@ -29,6 +30,14 @@ public abstract class Player implements Cloneable {
 	public PlayerEnum getPlayerEnum() {
 		return playerEnum;
 	}
+
+    public PlayerTypeEnum getType() {
+        return type;
+    }
+
+    public boolean isHuman() {
+        return type == PlayerTypeEnum.HUMAN;
+    }
 
 	@Override
 	public Object clone() {

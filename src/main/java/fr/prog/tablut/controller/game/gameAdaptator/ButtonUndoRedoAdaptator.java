@@ -13,12 +13,12 @@ public class ButtonUndoRedoAdaptator extends ActionAdaptator<GenericButton> {
 		super(button);
 		this.gameController = gameController;
 	}
-	
+
 	@Override
 	public void process(ActionEvent e) {
 		if(entity.getName().equals("undo-button"))
 			gameController.undo();
-        
+
 		else if(entity.getName().equals("redo-button"))
 			gameController.redo();
 	}

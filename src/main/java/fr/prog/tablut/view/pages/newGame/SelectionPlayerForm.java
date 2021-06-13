@@ -57,13 +57,13 @@ public class SelectionPlayerForm extends GenericPanel {
 		GridBagConstraints c = new GridBagConstraints();
 
 		c.gridx = 0;
-		
+
 		// side title (player's role)
 		c.gridy = 0;
 		GenericLabel label = new GenericLabel(p.realName, 15);
 		label.setBorder(new EmptyBorder(0, 0, 30, 0));
 		panel.add(label, c);
-		
+
 		// player's type
 		c.gridy = 1;
 		p.getComboBox().addActionListener(new ComboBoxAdaptator(p.name, this));
@@ -76,7 +76,7 @@ public class SelectionPlayerForm extends GenericPanel {
 
 		add(panel);
 	}
-	
+
 	/**
 	 * Shows the player's username input
 	 * @param side The player to show his input
@@ -85,7 +85,7 @@ public class SelectionPlayerForm extends GenericPanel {
 		PlayerData p = (side.equals("attacker"))? attacker : defender;
 		p.getUsernameInput().enable();
 	}
-	
+
 	/**
 	 * hides the player's username input
 	 * @param side The player to hide his input
@@ -110,7 +110,7 @@ public class SelectionPlayerForm extends GenericPanel {
 	public PlayerTypeEnum getPlayerType2() {
 		return defender.getPlayerType();
 	}
-	
+
     /**
      * Returns the defender's username
      * @return The defender's username
@@ -118,7 +118,7 @@ public class SelectionPlayerForm extends GenericPanel {
 	public String getAttackerName() {
 		return attacker.getPlayerUsername();
 	}
-	
+
     /**
      * Returns the attacker's username
      * @return The attacker's username
@@ -129,4 +129,4 @@ public class SelectionPlayerForm extends GenericPanel {
 }
 
 
-	
+

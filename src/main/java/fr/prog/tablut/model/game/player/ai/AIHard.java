@@ -1,8 +1,9 @@
-package fr.prog.tablut.controller.game.ia;
+package fr.prog.tablut.model.game.player.ai;
 
 import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Movement;
 import fr.prog.tablut.model.game.player.PlayerEnum;
+import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 
 import java.awt.Point;
 import java.util.Arrays;
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public class AIHard extends AIMinMax {
     public AIHard(PlayerEnum playerEnum) {
-        super(playerEnum);
+        super(playerEnum, PlayerTypeEnum.HARD_AI);
     }
 
     /**

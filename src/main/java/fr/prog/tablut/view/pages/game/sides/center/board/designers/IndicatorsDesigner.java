@@ -67,16 +67,16 @@ public class IndicatorsDesigner extends Designer {
         final int y = g.getRealY(0);
 
         // animation's indications
-        if(data.isAnim) {
+        if(data.isAnimating && data.animatedCell != null) {
         	g.setColor(GameColors.FROM_CELL);
         	g.fillSquare(data.animatedCell.x, data.animatedCell.y);
         	g.setColor(GameColors.TO_CELL);
         	g.fillSquare(data.animatedFinalCell.x, data.animatedFinalCell.y);
-        	
+
 		}
-        
+
         // the player has a piece on his hand : draw all possible moves
-        if(!data.isAnim && data.selectedCell != null) {
+        if(!data.isAnimating && data.selectedCell != null) {
 			g.setColor(GameColors.CELL_SELECTION);
 			g.fillSquare(selectedCell.x, selectedCell.y);
 
@@ -90,7 +90,7 @@ public class IndicatorsDesigner extends Designer {
 		}
 
         // The player hovers pieces
-        else if(!data.isAnim && hoveringPossibleMoveCell != null) {
+        else if(!data.isAnimating && hoveringPossibleMoveCell != null) {
             g.setColor(GameColors.CELL_SELECTION);
             g.fillSquare(hoveringPossibleMoveCell.x, hoveringPossibleMoveCell.y);
             drawAccessibleCells(accessibleCells, null);
@@ -142,7 +142,7 @@ public class IndicatorsDesigner extends Designer {
                 else {
                     g.setColor(GameColors.CIRCLE);
                 }
-                
+
                 g.fillCircleCoords(cx, cy, r);
             }
 		}

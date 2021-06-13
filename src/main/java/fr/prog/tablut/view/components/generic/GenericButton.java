@@ -26,7 +26,7 @@ public class GenericButton extends JButton implements GenericComponent {
     protected String styleName = "button";
 
     protected PageName href = null;
-	
+
 	/**
 	 * Default constructor.
 	 * <p>Creates a generic button of type JButton.</p>
@@ -65,7 +65,7 @@ public class GenericButton extends JButton implements GenericComponent {
 				if(!styleName.contains(":disabled"))
                 	me.setCursor(me.handCursor);
             }
-        
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 hovering = false;
                 me.setCursor(me.defaultCursor);
@@ -114,7 +114,7 @@ public class GenericButton extends JButton implements GenericComponent {
 	public void setHrefAction(ActionListener actionHref) {
 		if(actionListenerHref != null)
 			removeActionListener(actionListenerHref);
-		
+
 		actionListenerHref = actionHref;
 
 		addActionListener(actionListenerHref);
@@ -130,7 +130,7 @@ public class GenericButton extends JButton implements GenericComponent {
 		}
 
 		actionListenerBase = action;
-		
+
 		addActionListener(actionListenerBase);
 	}
 

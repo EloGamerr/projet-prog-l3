@@ -129,7 +129,7 @@ class Titlebar extends JPanel {
 
         l.setSize(d);
         l.setPreferredSize(d);
-        
+
 		try {
             BufferedImage bufferImage = Loader.getBufferedImage(iconPath);
             Image img = bufferImage.getScaledInstance(10, 10, Image.SCALE_DEFAULT);

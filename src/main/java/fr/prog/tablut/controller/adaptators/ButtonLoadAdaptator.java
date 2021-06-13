@@ -11,7 +11,7 @@ import fr.prog.tablut.view.pages.load.SavedGamesPanel;
 public class ButtonLoadAdaptator extends ActionAdaptator<GenericButton> {
 	private final SavedGamesPanel savedGamesPanel;
 	private final int index;
-	
+
 	/**
 	* @param button Le component bouton
 	* @param index L'index du bouton dans le tableau
@@ -22,7 +22,7 @@ public class ButtonLoadAdaptator extends ActionAdaptator<GenericButton> {
 		this.savedGamesPanel = savedGamesPanel;
 		this.index = index;
 	}
-	
+
 	@Override
 	public void process(ActionEvent e) {
 		//Si le bouton est cliqué par l'utilisateur on va déclencher l'action du panel de sauvegarde

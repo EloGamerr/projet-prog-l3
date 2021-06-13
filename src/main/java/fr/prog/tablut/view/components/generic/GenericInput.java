@@ -91,7 +91,7 @@ public class GenericInput extends JTextField implements GenericComponent {
                 revalidate();
                 repaint();
             }
-        
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 hovering = false;
                 revalidate();
@@ -110,7 +110,7 @@ public class GenericInput extends JTextField implements GenericComponent {
                 revalidate();
                 repaint();
             }
-      
+
             public void focusLost(java.awt.event.FocusEvent e) {
                 revalidate();
                 repaint();
@@ -177,11 +177,11 @@ public class GenericInput extends JTextField implements GenericComponent {
         g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
         String sstyle = styleName;
-        
+
         if      (isDisabled && canDisableStyle) sstyle += ":disabled";
         else if (hasFocus() && canFocusStyle)   sstyle += ":focus";
         else if (hovering && canHoverStyle)     sstyle += ":hover";
-        
+
         ComponentStyle style = GenericObjectStyle.getStyle().get(sstyle);
 
         final float xLabel = labelX - (float)getFont().getStringBounds(getText(), frc).getWidth()/2;
@@ -189,7 +189,7 @@ public class GenericInput extends JTextField implements GenericComponent {
         // fill
         g2d.setColor(style.get("background"));
         g2d.fillRoundRect(1, 1, getWidth()-2, getHeight()-2, borderRadius, borderRadius);
-        
+
         // stroke + caret
         g2d.setColor(style.get("borderColor"));
         g2d.drawRoundRect(1, 1, getWidth()-2, getHeight()-2, borderRadius, borderRadius);
@@ -204,7 +204,7 @@ public class GenericInput extends JTextField implements GenericComponent {
             Shape l = new Line2D.Double(caretPosition, getHeight()/2 - caretHeight/2, caretPosition, getHeight()/2 + caretHeight/2);
             g2d.draw(l);
         }
-        
+
             // text
         g2d.setColor(style.get("color"));
         g2d.setFont(new Font("Farro-Regular", Font.PLAIN, 12));

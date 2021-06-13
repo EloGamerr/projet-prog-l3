@@ -15,7 +15,7 @@ public class ButtonDeleteSaveAdaptator extends ActionAdaptator<GenericButton> {
 	private final SavedGamesPanel savedGamesPanel;
     private final JPanel saveButton;
 	private final int index;
-	
+
 	/**
 	* @param button Le component bouton
 	* @param index L'index du bouton dans le tableau
@@ -27,7 +27,7 @@ public class ButtonDeleteSaveAdaptator extends ActionAdaptator<GenericButton> {
         this.saveButton = saveButton;
 		this.index = index;
 	}
-	
+
 	@Override
 	public void process(ActionEvent e) {
 		//Si on réussi à supprimer le fichier de sauvegarde on peut supprimer la ligne dans le pannel de sauvegarde

@@ -31,7 +31,7 @@ public class HistoryChatField extends GenericPanel {
 	private final Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
     private final Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
     private final Dimension baseDimension;
-    
+
     /**
      * Creates a chat's action manager. Privates, only used by its parent.
      * <p>All other components communicates with MoveHistoryPanel which will communicates with HistoryChatField.</p>
@@ -81,7 +81,7 @@ public class HistoryChatField extends GenericPanel {
 			for(int i = allHistory.size() - 1; i >= c.gridy; i--) {
 				if(allHistory.size() <= i)
 					break;
-				
+
 				remove(allHistory.remove(i));
 			}
 		}
@@ -90,7 +90,7 @@ public class HistoryChatField extends GenericPanel {
         allHistory.add(newPlayerAction);
 
         add(newPlayerAction, c);
-		
+
         // number of moves displayed
         c.gridy++;
     }
@@ -204,7 +204,7 @@ class LabelAction extends JLabel {
     public static void setDimension(Dimension d) {
         LabelAction.size = d;
     }
-    
+
     /**
      * Creates a new action's label
      * @param systemMessage If it's a system message, then this argument is the message to show
@@ -212,7 +212,7 @@ class LabelAction extends JLabel {
      */
 	public LabelAction(String systemMessage, int pos) {
         this(pos, true, -1);
-		
+
         setText("[System] ...");
         setForeground(GenericObjectStyle.getProp("chat.yellow", "color"));
 	}
@@ -303,7 +303,7 @@ class LabelAction extends JLabel {
 	public GenericLabel getSentence() {
 		return sentence;
 	}
-	
+
     /**
      * Returns the column's letter [A-I] of the given index
      * @param c The column's index
@@ -328,7 +328,7 @@ class LabelAction extends JLabel {
 	public void setPosition(int num) {
 		position = num;
 	}
-	
+
     /**
      * Returns the label's position in the chat
      * @return The label's position in the chat

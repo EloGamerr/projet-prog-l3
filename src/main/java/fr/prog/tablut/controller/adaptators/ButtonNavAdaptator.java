@@ -12,7 +12,7 @@ import fr.prog.tablut.view.window.PageName;
 public class ButtonNavAdaptator extends ActionAdaptator<GenericButton> {
 	private final PageName dest;
 	private final GlobalWindow globalWindow;
-	
+
 	/**
 	* @param button Le component bouton
 	* @param globalWindow l'instance de la globalWindow

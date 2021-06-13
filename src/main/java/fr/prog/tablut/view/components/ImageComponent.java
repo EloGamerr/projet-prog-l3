@@ -83,7 +83,7 @@ public class ImageComponent extends GenericPanel {
         if(p != null) {
             setLocation(p);
         }
-        
+
         resize(d);
     }
 
@@ -166,7 +166,7 @@ public class ImageComponent extends GenericPanel {
 
         // This is needed on non-Mac so text is repainted correctly
         super.paintComponent(g);
-        
+
         if(hasLoaded()) {
             g2d.drawImage(getImage(), 0, 0, getWidth(), getHeight(), null);
         }

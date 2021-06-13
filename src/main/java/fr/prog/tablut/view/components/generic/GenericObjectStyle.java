@@ -18,7 +18,7 @@ public abstract class GenericObjectStyle {
     private GenericObjectStyle() {
 
     }
-    
+
     /**
      * Sets the stylesheet reference
      * @see Style
@@ -63,7 +63,7 @@ public abstract class GenericObjectStyle {
     public static Color getProp(String componentName, String property) {
         if(GenericObjectStyle.styleRef.has(componentName) && GenericObjectStyle.styleRef.get(componentName).hasProperty(property))
             return GenericObjectStyle.styleRef.get(componentName).get(property);
-        
+
         return null;
     }
 }

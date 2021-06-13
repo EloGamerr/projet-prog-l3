@@ -55,4 +55,3 @@ public class ButtonChoice extends GenericPanel {
 		}
 	}
 }
-	

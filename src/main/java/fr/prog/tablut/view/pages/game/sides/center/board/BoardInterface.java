@@ -6,7 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 
-import fr.prog.tablut.controller.game.HumanPlayer;
 import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Game;
 import fr.prog.tablut.view.pages.game.sides.GameInterfaceSide;
@@ -25,7 +24,7 @@ public class BoardInterface extends GameInterfaceSide {
     private final IndicatorsDesigner indicatorsDesigner;
     private final BoardDrawer boardDrawer;
     private final BoardData boardData;
-    
+
     /**
      * Creates the board's interface manager.
      * <p>It paints the board with layers, called Designers, and it communicates
@@ -82,12 +81,12 @@ public class BoardInterface extends GameInterfaceSide {
         boardData.hoveringCell = (boardData.mousePosition != null)?
             boardData.hoveringCell = new Point(getColFromXCoord(boardData.mousePosition.x), getRowFromYCoord(boardData.mousePosition.y)) :
             null;
-            
-            
+
+
         if(boardData.selectedCell != null)
 			boardData.accessibleCells = Game.getInstance().getAllPossibleMovesForPosition(boardData.selectedCell.x, boardData.selectedCell.y);
-        
-        else if(boardData.mousePosition != null && game.getPlayingPlayer() instanceof HumanPlayer) {
+
+        else if(boardData.mousePosition != null && game.getPlayingPlayer().isHuman()) {
 			int col = getColFromXCoord(boardData.mousePosition.x);
 			int row = getRowFromYCoord(boardData.mousePosition.y);
 
@@ -99,8 +98,8 @@ public class BoardInterface extends GameInterfaceSide {
                 boardData.hoveringPossibleMoveCell = null;
         } else
             boardData.hoveringPossibleMoveCell = null;
-    	
-        
+
+
         // draw board layers
         boardDesigner.draw(boardData);
     	indicatorsDesigner.draw(boardData);
@@ -114,7 +113,7 @@ public class BoardInterface extends GameInterfaceSide {
         boardDrawer.setBoardDimension(Math.min(getWidth(), getHeight()));
         boardDrawer.setPosition(getWidth()/2 - boardDrawer.getSize()/2, getHeight()/2 - boardDrawer.getSize()/2);
     }
-    
+
     /**
      * Returns the view board's data
      * @return The view board's data
@@ -122,7 +121,7 @@ public class BoardInterface extends GameInterfaceSide {
     public BoardData getBoardData() {
         return boardData;
     }
-    
+
     /**
      * Returns the column's index from a given pixel coord
      * @param x The x-Axis coord
@@ -131,7 +130,7 @@ public class BoardInterface extends GameInterfaceSide {
     public int getColFromXCoord(int x) {
         return (x - boardDrawer.getRealX(0)) / boardDrawer.getCellSize();
     }
-    
+
     /**
      * Returns the row's index from a given pixel coord
      * @param y The y-Axis coord
@@ -140,7 +139,7 @@ public class BoardInterface extends GameInterfaceSide {
     public int getRowFromYCoord(int y) {
         return (y - boardDrawer.getRealY(0)) / boardDrawer.getCellSize();
     }
-    
+
     /**
      * Returns the top-left corner pixel's x-Axis coord from a given column's index
      * @param x The column's index
@@ -149,7 +148,7 @@ public class BoardInterface extends GameInterfaceSide {
     public int getXCoordFromCol(int x) {
         return  boardDrawer.getRealX(0) + boardDrawer.getCellSize() * x;
     }
-    
+
     /**
      * Returns the top-left corner pixel's y-Axis coord from a given row's index
      * @param y The row's index
@@ -158,37 +157,32 @@ public class BoardInterface extends GameInterfaceSide {
     public int getYCoordFromRow(int y) {
         return boardDrawer.getRealY(0) + boardDrawer.getCellSize() * y;
     }
-    
+
     /**
      * Stops the current piece's animation
      */
-	public void stop_anim() {
-		if(boardData.isAnim) {
-			boardData.animatedFinalCell = null;
-			boardData.animatedCell = null;
-			boardData.animPosition = null;
-			boardData.animatedImage = null;
-			boardData.isAnim = false;
-		}
+	public void stopAnimation() {
+        boardData.animatedFinalCell = null;
+        boardData.animatedCell = null;
+        boardData.animPosition = null;
+        boardData.animatedImage = null;
+        boardData.isAnimating = false;
 	}
-    
+
     /**
      * Updates the current piece's animation
      * @param animPosition The current animated piece's position
      * @param animatedCell The starting point cell of the animation
      * @param animatedFinalCell The ending point cell of the animation
      */
-	public void update_anim(Point animPosition, Point animatedCell, Point animatedFinalCell) {
-		if(!boardData.isAnim) {
-			boardData.animatedFinalCell = animatedFinalCell;
-			boardData.animatedCell = animatedCell;
-			boardData.isAnim = true;
-			boardData.animatedImage = Game.getInstance().getCellContent(boardData.animatedCell.x, boardData.animatedCell.y).getImage();
-		}
-		
+	public void updateAnimation(Point animPosition, Point animatedCell, Point animatedFinalCell) {
+        boardData.animatedFinalCell = animatedFinalCell;
+        boardData.animatedCell = animatedCell;
+        boardData.isAnimating = true;
+        boardData.animatedImage = Game.getInstance().getCellContent(boardData.animatedCell.x, boardData.animatedCell.y).getImage();
 		boardData.animPosition = animPosition;
 	}
-    
+
     /**
      * Updates the image that's on the mouse.
      * <p>For now, it's only possible to use it for selected cells.</p>
@@ -199,7 +193,7 @@ public class BoardInterface extends GameInterfaceSide {
 		boardData.imageOnMouse = img;
 		boardData.selectedCell = selectedCell;
 	}
-    
+
     /**
      * Updates the hovered cell at a given point
      * @param hoveringCell The hovered cell's index
@@ -207,7 +201,7 @@ public class BoardInterface extends GameInterfaceSide {
     public void updateCellHovering(Point hoveringCell) {
         boardData.hoveringCell = hoveringCell;
     }
-    
+
     /**
      * Clears the image on the mouse
      */
@@ -215,7 +209,7 @@ public class BoardInterface extends GameInterfaceSide {
 		boardData.imageOnMouse = null;
 		boardData.selectedCell = null;
 	}
-    
+
     /**
      * Sets the preview grid to visualize
      * @see CellContent
@@ -226,7 +220,7 @@ public class BoardInterface extends GameInterfaceSide {
         boardData.previewGrid = grid;
         boardData.previewMoveIndex = moveIndex;
     }
-    
+
     /**
      * Removes the preview grid to visualize
      */

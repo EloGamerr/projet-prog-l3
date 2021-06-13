@@ -12,7 +12,7 @@ public abstract class Designer {
     protected BoardDrawer g;
 
     public Designer() {
-        
+
     }
 
     /**

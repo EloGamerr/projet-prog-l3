@@ -34,6 +34,6 @@ public abstract class GameInterfaceSide extends ResizableObject {
      * @param g2d The drawable object
      */
     protected void paint(Graphics2D g2d) {
-        
+
     }
 }

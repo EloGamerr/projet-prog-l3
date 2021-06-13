@@ -37,7 +37,7 @@ public class LoadSavesPage extends ThemePage {
 			"Choisissez une sauvegarde \u00e0 charger",
 			bottomPanel
 		);
-		
+
 		// load games
 		page.setContent(panel);
 

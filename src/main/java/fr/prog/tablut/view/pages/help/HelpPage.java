@@ -37,7 +37,7 @@ public class HelpPage extends Page {
 		NavPage page = new NavPage(bbp);
 
         GenericPanel pageContent = new GenericPanel(new BorderLayout());
-		
+
         // pageContent.add(rules, BorderLayout.NORTH);
         pageContent.add(new HelpTable(), BorderLayout.CENTER);
 

@@ -8,7 +8,7 @@ public enum Orientation {
 
     final int dl;
     final int dc;
-    
+
     Orientation(int dc, int dl) {
         this.dc = dc;
         this.dl = dl;

@@ -1,6 +1,7 @@
-package fr.prog.tablut.controller.game.ia;
+package fr.prog.tablut.model.game.player.ai;
 
 import fr.prog.tablut.model.game.player.PlayerEnum;
+import fr.prog.tablut.model.game.player.PlayerTypeEnum;
 
 
 /**
@@ -9,7 +10,7 @@ import fr.prog.tablut.model.game.player.PlayerEnum;
  */
 public class AIEasy extends AIMinMax {
     public AIEasy(PlayerEnum playerEnum) {
-        super(playerEnum);
+        super(playerEnum, PlayerTypeEnum.EASY_AI);
     }
 
     @Override

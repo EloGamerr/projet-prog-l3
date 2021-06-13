@@ -69,7 +69,7 @@ public class GameLoader {
 
 		while(scanner.hasNextLine()) {
 			String lineContent = scanner.nextLine();
-			
+
 			if(lineNumber == 0 && !loadParameters(lineContent)) {
 				scanner.close();
 				return false;
@@ -80,8 +80,8 @@ public class GameLoader {
 
 		return true;
 	}
-	
-	
+
+
 
 	////////////////////////////////////////////////////
 	// Load Functions
@@ -90,7 +90,7 @@ public class GameLoader {
 		try {
 			JSONObject jsonParameters = new JSONObject(line);
 			JSONArray array = jsonParameters.getJSONArray("parameters");
-			
+
 			PlayerTypeEnum defender = getDefender(new JSONObject(array.getString(0)).getInt("defender"));
 			String defenderName = new JSONObject(array.getString(1)).getString("defenderName");
 			PlayerTypeEnum attacker = getDefender(new JSONObject(array.getString(2)).getInt("attacker"));
@@ -108,7 +108,7 @@ public class GameLoader {
 	}
 
 
-	
+
 
 	////////////////////////////////////////////////////
 	// Setter and Getters
@@ -165,6 +165,7 @@ public class GameLoader {
     				break;
     			case '\n':
     				game.move(movement.getFromC(), movement.getFromL(), movement.getToC(),movement.getToL());
+                    game.confirmMove();
     				toOrFrom = SaverConstants.NEXT_LINE;
     				break;
     			case '(':
@@ -185,14 +186,14 @@ public class GameLoader {
 
     	    		else if(lOrC.equals(SaverConstants.BR_LEFT))
     	    			movement.setToC(Character.getNumericValue(playsString.charAt(index)));
-                        
+
     	    		else movement.setToL(Character.getNumericValue(playsString.charAt(index)));
     		}
 
     		index++;
     	}
 	}
-	
+
 	public String getCurrentSavePath() {
 		return this.currentSavePath;
 	}

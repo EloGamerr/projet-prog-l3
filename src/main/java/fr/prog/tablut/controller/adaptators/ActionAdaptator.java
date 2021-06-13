@@ -17,7 +17,7 @@ public class ActionAdaptator<T extends GenericComponent> implements ActionListen
     }
 
     protected void process(ActionEvent e) {
-		
+
 	}
 
     /**

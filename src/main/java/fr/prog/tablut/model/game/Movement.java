@@ -11,7 +11,7 @@ public class Movement {
 		this.pointFrom = new Point(fromC, fromL);
 		this.pointTo = new Point(toC, toL);
 	}
-	
+
 	public Movement() {
 	}
 
@@ -38,7 +38,7 @@ public class Movement {
 	public int getToC() {
 		return this.pointTo.x;
 	}
-	
+
 	public void setFromL(int fromL) {
 		if(this.pointFrom == null) {
 			this.pointFrom = new Point();

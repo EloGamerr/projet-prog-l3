@@ -8,12 +8,12 @@ import fr.prog.tablut.view.components.generic.GenericButton;
 
 public class ButtonPauseAdaptator extends ActionAdaptator<GenericButton> {
 	private final GameController gameController;
-	
+
 	public ButtonPauseAdaptator(GenericButton button, GameController gameController) {
 		super(button);
 		this.gameController = gameController;
 	}
-	
+
 	@Override
 	public void process(ActionEvent e) {
 		gameController.pause();

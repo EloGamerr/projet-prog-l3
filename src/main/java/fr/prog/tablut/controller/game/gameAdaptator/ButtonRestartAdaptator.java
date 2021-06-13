@@ -21,8 +21,8 @@ public class ButtonRestartAdaptator extends ActionAdaptator<GenericButton> {
 		this.isFinished = isFinished;
 		this.gamePage = gamePage;
 	}
-	
-	
+
+
 	@Override
 	public void process(ActionEvent e) {
 		if(isFinished) {

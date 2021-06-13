@@ -27,15 +27,15 @@ public class HomePage extends ThemePage {
 
 		Title title = new Title("TABLUT");
 		ButtonChoice button_choice = new ButtonChoice();
-		
+
 		GridBagConstraints c = new GridBagConstraints();
-		
+
 		c.insets = new Insets(0, 0, 50, 0);
-		
+
 		c.gridx = 0;
 		c.gridy = 1;
 		add(title, c);
-		
+
 		c.gridx = 0;
 		c.gridy = 2;
 		add(button_choice, c);

@@ -7,5 +7,5 @@ import javax.swing.JOptionPane;
  * @see JOptionPane
  */
 public class OptionPane extends JOptionPane {
-    
+
 }

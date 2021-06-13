@@ -1,4 +1,4 @@
-package fr.prog.tablut.controller.game.ia;
+package fr.prog.tablut.model.game.player.ai;
 
 import fr.prog.tablut.model.game.CellContent;
 import fr.prog.tablut.model.game.Game;

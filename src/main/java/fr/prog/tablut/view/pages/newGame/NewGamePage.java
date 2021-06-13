@@ -32,7 +32,7 @@ public class NewGamePage extends ThemePage {
 			"Choisissez les param\u00e8tres de partie qui vous conviennent puis cliquez sur confirmer",
 			panel
 		);
-		
+
 		// game settings
 		page.setContent(gameSettings);
 

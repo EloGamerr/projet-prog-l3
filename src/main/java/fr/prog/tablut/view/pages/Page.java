@@ -32,7 +32,7 @@ public class Page extends ResizableObject {
     public static void setParent(GlobalWindow globalWindow) {
         Page.parent = globalWindow;
     }
-    
+
     /**
      * Default constructor.
      * <p>A page is hidden by default.</p>
@@ -148,7 +148,7 @@ public class Page extends ResizableObject {
         int height = getSize().height;
 
         drawable.clearRect(0, 0, width, height);
-        
+
         super.paintComponent(graphics);
     }
 

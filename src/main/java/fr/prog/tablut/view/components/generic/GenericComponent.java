@@ -6,7 +6,7 @@ package fr.prog.tablut.view.components.generic;
  */
 public interface GenericComponent {
     /**
-     * Check if the component is disabled, generaly for remove all action performed on 
+     * Check if the component is disabled, generaly for remove all action performed on
      */
     boolean isDisabled();
 }

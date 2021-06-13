@@ -41,7 +41,7 @@ public class MoveHistoryPanel extends GenericPanel {
 
         historyChat = new HistoryChatField(gamePage, d);
         historyChat.setFont(new Font("Calibri", Font.PLAIN, 12));
-        
+
         scrollPane = new GenericScrollPane(historyChat, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         wrapper.add(scrollPane, BorderLayout.SOUTH);

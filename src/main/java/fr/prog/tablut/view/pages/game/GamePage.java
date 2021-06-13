@@ -57,7 +57,7 @@ public class GamePage extends Page {
     private ImageComponent blackBT, blackT, whiteBT, whiteT;
 
     private final GameController gameController;
-    
+
     private PlayerEnum lastPlayer = null;
 
     /**
@@ -95,9 +95,9 @@ public class GamePage extends Page {
 
         c.gridx = 2;
         add(rightSide, c);
-        
+
         // add a board listener with the game controller
-        GameMouseAdaptator gameMouseAdaptator = new GameMouseAdaptator(gameController, this);
+        GameMouseAdaptator gameMouseAdaptator = new GameMouseAdaptator(gameController);
         centerSide.getBoard().addMouseListener(gameMouseAdaptator);
         centerSide.getBoard().addMouseMotionListener(gameMouseAdaptator);
 
@@ -122,9 +122,9 @@ public class GamePage extends Page {
      */
     private void initWinnerPanel() {
         foregroundPanel.setOpaque(true);
-        
+
         foregroundPanel.setBackground(new Color(0, 0, 0, 230));
-        
+
         // BOTTOM BUTTON PANEL
         BottomButtonPanel bottomButton = new BottomButtonPanel(PageName.HomePage, PageName.GamePage, "Rejouer", "Quitter");
 
@@ -139,10 +139,10 @@ public class GamePage extends Page {
         winnerPage.setSize(winnerPage.getWidth(), getHeight());
         winnerPage.getTitle().setForeground(GenericObjectStyle.getProp("title.light", "color"));
         winnerPage.getDescription().setForeground(GenericObjectStyle.getProp("label.light", "color"));
-        
+
         // PAGE MIDDLE CONTENT
         GenericPanel p = new GenericPanel(new GridBagLayout());
-        
+
         winnerDescLabel = new GenericLabel("L'attaquant n'a pas r\u00e9ussi \u00e0 encercler le Roi", 16);
         winnerTimeAndPlaysLabel = new GenericLabel("0h 0m 0s - 0 coups", 16);
         winnerDescLabel.setForeground(GenericObjectStyle.getProp("label.light", "color"));
@@ -176,7 +176,7 @@ public class GamePage extends Page {
         final int iconSize = 500;
         blackBT = new ImageComponent("theme/cut_big_black_tower.png", -iconSize/2, getHeight()/2 - iconSize/2, iconSize, iconSize);
         blackT = new ImageComponent("theme/semi_transparent_black_tower.png", -iconSize/2, getHeight()/2 - iconSize/2, iconSize, iconSize);
-        
+
         whiteBT = new ImageComponent("theme/cut_big_white_tower.png", getWidth()-iconSize/2, getHeight()/2 - iconSize/2, iconSize, iconSize);
         whiteT = new ImageComponent("theme/semi_transparent_white_tower.png", getWidth()-iconSize/2, getHeight()/2 - iconSize/2, iconSize, iconSize);
 
@@ -223,19 +223,26 @@ public class GamePage extends Page {
      */
     @Override
     public void update() {
-        boolean a = Objects.requireNonNull(PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker())).isAI(),
-            b = Objects.requireNonNull(PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender())).isAI();
-        
-        getRightSide().enablePauseButton((a && b) || Game.getInstance().isPaused());
+        update(MoveType.NONE);
 
-        centerSide.updateTurnOf();
         leftSide.reset();
         rightSide.reset();
+        centerSide.updateTurnOf();
 
         // hide winner screen in the case the previous game was terminated
         hideVictoryPage();
-        
+
         lastPlayer = null;
+    }
+
+    public void update(MoveType moveType) {
+        boolean a = Objects.requireNonNull(PlayerTypeEnum.getFromPlayer(Game.getInstance().getAttacker())).isAI(),
+            b = Objects.requireNonNull(PlayerTypeEnum.getFromPlayer(Game.getInstance().getDefender())).isAI();
+
+        getRightSide().enablePauseButton((a && b) || Game.getInstance().isPaused());
+
+        revalidate();
+        repaint();
     }
 
     /**
@@ -252,13 +259,13 @@ public class GamePage extends Page {
         centerSide.updateTurnOf();
         // update the buttons
         rightSide.updateTurn();
-        
+
         // this condition is done because animations are conflicting with this method.
         // This issue will be resolved in a future version, where the animation's manager
         // will be improved.
         if((lastPlayer == null || lastPlayer != Game.getInstance().getPlayingPlayerEnum()) && Game.getInstance().getLastPlay() != null) {
             lastPlayer = Game.getInstance().getPlayingPlayerEnum();
-            
+
             switch(movetype) {
                 case MOVE: leftSide.getMoveHistoryPanel().addAction(); break;
                 case UNDO: leftSide.getMoveHistoryPanel().undo(); break;
@@ -300,18 +307,18 @@ public class GamePage extends Page {
         // display the page
         showVictoryPage();
     }
-    
+
     /**
      * Refreshes the view, refresh undo/redo buttons
      */
     public void refresh() {
     	enableRedoButton(Game.getInstance().hasNextMove());
 		enableUndoButton(Game.getInstance().hasPreviousMove());
-		
+
         revalidate();
 		repaint();
     }
-    
+
     /**
      * Removes the preview board
      */
@@ -342,7 +349,7 @@ public class GamePage extends Page {
     public LeftSideGame getLeftSide() {
         return leftSide;
     }
-    
+
     /**
      * Resets the known player that was the last to play
      */
@@ -386,6 +393,22 @@ public class GamePage extends Page {
         return getBoardInterface().getYCoordFromRow(y);
     }
 
+    public Point getCellFromCoord(int x, int y) {
+        return new Point(getColFromXCoord(x), getRowFromYCoord(y));
+    }
+
+    public Point getCellFromCoord(Point p) {
+        return getCellFromCoord(p.x, p.y);
+    }
+
+    public Point getCoordsFromCell(int x, int y) {
+        return new Point(getXCoordFromCol(x), getYCoordFromRow(y));
+    }
+
+    public Point getCoordsFromCell(Point p) {
+        return getCoordsFromCell(p.x, p.y);
+    }
+
     /**
      * Updates the hovered cell and repaint the view
      */
@@ -393,7 +416,7 @@ public class GamePage extends Page {
     	centerSide.getBoard().updateCellHovering(hoveringCell);
         repaint();
     }
-	
+
     /**
      * Clears the image on the mouse
      */
@@ -418,16 +441,16 @@ public class GamePage extends Page {
      * @param animatedCell The animated starting cell
      * @param animatedFinalCell The animated final cell
      */
-	public void update_anim(Point animPosition, Point animatedCell, Point animatedFinalCell) {
-		centerSide.getBoard().update_anim(animPosition,animatedCell,animatedFinalCell);	
+	public void updateAnimation(Point animPosition, Point animatedCell, Point animatedFinalCell) {
+		centerSide.getBoard().updateAnimation(animPosition, animatedCell, animatedFinalCell);
 		repaint();
 	}
-    
+
     /**
      * Stops the current piece's animation and repaint the view
      */
-	public void stop_anim() {
-		centerSide.getBoard().stop_anim();
+	public void stopAnimation() {
+		centerSide.getBoard().stopAnimation();
 		repaint();
 	}
 
@@ -436,7 +459,7 @@ public class GamePage extends Page {
      * @param state The state of the animation
      */
     public void setIsInAnim(boolean state) {
-        centerSide.getBoard().getBoardData().isAnim = state;
+        centerSide.getBoard().getBoardData().isAnimating = state;
     }
 
     /**
@@ -444,7 +467,7 @@ public class GamePage extends Page {
      * @return Either a piece is animated
      */
     public boolean isInAnim() {
-        return centerSide.getBoard().getBoardData().isAnim;
+        return centerSide.getBoard().getBoardData().isAnimating;
     }
 
     /**
@@ -523,7 +546,7 @@ public class GamePage extends Page {
 			for(int i=plays.getCurrentMovement(); i >= pos; i--) {
 				if(allPlays.size() <= i || leftSide.getMoveHistoryPanel().historyLength() <= i)
 					break;
-				
+
 				Play currentPlay = allPlays.get(i);
 
 				for(Map.Entry<Point, CellContent> m : currentPlay.getModifiedOldCellContents().entrySet()) {
@@ -550,7 +573,7 @@ public class GamePage extends Page {
 		for(int i=cy-1; i >= pos; i--) {
 			if(leftSide.getMoveHistoryPanel().historyLength() <= i)
 				break;
-			
+
             leftSide.getMoveHistoryPanel().setHoveringAction(i, false);
 		}
 
@@ -565,21 +588,21 @@ public class GamePage extends Page {
      */
     public void confirmPreviewAt(int pos) {
         Plays plays = Game.getInstance().getPlays();
-		
+
 		boolean hasChanged = false;
 
 		if(pos <= plays.getCurrentMovement()) {
 			for(int i = plays.getCurrentMovement(); i >= pos; i--) {
 				if(leftSide.getMoveHistoryPanel().historyLength() <= i)
 					break;
-				
+
 				if(Game.getInstance().undo_move()) {
 					leftSide.getMoveHistoryPanel().removeAction(i);
 					hasChanged = true;
 				}
 			}
 		}
-		
+
 		if(hasChanged) {
 			resetLastPlayer();
 			removePreview();
@@ -596,7 +619,7 @@ public class GamePage extends Page {
     private CellContent[][] copyGrid(CellContent[][] grid) {
 		if(grid == null)
 			return null;
-        
+
 		CellContent[][] newGrid = new CellContent[grid.length][];
 
 		for(int i=0; i < grid.length; i++) {

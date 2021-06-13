@@ -35,6 +35,6 @@ public class InputAdaptator extends ActionAdaptator<GenericInput> implements Key
 
     @Override
     public void keyReleased(KeyEvent e) {
-        
+
     }
 }

@@ -11,24 +11,24 @@ public class PawnTaker {
 	private final List<Point> visited = new ArrayList<>(); // Variable globale qui sert à connaître les pions alliés et
 													 // connexes qui ont déjà été traité par les fonctions de la classe
 	private final Game game;
-	
-	
+
+
 	////////////////////////////////////////////////////
 	// Constructor
-	////////////////////////////////////////////////////	
-	
+	////////////////////////////////////////////////////
+
 	PawnTaker(Game game) {
 		this.game = game;
 	}
-	
-	
+
+
 	////////////////////////////////////////////////////
 	// Main function
 	////////////////////////////////////////////////////
 
 	/**
 	* Méthode principale
-	* Vérifie si des pions ont étés pris en fonction de la nature de la case déplacée 
+	* Vérifie si des pions ont étés pris en fonction de la nature de la case déplacée
  	*/
 	public void clearTakedPawns(int c, int l, Play play) {
 		if(game.isAttackTower(c, l))
@@ -36,13 +36,13 @@ public class PawnTaker {
 
 		if(game.isDefenseTower(c, l))
 			defense(c, l, play);
-		
+
 	}
-	
+
 	////////////////////////////////////////////////////
-	// Attack 
+	// Attack
 	////////////////////////////////////////////////////
-	
+
 	/**
 	* Regarde aux extremités de la case en question
  	*/
@@ -52,7 +52,7 @@ public class PawnTaker {
 		attack_core(c-1, l,-1, 0,    play);
 		attack_core(c+1, l, 1, 0,    play);
 	}
-	
+
 	public void attack_core(int c, int l, int dc, int dl, Play play){
 		if(game.isDefenseTower(c, l)) { // Si la case contient une tour défensive
 			if(isAttTowerHelper(c+dc, l+dl)) { // Si deux cases plus loin nous avons un allié de circonstance pour l'attaque
@@ -60,15 +60,15 @@ public class PawnTaker {
 				game.setContent(CellContent.EMPTY, c, l); // on enleve le pion ennemi
 				play.putModifiedNewCellContent(new Point(c, l), CellContent.EMPTY);
 			}
-			else 
+			else
 				testSurround(c, l, play);  // Sinon on vérifie que le coup joué  bloque totalement le pion ennemi
 		}
 		else if(game.isTheKing(c, l)) // Si la case contient le roi
 				testSurround(c, l,  play);  // On vérifie que le coup joué  bloque totalement le roi ennemi
 	}
-	
+
 	////////////////////////////////////////////////////
-	// Defense 
+	// Defense
 	////////////////////////////////////////////////////
 	/**
 	* Regarde aux extremités de la case en question
@@ -79,7 +79,7 @@ public class PawnTaker {
 		defense_core(c-1, l,-1, 0,    play);
 		defense_core(c+1, l, 1, 0,    play);
 	}
-	
+
 	public void defense_core(int c, int l, int dc, int dl, Play play) {
 		if(game.isAttackTower(c, l)) {
 			if(isDefTowerHelper(c+dc, l+dl)) { // Si deux cases plus loin nous avons un allié de circonstance pour la défense
@@ -87,12 +87,12 @@ public class PawnTaker {
 				game.setContent(CellContent.EMPTY, c, l); // on enleve le pion ennemi
 				play.putModifiedNewCellContent(new Point(c, l), CellContent.EMPTY);
 			}
-			else  testSurround(c, l, play); // Sinon on vérifie que le coup joué  bloque totalement le pion ennemi		
+			else  testSurround(c, l, play); // Sinon on vérifie que le coup joué  bloque totalement le pion ennemi
 		}
 	}
-	
+
 	////////////////////////////////////////////////////
-	// Surround test 
+	// Surround test
 	////////////////////////////////////////////////////
 	/**
 	* Vérifie si la case passée en paramètre est entourée d'obstacle inamicaux
@@ -102,7 +102,7 @@ public class PawnTaker {
 			play.putModifiedOldCellContent(new Point(c, l), game.getCellContent(c, l));
 			game.setContent(CellContent.EMPTY,c, l); // On enléve le pion
 			play.putModifiedNewCellContent(new Point(c, l), CellContent.EMPTY);
-			
+
 			if(!visited.isEmpty()) { // Si des pions alliés ont étés traités par la classe
 				for(Point cell : visited) {
 					play.putModifiedOldCellContent(cell, game.getCellContent(cell.x, cell.y));
@@ -124,9 +124,9 @@ public class PawnTaker {
 		boolean surrounded = true;
 		int counter_obstacle = 0;
 		Couple<Integer , List<Point>> var = new Couple<>(counter_obstacle, allyCells);
-		
+
 		switch(game.getGrid()[y][x]) {
-		
+
 			case KING:
 				var = checkneighbour_king(var.getSecond(), var.getFirst(), x-1, y);
 				var = checkneighbour_king(var.getSecond(), var.getFirst(), x+1, y);
@@ -139,7 +139,7 @@ public class PawnTaker {
 				var = checkneighbour_defense(var.getSecond(), var.getFirst(), x,   y-1);
 				var = checkneighbour_defense(var.getSecond(), var.getFirst(), x,   y+1);
 				break;
-			
+
 
 			case ATTACK_TOWER:
 				var = checkneighbour_attack(var.getSecond(), var.getFirst(), x-1, y);
@@ -147,38 +147,38 @@ public class PawnTaker {
 				var = checkneighbour_attack(var.getSecond(), var.getFirst(), x,   y-1);
 				var = checkneighbour_attack(var.getSecond(), var.getFirst(), x,   y+1);
 				break;
-				
-			default: break;	
+
+			default: break;
 		}
-		
+
 		counter_obstacle = var.getFirst();
-		
+
 		if(counter_obstacle == 4) { // Le pion ne peut plus se d�placer
-			if(var.getSecond().size() != 0) { // Si il a des alli�s autour de lui, on v�rifie si eux m�mes sont bloqu�s 
+			if(var.getSecond().size() != 0) { // Si il a des alli�s autour de lui, on v�rifie si eux m�mes sont bloqu�s
 				if(!visited.contains(c)) {
 					visited.add(c);
 				}
-				
+
 				for(Point cell : visited) {
 					allyCells.remove(cell);
 				}
-				
+
 				for(Point cell : allyCells) {
 					if(!isSurrounded(new Point(cell.x, cell.y), cell.x, cell.y)) {
 						surrounded = false;
 					}
 				}
-				
-				return surrounded;	
+
+				return surrounded;
 			}
-			
-			return true; 
+
+			return true;
 		}
-		
-		return false;		
+
+		return false;
 	}
 
-	
+
 	////////////////////////////////////////////////////
 	// Check content functions
 	////////////////////////////////////////////////////
@@ -201,13 +201,13 @@ public class PawnTaker {
 
 		return new Couple<>(counter_obstacle, allyCells);
 	}
-	
+
 	public Couple<Integer, List<Point>> checkneighbour_king(List<Point> allyCells, int counter_obstacle, int x, int y) {
 		if(!game.isValid(x, y))
 			counter_obstacle++;
 
 		else if(isAttTowerHelper_king(x, y))
-			counter_obstacle++;	
+			counter_obstacle++;
 
 		else if(isDefenseAlly(x, y)) {
 			allyCells.add(new Point(x, y));
@@ -222,7 +222,7 @@ public class PawnTaker {
 			counter_obstacle++;
 
 		else if(isAttTowerHelper(x, y))
-			counter_obstacle++;	
+			counter_obstacle++;
 
 		else if(isDefenseAlly(x, y)) {
 			allyCells.add(new Point(x, y));
@@ -231,7 +231,7 @@ public class PawnTaker {
 
 		return new Couple<>(counter_obstacle, allyCells);
 	}
-	
+
 
 
 	public boolean isDefTowerHelper(int x, int y) {
@@ -243,7 +243,7 @@ public class PawnTaker {
 	public boolean isAttTowerHelper_king(int x, int y) {
 		return (!game.isValid(x, y) || game.isTheKingPlace(x, y) || game.isAttackTower(x, y) || game.isGate(x, y));
 	}
-	
+
 	public boolean isDefenseAlly(int x ,int y) {
 		return (game.isTheKing(x, y) || game.isDefenseTower(x, y));
 	}

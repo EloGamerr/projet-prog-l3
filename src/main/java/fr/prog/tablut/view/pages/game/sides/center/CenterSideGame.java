@@ -103,7 +103,7 @@ public class CenterSideGame extends GameInterfaceSide {
             turnOf.add(labelTurnOfName);
         }
     }
-    
+
     /**
      * Sets the preview grid to visualize
      * @param grid The preview grid to visualize

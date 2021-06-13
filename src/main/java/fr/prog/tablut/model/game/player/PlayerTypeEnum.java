@@ -3,10 +3,10 @@ package fr.prog.tablut.model.game.player;
 import java.lang.reflect.InvocationTargetException;
 
 import fr.prog.tablut.controller.game.HumanPlayer;
-import fr.prog.tablut.controller.game.ia.AIEasy;
-import fr.prog.tablut.controller.game.ia.AIHard;
-import fr.prog.tablut.controller.game.ia.AIMedium;
-import fr.prog.tablut.controller.game.ia.AIRandom;
+import fr.prog.tablut.model.game.player.ai.AIEasy;
+import fr.prog.tablut.model.game.player.ai.AIHard;
+import fr.prog.tablut.model.game.player.ai.AIMedium;
+import fr.prog.tablut.model.game.player.ai.AIRandom;
 
 public enum PlayerTypeEnum {
     HUMAN("Humain", HumanPlayer.class, false),
@@ -15,11 +15,11 @@ public enum PlayerTypeEnum {
     MEDIUM_AI("Ordinateur moyen", AIMedium.class, true),
     HARD_AI("Ordinateur diffcile", AIHard.class, true);
 
-    
+
 	private final String name;
     private final Class<? extends Player> playerClass;
     private final boolean isAI;
-    
+
     PlayerTypeEnum(String name, Class<? extends Player> playerClass, boolean isAI) {
         this.name = name;
         this.playerClass = playerClass;
@@ -56,7 +56,7 @@ public enum PlayerTypeEnum {
     public static Player getDefaultPlayer(PlayerEnum playerEnum) {
         return HUMAN.createPlayer(playerEnum);
     }
-    
+
     public boolean isAI() {
         return this.isAI;
     }

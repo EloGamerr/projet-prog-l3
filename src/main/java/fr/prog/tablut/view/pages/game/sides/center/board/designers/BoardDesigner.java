@@ -32,15 +32,15 @@ public class BoardDesigner extends Designer {
         // background
         g.setColor(GameColors.BACKGROUND_GRID);
         g.fillRectCoords(_x_, _y_, g.getSize() - bw*2, g.getSize() - bw*2);
-        
+
         g.fillRectCoords(_x_, _y_, g.getSize() - bw*2, g.getSize() - bw*2);
-        
-       
+
+
         // border
         g.setColor(GameColors.BORDER_GRID);
         g.strokeWidth(bw);
         g.strokeSquareCoords(_x_ - bw/2, _y_ - bw/2, g.getSize() - bw - 1);
-        
+
         // cells separators + A-I / 1-9 indicators
         g.strokeWidth(g.getCellSepSize());
 
@@ -59,7 +59,7 @@ public class BoardDesigner extends Designer {
 
             if(i < cellNumber) {
                 int n = i+1;
-                
+
                 int a = - bw/2;
                 int b = bw + z/*  + cellSize / 2 */;
 

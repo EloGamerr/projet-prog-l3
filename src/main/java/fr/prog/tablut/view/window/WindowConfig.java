@@ -33,7 +33,7 @@ public class WindowConfig {
     public int windowHeight = resolutions[1][1];
 
     final Style style = new Style();
-    
+
     /**
      * Default constructor
      */
@@ -90,7 +90,7 @@ public class WindowConfig {
     }
 
     /**
-     * 
+     *
      * <p>Loads the configuration from a JSONObject.</p>
      * <p>The JSONObject must have some keys :</p>
      * <pre>
@@ -193,7 +193,7 @@ public class WindowConfig {
                             continue;
 
                         String subName = key + subkey;
-                        
+
                         if(component.get(subkey) instanceof JSONObject) {
                             getComponentStyleFromJSONObject(component, subkey, subName);
 
@@ -205,7 +205,7 @@ public class WindowConfig {
                             while(subsubkeys.hasNext()) {
                                 String subsubkey = (String)subsubkeys.next();
                                 String subsubName = subName + subsubkey;
-                                
+
                                 if(subsubkey.charAt(0) == ':' && subComponent.get(subsubkey) instanceof JSONObject) {
                                     getComponentStyleFromJSONObject(subComponent, subsubkey, subsubName);
                                 }
@@ -246,7 +246,7 @@ public class WindowConfig {
         Iterator<?> it = o.keys();
         boolean hasAtLeastOneProp = false;
         ComponentStyle cpnt = new ComponentStyle();
-        
+
         while(it.hasNext()) {
             String k = (String)it.next();
 

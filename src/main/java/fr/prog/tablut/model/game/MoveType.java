@@ -5,14 +5,15 @@ public enum MoveType {
 	UNDO("undo"),
 	REDO("redo"),
 	RESTART("restart"),
-	PAUSE("pause");
+	PAUSE("pause"),
+    NONE("none");
 
 	private final String name;
 
 	MoveType(final String name) {
 		this.name = name;
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.name;

@@ -1,18 +1,24 @@
 package fr.prog.tablut.model.saver;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
-import java.io.FileNotFoundException;
 
+import java.util.List;
+import java.util.Collections;
+import java.util.Objects;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -40,7 +46,7 @@ public class GameSaver {
 	* sinon le path est passé en paramètre
  	*/
 	public GameSaver() {
-		
+
 	}
 	 public GameSaver(String currentSavePath) {
 		this.currentSavePath = currentSavePath;
@@ -56,7 +62,7 @@ public class GameSaver {
 		if(gameSaver == null) {
 			gameSaver = new GameSaver();
 		}
-		
+
 		return gameSaver;
 	}
 
@@ -183,7 +189,7 @@ public class GameSaver {
 			builder.append(SaverConstants.BR_RIGHT);
 
 			builder.append(SaverConstants.BLANK);
-			
+
 			builder.append(SaverConstants.BR_LEFT);
 			builder.append(move.getMovement().getToC());
 			builder.append(SaverConstants.COMMA);
@@ -282,7 +288,7 @@ public class GameSaver {
         return saves;
 	}
 
-        
+
 	private String generateSaveName(File f, int i) {
         Scanner scanner = null;
 
@@ -295,7 +301,7 @@ public class GameSaver {
 
 		if(scanner == null)
 			throw new RuntimeException();
-        
+
         if(scanner.hasNextLine()) {
             String nextLine = scanner.nextLine();
             scanner.close();
@@ -307,14 +313,14 @@ public class GameSaver {
 		return "Erreur de lecture";
 	}
 
-	
+
 	private String getData(String nextLine, File f, int i) {
 		try {
-			
+
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-			
+
             String date = "(" + sdf.format(f.lastModified()) + ")";
-			
+
             JSONObject jsonParameters = new JSONObject(nextLine);
 			JSONArray array = jsonParameters.getJSONArray("parameters");
 

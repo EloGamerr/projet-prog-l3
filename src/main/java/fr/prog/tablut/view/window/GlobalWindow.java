@@ -68,7 +68,7 @@ public class GlobalWindow {
 		if(configfilePath != null) {
 			setConfig(configfilePath);
 		}
-		
+
         // dispatch the style onto all components
 		GenericObjectStyle.setStyle(config.getStyle());
 		NavPage.setDimension(new Dimension(config.windowWidth, config.windowHeight - 25));
@@ -77,11 +77,11 @@ public class GlobalWindow {
 		Loader.loadCustomFont("Farro-Regular.ttf");
 		Loader.loadCustomFont("Farro-Light.ttf");
 		Loader.loadCustomFont("Staatliches-Regular.ttf");
-		
+
 
 		GenericObjectStyle.setGlobalWindow(this);
         Page.setParent(this);
-		
+
 		gamePage = new GamePage(this.config);
 		homePage = new HomePage(this.config);
 		currentPage = homePage;
@@ -99,11 +99,11 @@ public class GlobalWindow {
         titlebar = new Titlebar(this);
 
         jFrame.getContentPane().add(titlebar, BorderLayout.PAGE_START);
-        
+
 		// default page to show - home page
 		homePage.setVisible(true);
 		jFrame.getContentPane().add(homePage);
-		
+
         // frame parameters
 		jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		jFrame.setSize(config.windowWidth, config.windowHeight + titlebar.getHeight());
@@ -187,16 +187,16 @@ public class GlobalWindow {
         jFrame.getContentPane().remove(currentPage);
 
         currentPage = tmpPage;
-        
+
         // update page if previous wasn't the help one
 		if(previousPageName != PageName.HelpPage)
             currentPage.update();
-        
+
         // show the new page
 		currentPage.setVisible(true);
         jFrame.getContentPane().add(currentPage);
 	}
-	
+
     /**
      * Returns the game page
      * @see GamePage

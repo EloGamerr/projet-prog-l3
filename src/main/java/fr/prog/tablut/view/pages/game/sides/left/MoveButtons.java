@@ -35,7 +35,7 @@ public class MoveButtons extends GenericPanel {
         int imgSize = 50 * btnHeight / 100; // 50%, only modify the ratio
         int imgX = btnWidth / 2 - imgSize / 2;
         int imgY = btnHeight / 2 - imgSize / 2;
-        
+
         // buttons undo/redo
         undo = new GenericRoundedButton("", btnWidth, btnHeight);
         redo = new GenericRoundedButton("", btnWidth, btnHeight);
@@ -54,7 +54,7 @@ public class MoveButtons extends GenericPanel {
         // disabled in early game : no move done
         undo.setStyle("button:disabled");
         redo.setStyle("button:disabled");
-        
+
         // add button's in the view
         GridBagConstraints lc = new GridBagConstraints();
 
@@ -62,7 +62,7 @@ public class MoveButtons extends GenericPanel {
 
         lc.gridx = 0;
         add(undo);
-        
+
         lc.gridx = 1;
         add(redo);
     }
@@ -94,5 +94,5 @@ public class MoveButtons extends GenericPanel {
         if(!button.getStyle().replace(":hover", "").equals(style))
             button.setStyle(style);
     }
-    
+
 }

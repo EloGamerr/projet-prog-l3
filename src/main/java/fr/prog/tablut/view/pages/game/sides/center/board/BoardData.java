@@ -23,7 +23,7 @@ public class BoardData {
     public Image animatedImage = null;
     public Image imageOnMouse = null;
     public List<Movement> accessibleCells = new ArrayList<>();
-	public boolean isAnim = false;
+	public boolean isAnimating = false;
     public CellContent[][] previewGrid = null;
     public Integer previewMoveIndex = -1;
 }

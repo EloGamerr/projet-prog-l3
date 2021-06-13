@@ -77,7 +77,7 @@ public class BoardDrawer {
     public void setContainer(JPanel container) {
         this.container = container;
     }
-    
+
     /**
      * Sets the draw color
      * @param color The color to set
@@ -156,7 +156,7 @@ public class BoardDrawer {
     public void strokeWidth(int width) {
         g2d.setStroke(new BasicStroke(width));
     }
-    
+
     /**
      * Defines the font to put on the text to draw
      * @param font The font to set on the text

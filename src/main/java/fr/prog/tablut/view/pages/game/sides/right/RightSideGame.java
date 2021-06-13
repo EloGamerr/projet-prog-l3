@@ -31,14 +31,14 @@ public class RightSideGame extends GameInterfaceSide {
      */
     public RightSideGame(Dimension d, GameController gameController) {
         super(d);
-        
+
         // instantiation
         GenericRoundedButton saveToNewFile = new GenericRoundedButton("Sauvegarder la partie", 200, 40);
         pause = new GenericRoundedButton("Pause", 200, 40);
         restart = new GenericRoundedButton("Recommencer la partie", 200, 40);
         GenericRoundedButton shortcuts = new GenericRoundedButton("Raccourcis", 200, 40);
         GenericRoundedButton quit = new GenericRoundedButton("Quitter la partie", 200, 40);
-        
+
         // style
         saveToNewFile.setStyle("button.greenHover");
         quit.setStyle("button.redHover");
@@ -48,10 +48,10 @@ public class RightSideGame extends GameInterfaceSide {
         quit.setHref(PageName.HomePage, new ButtonQuitGameAdaptator(quit, GenericObjectStyle.getGlobalWindow()));
 
         saveToNewFile.setAction(new ButtonSaveAdaptator(saveToNewFile, gameController));
-        
+
         pause.setAction(new ButtonPauseAdaptator(pause, gameController));
         restart.setAction(new ButtonRestartAdaptator(restart, gameController, false, null));
-        
+
         // add components to the view
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -59,7 +59,7 @@ public class RightSideGame extends GameInterfaceSide {
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         c.insets = new Insets(10, 100, 10, 0);
         c.gridx = 0;
-        
+
         c.gridy = 0; add(saveToNewFile, c);
         c.gridy = 1; add(pause, c);
         c.gridy = 2; add(restart, c);

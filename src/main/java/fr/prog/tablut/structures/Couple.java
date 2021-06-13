@@ -18,7 +18,7 @@ public class Couple<T, S> {
     public S getSecond() {
         return second;
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -31,7 +31,7 @@ public class Couple<T, S> {
     public int hashCode() {
         return Objects.hash(first, second);
     }
-    
+
     @Override
     public String toString() {
     	return "(" + first + ", " + second + ")";

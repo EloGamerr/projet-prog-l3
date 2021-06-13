@@ -4,45 +4,51 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import fr.prog.tablut.controller.game.gameController.GameController;
-import fr.prog.tablut.view.pages.game.GamePage;
 
 public class GameMouseAdaptator extends MouseAdapter {
-	private final GamePage gamePage;
 	private final GameController gameController;
-	
-	public GameMouseAdaptator(GameController gameController, GamePage gamePage) {
+    private boolean isMouseDown = false;
+
+	public GameMouseAdaptator(GameController gameController) {
 		this.gameController = gameController;
-		this.gamePage = gamePage;
 	}
-	
+
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if(!gameController.getGamePage().isVisible())
 			return;
 
-		if(e.getButton() == MouseEvent.BUTTON1) {
-			int	l = gamePage.getRowFromYCoord(e.getY());
-			int c = gamePage.getColFromXCoord(e.getX());
-			gameController.click(c, l);
+		if(e.getButton() == MouseEvent.BUTTON1 && !isMouseDown) {
+			gameController.drag(e.getPoint());
+            isMouseDown = true;
 		}
-
-		else if(e.getButton() == MouseEvent.BUTTON3)
-			gameController.undoSelect();
 	}
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        if(!gameController.getGamePage().isVisible())
+			return;
+
+        if(e.getButton() == MouseEvent.BUTTON1 && isMouseDown) {
+            gameController.drop(e.getPoint());
+            isMouseDown = false;
+        }
+    }
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		if(!gameController.getGamePage().isVisible())
-			return;
-
-		gameController.mouseMoved(e.getPoint());
+		mouseMove(e);
 	}
-	
+
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		if(!gameController.getGamePage().isVisible())
-			return;
-
-		gameController.mouseMoved(e.getPoint());
+		mouseMove(e);
 	}
+
+    private void mouseMove(MouseEvent e) {
+        if(!gameController.getGamePage().isVisible())
+            return;
+
+        gameController.mouseMoved(e.getPoint());
+    }
 }

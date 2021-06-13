@@ -52,7 +52,7 @@ public class GenericComboBox<E> extends JComboBox<E> {
         setEditor(new GenericComboBoxEditor());
 
         GenericComboBox<E> me = this;
-        
+
         // hover listener
 		//TODO : move it in the controller
         addMouseListener(new MouseAdapter() {
@@ -62,7 +62,7 @@ public class GenericComboBox<E> extends JComboBox<E> {
                 revalidate();
                 repaint();
             }
-        
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 hovering = false;
                 me.setCursor(me.defaultCursor);
@@ -224,7 +224,7 @@ class GenericComboBoxEditor extends BasicComboBoxEditor {
 
             FontRenderContext frc = new FontRenderContext(null, false, false);
             Rectangle2D textBounds = getFont().getStringBounds(text, frc);
-    
+
             g2d.setColor(GenericObjectStyle.getProp("select.selected", "color"));
             g2d.setFont(new Font("Farro-Light", Font.PLAIN, 12));
             g2d.drawString(text, 15, (int)(getHeight() - 3 - textBounds.getHeight()/2));
@@ -232,19 +232,19 @@ class GenericComboBoxEditor extends BasicComboBoxEditor {
     };
 
     private Object selectedItem;
-     
+
     public GenericComboBoxEditor() {
         panel.setBorder(new EmptyBorder(0, 0, 0, 0));
     }
-     
+
     public Component getEditorComponent() {
         return this.panel;
     }
-     
+
     public Object getItem() {
         return this.selectedItem;
     }
-     
+
     public void setItem(Object item) {
         this.selectedItem = item;
         this.text = item.toString();

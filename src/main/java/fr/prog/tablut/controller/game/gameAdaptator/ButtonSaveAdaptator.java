@@ -10,13 +10,13 @@ import javax.swing.JOptionPane;
 
 public class ButtonSaveAdaptator extends ActionAdaptator<GenericButton> {
 	private final GameController gameController;
-	
+
 	public ButtonSaveAdaptator(GenericButton button, GameController gameController) {
 		super(button);
 		this.gameController = gameController;
 	}
-	
-	
+
+
 	@Override
 	public void process(ActionEvent e) {
 		Object value = JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment sauvegarder la partie en cours ?", "Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);

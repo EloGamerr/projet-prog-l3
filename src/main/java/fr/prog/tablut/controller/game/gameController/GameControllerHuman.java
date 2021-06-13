@@ -11,7 +11,7 @@ public class GameControllerHuman {
     private Point selectedCell;
     private int lastRowHovered;
     private int lastColHovered;
-    
+
     public GameControllerHuman(GamePage gamePage) {
         this.gamePage = gamePage;
     }
@@ -19,15 +19,13 @@ public class GameControllerHuman {
     /**
 	 * @return True if we should repaint the window after the click
 	 */
-    public boolean click(int col, int row) {
-        if(!Game.getInstance().isValid(col, row) || !(Game.getInstance().getPlayingPlayer() instanceof HumanPlayer))
+    public boolean play(int col, int row) {
+        if(!Game.getInstance().isValid(col, row) || !Game.getInstance().getPlayingPlayer().isHuman())
             return false;
 
         HumanPlayer humanPlayer = (HumanPlayer) Game.getInstance().getPlayingPlayer();
 
-        humanPlayer.updateState(col, row, this);
-
-        return humanPlayer.play(Game.getInstance(), gamePage);
+        return humanPlayer.play(Game.getInstance(), selectedCell, new Point(col, row));
     }
 
     public void undoSelect() {
